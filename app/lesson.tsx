@@ -24,24 +24,26 @@ export default function LessonScreen() {
   const params = useLocalSearchParams();
   const lessonId = params.id || 'l1';
   
-  // Wir holen die Original-Lektion
   const originalLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
+  const totalOriginalQuestions = originalLesson.exercises.length;
 
-  // --- NEU: Die Warteschlange (Queue) als State ---
-  // Wir starten mit den normalen Übungen, aber dieses Array kann wachsen!
+  // State
   const [lessonQueue, setLessonQueue] = useState([...originalLesson.exercises]);
-  
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [sound, setSound] = useState();
+  
+  // NEU: Fehlerzähler und "Fertig"-Status
+  const [mistakes, setMistakes] = useState(0);
+  const [isLessonFinished, setIsLessonFinished] = useState(false);
+  const [earnedStars, setEarnedStars] = useState(0);
 
-  // Wir greifen jetzt auf die Queue zu, nicht mehr auf das Original
   const currentExercise = lessonQueue[currentExerciseIndex];
   
-  // Fortschrittsbalken basiert auf der aktuellen Länge der Warteschlange
+  // Der Fortschrittsbalken bezieht sich immer auf die noch verbleibenden Aufgaben
   const progressPercent = ((currentExerciseIndex) / lessonQueue.length) * 100;
 
   useEffect(() => {
@@ -81,33 +83,53 @@ export default function LessonScreen() {
     if (correct) {
       playAudio(currentExercise.id);
     } else {
-      // --- NEU: WIEDERHOLUNGS-LOGIK ---
-      // Wenn falsch: Füge die Übung später nochmal hinzu
-      
+      // FEHLER LOGIK
+      setMistakes(m => m + 1); // Fehler hochzählen
+
+      // Wiederholungs-Logik (Queue erweitern)
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
-
-      // Wie viele Übungen sind noch übrig?
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
-
       if (remainingExercises > 0) {
-        // Zufällige Position in der Zukunft (aber nicht direkt als nächstes, wenn möglich)
-        // Mindestens 1 Schritt später, maximal am Ende
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
-        const insertIndex = currentExerciseIndex + 1 + randomOffset;
-        
-        // Einfügen
-        newQueue.splice(insertIndex, 0, currentItem);
+        newQueue.splice(currentExerciseIndex + 1 + randomOffset, 0, currentItem);
       } else {
-        // Wenn es die allerletzte Übung war, einfach hinten anhängen
         newQueue.push(currentItem);
       }
-      
-      console.log(`Falsch! Übung wieder eingereiht. Neue Länge: ${newQueue.length}`);
       setLessonQueue(newQueue);
     }
-
     setShowFeedback(true);
+  };
+
+  const finishLesson = async () => {
+    // Sterne berechnen
+    // 0 Fehler = 100%
+    // Prozentanteil korrekter ERSTVERSUCHE berechnen
+    const correctFirstTries = totalOriginalQuestions - mistakes;
+    // (Kann negativ werden wenn man öfter falsch liegt als es Fragen gibt, daher max(0,...))
+    const scorePercentage = Math.max(0, (correctFirstTries / totalOriginalQuestions) * 100);
+
+    let stars = 0;
+    if (scorePercentage === 100) stars = 3;
+    else if (scorePercentage >= 75) stars = 2;
+    else if (scorePercentage >= 50) stars = 1;
+    else stars = 0;
+
+    setEarnedStars(stars);
+    setIsLessonFinished(true);
+
+    // Speichern (Wir speichern jetzt ein Objekt: { "l1": 3, "l2": 1 })
+    try {
+      const existingData = await AsyncStorage.getItem('lessonScores');
+      let scores = existingData ? JSON.parse(existingData) : {};
+      
+      // Wir überschreiben nur, wenn das neue Ergebnis besser ist (oder noch keins existiert)
+      const oldScore = scores[lessonId] || 0;
+      if (stars >= oldScore) {
+          scores[lessonId] = stars;
+          await AsyncStorage.setItem('lessonScores', JSON.stringify(scores));
+      }
+    } catch (e) { console.error(e); }
   };
 
   const nextExercise = async () => {
@@ -115,48 +137,55 @@ export default function LessonScreen() {
     setUserInput('');
     setSelectedOption(null);
 
-    // Prüfen ob wir am Ende der (möglicherweise gewachsenen) Queue sind
     if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
-      try {
-        const existingData = await AsyncStorage.getItem('completedLessons');
-        let completed = existingData ? JSON.parse(existingData) : [];
-        if (!completed.includes(lessonId)) {
-          completed.push(lessonId);
-          await AsyncStorage.setItem('completedLessons', JSON.stringify(completed));
-        }
-      } catch (e) { console.error(e); }
-      router.back(); 
+      // Lektion zu Ende -> Ergebnis berechnen
+      finishLesson();
     }
-  };
-
-  const getInstructionText = () => {
-    switch (currentExercise.type) {
-      case 'translate_to_pt': return 'Übersetze ins Portugiesische';
-      case 'translate_to_de': return 'Übersetze ins Deutsche';
-      default: return 'Wähle die richtige Lösung';
-    }
-  };
-
-  const getPlaceholderText = () => {
-    return currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   };
 
   const getSolutionDisplay = () => {
-    if (currentExercise.type === 'translate_to_de') {
-        return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
-    }
-    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') {
-        return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
-    }
+    if (currentExercise.type === 'translate_to_de') return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
+    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
     return currentExercise.correctAnswer;
   };
 
+  // --- WENN LEKTION FERTIG: ZEIGE ERGEBNIS SCREEN ---
+  if (isLessonFinished) {
+      return (
+        <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}>
+            <Text style={styles.finishTitle}>Lektion beendet!</Text>
+            
+            <View style={styles.starsContainer}>
+                {[1, 2, 3].map((star) => (
+                    <Ionicons 
+                        key={star} 
+                        name={star <= earnedStars ? "star" : "star-outline"} 
+                        size={60} 
+                        color="#FFD700" 
+                    />
+                ))}
+            </View>
+
+            <Text style={styles.finishSubText}>
+                {earnedStars === 3 ? "Perfekt! Alles beim ersten Mal richtig." : 
+                 earnedStars === 2 ? "Super gemacht!" :
+                 earnedStars === 1 ? "Gut, aber übe noch etwas." : 
+                 "Versuche es nochmal für mehr Sterne."}
+            </Text>
+
+            <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
+                <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
+            </TouchableOpacity>
+        </SafeAreaView>
+      );
+  }
+
+  // --- NORMALE LEKTION ---
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-        
         <View style={styles.header}>
           <View style={styles.progressBarBackground}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
@@ -164,23 +193,23 @@ export default function LessonScreen() {
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.instruction}>{getInstructionText()}</Text>
+          <Text style={styles.instruction}>
+            {currentExercise.type === 'translate_to_pt' ? 'Übersetze ins Portugiesische' : 
+             currentExercise.type === 'translate_to_de' ? 'Übersetze ins Deutsche' : 
+             'Wähle die richtige Lösung'}
+          </Text>
           
           <View style={styles.questionContainer}>
-            <TouchableOpacity 
-              style={styles.speakerButton}
-              onPress={() => playAudio(currentExercise.id)}
-            >
+            <TouchableOpacity style={styles.speakerButton} onPress={() => playAudio(currentExercise.id)}>
                <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
             </TouchableOpacity>
-            
             <Text style={styles.question}>{currentExercise.question}</Text>
           </View>
 
           {(currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') && (
             <TextInput 
               style={styles.input} 
-              placeholder={getPlaceholderText()}
+              placeholder={currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...'}
               placeholderTextColor="#ccc" 
               value={userInput} 
               onChangeText={setUserInput} 
@@ -228,7 +257,6 @@ export default function LessonScreen() {
               </View>
             </View>
             <TouchableOpacity style={styles.continueButton} onPress={nextExercise}>
-              {/* Kleines visuelles Feedback im Button Text */}
               <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>
                 {isCorrect ? 'WEITER' : 'OKAY (WIRD WIEDERHOLT)'}
               </Text>
@@ -257,9 +285,9 @@ const styles = StyleSheet.create({
   optionText: { fontSize: 18, fontWeight: '600', color: '#777' },
   optionTextSelected: { color: '#1cb0f6' },
   footer: { padding: 20, borderTopWidth: 2, borderColor: '#f0f0f0' },
-  checkButton: { backgroundColor: '#58cc02', padding: 16, borderRadius: 16, alignItems: 'center' },
+  checkButton: { backgroundColor: '#58cc02', padding: 16, borderRadius: 16, alignItems: 'center', width: '100%' },
   disabledButton: { backgroundColor: '#e5e5e5' },
-  checkButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  checkButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', textAlign: 'center' },
   modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.2)' },
   feedbackContainer: { padding: 24, paddingBottom: 40, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   bgSuccess: { backgroundColor: '#d7ffb8' }, bgError: { backgroundColor: '#ffdfe0' },
@@ -269,4 +297,8 @@ const styles = StyleSheet.create({
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
+  // Neue Styles für den Finish Screen
+  finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20 },
+  finishSubText: { fontSize: 18, color: '#555', marginBottom: 40, textAlign: 'center', paddingHorizontal: 20 },
+  starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10 },
 });

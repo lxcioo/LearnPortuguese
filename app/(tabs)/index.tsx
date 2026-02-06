@@ -4,123 +4,106 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// --- ÄNDERUNG: Importiere JSON statt JS ---
 import content from '../../content.json';
 
-// Wir nehmen einfach den ersten Kurs aus der JSON Datei
 const courseData = content.courses[0];
 
 export default function PathScreen() {
   const router = useRouter();
-  const [completedLessons, setCompletedLessons] = useState([]);
+  
+  // Wir speichern jetzt scores: { "l1": 3, "l2": 1 }
+  const [scores, setScores] = useState({});
 
-// Wird jedes Mal ausgeführt, wenn der Screen sichtbar wird
-useFocusEffect(
-  useCallback(() => {
-    const loadProgress = async () => {
-      try {
-        const data = await AsyncStorage.getItem('completedLessons');
-        if (data) {
-          setCompletedLessons(JSON.parse(data));
+  useFocusEffect(
+    useCallback(() => {
+      const loadProgress = async () => {
+        try {
+          // Lade die Punkte
+          const savedScores = await AsyncStorage.getItem('lessonScores');
+          if (savedScores) {
+            setScores(JSON.parse(savedScores));
+          }
+        } catch (e) {
+          console.error(e);
         }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    loadProgress();
-  }, [])
-);
-
-  // Funktion zum Starten einer Lektion
-  const startLesson = (lessonId) => {
-    // Navigiere zur Datei 'lesson' und übergebe die ID
-    router.push({ pathname: "/lesson", params: { id: lessonId } });
-  };
+      };
+      loadProgress();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.flag}>🇵🇹</Text>
-        <Text style={styles.courseTitle}>{courseData.title}</Text>
-        {/* Temporärer Reset Button */}
-        <TouchableOpacity onPress={async () => {
-          await AsyncStorage.clear();
-          setCompletedLessons([]); // UI sofort leeren
-          alert("Fortschritt zurückgesetzt!");
-        }}>
-          <Ionicons name="trash-outline" size={24} color="red" style={{marginLeft: 20}}/>
-        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{courseData.title}</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Der Pfad */}
-        <View style={styles.pathContainer}>
+      <ScrollView contentContainerStyle={styles.pathContainer}>
+        {courseData.lessons.map((lesson, index) => {
           
-          {courseData.lessons.map((lesson, index) => {
-            // "Schlängeln" Logik: Wir schieben Buttons nach links oder rechts
-            // Index 0: Mitte, 1: Links, 2: Mitte, 3: Rechts, ...
-            let marginLeft = 0;
-            if (index % 4 === 1) marginLeft = -60; // Links
-            if (index % 4 === 3) marginLeft = 60;  // Rechts
+          // Eine Lektion gilt als "bestanden/angefangen", wenn sie einen Score > 0 hat
+          // oder wenn es die allererste Lektion ist (die ist immer offen)
+          // oder wenn die vorherige Lektion bestanden wurde (Score > 0).
+          
+          const lessonScore = scores[lesson.id] || 0;
+          
+          // Logik zum Freischalten:
+          // Lektion 1 ist immer frei.
+          // Lektion 2 ist frei, wenn Lektion 1 Score > 0 hat.
+          const isUnlocked = index === 0 || (scores[courseData.lessons[index - 1].id] > 0);
+          
+          // Wenn man 3 Sterne hat, ist sie "Gold" abgeschlossen
+          const isGold = lessonScore === 3;
 
-            return (
-              <View key={lesson.id} style={{ alignItems: 'center', marginLeft: marginLeft, marginBottom: 40 }}>
-                
-{/* Logik: Ist die Lektion fertig? */}
-                {(() => {
-                  const isCompleted = completedLessons.includes(lesson.id);
-                  const buttonColor = isCompleted ? '#ffc800' : (lesson.color || '#58cc02'); // Gold oder Originalfarbe
-
-                  return (
-                    <TouchableOpacity 
-                      style={[styles.circleButton, { backgroundColor: buttonColor }]} 
-                      onPress={() => startLesson(lesson.id)}
-                      activeOpacity={0.7}
-                    >
-                      {/* Wenn fertig: Haken, sonst Stern */}
-                      <Ionicons name={isCompleted ? "checkmark-outline" : "star"} size={32} color="white" />
-                    </TouchableOpacity>
-                  );
-                })()}
-
-                {/* Titel unter dem Button */}
-                <Text style={styles.lessonTitle}>{lesson.title}</Text>
-                
-              </View>
-            );
-          })}
-
-        </View>
+          return (
+            <View key={lesson.id} style={styles.lessonRow}>
+              <TouchableOpacity 
+                style={[
+                  styles.lessonButton, 
+                  { backgroundColor: isUnlocked ? lesson.color : '#e5e5e5' },
+                  isGold && styles.goldBorder // Goldener Rand bei 3 Sternen
+                ]}
+                onPress={() => {
+                   if (isUnlocked) router.push({ pathname: "/lesson", params: { id: lesson.id } });
+                }}
+                disabled={!isUnlocked}
+              >
+                <Ionicons 
+                    name={isGold ? "trophy" : "star"} 
+                    size={32} 
+                    color="#fff" 
+                />
+              </TouchableOpacity>
+              
+              <Text style={styles.lessonTitle}>{lesson.title}</Text>
+              
+              {/* Sterne Anzeige unter dem Titel */}
+              {isUnlocked && lessonScore > 0 && (
+                <View style={{flexDirection: 'row', marginTop: 4}}>
+                   {[1, 2, 3].map(s => (
+                       <Ionicons 
+                         key={s} 
+                         name="star" 
+                         size={14} 
+                         color={s <= lessonScore ? "#FFD700" : "#ddd"} 
+                       />
+                   ))}
+                </View>
+              )}
+            </View>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', paddingTop: Platform.OS === 'android' ? 40 : 0 },
-  header: { 
-    padding: 15, borderBottomWidth: 1, borderColor: '#f0f0f0', 
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center' 
-  },
-  flag: { fontSize: 30, marginRight: 10 },
-  courseTitle: { fontSize: 20, fontWeight: 'bold', color: '#afafaf', textTransform: 'uppercase' },
-  
-  scrollContent: { paddingVertical: 50 },
-  pathContainer: { alignItems: 'center' },
-  
-  circleButton: {
-    width: 80, height: 80, borderRadius: 40,
-    justifyContent: 'center', alignItems: 'center',
-    // 3D Effekt (Schatten unten)
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 0,
-    elevation: 8, // Für Android Schatten
-    borderBottomWidth: 6,
-    borderBottomColor: 'rgba(0,0,0,0.2)', // Dunklerer Rand unten
-    marginBottom: 10,
-  },
-  lessonTitle: { fontSize: 16, fontWeight: 'bold', color: '#4b4b4b' },
+  container: { flex: 1, backgroundColor: '#fff' },
+  header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, borderBottomWidth: 1, borderBottomColor: '#f0f0f0', alignItems: 'center' },
+  headerTitle: { fontSize: 20, fontWeight: 'bold', color: '#333' },
+  pathContainer: { paddingVertical: 40, alignItems: 'center' },
+  lessonRow: { marginBottom: 30, alignItems: 'center' },
+  lessonButton: { width: 80, height: 80, borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 4, marginBottom: 10 },
+  goldBorder: { borderWidth: 4, borderColor: '#FFD700' },
+  lessonTitle: { fontSize: 18, fontWeight: 'bold', color: '#444' },
 });
