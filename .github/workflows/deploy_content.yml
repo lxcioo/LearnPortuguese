@@ -19,9 +19,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Google TTS API
-        run: npm install google-tts-api
-
       - name: Generate Audio Files (Node Script)
         run: node generateAudio.js
 
