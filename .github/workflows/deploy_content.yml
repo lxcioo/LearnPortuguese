@@ -1,0 +1,36 @@
+name: Generate Audio & Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Google TTS API
+        run: npm install google-tts-api
+
+      - name: Generate Audio Files (Node Script)
+        run: node generateAudio.js
+
+      - name: Copy JSON to public folder
+        # Wir kopieren die content.json auch, damit die App sie laden kann
+        run: cp content.json public/content.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
