@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "courses": [
+    {
+      "id": "course_1",
+      "title": "Portugiesisch A1",
+      "lessons": [
+        {
+          "id": "l1",
+          "title": "Begrüßung",
+          "color": "#58cc02",
+          "exercises": [
+            {
+              "id": "ex1",
+              "type": "translate_to_pt",
+              "question": "Hallo, wie geht es dir?",
+              "correctAnswer": "Olá, como estás?",
+              "alternativeAnswers": ["Olá como estás"],
+              "audioText": "Olá, como estás?"
+            },
+            {
+              "id": "ex2",
+              "type": "multiple_choice",
+              "question": "Was bedeutet Obrigado?",
+              "options": ["Hallo", "Danke", "Tschüss"],
+              "correctAnswer": "Danke",
+              "correctAnswerIndex": 1,
+              "audioText": "Obrigado"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
