@@ -16,16 +16,44 @@
               "question": "Hallo, wie geht es dir?",
               "correctAnswer": "Olá, como estás?",
               "alternativeAnswers": ["Olá como estás"],
-              "audioText": "Olá, como estás?"
+              "audioText": "Olá, como estás?",
+              "audioLanguage": "pt-PT"
             },
             {
               "id": "ex2",
               "type": "multiple_choice",
               "question": "Was bedeutet Obrigado?",
-              "options": ["Hallo", "Danke", "Tschüss"],
+              "options": ["Hallo", "Danke", "Tschüss", "Bitte"],
               "correctAnswer": "Danke",
               "correctAnswerIndex": 1,
-              "audioText": "Obrigado"
+              "audioText": "Obrigado",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "de-DE"
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "title": "Essen & Trinken",
+          "color": "#ce82ff",
+          "exercises": [
+            {
+              "id": "ex3",
+              "type": "translate_to_pt",
+              "question": "Ich trinke Wasser.",
+              "correctAnswer": "Eu bebo água.",
+              "alternativeAnswers": ["Bebo água"],
+              "audioText": "Eu bebo água.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "ex4",
+              "type": "translate_to_de",
+              "question": "O pão é bom.",
+              "correctAnswer": "Das Brot ist gut.",
+              "alternativeAnswers": ["Brot ist gut"],
+              "audioText": "O pão é bom.",
+              "audioLanguage": "pt-PT"
             }
           ]
         }
