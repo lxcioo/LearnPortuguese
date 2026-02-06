@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "courses": [
     {
       "id": "course_1",
@@ -7,28 +7,151 @@
       "lessons": [
         {
           "id": "l1",
-          "title": "Begrüßung",
+          "title": "Begrüßung & Basics",
           "color": "#58cc02",
           "exercises": [
             {
-              "id": "ex1",
+              "id": "l1_ex1",
               "type": "translate_to_pt",
-              "question": "Hallo, wie geht es dir?",
-              "correctAnswer": "Olá, como estás?",
-              "alternativeAnswers": ["Olá como estás"],
-              "audioText": "Olá, como estás?",
+              "question": "Hallo",
+              "correctAnswer": "Olá",
+              "alternativeAnswers": ["Ola"],
+              "audioText": "Olá",
               "audioLanguage": "pt-PT"
             },
             {
-              "id": "ex2",
+              "id": "l1_ex2",
+              "type": "translate_to_pt",
+              "question": "Wie geht es dir?",
+              "correctAnswer": "Como estás?",
+              "alternativeAnswers": ["Como estas"],
+              "audioText": "Como estás?",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex3",
+              "type": "translate_to_de",
+              "question": "Estou bem.",
+              "correctAnswer": "Mir geht es gut.",
+              "alternativeAnswers": ["Ich bin gut", "Mir gehts gut"],
+              "audioText": "Estou bem.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex4",
               "type": "multiple_choice",
-              "question": "Was bedeutet Obrigado?",
-              "options": ["Hallo", "Danke", "Tschüss", "Bitte"],
+              "question": "Was bedeutet 'Obrigado'?",
+              "options": ["Hallo", "Danke", "Bitte", "Tschüss"],
               "correctAnswer": "Danke",
               "correctAnswerIndex": 1,
               "audioText": "Obrigado",
               "audioLanguage": "pt-PT",
               "optionsLanguage": "de-DE"
+            },
+            {
+              "id": "l1_ex5",
+              "type": "translate_to_pt",
+              "question": "Guten Morgen",
+              "correctAnswer": "Bom dia",
+              "alternativeAnswers": [],
+              "audioText": "Bom dia",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex6",
+              "type": "translate_to_pt",
+              "question": "Guten Tag (Nachmittag)",
+              "correctAnswer": "Boa tarde",
+              "alternativeAnswers": [],
+              "audioText": "Boa tarde",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex7",
+              "type": "translate_to_pt",
+              "question": "Gute Nacht",
+              "correctAnswer": "Boa noite",
+              "alternativeAnswers": [],
+              "audioText": "Boa noite",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex8",
+              "type": "multiple_choice",
+              "question": "Wie sagt man 'Tschüss'?",
+              "options": ["Olá", "Adeus", "Sim", "Não"],
+              "correctAnswer": "Adeus",
+              "correctAnswerIndex": 1,
+              "audioText": "Adeus",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex9",
+              "type": "translate_to_de",
+              "question": "Sim",
+              "correctAnswer": "Ja",
+              "alternativeAnswers": [],
+              "audioText": "Sim",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex10",
+              "type": "translate_to_de",
+              "question": "Não",
+              "correctAnswer": "Nein",
+              "alternativeAnswers": [],
+              "audioText": "Não",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex11",
+              "type": "multiple_choice",
+              "question": "Was bedeutet 'De nada'?",
+              "options": ["Gern geschehen", "Entschuldigung", "Danke", "Hallo"],
+              "correctAnswer": "Gern geschehen",
+              "correctAnswerIndex": 0,
+              "audioText": "De nada",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "de-DE"
+            },
+            {
+              "id": "l1_ex12",
+              "type": "translate_to_pt",
+              "question": "Entschuldigung",
+              "correctAnswer": "Desculpa",
+              "alternativeAnswers": ["Desculpe"],
+              "audioText": "Desculpa",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex13",
+              "type": "translate_to_pt",
+              "question": "Bis bald",
+              "correctAnswer": "Até logo",
+              "alternativeAnswers": [],
+              "audioText": "Até logo",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex14",
+              "type": "translate_to_de",
+              "question": "Prazer em conhecer-te.",
+              "correctAnswer": "Schön dich kennenzulernen.",
+              "alternativeAnswers": ["Freut mich", "Schön dich zu treffen"],
+              "audioText": "Prazer em conhecer-te.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l1_ex15",
+              "type": "multiple_choice",
+              "question": "Wähle 'Bitte' (um etwas zu bitten)",
+              "options": ["Obrigado", "Por favor", "Adeus", "Desculpa"],
+              "correctAnswer": "Por favor",
+              "correctAnswerIndex": 1,
+              "audioText": "Por favor",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "pt-PT"
             }
           ]
         },
@@ -38,7 +161,7 @@
           "color": "#ce82ff",
           "exercises": [
             {
-              "id": "ex3",
+              "id": "l2_ex1",
               "type": "translate_to_pt",
               "question": "Ich trinke Wasser.",
               "correctAnswer": "Eu bebo água.",
@@ -47,13 +170,140 @@
               "audioLanguage": "pt-PT"
             },
             {
-              "id": "ex4",
+              "id": "l2_ex2",
+              "type": "multiple_choice",
+              "question": "Was ist 'O pão'?",
+              "options": ["Der Käse", "Der Wein", "Das Brot", "Der Apfel"],
+              "correctAnswer": "Das Brot",
+              "correctAnswerIndex": 2,
+              "audioText": "O pão",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "de-DE"
+            },
+            {
+              "id": "l2_ex3",
+              "type": "translate_to_pt",
+              "question": "Die Milch",
+              "correctAnswer": "O leite",
+              "alternativeAnswers": ["Leite"],
+              "audioText": "O leite",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex4",
+              "type": "translate_to_de",
+              "question": "Eu como pão.",
+              "correctAnswer": "Ich esse Brot.",
+              "alternativeAnswers": [],
+              "audioText": "Eu como pão.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex5",
+              "type": "multiple_choice",
+              "question": "Wähle 'Kaffee'",
+              "options": ["Chá", "Café", "Vinho", "Água"],
+              "correctAnswer": "Café",
+              "correctAnswerIndex": 1,
+              "audioText": "Café",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex6",
+              "type": "translate_to_pt",
+              "question": "Tee",
+              "correctAnswer": "Chá",
+              "alternativeAnswers": ["O chá"],
+              "audioText": "Chá",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex7",
+              "type": "translate_to_de",
+              "question": "Uma cerveja, por favor.",
+              "correctAnswer": "Ein Bier, bitte.",
+              "alternativeAnswers": ["Ein Bier bitte"],
+              "audioText": "Uma cerveja, por favor.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex8",
+              "type": "multiple_choice",
+              "question": "Was ist 'O vinho'?",
+              "options": ["Das Wasser", "Der Wein", "Die Milch", "Der Saft"],
+              "correctAnswer": "Der Wein",
+              "correctAnswerIndex": 1,
+              "audioText": "O vinho",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "de-DE"
+            },
+            {
+              "id": "l2_ex9",
+              "type": "translate_to_pt",
+              "question": "Der Fisch",
+              "correctAnswer": "O peixe",
+              "alternativeAnswers": ["Peixe"],
+              "audioText": "O peixe",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex10",
+              "type": "translate_to_pt",
+              "question": "Das Fleisch",
+              "correctAnswer": "A carne",
+              "alternativeAnswers": ["Carne"],
+              "audioText": "A carne",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex11",
+              "type": "translate_to_de",
+              "question": "Eu bebo leite.",
+              "correctAnswer": "Ich trinke Milch.",
+              "alternativeAnswers": [],
+              "audioText": "Eu bebo leite.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex12",
+              "type": "multiple_choice",
+              "question": "Wähle 'Käse'",
+              "options": ["Queijo", "Fiambre", "Manteiga", "Arroz"],
+              "correctAnswer": "Queijo",
+              "correctAnswerIndex": 0,
+              "audioText": "Queijo",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex13",
+              "type": "translate_to_pt",
+              "question": "Die Rechnung, bitte.",
+              "correctAnswer": "A conta, por favor.",
+              "alternativeAnswers": ["A conta por favor"],
+              "audioText": "A conta, por favor.",
+              "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex14",
               "type": "translate_to_de",
               "question": "O pão é bom.",
               "correctAnswer": "Das Brot ist gut.",
               "alternativeAnswers": ["Brot ist gut"],
               "audioText": "O pão é bom.",
               "audioLanguage": "pt-PT"
+            },
+            {
+              "id": "l2_ex15",
+              "type": "multiple_choice",
+              "question": "Was trinks du?",
+              "options": ["Eu bebo água", "Eu como pão"],
+              "correctAnswer": "Eu bebo água",
+              "correctAnswerIndex": 0,
+              "audioText": "Eu bebo água",
+              "audioLanguage": "pt-PT",
+              "optionsLanguage": "pt-PT"
             }
           ]
         }
