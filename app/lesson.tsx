@@ -14,7 +14,6 @@ import {
     View
 } from 'react-native';
 
-// JSON Daten laden
 import content from '../content.json';
 
 const courseData = content.courses[0];
@@ -25,8 +24,13 @@ export default function LessonScreen() {
   const params = useLocalSearchParams();
   const lessonId = params.id || 'l1';
   
-  const currentLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
+  // Wir holen die Original-Lektion
+  const originalLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
 
+  // --- NEU: Die Warteschlange (Queue) als State ---
+  // Wir starten mit den normalen Übungen, aber dieses Array kann wachsen!
+  const [lessonQueue, setLessonQueue] = useState([...originalLesson.exercises]);
+  
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
@@ -34,8 +38,11 @@ export default function LessonScreen() {
   const [isCorrect, setIsCorrect] = useState(false);
   const [sound, setSound] = useState();
 
-  const currentExercise = currentLesson.exercises[currentExerciseIndex];
-  const progressPercent = ((currentExerciseIndex) / currentLesson.exercises.length) * 100;
+  // Wir greifen jetzt auf die Queue zu, nicht mehr auf das Original
+  const currentExercise = lessonQueue[currentExerciseIndex];
+  
+  // Fortschrittsbalken basiert auf der aktuellen Länge der Warteschlange
+  const progressPercent = ((currentExerciseIndex) / lessonQueue.length) * 100;
 
   useEffect(() => {
     return sound ? () => { sound.unloadAsync(); } : undefined;
@@ -71,10 +78,35 @@ export default function LessonScreen() {
 
     setIsCorrect(correct);
     
-    // Bei Erfolg: Audio der Übung abspielen (Das ist lt. JSON immer das Portugiesische)
     if (correct) {
       playAudio(currentExercise.id);
+    } else {
+      // --- NEU: WIEDERHOLUNGS-LOGIK ---
+      // Wenn falsch: Füge die Übung später nochmal hinzu
+      
+      const newQueue = [...lessonQueue];
+      const currentItem = newQueue[currentExerciseIndex];
+
+      // Wie viele Übungen sind noch übrig?
+      const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
+
+      if (remainingExercises > 0) {
+        // Zufällige Position in der Zukunft (aber nicht direkt als nächstes, wenn möglich)
+        // Mindestens 1 Schritt später, maximal am Ende
+        const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
+        const insertIndex = currentExerciseIndex + 1 + randomOffset;
+        
+        // Einfügen
+        newQueue.splice(insertIndex, 0, currentItem);
+      } else {
+        // Wenn es die allerletzte Übung war, einfach hinten anhängen
+        newQueue.push(currentItem);
+      }
+      
+      console.log(`Falsch! Übung wieder eingereiht. Neue Länge: ${newQueue.length}`);
+      setLessonQueue(newQueue);
     }
+
     setShowFeedback(true);
   };
 
@@ -83,7 +115,8 @@ export default function LessonScreen() {
     setUserInput('');
     setSelectedOption(null);
 
-    if (currentExerciseIndex < currentLesson.exercises.length - 1) {
+    // Prüfen ob wir am Ende der (möglicherweise gewachsenen) Queue sind
+    if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
       try {
@@ -110,23 +143,13 @@ export default function LessonScreen() {
     return currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   };
 
-  // --- NEUE FUNKTION: Baut den Lösungstext zusammen ---
   const getSolutionDisplay = () => {
-    // Fall 1: Wir sollten ins Deutsche übersetzen (z.B. O pão -> Das Brot)
     if (currentExercise.type === 'translate_to_de') {
-        // Anzeige: "Das Brot = O pão"
-        // (Lösung = Frage)
         return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
     }
-    
-    // Fall 2: Multiple Choice mit deutschen Antworten (z.B. Was ist Obrigado? -> Danke)
     if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') {
-        // Anzeige: "Danke = Obrigado"
-        // (Lösung = AudioText aus der JSON, da dort das portugiesische Wort steht)
         return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
     }
-
-    // Standard: Einfach nur die Lösung anzeigen
     return currentExercise.correctAnswer;
   };
 
@@ -198,21 +221,17 @@ export default function LessonScreen() {
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.feedbackSubtitle}>Lösung:</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                 
-                 {/* Lautsprecher im Feedback: Spielt immer das Audio der Übung (das PT ist) */}
                  <TouchableOpacity onPress={() => playAudio(currentExercise.id)}>
                     <Ionicons name="volume-medium" size={24} color="#555" style={{marginRight: 10}}/>
                  </TouchableOpacity>
-                 
-                 {/* Hier rufen wir unsere neue Anzeige-Funktion auf */}
-                 <Text style={styles.feedbackSolution}>
-                    {getSolutionDisplay()}
-                 </Text>
-              
+                 <Text style={styles.feedbackSolution}>{getSolutionDisplay()}</Text>
               </View>
             </View>
             <TouchableOpacity style={styles.continueButton} onPress={nextExercise}>
-              <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
+              {/* Kleines visuelles Feedback im Button Text */}
+              <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>
+                {isCorrect ? 'WEITER' : 'OKAY (WIRD WIEDERHOLT)'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -246,7 +265,7 @@ const styles = StyleSheet.create({
   bgSuccess: { backgroundColor: '#d7ffb8' }, bgError: { backgroundColor: '#ffdfe0' },
   feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: '#3c3c3c' },
   feedbackSubtitle: { fontSize: 16, color: '#555', fontWeight: 'bold', marginBottom: 5 },
-  feedbackSolution: { fontSize: 19, color: '#3c3c3c', fontWeight: '600', flexShrink: 1 }, // flexShrink verhindert Abschneiden bei langem Text
+  feedbackSolution: { fontSize: 19, color: '#3c3c3c', fontWeight: '600', flexShrink: 1 },
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
