@@ -1,67 +1,79 @@
-const googleTTS = require('google-tts-api');
+// WICHTIG: Hier holen wir die Funktion direkt aus dem Paket (Destructuring)
+const { getAudioUrl } = require('google-tts-api'); 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-// 1. Lade die JSON Datei
+// Deine Inhalts-Datei laden
 const content = require('./content.json');
 
-// Ordner für GitHub Pages (public/audio)
+// Das Zielverzeichnis für den Upload
 const outputDir = path.join(__dirname, 'public', 'audio');
 
+// Verzeichnis erstellen
 if (!fs.existsSync(outputDir)){
     fs.mkdirSync(outputDir, { recursive: true });
 }
 
 async function downloadAudio(filename, text, lang) {
-  // Nur herunterladen, wenn Datei noch nicht existiert (spart Zeit)
   const filePath = path.join(outputDir, `${filename}.mp3`);
+  
+  // Wenn Datei schon da ist, überspringen
   if (fs.existsSync(filePath)) {
       console.log(`Skipping (exists): ${filename}`);
       return;
   }
 
-  const url = googleTTS.getAudioUrl(text, {
-    lang: lang,
-    slow: false,
-    host: 'https://translate.google.com',
-  });
+  try {
+    // FEHLERBEHEBUNG: Wir rufen jetzt direkt getAudioUrl() auf, ohne "googleTTS." davor
+    const url = getAudioUrl(text, {
+      lang: lang,
+      slow: false,
+      host: 'https://translate.google.com',
+    });
 
-  const file = fs.createWriteStream(filePath);
-  return new Promise((resolve, reject) => {
-    https.get(url, function(response) {
-      response.pipe(file);
-      file.on('finish', function() {
-        file.close(() => {
-          console.log(`✅ Generated: ${filename}.mp3`);
-          resolve();
+    const file = fs.createWriteStream(filePath);
+    return new Promise((resolve, reject) => {
+      https.get(url, function(response) {
+        if (response.statusCode !== 200) {
+            reject(new Error(`Google TTS Request Failed: ${response.statusCode}`));
+            return;
+        }
+        response.pipe(file);
+        file.on('finish', function() {
+          file.close(() => {
+            console.log(`✅ Generated: ${filename}.mp3`);
+            resolve();
+          });
         });
-      });
-    }).on('error', reject);
-  });
+      }).on('error', reject);
+    });
+  } catch (e) {
+      console.error(`Fehler bei ${filename}:`, e.message);
+  }
 }
 
 async function run() {
-  console.log("--- Starte Audio-Pipeline ---");
+  console.log("--- Starte Audio-Pipeline für LearnPortuguese ---");
 
-  // Durchlaufe alle Lektionen und Übungen aus content.json
   for (const course of content.courses) {
     for (const lesson of course.lessons) {
       for (const exercise of lesson.exercises) {
         
-        // Audio für die Lösung (Portugiesisch)
+        // 1. Audio für die Lösung/Frage
         if (exercise.audioText) {
-          // Wir nutzen die ID als Dateiname
+          // Wir nutzen pt-PT (Portugal)
           await downloadAudio(exercise.id, exercise.audioText, 'pt-PT');
         }
         
-        // Audio für Optionen (bei Multiple Choice)
+        // 2. Audio für Multiple Choice Optionen
         if (exercise.options) {
-             exercise.options.forEach(async (opt, index) => {
-                 // Einfacher Trick: Dateiname = exID_optIndex
-                 // Sprache: Hängt davon ab. Wir nehmen mal pt-PT an, außer wir erweitern das JSON.
-                 await downloadAudio(`${exercise.id}_opt_${index}`, opt, 'pt-PT');
-             });
+             // WICHTIG: forEach funktioniert nicht gut mit await. Wir nutzen eine normale Schleife.
+             for (let index = 0; index < exercise.options.length; index++) {
+                 const opt = exercise.options[index];
+                 const lang = exercise.optionsLanguage || 'pt-PT';
+                 await downloadAudio(`${exercise.id}_opt_${index}`, opt, lang);
+             }
         }
       }
     }
