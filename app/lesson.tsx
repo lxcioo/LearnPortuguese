@@ -14,23 +14,17 @@ import {
     View
 } from 'react-native';
 
-// --- NEU: Wir laden direkt die JSON Datei ---
-// Falls hier rot unterstrichen wird, ignoriere es, React Native kann das.
+// JSON Daten laden
 import content from '../content.json';
 
-// Wir nehmen den ersten Kurs aus der Liste
 const courseData = content.courses[0];
-
-// Deine Server-Adresse (GitHub Pages)
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  
   const lessonId = params.id || 'l1';
   
-  // Lektion suchen
   const currentLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -43,38 +37,24 @@ export default function LessonScreen() {
   const currentExercise = currentLesson.exercises[currentExerciseIndex];
   const progressPercent = ((currentExerciseIndex) / currentLesson.exercises.length) * 100;
 
-  // Sound aufräumen beim Verlassen
   useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync();
-        }
-      : undefined;
+    return sound ? () => { sound.unloadAsync(); } : undefined;
   }, [sound]);
 
   const normalize = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
   };
 
-  // --- AUDIO FUNKTION ---
   const playAudio = async (filename) => {
     try {
-        // URL aufbauen: Server + Ordner + Dateiname + .mp3
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
-        console.log("Spiele:", audioUrl);
-
-        if (sound) {
-            await sound.unloadAsync();
-        }
-
+        if (sound) await sound.unloadAsync();
         const { sound: newSound } = await Audio.Sound.createAsync(
             { uri: audioUrl },
             { shouldPlay: true }
         );
         setSound(newSound);
-    } catch (e) {
-        console.error("Audio Fehler:", e);
-    }
+    } catch (e) { console.error("Audio Fehler:", e); }
   };
 
   const checkAnswer = () => {
@@ -91,11 +71,10 @@ export default function LessonScreen() {
 
     setIsCorrect(correct);
     
+    // Bei Erfolg: Audio der Übung abspielen (Das ist lt. JSON immer das Portugiesische)
     if (correct) {
-      // Bei richtiger Antwort spielen wir das Audio der Übung (ID = Dateiname)
       playAudio(currentExercise.id);
     }
-
     setShowFeedback(true);
   };
 
@@ -107,7 +86,6 @@ export default function LessonScreen() {
     if (currentExerciseIndex < currentLesson.exercises.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
-      // Speichern
       try {
         const existingData = await AsyncStorage.getItem('completedLessons');
         let completed = existingData ? JSON.parse(existingData) : [];
@@ -132,6 +110,26 @@ export default function LessonScreen() {
     return currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   };
 
+  // --- NEUE FUNKTION: Baut den Lösungstext zusammen ---
+  const getSolutionDisplay = () => {
+    // Fall 1: Wir sollten ins Deutsche übersetzen (z.B. O pão -> Das Brot)
+    if (currentExercise.type === 'translate_to_de') {
+        // Anzeige: "Das Brot = O pão"
+        // (Lösung = Frage)
+        return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
+    }
+    
+    // Fall 2: Multiple Choice mit deutschen Antworten (z.B. Was ist Obrigado? -> Danke)
+    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') {
+        // Anzeige: "Danke = Obrigado"
+        // (Lösung = AudioText aus der JSON, da dort das portugiesische Wort steht)
+        return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
+    }
+
+    // Standard: Einfach nur die Lösung anzeigen
+    return currentExercise.correctAnswer;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
@@ -146,7 +144,6 @@ export default function LessonScreen() {
           <Text style={styles.instruction}>{getInstructionText()}</Text>
           
           <View style={styles.questionContainer}>
-            {/* Haupt-Audio Button */}
             <TouchableOpacity 
               style={styles.speakerButton}
               onPress={() => playAudio(currentExercise.id)}
@@ -177,7 +174,6 @@ export default function LessonScreen() {
                   style={[styles.optionButton, selectedOption === index && styles.optionSelected]} 
                   onPress={() => {
                     setSelectedOption(index);
-                    // Option Audio abspielen (Dateiname: ID_opt_INDEX)
                     playAudio(`${currentExercise.id}_opt_${index}`);
                   }}
                 >
@@ -202,10 +198,17 @@ export default function LessonScreen() {
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.feedbackSubtitle}>Lösung:</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                 
+                 {/* Lautsprecher im Feedback: Spielt immer das Audio der Übung (das PT ist) */}
                  <TouchableOpacity onPress={() => playAudio(currentExercise.id)}>
                     <Ionicons name="volume-medium" size={24} color="#555" style={{marginRight: 10}}/>
                  </TouchableOpacity>
-                 <Text style={styles.feedbackSolution}>{currentExercise.correctAnswer}</Text>
+                 
+                 {/* Hier rufen wir unsere neue Anzeige-Funktion auf */}
+                 <Text style={styles.feedbackSolution}>
+                    {getSolutionDisplay()}
+                 </Text>
+              
               </View>
             </View>
             <TouchableOpacity style={styles.continueButton} onPress={nextExercise}>
@@ -243,7 +246,7 @@ const styles = StyleSheet.create({
   bgSuccess: { backgroundColor: '#d7ffb8' }, bgError: { backgroundColor: '#ffdfe0' },
   feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: '#3c3c3c' },
   feedbackSubtitle: { fontSize: 16, color: '#555', fontWeight: 'bold', marginBottom: 5 },
-  feedbackSolution: { fontSize: 19, color: '#3c3c3c', fontWeight: '600' },
+  feedbackSolution: { fontSize: 19, color: '#3c3c3c', fontWeight: '600', flexShrink: 1 }, // flexShrink verhindert Abschneiden bei langem Text
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
