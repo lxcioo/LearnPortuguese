@@ -4,6 +4,7 @@ import { Audio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
+    ActivityIndicator,
     KeyboardAvoidingView,
     Modal,
     Platform,
@@ -22,13 +23,13 @@ const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const lessonId = params.id || 'l1';
-  
-  const originalLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
-  const totalOriginalQuestions = originalLesson.exercises.length;
+  const lessonId = params.id; // Kann 'l1', 'l2' ODER 'practice' sein
 
-  // State
-  const [lessonQueue, setLessonQueue] = useState([...originalLesson.exercises]);
+  // --- STATE ---
+  const [loading, setLoading] = useState(true);
+  const [lessonQueue, setLessonQueue] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
@@ -36,21 +37,50 @@ export default function LessonScreen() {
   const [isCorrect, setIsCorrect] = useState(false);
   const [sound, setSound] = useState();
   
-  // NEU: Fehlerzähler und "Fertig"-Status
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
 
+  // --- INITIALISIERUNG ---
+  useEffect(() => {
+    const initLesson = async () => {
+      let exercises = [];
+
+      if (lessonId === 'practice') {
+        // Fall A: TRAINING (Laden aus Speicher)
+        const savedSession = await AsyncStorage.getItem('currentPracticeSession');
+        if (savedSession) {
+          exercises = JSON.parse(savedSession);
+        }
+      } else {
+        // Fall B: NORMALE LEKTION (Laden aus JSON)
+        const lesson = courseData.lessons.find(l => l.id === lessonId);
+        if (lesson) {
+          exercises = [...lesson.exercises];
+        }
+      }
+
+      setLessonQueue(exercises);
+      setTotalQuestions(exercises.length);
+      setLoading(false);
+    };
+
+    initLesson();
+  }, [lessonId]);
+
+
   const currentExercise = lessonQueue[currentExerciseIndex];
-  
-  // Der Fortschrittsbalken bezieht sich immer auf die noch verbleibenden Aufgaben
-  const progressPercent = ((currentExerciseIndex) / lessonQueue.length) * 100;
+  // Vermeiden von Division durch Null, falls Queue leer
+  const progressPercent = lessonQueue.length > 0 
+      ? (currentExerciseIndex / lessonQueue.length) * 100 
+      : 0;
 
   useEffect(() => {
     return sound ? () => { sound.unloadAsync(); } : undefined;
   }, [sound]);
 
   const normalize = (str) => {
+    if (!str) return "";
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
   };
 
@@ -83,13 +113,12 @@ export default function LessonScreen() {
     if (correct) {
       playAudio(currentExercise.id);
     } else {
-      // FEHLER LOGIK
-      setMistakes(m => m + 1); // Fehler hochzählen
-
-      // Wiederholungs-Logik (Queue erweitern)
+      setMistakes(m => m + 1);
+      // Wiederholungs-Logik
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
+      
       if (remainingExercises > 0) {
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
         newQueue.splice(currentExerciseIndex + 1 + randomOffset, 0, currentItem);
@@ -102,28 +131,27 @@ export default function LessonScreen() {
   };
 
   const finishLesson = async () => {
-    // Sterne berechnen
-    // 0 Fehler = 100%
-    // Prozentanteil korrekter ERSTVERSUCHE berechnen
-    const correctFirstTries = totalOriginalQuestions - mistakes;
-    // (Kann negativ werden wenn man öfter falsch liegt als es Fragen gibt, daher max(0,...))
-    const scorePercentage = Math.max(0, (correctFirstTries / totalOriginalQuestions) * 100);
+    // Wenn wir im PRACTICE Modus sind, speichern wir KEINE Sterne
+    if (lessonId === 'practice') {
+        setIsLessonFinished(true);
+        return;
+    }
+
+    // Normaler Modus: Sterne berechnen
+    const correctFirstTries = Math.max(0, totalQuestions - mistakes);
+    const scorePercentage = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
 
     let stars = 0;
     if (scorePercentage === 100) stars = 3;
     else if (scorePercentage >= 75) stars = 2;
     else if (scorePercentage >= 50) stars = 1;
-    else stars = 0;
 
     setEarnedStars(stars);
     setIsLessonFinished(true);
 
-    // Speichern (Wir speichern jetzt ein Objekt: { "l1": 3, "l2": 1 })
     try {
       const existingData = await AsyncStorage.getItem('lessonScores');
       let scores = existingData ? JSON.parse(existingData) : {};
-      
-      // Wir überschreiben nur, wenn das neue Ergebnis besser ist (oder noch keins existiert)
       const oldScore = scores[lessonId] || 0;
       if (stars >= oldScore) {
           scores[lessonId] = stars;
@@ -140,7 +168,6 @@ export default function LessonScreen() {
     if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
-      // Lektion zu Ende -> Ergebnis berechnen
       finishLesson();
     }
   };
@@ -151,29 +178,53 @@ export default function LessonScreen() {
     return currentExercise.correctAnswer;
   };
 
-  // --- WENN LEKTION FERTIG: ZEIGE ERGEBNIS SCREEN ---
+  if (loading) {
+    return (
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+            <ActivityIndicator size="large" color="#58cc02" />
+        </View>
+    );
+  }
+
+  // --- END SCREEN (Unterscheidung zwischen Training und Lektion) ---
   if (isLessonFinished) {
+      const isPractice = lessonId === 'practice';
+      
       return (
         <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}>
-            <Text style={styles.finishTitle}>Lektion beendet!</Text>
-            
-            <View style={styles.starsContainer}>
-                {[1, 2, 3].map((star) => (
-                    <Ionicons 
-                        key={star} 
-                        name={star <= earnedStars ? "star" : "star-outline"} 
-                        size={60} 
-                        color="#FFD700" 
-                    />
-                ))}
-            </View>
-
-            <Text style={styles.finishSubText}>
-                {earnedStars === 3 ? "Perfekt! Alles beim ersten Mal richtig." : 
-                 earnedStars === 2 ? "Super gemacht!" :
-                 earnedStars === 1 ? "Gut, aber übe noch etwas." : 
-                 "Versuche es nochmal für mehr Sterne."}
+            <Text style={styles.finishTitle}>
+                {isPractice ? "Training beendet!" : "Lektion beendet!"}
             </Text>
+            
+            {!isPractice ? (
+                // NORMALE LEKTION: STERNE ZEIGEN
+                <>
+                    <View style={styles.starsContainer}>
+                        {[1, 2, 3].map((star) => (
+                            <Ionicons 
+                                key={star} 
+                                name={star <= earnedStars ? "star" : "star-outline"} 
+                                size={60} 
+                                color="#FFD700" 
+                            />
+                        ))}
+                    </View>
+                    <Text style={styles.finishSubText}>
+                        {earnedStars === 3 ? "Perfekt! Alles beim ersten Mal richtig." : 
+                        earnedStars === 2 ? "Super gemacht!" :
+                        earnedStars === 1 ? "Gut, aber übe noch etwas." : 
+                        "Versuche es nochmal für mehr Sterne."}
+                    </Text>
+                </>
+            ) : (
+                // TRAINING: EINFACHES FEEDBACK
+                <View style={{alignItems: 'center', marginBottom: 40}}>
+                    <Ionicons name="muscle" size={80} color="#58cc02" style={{marginBottom: 20}} />
+                    <Text style={styles.finishSubText}>
+                        Du hast {totalQuestions} Aufgaben geübt.
+                    </Text>
+                </View>
+            )}
 
             <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
                 <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
@@ -182,7 +233,7 @@ export default function LessonScreen() {
       );
   }
 
-  // --- NORMALE LEKTION ---
+  // --- NORMALE VIEW (Code bleibt gleich wie vorher) ---
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
@@ -297,7 +348,6 @@ const styles = StyleSheet.create({
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
-  // Neue Styles für den Finish Screen
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20 },
   finishSubText: { fontSize: 18, color: '#555', marginBottom: 40, textAlign: 'center', paddingHorizontal: 20 },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10 },
