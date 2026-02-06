@@ -1,9 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // <--- AsyncStorage dazu
-import { useFocusEffect, useRouter } from 'expo-router'; // <--- useFocusEffect dazu
-import React, { useCallback, useState } from 'react'; // <--- useCallback dazu
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useState } from 'react';
 import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { courseData } from '../../data';
+
+// --- ÄNDERUNG: Importiere JSON statt JS ---
+import content from '../../content.json';
+
+// Wir nehmen einfach den ersten Kurs aus der JSON Datei
+const courseData = content.courses[0];
 
 export default function PathScreen() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Audio } from 'expo-av'; // WICHTIG: Das hier importieren für Sound
+import { Audio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -13,9 +13,15 @@ import {
     TextInput, TouchableOpacity,
     View
 } from 'react-native';
-import { courseData } from '../data'; // (Oder '../content.json' wenn du das auch umgestellt hast)
 
-// WICHTIG: Hier muss die .io Adresse stehen!
+// --- NEU: Wir laden direkt die JSON Datei ---
+// Falls hier rot unterstrichen wird, ignoriere es, React Native kann das.
+import content from '../content.json';
+
+// Wir nehmen den ersten Kurs aus der Liste
+const courseData = content.courses[0];
+
+// Deine Server-Adresse (GitHub Pages)
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
 export default function LessonScreen() {
@@ -23,8 +29,8 @@ export default function LessonScreen() {
   const params = useLocalSearchParams();
   
   const lessonId = params.id || 'l1';
-  // Hinweis: Wenn du content.json nutzt, müsstest du hier eigentlich die Daten daraus laden.
-  // Für jetzt nutzen wir noch courseData aus data.js als Struktur, aber Audios vom Server.
+  
+  // Lektion suchen
   const currentLesson = courseData.lessons.find(l => l.id === lessonId) || courseData.lessons[0];
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -32,18 +38,15 @@ export default function LessonScreen() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
-  // Um zu verhindern, dass Sounds sich überlagern
   const [sound, setSound] = useState();
 
   const currentExercise = currentLesson.exercises[currentExerciseIndex];
   const progressPercent = ((currentExerciseIndex) / currentLesson.exercises.length) * 100;
 
-  // Sound aufräumen wenn man den Screen verlässt
+  // Sound aufräumen beim Verlassen
   useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
           sound.unloadAsync();
         }
       : undefined;
@@ -53,42 +56,31 @@ export default function LessonScreen() {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
   };
 
-  // --- AUDIO VOM SERVER STREAMEN ---
+  // --- AUDIO FUNKTION ---
   const playAudio = async (filename) => {
     try {
-        // 1. URL zusammenbauen
-        // Beispiel: https://lxcioo.github.io/LearnPortuguese/audio/ex1.mp3
+        // URL aufbauen: Server + Ordner + Dateiname + .mp3
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
-        console.log("Versuche abzuspielen:", audioUrl);
+        console.log("Spiele:", audioUrl);
 
-        // 2. Vorherigen Sound stoppen (falls einer läuft)
         if (sound) {
             await sound.unloadAsync();
         }
 
-        // 3. Neuen Sound laden und spielen
         const { sound: newSound } = await Audio.Sound.createAsync(
             { uri: audioUrl },
             { shouldPlay: true }
         );
-        
         setSound(newSound);
-
     } catch (e) {
-        console.error("Audio-Fehler (Existiert die Datei auf GitHub?):", e);
+        console.error("Audio Fehler:", e);
     }
   };
 
   const checkAnswer = () => {
     let correct = false;
     
-    // Logik Prüfung
-    if (currentExercise.type === 'translate_to_pt') {
-      const inputNorm = normalize(userInput);
-      const answerNorm = normalize(currentExercise.correctAnswer);
-      const isAlt = currentExercise.alternativeAnswers?.some(alt => normalize(alt) === inputNorm);
-      if (inputNorm === answerNorm || isAlt) correct = true;
-    } else if (currentExercise.type === 'translate_to_de') {
+    if (currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') {
       const inputNorm = normalize(userInput);
       const answerNorm = normalize(currentExercise.correctAnswer);
       const isAlt = currentExercise.alternativeAnswers?.some(alt => normalize(alt) === inputNorm);
@@ -99,10 +91,8 @@ export default function LessonScreen() {
 
     setIsCorrect(correct);
     
-    // Audio Logik bei Erfolg
     if (correct) {
-      // Wir spielen einfach das Haupt-Audio der Übung (das ist meist der PT Satz)
-      // Der Dateiname ist gleich der ID (siehe Generator Script)
+      // Bei richtiger Antwort spielen wir das Audio der Übung (ID = Dateiname)
       playAudio(currentExercise.id);
     }
 
@@ -146,7 +136,6 @@ export default function LessonScreen() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.progressBarBackground}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
@@ -157,7 +146,7 @@ export default function LessonScreen() {
           <Text style={styles.instruction}>{getInstructionText()}</Text>
           
           <View style={styles.questionContainer}>
-            {/* Lautsprecher Button (Spielt immer das Haupt-Audio der Übung) */}
+            {/* Haupt-Audio Button */}
             <TouchableOpacity 
               style={styles.speakerButton}
               onPress={() => playAudio(currentExercise.id)}
@@ -168,7 +157,6 @@ export default function LessonScreen() {
             <Text style={styles.question}>{currentExercise.question}</Text>
           </View>
 
-          {/* Eingabe */}
           {(currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') && (
             <TextInput 
               style={styles.input} 
@@ -181,7 +169,6 @@ export default function LessonScreen() {
             />
           )}
 
-          {/* Multiple Choice */}
           {currentExercise.type === 'multiple_choice' && (
             <View style={styles.optionsContainer}>
               {currentExercise.options.map((option, index) => (
@@ -190,8 +177,7 @@ export default function LessonScreen() {
                   style={[styles.optionButton, selectedOption === index && styles.optionSelected]} 
                   onPress={() => {
                     setSelectedOption(index);
-                    // Audio für Option abspielen
-                    // Dateiname Schema aus Generator: ID_opt_INDEX.mp3
+                    // Option Audio abspielen (Dateiname: ID_opt_INDEX)
                     playAudio(`${currentExercise.id}_opt_${index}`);
                   }}
                 >
@@ -202,7 +188,6 @@ export default function LessonScreen() {
           )}
         </ScrollView>
 
-        {/* Footer Check Button */}
         <View style={styles.footer}>
           <TouchableOpacity style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} onPress={checkAnswer} disabled={!userInput && selectedOption === null}>
             <Text style={styles.checkButtonText}>ÜBERPRÜFEN</Text>
@@ -210,7 +195,6 @@ export default function LessonScreen() {
         </View>
       </KeyboardAvoidingView>
 
-      {/* Feedback Modal */}
       <Modal animationType="slide" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
           <View style={[styles.feedbackContainer, isCorrect ? styles.bgSuccess : styles.bgError]}>
@@ -218,7 +202,6 @@ export default function LessonScreen() {
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.feedbackSubtitle}>Lösung:</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                 {/* Lösung nochmal anhören */}
                  <TouchableOpacity onPress={() => playAudio(currentExercise.id)}>
                     <Ionicons name="volume-medium" size={24} color="#555" style={{marginRight: 10}}/>
                  </TouchableOpacity>
