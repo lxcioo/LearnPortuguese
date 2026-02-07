@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "deploy": "node ./generateAudio.js && eas update --branch preview"
+    "update": "node generateAudio.js && eas update --branch preview"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
