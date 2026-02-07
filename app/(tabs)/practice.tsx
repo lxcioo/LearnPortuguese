@@ -1,15 +1,16 @@
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
-    Alert, Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Switch,
-    Text,
-    TouchableOpacity,
-    View
+  Alert, Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import content from '../../content.json';
 
@@ -18,22 +19,35 @@ const courseData = content.courses[0];
 export default function PracticeScreen() {
   const router = useRouter();
   
-  // FIX: Typen hinzugefügt
   const [scores, setScores] = useState<Record<string, number>>({});
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
   const [questionCount, setQuestionCount] = useState(10);
+  
+  // NEU: Fehler State
+  const [mistakesCount, setMistakesCount] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
         const savedScores = await AsyncStorage.getItem('lessonScores');
         if (savedScores) setScores(JSON.parse(savedScores));
+
+        // NEU: Fehler von heute laden
+        const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
+        if (dailyMistakesStr) {
+            const data = JSON.parse(dailyMistakesStr);
+            const today = new Date().toDateString();
+            if (data.date === today) {
+                setMistakesCount(data.exercises.length);
+            } else {
+                setMistakesCount(0); // Wenn Datum alt ist, sind es 0
+            }
+        }
       };
       loadData();
     }, [])
   );
 
-  // FIX: Parameter Typ (string)
   const toggleLesson = (id: string) => {
     setSelectedLessons(prev => ({
       ...prev,
@@ -41,8 +55,25 @@ export default function PracticeScreen() {
     }));
   };
 
+  // NEU: Funktion um nur die Fehler zu üben
+  const startMistakePractice = async () => {
+      if (mistakesCount === 0) {
+          Alert.alert("Perfekt!", "Du hast heute noch keine Fehler gemacht.");
+          return;
+      }
+      
+      try {
+        const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
+        if (dailyMistakesStr) {
+            const data = JSON.parse(dailyMistakesStr);
+            // Wir nehmen direkt die Fehler-Liste als Session
+            await AsyncStorage.setItem('currentPracticeSession', JSON.stringify(data.exercises));
+            router.push({ pathname: "/lesson", params: { id: 'practice' } });
+        }
+      } catch(e) { console.error(e); }
+  };
+
   const startPractice = async () => {
-    // FIX: Wir sagen, pool ist eine Liste von "irgendwas" (any[])
     let pool: any[] = [];
     courseData.lessons.forEach(lesson => {
       if (selectedLessons[lesson.id]) {
@@ -78,6 +109,23 @@ export default function PracticeScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
+        
+        {/* NEU: Fehler Wiederholen Karte */}
+        <Text style={styles.sectionTitle}>Tages-Fehler:</Text>
+        <TouchableOpacity 
+            style={[styles.mistakeButton, mistakesCount === 0 && styles.mistakeButtonDisabled]} 
+            onPress={startMistakePractice}
+            disabled={mistakesCount === 0}
+        >
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Ionicons name="bandage" size={24} color={mistakesCount > 0 ? "#ff4444" : "#ccc"} style={{marginRight: 10}}/>
+                <Text style={[styles.mistakeButtonText, mistakesCount === 0 && {color: '#999'}]}>
+                    Fehler von heute üben ({mistakesCount})
+                </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={24} color={mistakesCount > 0 ? "#333" : "#ccc"} />
+        </TouchableOpacity>
+
         <Text style={styles.sectionTitle}>Lektionen auswählen:</Text>
         <View style={styles.card}>
           {courseData.lessons.map((lesson, index) => {
@@ -138,5 +186,14 @@ const styles = StyleSheet.create({
   countText: { fontSize: 18, fontWeight: 'bold', color: '#777' },
   countTextSelected: { color: '#58cc02' },
   startButton: { backgroundColor: '#58cc02', padding: 18, borderRadius: 16, alignItems: 'center', elevation: 3 },
-  startButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+  startButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  
+  // Neue Styles für Fehler-Button
+  mistakeButton: { 
+      backgroundColor: '#fff', padding: 16, borderRadius: 16, 
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+      borderWidth: 2, borderColor: '#ffdfe0', marginBottom: 10
+  },
+  mistakeButtonDisabled: { borderColor: '#eee', backgroundColor: '#f9f9f9' },
+  mistakeButtonText: { fontSize: 16, fontWeight: 'bold', color: '#d63031' }
 });

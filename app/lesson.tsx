@@ -91,33 +91,24 @@ export default function LessonScreen() {
     } catch (e) { console.error("Audio Fehler:", e); }
   };
 
-  // --- NEU: STREAK UPDATE FUNKTION ---
   const updateStreakProgress = async () => {
     try {
-        const today = new Date().toDateString(); // "Fri Feb 07 2026"
-        
-        // 1. Tagesfortschritt laden
+        const today = new Date().toDateString();
         const dailyProgressStr = await AsyncStorage.getItem('dailyProgress');
         let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
 
-        // Wenn das Datum alt ist, Reset auf 0
         if (dailyData.date !== today) {
             dailyData = { count: 0, date: today };
         }
 
-        // Zähler erhöhen
         dailyData.count += 1;
         await AsyncStorage.setItem('dailyProgress', JSON.stringify(dailyData));
 
-        // 2. Prüfen ob Streak erhöht werden muss (bei >= 15 Aufgaben)
         if (dailyData.count >= 15) {
             const streakDataStr = await AsyncStorage.getItem('streakData');
             let streakData = streakDataStr ? JSON.parse(streakDataStr) : { currentStreak: 0, lastStreakDate: '' };
 
-            // Streak nur erhöhen, wenn für HEUTE noch nicht geschehen
             if (streakData.lastStreakDate !== today) {
-                
-                // Prüfen ob Streak fortgesetzt wird (Gestern war der letzte)
                 const yesterday = new Date();
                 yesterday.setDate(yesterday.getDate() - 1);
                 const yesterdayStr = yesterday.toDateString();
@@ -125,18 +116,39 @@ export default function LessonScreen() {
                 if (streakData.lastStreakDate === yesterdayStr) {
                     streakData.currentStreak += 1;
                 } else {
-                    // Streak war unterbrochen oder neu
                     streakData.currentStreak = 1;
                 }
 
                 streakData.lastStreakDate = today;
                 await AsyncStorage.setItem('streakData', JSON.stringify(streakData));
-                
-                // Optional: Kleines Feedback für den User
-                // Alert.alert("🔥 Streak erhöht!", "Du hast 15 Aufgaben heute geschafft!");
             }
         }
     } catch(e) { console.error(e); }
+  };
+
+  // --- NEU: Funktion zum Speichern des Fehlers ---
+  const saveDailyMistake = async (exercise: Exercise) => {
+    try {
+        const today = new Date().toDateString();
+        const storageKey = 'dailyMistakes';
+        
+        const existingDataStr = await AsyncStorage.getItem(storageKey);
+        let data = existingDataStr ? JSON.parse(existingDataStr) : { date: today, exercises: [] };
+
+        // Wenn das Datum alt ist, Reset
+        if (data.date !== today) {
+            data = { date: today, exercises: [] };
+        }
+
+        // Prüfen ob Übung schon drin ist (Vermeidung von Duplikaten)
+        const alreadyExists = data.exercises.some((ex: Exercise) => ex.id === exercise.id);
+        
+        if (!alreadyExists) {
+            data.exercises.push(exercise);
+            await AsyncStorage.setItem(storageKey, JSON.stringify(data));
+            console.log("Fehler für heute gespeichert:", exercise.id);
+        }
+    } catch (e) { console.error("Fehler beim Speichern des Fehlers", e); }
   };
 
   const checkAnswer = () => {
@@ -155,10 +167,13 @@ export default function LessonScreen() {
     
     if (correct) {
       playAudio(currentExercise.id);
-      // NEU: Hier rufen wir die Streak-Logik auf
       updateStreakProgress();
     } else {
       setMistakes(m => m + 1);
+      
+      // NEU: Fehler speichern!
+      saveDailyMistake(currentExercise);
+
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
