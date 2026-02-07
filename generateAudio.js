@@ -2,84 +2,119 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const content = require('./content.json');
-const outputDir = path.join(__dirname, 'public', 'audio');
+// 1. Lade die Content-Datei
+const contentPath = path.join(__dirname, 'content.json');
+const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
 
-if (!fs.existsSync(outputDir)){
-    fs.mkdirSync(outputDir, { recursive: true });
+const AUDIO_DIR = path.join(__dirname, 'assets', 'audio');
+
+// Stelle sicher, dass der Ordner existiert
+if (!fs.existsSync(AUDIO_DIR)) {
+    fs.mkdirSync(AUDIO_DIR, { recursive: true });
 }
 
-function getGoogleTTSUrl(text, lang) {
-    const encoded = encodeURIComponent(text);
-    return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=${lang}&total=1&idx=0&textlen=${text.length}&client=tw-ob&prev=input&ttsspeed=1`;
-}
+// Funktion zum Herunterladen (Google TTS)
+const downloadAudio = (text, filename) => {
+    return new Promise((resolve, reject) => {
+        const filePath = path.join(AUDIO_DIR, `${filename}.mp3`);
+        
+        // Wenn Datei schon existiert, überspringen (spart Zeit)
+        if (fs.existsSync(filePath)) {
+            // console.log(`Skipping existing: ${filename}`);
+            resolve();
+            return;
+        }
 
-async function downloadAudio(filename, text, lang) {
-  const filePath = path.join(outputDir, `${filename}.mp3`);
-  
-  // WICHTIG: Hier prüfen wir, ob die Datei schon da ist.
-  // Wenn du einen Satz im JSON änderst, musst du die MP3 lokal löschen 
-  // oder diesen Check kurz auskommentieren, damit er neu generiert wird.
-  if (fs.existsSync(filePath)) {
-      console.log(`Skipping (exists): ${filename}`);
-      return;
-  }
+        console.log(`Generating: ${filename} -> "${text}"`);
 
-  const url = getGoogleTTSUrl(text, lang);
-  const file = fs.createWriteStream(filePath);
+        // URL für Google TTS (Portugiesisch)
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=pt&client=tw-ob`;
 
-  return new Promise((resolve, reject) => {
-    https.get(url, function(response) {
-      if (response.statusCode !== 200) {
-          reject(new Error(`Google TTS Error: ${response.statusCode}`));
-          return;
-      }
-      response.pipe(file);
-      file.on('finish', function() {
-        file.close(() => {
-          console.log(`✅ Generated (${lang}): ${filename}.mp3`);
-          resolve();
+        https.get(url, (res) => {
+            if (res.statusCode !== 200) {
+                console.error(`Failed to download ${text}: Status ${res.statusCode}`);
+                // Bei Fehler nicht abbrechen, sondern leere Datei oder weitermachen
+                resolve(); 
+                return;
+            }
+            
+            const fileStream = fs.createWriteStream(filePath);
+            res.pipe(fileStream);
+
+            fileStream.on('finish', () => {
+                fileStream.close();
+                resolve();
+            });
+        }).on('error', (err) => {
+            console.error(`Error downloading ${filename}:`, err.message);
+            resolve(); // Trotzdem resolven, damit die Schleife weitergeht
         });
-      });
-    }).on('error', reject);
-  });
-}
+    });
+};
 
-async function run() {
-  console.log("--- Starte Smart Audio-Pipeline ---");
-
-  for (const course of content.courses) {
-    for (const lesson of course.lessons) {
-      for (const exercise of lesson.exercises) {
-        
-        // 1. HAUPT-AUDIO (Frage oder Lösung)
-        if (exercise.audioText) {
-          // NEU: Nutze die Sprache aus dem JSON, sonst Standard pt-PT
-          const lang = exercise.audioLanguage || 'pt-PT';
-          try {
-            await downloadAudio(exercise.id, exercise.audioText, lang);
-          } catch (e) {
-            console.error(`❌ Fehler bei ${exercise.id}:`, e.message);
-          }
-        }
-        
-        // 2. OPTIONEN (Multiple Choice)
-        if (exercise.options) {
-             for (let index = 0; index < exercise.options.length; index++) {
-                 const opt = exercise.options[index];
-                 // NEU: Nutze optionsLanguage (wichtig für deutsche Antworten!)
-                 const lang = exercise.optionsLanguage || 'pt-PT';
-                 try {
-                    await downloadAudio(`${exercise.id}_opt_${index}`, opt, lang);
-                 } catch (e) {
-                    console.error(`❌ Fehler bei Option ${index}:`, e.message);
-                 }
-             }
-        }
-      }
+const run = async () => {
+    console.log("--- Starte Smart Audio-Pipeline (Neue Struktur) ---");
+    
+    const course = content.courses[0];
+    
+    // NEU: Wir iterieren durch UNITS -> LEVELS -> EXERCISES
+    if (!course.units) {
+        console.error("Fehler: Keine 'units' in content.json gefunden!");
+        return;
     }
-  }
-  console.log("--- Fertig! ---");
-}
+
+    for (const unit of course.units) {
+        console.log(`Verarbeite Unit: ${unit.title}`);
+        
+        if (!unit.levels) continue;
+
+        for (const level of unit.levels) {
+            
+            if (!level.exercises) continue;
+
+            for (const exercise of level.exercises) {
+                // Wir brauchen Audio für:
+                // 1. Die Frage (wenn es Portugiesisch ist)
+                // 2. Die Antwort (wenn es Portugiesisch ist)
+                // 3. AudioText (speziell für Multiple Choice)
+
+                // Fall A: Die richtige Antwort ist Portugiesisch (z.B. bei translate_to_pt)
+                if (exercise.type === 'translate_to_pt') {
+                    await downloadAudio(exercise.correctAnswer, exercise.id);
+                }
+                
+                // Fall B: Die Frage ist Portugiesisch (z.B. bei translate_to_de)
+                else if (exercise.type === 'translate_to_de') {
+                    await downloadAudio(exercise.question, exercise.id);
+                }
+
+                // Fall C: Multiple Choice (hat oft ein extra 'audioText' Feld oder wir nehmen die Frage)
+                else if (exercise.type === 'multiple_choice') {
+                    // Wenn audioText existiert, nimm das. Sonst nimm die Frage, falls sie portugiesisch klingt? 
+                    // Besser: Wir verlassen uns auf 'audioText' aus der JSON, wenn da.
+                    if (exercise.audioText) {
+                         await downloadAudio(exercise.audioText, exercise.id);
+                    } else {
+                         // Fallback: Manchmal ist die Frage das Audio (z.B. "Was hörst du?")
+                         // Hier generieren wir sicherheitshalber Audio für die richtige Antwort, 
+                         // falls diese vorgelesen werden soll nach dem Klick.
+                         // Aber für die Aufgabe selbst nutzen wir meist audioText.
+                         // Wir laden hier mal die Antwort runter, damit man Feedback hat.
+                         await downloadAudio(exercise.correctAnswer, `${exercise.id}_answer`);
+                    }
+                    
+                    // Optionen vorlesen (optional, z.B. für Blinde oder zum Lernen)
+                    if (exercise.options) {
+                        for (let i = 0; i < exercise.options.length; i++) {
+                            await downloadAudio(exercise.options[i], `${exercise.id}_opt_${i}`);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    console.log("--- Fertig! Alle Audios sind generiert. ---");
+};
 
 run();
