@@ -20,31 +20,47 @@ import content from '../content.json';
 const courseData = content.courses[0];
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
+// FIX: Definition, wie eine Übung aussieht (Interface)
+interface Exercise {
+  id: string;
+  type: string;
+  question: string;
+  correctAnswer: string;
+  alternativeAnswers?: string[];
+  audioText?: string;
+  options?: string[];
+  correctAnswerIndex?: number;
+  optionsLanguage?: string;
+}
+
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const lessonId = params.id; 
+  const lessonId = params.id as string; 
 
-  // --- STATE ---
+  // --- STATE MIT TYPEN ---
   const [loading, setLoading] = useState(true);
-  const [lessonQueue, setLessonQueue] = useState([]);
-  const [totalQuestions, setTotalQuestions] = useState(0);
   
+  // FIX: Wir sagen, lessonQueue ist eine Liste von "Exercise"
+  const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]); 
+  
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [sound, setSound] = useState();
+  
+  // FIX: Sound kann auch undefined sein
+  const [sound, setSound] = useState<Audio.Sound | undefined>();
   
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
 
-  // --- INITIALISIERUNG ---
   useEffect(() => {
     const initLesson = async () => {
-      let exercises = [];
+      let exercises: any[] = []; // Hier kurz any erlauben beim Laden
 
       if (lessonId === 'practice') {
         const savedSession = await AsyncStorage.getItem('currentPracticeSession');
@@ -66,8 +82,8 @@ export default function LessonScreen() {
     initLesson();
   }, [lessonId]);
 
-
   const currentExercise = lessonQueue[currentExerciseIndex];
+  
   const progressPercent = lessonQueue.length > 0 
       ? (currentExerciseIndex / lessonQueue.length) * 100 
       : 0;
@@ -76,12 +92,14 @@ export default function LessonScreen() {
     return sound ? () => { sound.unloadAsync(); } : undefined;
   }, [sound]);
 
-  const normalize = (str) => {
+  // FIX: Parameter Typ (string)
+  const normalize = (str: string) => {
     if (!str) return "";
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
   };
 
-  const playAudio = async (filename) => {
+  // FIX: Parameter Typ (string)
+  const playAudio = async (filename: string) => {
     try {
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
         if (sound) await sound.unloadAsync();
@@ -99,7 +117,8 @@ export default function LessonScreen() {
     if (currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') {
       const inputNorm = normalize(userInput);
       const answerNorm = normalize(currentExercise.correctAnswer);
-      const isAlt = currentExercise.alternativeAnswers?.some(alt => normalize(alt) === inputNorm);
+      // FIX: Typ für alt
+      const isAlt = currentExercise.alternativeAnswers?.some((alt: string) => normalize(alt) === inputNorm);
       if (inputNorm === answerNorm || isAlt) correct = true;
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
@@ -127,7 +146,6 @@ export default function LessonScreen() {
   };
 
   const finishLesson = async () => {
-    // 1. Sterne IMMER berechnen (auch beim Training)
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const scorePercentage = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
 
@@ -139,13 +157,11 @@ export default function LessonScreen() {
     setEarnedStars(stars);
     setIsLessonFinished(true);
 
-    // 2. Speichern NUR WENN es kein Training ist
     if (lessonId !== 'practice') {
         try {
           const existingData = await AsyncStorage.getItem('lessonScores');
           let scores = existingData ? JSON.parse(existingData) : {};
           const oldScore = scores[lessonId] || 0;
-          // Nur überschreiben wenn besser
           if (stars >= oldScore) {
               scores[lessonId] = stars;
               await AsyncStorage.setItem('lessonScores', JSON.stringify(scores));
@@ -190,7 +206,6 @@ export default function LessonScreen() {
                 {isPractice ? "Training beendet!" : "Lektion beendet!"}
             </Text>
             
-            {/* 3. Sterne IMMER anzeigen */}
             <View style={styles.starsContainer}>
                 {[1, 2, 3].map((star) => (
                     <Ionicons 
@@ -222,7 +237,6 @@ export default function LessonScreen() {
       );
   }
 
-  // --- NORMALE VIEW ---
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
@@ -260,7 +274,7 @@ export default function LessonScreen() {
 
           {currentExercise.type === 'multiple_choice' && (
             <View style={styles.optionsContainer}>
-              {currentExercise.options.map((option, index) => (
+              {currentExercise.options?.map((option: string, index: number) => (
                 <TouchableOpacity 
                   key={index} 
                   style={[styles.optionButton, selectedOption === index && styles.optionSelected]} 

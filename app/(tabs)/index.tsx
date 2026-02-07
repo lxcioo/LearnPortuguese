@@ -19,8 +19,11 @@ const courseData = content.courses[0];
 export default function PathScreen() {
   const router = useRouter();
   
-  const [scores, setScores] = useState({});
-  const [toastMessage, setToastMessage] = useState(null);
+  // FIX: Wir sagen explizit: Das ist ein Objekt mit Text-Keys und Zahlen-Werten
+  const [scores, setScores] = useState<Record<string, number>>({});
+  
+  // FIX: Wir sagen: Das kann ein String sein ODER null
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -36,7 +39,6 @@ export default function PathScreen() {
     }, [])
   );
 
-  // --- DIE NEUE RESET LOGIK (Funktioniert auch im Browser) ---
   const performReset = async () => {
     await AsyncStorage.removeItem('lessonScores');
     await AsyncStorage.removeItem('completedLessons');
@@ -44,14 +46,12 @@ export default function PathScreen() {
   };
 
   const resetProgress = () => {
-    // Spezial-Fall für Web Browser
     if (Platform.OS === 'web') {
         const confirm = window.confirm("Möchtest du wirklich den gesamten Fortschritt löschen?");
         if (confirm) {
             performReset();
         }
     } else {
-        // Normaler Fall für Handy (iOS/Android)
         Alert.alert(
           "Fortschritt löschen",
           "Möchtest du wirklich wieder bei Null anfangen?",
@@ -77,18 +77,15 @@ export default function PathScreen() {
   return (
     <SafeAreaView style={styles.container}>
       
-      {/* HEADER */}
       <View style={styles.header}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.headerTitle}>Aprender Português</Text>
-            {/* Echte Bild-Flagge statt Emoji (Windows Fix) */}
             <Image 
                 source={{ uri: 'https://flagcdn.com/w80/pt.png' }} 
                 style={styles.flagImage}
             />
         </View>
         
-        {/* Mülleimer Icon für Reset */}
         <TouchableOpacity onPress={resetProgress} style={styles.resetButton}>
            <Ionicons name="trash-outline" size={24} color="#ff4444" />
         </TouchableOpacity>
@@ -158,7 +155,6 @@ export default function PathScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  
   header: { 
     padding: 20, 
     paddingTop: Platform.OS === 'android' ? 50 : 20, 
@@ -169,12 +165,10 @@ const styles = StyleSheet.create({
     alignItems: 'center' 
   },
   headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#333', marginRight: 10 },
-  flagImage: { width: 30, height: 20, borderRadius: 3 }, // Style für die Flagge
+  flagImage: { width: 30, height: 20, borderRadius: 3 },
   resetButton: { padding: 5 },
-
   pathContainer: { paddingVertical: 40, alignItems: 'center' },
   lessonRow: { marginBottom: 30, alignItems: 'center' },
-  
   lessonButton: { 
     width: 80, height: 80, borderRadius: 40, 
     justifyContent: 'center', alignItems: 'center', 
@@ -183,21 +177,10 @@ const styles = StyleSheet.create({
   },
   goldBorder: { borderWidth: 4, borderColor: '#FFD700' },
   lessonTitle: { fontSize: 18, fontWeight: 'bold', color: '#444' },
-
   toastContainer: {
-    position: 'absolute',
-    bottom: 50,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(50, 50, 50, 0.9)', 
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-    zIndex: 100, 
+    position: 'absolute', bottom: 50, alignSelf: 'center',
+    backgroundColor: 'rgba(50, 50, 50, 0.9)', paddingVertical: 12,
+    paddingHorizontal: 24, borderRadius: 25, zIndex: 100, 
   },
-  toastText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-    textAlign: 'center'
-  }
+  toastText: { color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }
 });

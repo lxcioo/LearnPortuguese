@@ -18,11 +18,11 @@ const courseData = content.courses[0];
 export default function PracticeScreen() {
   const router = useRouter();
   
-  const [scores, setScores] = useState({});
-  const [selectedLessons, setSelectedLessons] = useState({});
-  const [questionCount, setQuestionCount] = useState(10); // Standard: 10 Fragen
+  // FIX: Typen hinzugefügt
+  const [scores, setScores] = useState<Record<string, number>>({});
+  const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
+  const [questionCount, setQuestionCount] = useState(10);
 
-  // Fortschritt laden, um zu wissen, was freigeschaltet ist
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
@@ -33,7 +33,8 @@ export default function PracticeScreen() {
     }, [])
   );
 
-  const toggleLesson = (id) => {
+  // FIX: Parameter Typ (string)
+  const toggleLesson = (id: string) => {
     setSelectedLessons(prev => ({
       ...prev,
       [id]: !prev[id]
@@ -41,8 +42,8 @@ export default function PracticeScreen() {
   };
 
   const startPractice = async () => {
-    // 1. Sammle alle Übungen aus den ausgewählten Lektionen
-    let pool = [];
+    // FIX: Wir sagen, pool ist eine Liste von "irgendwas" (any[])
+    let pool: any[] = [];
     courseData.lessons.forEach(lesson => {
       if (selectedLessons[lesson.id]) {
         pool = [...pool, ...lesson.exercises];
@@ -54,19 +55,15 @@ export default function PracticeScreen() {
       return;
     }
 
-    // 2. Mische den Pool (Fisher-Yates Shuffle)
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
 
-    // 3. Begrenze auf die gewünschte Anzahl
     const practiceSession = pool.slice(0, questionCount);
 
-    // 4. Speichere die Session temporär und starte
     try {
       await AsyncStorage.setItem('currentPracticeSession', JSON.stringify(practiceSession));
-      // Wir rufen die Lesson mit der speziellen ID 'practice' auf
       router.push({ pathname: "/lesson", params: { id: 'practice' } });
     } catch (e) {
       console.error(e);
@@ -81,15 +78,12 @@ export default function PracticeScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        
-        {/* Abschnitt 1: Lektionen wählen */}
         <Text style={styles.sectionTitle}>Lektionen auswählen:</Text>
         <View style={styles.card}>
           {courseData.lessons.map((lesson, index) => {
-            // Prüfen ob freigeschaltet (gleiche Logik wie Home)
             const isUnlocked = index === 0 || (scores[courseData.lessons[index - 1].id] > 0);
             
-            if (!isUnlocked) return null; // Gesperrte Lektionen gar nicht anzeigen
+            if (!isUnlocked) return null;
 
             return (
               <View key={lesson.id} style={styles.row}>
@@ -104,7 +98,6 @@ export default function PracticeScreen() {
           })}
         </View>
 
-        {/* Abschnitt 2: Anzahl Fragen */}
         <Text style={styles.sectionTitle}>Anzahl der Fragen:</Text>
         <View style={styles.countContainer}>
           {[5, 10, 20, 30].map(num => (
@@ -120,7 +113,6 @@ export default function PracticeScreen() {
           ))}
         </View>
 
-        {/* Start Button */}
         <TouchableOpacity style={styles.startButton} onPress={startPractice}>
           <Text style={styles.startButtonText}>TRAINING STARTEN</Text>
         </TouchableOpacity>
