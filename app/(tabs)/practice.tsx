@@ -14,35 +14,41 @@ import {
 } from 'react-native';
 import content from '../../content.json';
 
+// Zugriff auf die neuen Units
 const courseData = content.courses[0];
 
 export default function PracticeScreen() {
   const router = useRouter();
   
   const [scores, setScores] = useState<Record<string, number>>({});
+  const [examScores, setExamScores] = useState<Record<string, boolean>>({});
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
   const [questionCount, setQuestionCount] = useState(10);
-  
-  // NEU: Fehler State
   const [mistakesCount, setMistakesCount] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
-        const savedScores = await AsyncStorage.getItem('lessonScores');
-        if (savedScores) setScores(JSON.parse(savedScores));
+        try {
+            // 1. Scores laden (für Freischaltung)
+            const savedScores = await AsyncStorage.getItem('lessonScores');
+            if (savedScores) setScores(JSON.parse(savedScores));
 
-        // NEU: Fehler von heute laden
-        const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
-        if (dailyMistakesStr) {
-            const data = JSON.parse(dailyMistakesStr);
-            const today = new Date().toDateString();
-            if (data.date === today) {
-                setMistakesCount(data.exercises.length);
-            } else {
-                setMistakesCount(0); // Wenn Datum alt ist, sind es 0
+            const savedExams = await AsyncStorage.getItem('examScores');
+            if (savedExams) setExamScores(JSON.parse(savedExams));
+
+            // 2. Fehler von heute laden
+            const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
+            if (dailyMistakesStr) {
+                const data = JSON.parse(dailyMistakesStr);
+                const today = new Date().toDateString();
+                if (data.date === today) {
+                    setMistakesCount(data.exercises.length);
+                } else {
+                    setMistakesCount(0);
+                }
             }
-        }
+        } catch(e) { console.error(e); }
       };
       loadData();
     }, [])
@@ -55,7 +61,7 @@ export default function PracticeScreen() {
     }));
   };
 
-  // NEU: Funktion um nur die Fehler zu üben
+  // Funktion: Nur Fehler üben
   const startMistakePractice = async () => {
       if (mistakesCount === 0) {
           Alert.alert("Perfekt!", "Du hast heute noch keine Fehler gemacht.");
@@ -66,19 +72,23 @@ export default function PracticeScreen() {
         const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
         if (dailyMistakesStr) {
             const data = JSON.parse(dailyMistakesStr);
-            // Wir nehmen direkt die Fehler-Liste als Session
             await AsyncStorage.setItem('currentPracticeSession', JSON.stringify(data.exercises));
             router.push({ pathname: "/lesson", params: { id: 'practice' } });
         }
       } catch(e) { console.error(e); }
   };
 
+  // Funktion: Normale Übung starten
   const startPractice = async () => {
     let pool: any[] = [];
-    courseData.lessons.forEach(lesson => {
-      if (selectedLessons[lesson.id]) {
-        pool = [...pool, ...lesson.exercises];
-      }
+    
+    // Durchsuche alle Units und Levels nach ausgewählten Lektionen
+    courseData.units.forEach(unit => {
+        unit.levels.forEach(level => {
+            if (selectedLessons[level.id]) {
+                pool = [...pool, ...level.exercises];
+            }
+        });
     });
 
     if (pool.length === 0) {
@@ -86,11 +96,13 @@ export default function PracticeScreen() {
       return;
     }
 
+    // Mischen (Fisher-Yates Shuffle)
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
 
+    // Nur die gewünschte Anzahl nehmen
     const practiceSession = pool.slice(0, questionCount);
 
     try {
@@ -110,7 +122,7 @@ export default function PracticeScreen() {
 
       <ScrollView contentContainerStyle={styles.content}>
         
-        {/* NEU: Fehler Wiederholen Karte */}
+        {/* --- TAGES FEHLER BUTTON --- */}
         <Text style={styles.sectionTitle}>Tages-Fehler:</Text>
         <TouchableOpacity 
             style={[styles.mistakeButton, mistakesCount === 0 && styles.mistakeButtonDisabled]} 
@@ -126,26 +138,50 @@ export default function PracticeScreen() {
             <Ionicons name="chevron-forward" size={24} color={mistakesCount > 0 ? "#333" : "#ccc"} />
         </TouchableOpacity>
 
+        {/* --- LEKTIONEN AUSWAHL --- */}
         <Text style={styles.sectionTitle}>Lektionen auswählen:</Text>
         <View style={styles.card}>
-          {courseData.lessons.map((lesson, index) => {
-            const isUnlocked = index === 0 || (scores[courseData.lessons[index - 1].id] > 0);
-            
-            if (!isUnlocked) return null;
+          {courseData.units.map((unit, uIndex) => {
+              
+              // Prüfen ob Unit generell freigeschaltet ist
+              const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
+              
+              if (!isUnitUnlocked) return null;
 
-            return (
-              <View key={lesson.id} style={styles.row}>
-                <Text style={styles.label}>{lesson.title}</Text>
-                <Switch 
-                  value={!!selectedLessons[lesson.id]} 
-                  onValueChange={() => toggleLesson(lesson.id)}
-                  trackColor={{ false: "#eee", true: "#58cc02" }}
-                />
-              </View>
-            );
+              return (
+                  <View key={unit.id} style={{marginBottom: 15}}>
+                      <View style={{backgroundColor: '#f0f0f0', padding: 8, borderRadius: 8, marginBottom: 5}}>
+                          <Text style={{fontWeight: 'bold', color: '#555'}}>{unit.title}</Text>
+                      </View>
+                      
+                      {unit.levels.map((level, lIndex) => {
+                          // Prüfen ob Level freigeschaltet ist
+                          // Logik: Erstes Level immer offen (wenn Unit offen), sonst muss vorheriges Level > 0 sein
+                          const isLevelUnlocked = lIndex === 0 || (scores[unit.levels[lIndex - 1].id] || 0) > 0;
+                          
+                          if (!isLevelUnlocked) return null;
+
+                          return (
+                            <View key={level.id} style={styles.row}>
+                                <Text style={styles.label}>{level.title}</Text>
+                                <Switch 
+                                value={!!selectedLessons[level.id]} 
+                                onValueChange={() => toggleLesson(level.id)}
+                                trackColor={{ false: "#eee", true: "#58cc02" }}
+                                />
+                            </View>
+                          );
+                      })}
+                  </View>
+              );
           })}
+          {/* Fallback falls alles leer ist (z.B. ganz am Anfang) */}
+          <Text style={{textAlign: 'center', color: '#999', fontSize: 12, padding: 10}}>
+              Schalte mehr Lektionen frei, um sie hier zu üben.
+          </Text>
         </View>
 
+        {/* --- ANZAHL FRAGEN --- */}
         <Text style={styles.sectionTitle}>Anzahl der Fragen:</Text>
         <View style={styles.countContainer}>
           {[5, 10, 20, 30].map(num => (
@@ -175,20 +211,22 @@ const styles = StyleSheet.create({
   header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#eee' },
   headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#333' },
   subTitle: { fontSize: 16, color: '#777', marginTop: 5 },
-  content: { padding: 20 },
+  content: { padding: 20, paddingBottom: 50 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#444', marginBottom: 10, marginTop: 10 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 10, elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 5 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f0f0f0', paddingHorizontal: 10 },
+  
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 15, elevation: 2, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 5 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#f9f9f9', paddingHorizontal: 5 },
   label: { fontSize: 16, color: '#333' },
+  
   countContainer: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30 },
   countButton: { flex: 1, backgroundColor: '#fff', marginHorizontal: 5, paddingVertical: 15, borderRadius: 12, alignItems: 'center', borderWidth: 2, borderColor: '#e5e5e5' },
   countButtonSelected: { borderColor: '#58cc02', backgroundColor: '#ddf4ff' },
   countText: { fontSize: 18, fontWeight: 'bold', color: '#777' },
   countTextSelected: { color: '#58cc02' },
-  startButton: { backgroundColor: '#58cc02', padding: 18, borderRadius: 16, alignItems: 'center', elevation: 3 },
+  
+  startButton: { backgroundColor: '#58cc02', padding: 18, borderRadius: 16, alignItems: 'center', elevation: 3, marginBottom: 40 },
   startButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
   
-  // Neue Styles für Fehler-Button
   mistakeButton: { 
       backgroundColor: '#fff', padding: 16, borderRadius: 16, 
       flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',

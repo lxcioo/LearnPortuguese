@@ -4,7 +4,7 @@ import { Audio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
+  ActivityIndicator, Alert,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -17,9 +17,11 @@ import {
 
 import content from '../content.json';
 
+// Wir greifen auf den ersten Kurs zu
 const courseData = content.courses[0];
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
+// Typ-Definitionen
 interface Exercise {
   id: string;
   type: string;
@@ -35,40 +37,97 @@ interface Exercise {
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
+  
+  // Parameter aus der URL lesen
   const lessonId = params.id as string; 
+  const lessonType = params.type as string; // 'normal', 'exam' oder 'practice' (undefined ist 'normal')
 
+  // --- STATE ---
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]); 
+  
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  
   const [sound, setSound] = useState<Audio.Sound | undefined>();
+  
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
+  const [examPassed, setExamPassed] = useState(false);
 
+  // --- INIT: Lektion laden ---
   useEffect(() => {
     const initLesson = async () => {
-      let exercises: any[] = [];
+      let exercises: any[] = []; // Hier kurz any erlauben beim Laden
+
       if (lessonId === 'practice') {
+        // Fall 1: Übungsmodus (aus AsyncStorage)
         const savedSession = await AsyncStorage.getItem('currentPracticeSession');
-        if (savedSession) exercises = JSON.parse(savedSession);
+        if (savedSession) {
+          exercises = JSON.parse(savedSession);
+        }
+      
+      } else if (lessonType === 'exam') {
+        // Fall 2: Prüfung (Sammle alle Aufgaben der Unit)
+        const unit = courseData.units.find(u => u.id === lessonId);
+        
+        if (unit) {
+            let allUnitExercises: any[] = [];
+            
+            // Alle Level durchgehen und Übungen sammeln
+            unit.levels.forEach(level => {
+                if (level.exercises) {
+                    allUnitExercises = [...allUnitExercises, ...level.exercises];
+                }
+            });
+
+            // Mischen (Shuffle)
+            for (let i = allUnitExercises.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allUnitExercises[i], allUnitExercises[j]] = [allUnitExercises[j], allUnitExercises[i]];
+            }
+
+            // Nimm maximal 30 Stück (oder weniger, wenn nicht genug da sind)
+            const count = Math.min(allUnitExercises.length, 30);
+            exercises = allUnitExercises.slice(0, count);
+            
+            if(exercises.length === 0) Alert.alert("Ups", "Keine Übungen in diesem Kapitel gefunden!");
+        }
+
       } else {
-        const lesson = courseData.lessons.find(l => l.id === lessonId);
-        if (lesson) exercises = [...lesson.exercises];
+        // Fall 3: Normale Lektion (Suche das Level in den Units)
+        // Wir suchen in jeder Unit nach dem Level mit der ID 'lessonId'
+        for (const unit of courseData.units) {
+            const level = unit.levels.find(l => l.id === lessonId);
+            if (level) {
+                exercises = [...level.exercises];
+                break; // Gefunden, Suche beenden
+            }
+        }
       }
+
       setLessonQueue(exercises);
       setTotalQuestions(exercises.length);
       setLoading(false);
     };
+
     initLesson();
-  }, [lessonId]);
+  }, [lessonId, lessonType]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
-  const progressPercent = lessonQueue.length > 0 ? (currentExerciseIndex / lessonQueue.length) * 100 : 0;
+  
+  const progressPercent = lessonQueue.length > 0 
+      ? (currentExerciseIndex / lessonQueue.length) * 100 
+      : 0;
+
+  // --- HELPER FUNKTIONEN ---
 
   useEffect(() => {
     return sound ? () => { sound.unloadAsync(); } : undefined;
@@ -91,9 +150,11 @@ export default function LessonScreen() {
     } catch (e) { console.error("Audio Fehler:", e); }
   };
 
+  // Streak erhöhen
   const updateStreakProgress = async () => {
     try {
         const today = new Date().toDateString();
+        
         const dailyProgressStr = await AsyncStorage.getItem('dailyProgress');
         let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
 
@@ -126,7 +187,7 @@ export default function LessonScreen() {
     } catch(e) { console.error(e); }
   };
 
-  // --- NEU: Funktion zum Speichern des Fehlers ---
+  // Fehler speichern für "Daily Mistakes"
   const saveDailyMistake = async (exercise: Exercise) => {
     try {
         const today = new Date().toDateString();
@@ -135,22 +196,20 @@ export default function LessonScreen() {
         const existingDataStr = await AsyncStorage.getItem(storageKey);
         let data = existingDataStr ? JSON.parse(existingDataStr) : { date: today, exercises: [] };
 
-        // Wenn das Datum alt ist, Reset
         if (data.date !== today) {
             data = { date: today, exercises: [] };
         }
 
-        // Prüfen ob Übung schon drin ist (Vermeidung von Duplikaten)
         const alreadyExists = data.exercises.some((ex: Exercise) => ex.id === exercise.id);
         
         if (!alreadyExists) {
             data.exercises.push(exercise);
             await AsyncStorage.setItem(storageKey, JSON.stringify(data));
-            console.log("Fehler für heute gespeichert:", exercise.id);
         }
-    } catch (e) { console.error("Fehler beim Speichern des Fehlers", e); }
+    } catch (e) { console.error(e); }
   };
 
+  // --- LOGIK: ANTWORT PRÜFEN ---
   const checkAnswer = () => {
     let correct = false;
     
@@ -171,13 +230,16 @@ export default function LessonScreen() {
     } else {
       setMistakes(m => m + 1);
       
-      // NEU: Fehler speichern!
-      saveDailyMistake(currentExercise);
+      // Nur bei normalen Lektionen Fehler speichern (nicht in der Prüfung, da ist eh alles Zufall)
+      if (lessonType !== 'exam') {
+          saveDailyMistake(currentExercise);
+      }
 
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
-      const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
       
+      // Fehler wiederholen: Am Ende anfügen oder zufällig einschieben
+      const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
       if (remainingExercises > 0) {
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
         newQueue.splice(currentExerciseIndex + 1 + randomOffset, 0, currentItem);
@@ -189,7 +251,9 @@ export default function LessonScreen() {
     setShowFeedback(true);
   };
 
+  // --- LOGIK: LEKTION BEENDEN ---
   const finishLesson = async () => {
+    // Echte Fehler zählen (ohne Wiederholungen)
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const scorePercentage = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
 
@@ -198,10 +262,25 @@ export default function LessonScreen() {
     else if (scorePercentage >= 75) stars = 2;
     else if (scorePercentage >= 50) stars = 1;
 
-    setEarnedStars(stars);
     setIsLessonFinished(true);
 
-    if (lessonId !== 'practice') {
+    // SPEICHERN
+    if (lessonType === 'exam') {
+        // Prüfung bestanden? (Hier simpel: Wenn durchgehalten, dann bestanden)
+        // Man könnte auch sagen: Nur wenn stars >= 1
+        setExamPassed(true);
+        setEarnedStars(stars); // Nur zur Anzeige
+
+        try {
+            const existingExams = await AsyncStorage.getItem('examScores');
+            let exams = existingExams ? JSON.parse(existingExams) : {};
+            exams[lessonId] = true; // lessonId ist hier die Unit-ID
+            await AsyncStorage.setItem('examScores', JSON.stringify(exams));
+        } catch(e) {}
+
+    } else if (lessonId !== 'practice') {
+        // Normale Lektion
+        setEarnedStars(stars);
         try {
           const existingData = await AsyncStorage.getItem('lessonScores');
           let scores = existingData ? JSON.parse(existingData) : {};
@@ -240,27 +319,49 @@ export default function LessonScreen() {
     );
   }
 
+  // --- END SCREEN (Unterschiedlich für Exam / Normal) ---
   if (isLessonFinished) {
       const isPractice = lessonId === 'practice';
+      const isExam = lessonType === 'exam';
       
       return (
         <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}>
-            <Text style={styles.finishTitle}>
-                {isPractice ? "Training beendet!" : "Lektion beendet!"}
-            </Text>
             
-            <View style={styles.starsContainer}>
-                {[1, 2, 3].map((star) => (
-                    <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
-                ))}
-            </View>
+            {/* PRÜFUNG BESTANDEN SCREEN */}
+            {isExam ? (
+                <>
+                    <Ionicons name="trophy" size={80} color="#FFD700" style={{marginBottom: 20}} />
+                    <Text style={styles.finishTitle}>Kapitel gemeistert!</Text>
+                    <Text style={styles.finishSubText}>
+                        Du hast die Prüfung bestanden und das nächste Kapitel freigeschaltet.
+                    </Text>
+                </>
+            ) : (
+                /* NORMALER SCREEN */
+                <>
+                    <Text style={styles.finishTitle}>
+                        {isPractice ? "Training beendet!" : "Lektion beendet!"}
+                    </Text>
+                    
+                    <View style={styles.starsContainer}>
+                        {[1, 2, 3].map((star) => (
+                            <Ionicons 
+                                key={star} 
+                                name={star <= earnedStars ? "star" : "star-outline"} 
+                                size={60} 
+                                color="#FFD700" 
+                            />
+                        ))}
+                    </View>
 
-            <Text style={styles.finishSubText}>
-                {earnedStars === 3 ? "Perfekt! Alles beim ersten Mal richtig." : 
-                 earnedStars === 2 ? "Super gemacht!" :
-                 earnedStars === 1 ? "Gut, aber übe noch etwas." : 
-                 "Versuche es nochmal für mehr Sterne."}
-            </Text>
+                    <Text style={styles.finishSubText}>
+                        {earnedStars === 3 ? "Perfekt! Alles richtig." : 
+                         earnedStars === 2 ? "Super gemacht!" :
+                         earnedStars === 1 ? "Gut, aber übe noch etwas." : 
+                         "Versuche es nochmal für mehr Sterne."}
+                    </Text>
+                </>
+            )}
 
             {isPractice && (
                 <Text style={{color: '#999', marginBottom: 20, fontStyle: 'italic'}}>
@@ -269,15 +370,20 @@ export default function LessonScreen() {
             )}
 
             <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
-                <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
+                <Text style={styles.checkButtonText}>
+                    {isExam ? "ZUR KAPITEL-ÜBERSICHT" : "ZUR ÜBERSICHT"}
+                </Text>
             </TouchableOpacity>
         </SafeAreaView>
       );
   }
 
+  // --- MAIN SCREEN ---
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        
+        {/* Header mit Progressbar */}
         <View style={styles.header}>
           <View style={styles.progressBarBackground}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
@@ -298,6 +404,7 @@ export default function LessonScreen() {
             <Text style={styles.question}>{currentExercise.question}</Text>
           </View>
 
+          {/* Eingabefeld (für Übersetzungen) */}
           {(currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') && (
             <TextInput 
               style={styles.input} 
@@ -310,6 +417,7 @@ export default function LessonScreen() {
             />
           )}
 
+          {/* Multiple Choice Buttons */}
           {currentExercise.type === 'multiple_choice' && (
             <View style={styles.optionsContainer}>
               {currentExercise.options?.map((option: string, index: number) => (
@@ -329,12 +437,17 @@ export default function LessonScreen() {
         </ScrollView>
 
         <View style={styles.footer}>
-          <TouchableOpacity style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} onPress={checkAnswer} disabled={!userInput && selectedOption === null}>
+          <TouchableOpacity 
+            style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} 
+            onPress={checkAnswer} 
+            disabled={!userInput && selectedOption === null}
+          >
             <Text style={styles.checkButtonText}>ÜBERPRÜFEN</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
 
+      {/* FEEDBACK MODAL (Unten) */}
       <Modal animationType="slide" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
           <View style={[styles.feedbackContainer, isCorrect ? styles.bgSuccess : styles.bgError]}>
@@ -350,7 +463,7 @@ export default function LessonScreen() {
             </View>
             <TouchableOpacity style={styles.continueButton} onPress={nextExercise}>
               <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>
-                {isCorrect ? 'WEITER' : 'OKAY (WIRD WIEDERHOLT)'}
+                {isCorrect ? 'WEITER' : 'OKAY'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -389,7 +502,7 @@ const styles = StyleSheet.create({
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
-  finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20 },
+  finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   finishSubText: { fontSize: 18, color: '#555', marginBottom: 20, textAlign: 'center', paddingHorizontal: 20 },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10 },
 });
