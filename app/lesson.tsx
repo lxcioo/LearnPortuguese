@@ -4,15 +4,15 @@ import { Audio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    Modal,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet, Text,
-    TextInput, TouchableOpacity,
-    View
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet, Text,
+  TextInput, TouchableOpacity,
+  View
 } from 'react-native';
 
 import content from '../content.json';
@@ -20,7 +20,6 @@ import content from '../content.json';
 const courseData = content.courses[0];
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
-// FIX: Definition, wie eine Übung aussieht (Interface)
 interface Exercise {
   id: string;
   type: string;
@@ -38,67 +37,48 @@ export default function LessonScreen() {
   const params = useLocalSearchParams();
   const lessonId = params.id as string; 
 
-  // --- STATE MIT TYPEN ---
   const [loading, setLoading] = useState(true);
-  
-  // FIX: Wir sagen, lessonQueue ist eine Liste von "Exercise"
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]); 
-  
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
-  // FIX: Sound kann auch undefined sein
   const [sound, setSound] = useState<Audio.Sound | undefined>();
-  
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
 
   useEffect(() => {
     const initLesson = async () => {
-      let exercises: any[] = []; // Hier kurz any erlauben beim Laden
-
+      let exercises: any[] = [];
       if (lessonId === 'practice') {
         const savedSession = await AsyncStorage.getItem('currentPracticeSession');
-        if (savedSession) {
-          exercises = JSON.parse(savedSession);
-        }
+        if (savedSession) exercises = JSON.parse(savedSession);
       } else {
         const lesson = courseData.lessons.find(l => l.id === lessonId);
-        if (lesson) {
-          exercises = [...lesson.exercises];
-        }
+        if (lesson) exercises = [...lesson.exercises];
       }
-
       setLessonQueue(exercises);
       setTotalQuestions(exercises.length);
       setLoading(false);
     };
-
     initLesson();
   }, [lessonId]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
-  
-  const progressPercent = lessonQueue.length > 0 
-      ? (currentExerciseIndex / lessonQueue.length) * 100 
-      : 0;
+  const progressPercent = lessonQueue.length > 0 ? (currentExerciseIndex / lessonQueue.length) * 100 : 0;
 
   useEffect(() => {
     return sound ? () => { sound.unloadAsync(); } : undefined;
   }, [sound]);
 
-  // FIX: Parameter Typ (string)
   const normalize = (str: string) => {
     if (!str) return "";
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
   };
 
-  // FIX: Parameter Typ (string)
   const playAudio = async (filename: string) => {
     try {
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
@@ -111,13 +91,60 @@ export default function LessonScreen() {
     } catch (e) { console.error("Audio Fehler:", e); }
   };
 
+  // --- NEU: STREAK UPDATE FUNKTION ---
+  const updateStreakProgress = async () => {
+    try {
+        const today = new Date().toDateString(); // "Fri Feb 07 2026"
+        
+        // 1. Tagesfortschritt laden
+        const dailyProgressStr = await AsyncStorage.getItem('dailyProgress');
+        let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
+
+        // Wenn das Datum alt ist, Reset auf 0
+        if (dailyData.date !== today) {
+            dailyData = { count: 0, date: today };
+        }
+
+        // Zähler erhöhen
+        dailyData.count += 1;
+        await AsyncStorage.setItem('dailyProgress', JSON.stringify(dailyData));
+
+        // 2. Prüfen ob Streak erhöht werden muss (bei >= 15 Aufgaben)
+        if (dailyData.count >= 15) {
+            const streakDataStr = await AsyncStorage.getItem('streakData');
+            let streakData = streakDataStr ? JSON.parse(streakDataStr) : { currentStreak: 0, lastStreakDate: '' };
+
+            // Streak nur erhöhen, wenn für HEUTE noch nicht geschehen
+            if (streakData.lastStreakDate !== today) {
+                
+                // Prüfen ob Streak fortgesetzt wird (Gestern war der letzte)
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toDateString();
+
+                if (streakData.lastStreakDate === yesterdayStr) {
+                    streakData.currentStreak += 1;
+                } else {
+                    // Streak war unterbrochen oder neu
+                    streakData.currentStreak = 1;
+                }
+
+                streakData.lastStreakDate = today;
+                await AsyncStorage.setItem('streakData', JSON.stringify(streakData));
+                
+                // Optional: Kleines Feedback für den User
+                // Alert.alert("🔥 Streak erhöht!", "Du hast 15 Aufgaben heute geschafft!");
+            }
+        }
+    } catch(e) { console.error(e); }
+  };
+
   const checkAnswer = () => {
     let correct = false;
     
     if (currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') {
       const inputNorm = normalize(userInput);
       const answerNorm = normalize(currentExercise.correctAnswer);
-      // FIX: Typ für alt
       const isAlt = currentExercise.alternativeAnswers?.some((alt: string) => normalize(alt) === inputNorm);
       if (inputNorm === answerNorm || isAlt) correct = true;
     } else if (currentExercise.type === 'multiple_choice') {
@@ -128,6 +155,8 @@ export default function LessonScreen() {
     
     if (correct) {
       playAudio(currentExercise.id);
+      // NEU: Hier rufen wir die Streak-Logik auf
+      updateStreakProgress();
     } else {
       setMistakes(m => m + 1);
       const newQueue = [...lessonQueue];
@@ -196,7 +225,6 @@ export default function LessonScreen() {
     );
   }
 
-  // --- END SCREEN ---
   if (isLessonFinished) {
       const isPractice = lessonId === 'practice';
       
@@ -208,12 +236,7 @@ export default function LessonScreen() {
             
             <View style={styles.starsContainer}>
                 {[1, 2, 3].map((star) => (
-                    <Ionicons 
-                        key={star} 
-                        name={star <= earnedStars ? "star" : "star-outline"} 
-                        size={60} 
-                        color="#FFD700" 
-                    />
+                    <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
                 ))}
             </View>
 

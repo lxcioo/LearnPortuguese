@@ -19,20 +19,44 @@ const courseData = content.courses[0];
 export default function PathScreen() {
   const router = useRouter();
   
-  // FIX: Wir sagen explizit: Das ist ein Objekt mit Text-Keys und Zahlen-Werten
   const [scores, setScores] = useState<Record<string, number>>({});
-  
-  // FIX: Wir sagen: Das kann ein String sein ODER null
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  
+  // NEU: Streak State
+  const [streak, setStreak] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
       const loadProgress = async () => {
         try {
+          // 1. Scores laden
           const savedScores = await AsyncStorage.getItem('lessonScores');
           if (savedScores) {
             setScores(JSON.parse(savedScores));
           }
+
+          // 2. Streak laden und prüfen
+          const streakDataStr = await AsyncStorage.getItem('streakData');
+          if (streakDataStr) {
+            const { currentStreak, lastStreakDate } = JSON.parse(streakDataStr);
+            
+            // Datum berechnen
+            const today = new Date().toDateString();
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toDateString();
+
+            // Logik: Der Streak ist nur gültig, wenn er HEUTE oder GESTERN erhöht wurde.
+            // Wenn das letzte Mal vor 2 Tagen war, ist der Streak futsch (0).
+            if (lastStreakDate === today || lastStreakDate === yesterdayStr) {
+                setStreak(currentStreak);
+            } else {
+                setStreak(0); // Streak verloren
+            }
+          } else {
+            setStreak(0);
+          }
+
         } catch (e) { console.error(e); }
       };
       loadProgress();
@@ -42,26 +66,23 @@ export default function PathScreen() {
   const performReset = async () => {
     await AsyncStorage.removeItem('lessonScores');
     await AsyncStorage.removeItem('completedLessons');
+    await AsyncStorage.removeItem('streakData'); // Auch Streak löschen
+    await AsyncStorage.removeItem('dailyProgress'); // Tagesfortschritt löschen
     setScores({});
+    setStreak(0);
   };
 
   const resetProgress = () => {
     if (Platform.OS === 'web') {
         const confirm = window.confirm("Möchtest du wirklich den gesamten Fortschritt löschen?");
-        if (confirm) {
-            performReset();
-        }
+        if (confirm) performReset();
     } else {
         Alert.alert(
           "Fortschritt löschen",
           "Möchtest du wirklich wieder bei Null anfangen?",
           [
             { text: "Abbrechen", style: "cancel" },
-            { 
-              text: "Löschen", 
-              style: "destructive", 
-              onPress: performReset 
-            }
+            { text: "Löschen", style: "destructive", onPress: performReset }
           ]
         );
     }
@@ -69,9 +90,7 @@ export default function PathScreen() {
 
   const showLockedMessage = () => {
     setToastMessage("Hole erst mind. 1 Stern in der vorherigen Lektion! ⭐");
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 2500);
+    setTimeout(() => { setToastMessage(null); }, 2500);
   };
 
   return (
@@ -85,10 +104,22 @@ export default function PathScreen() {
                 style={styles.flagImage}
             />
         </View>
-        
-        <TouchableOpacity onPress={resetProgress} style={styles.resetButton}>
-           <Ionicons name="trash-outline" size={24} color="#ff4444" />
-        </TouchableOpacity>
+
+        {/* NEU: Rechte Seite mit Streak und Reset */}
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
+            
+            {/* STREAK ANZEIGE */}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Ionicons name="flame" size={24} color={streak > 0 ? "#ff9600" : "#ddd"} />
+                <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>
+                    {streak}
+                </Text>
+            </View>
+
+            <TouchableOpacity onPress={resetProgress} style={styles.resetButton}>
+               <Ionicons name="trash-outline" size={24} color="#ff4444" />
+            </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.pathContainer}>
@@ -166,6 +197,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: { fontSize: 22, fontWeight: 'bold', color: '#333', marginRight: 10 },
   flagImage: { width: 30, height: 20, borderRadius: 3 },
+  streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
   resetButton: { padding: 5 },
   pathContainer: { paddingVertical: 40, alignItems: 'center' },
   lessonRow: { marginBottom: 30, alignItems: 'center' },
