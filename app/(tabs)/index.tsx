@@ -5,14 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
-  Alert, Image, Modal,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet, Text,
-  TouchableOpacity,
-  View
+    Alert, Image, Modal,
+    Platform,
+    ScrollView,
+    StyleSheet, Text,
+    TouchableOpacity,
+    View
 } from 'react-native';
+// NEU: Import aus safe-area-context
+import { SafeAreaView } from 'react-native-safe-area-context';
 import content from '../../content.json';
 
 const courseData = content.courses[0];
@@ -69,7 +70,10 @@ export default function PathScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+    <SafeAreaView 
+      style={[styles.container, { backgroundColor: theme.background }]} 
+      edges={['top', 'left', 'right']}
+    >
       <View style={[styles.header, { borderBottomColor: colorScheme === 'dark' ? '#333' : '#f0f0f0' }]}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
@@ -80,7 +84,6 @@ export default function PathScreen() {
                 <Ionicons name="flame" size={24} color={streak > 0 ? "#ff9600" : (colorScheme === 'dark' ? '#555' : '#ddd')} />
                 <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>{streak}</Text>
             </View>
-            {/* RESET BUTTON ENTFERNT (Jetzt in Settings) */}
         </View>
       </View>
 

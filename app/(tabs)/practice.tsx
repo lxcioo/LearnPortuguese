@@ -4,7 +4,6 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import {
   Alert, Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Switch,
@@ -12,16 +11,16 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import content from '../../content.json';
-// Importiere den Theme Hook
+// NEU: Import aus safe-area-context
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../components/ThemeContext';
+import content from '../../content.json';
 
-// Zugriff auf die neuen Units
 const courseData = content.courses[0];
 
 export default function PracticeScreen() {
   const router = useRouter();
-  const { isDarkMode } = useTheme(); // Theme abrufen
+  const { isDarkMode } = useTheme(); 
   
   const [scores, setScores] = useState<Record<string, number>>({});
   const [examScores, setExamScores] = useState<Record<string, boolean>>({});
@@ -37,27 +36,25 @@ export default function PracticeScreen() {
       subText: isDarkMode ? '#9BA1A6' : '#777',
       headerBg: isDarkMode ? '#151718' : '#fff',
       border: isDarkMode ? '#333' : '#eee',
-      mistakeBtnBg: isDarkMode ? '#2C1A1A' : '#fff', // Dunkles Rot/Braun im Darkmode
+      mistakeBtnBg: isDarkMode ? '#2C1A1A' : '#fff', 
       mistakeBtnBorder: isDarkMode ? '#5c2b2b' : '#ffdfe0',
       sectionTitle: isDarkMode ? '#ccc' : '#444',
       cardRowBorder: isDarkMode ? '#333' : '#f9f9f9',
       countBtnBg: isDarkMode ? '#232526' : '#fff',
       countBtnBorder: isDarkMode ? '#444' : '#e5e5e5',
-      countBtnSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff', // Dunkles Grün im Darkmode
+      countBtnSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff',
   };
 
   useFocusEffect(
     useCallback(() => {
       const loadData = async () => {
         try {
-            // 1. Scores laden (für Freischaltung)
             const savedScores = await AsyncStorage.getItem('lessonScores');
             setScores(savedScores ? JSON.parse(savedScores) : {});
 
             const savedExams = await AsyncStorage.getItem('examScores');
             setExamScores(savedExams ? JSON.parse(savedExams) : {});
 
-            // 2. Fehler von heute laden
             const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
             if (dailyMistakesStr) {
                 const data = JSON.parse(dailyMistakesStr);
@@ -83,7 +80,6 @@ export default function PracticeScreen() {
     }));
   };
 
-  // Funktion: Nur Fehler üben
   const startMistakePractice = async () => {
       if (mistakesCount === 0) {
           Alert.alert("Perfekt!", "Du hast heute noch keine Fehler gemacht.");
@@ -100,11 +96,9 @@ export default function PracticeScreen() {
       } catch(e) { console.error(e); }
   };
 
-  // Funktion: Normale Übung starten
   const startPractice = async () => {
     let pool: any[] = [];
     
-    // Durchsuche alle Units und Levels nach ausgewählten Lektionen
     courseData.units.forEach(unit => {
         unit.levels.forEach(level => {
             if (selectedLessons[level.id]) {
@@ -118,13 +112,11 @@ export default function PracticeScreen() {
       return;
     }
 
-    // Mischen (Fisher-Yates Shuffle)
     for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
 
-    // Nur die gewünschte Anzahl nehmen
     const practiceSession = pool.slice(0, questionCount);
 
     try {
@@ -136,7 +128,10 @@ export default function PracticeScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
+    <SafeAreaView 
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+      edges={['top', 'left', 'right']}
+    >
       <View style={[styles.header, { backgroundColor: themeColors.headerBg, borderBottomColor: themeColors.border }]}>
         <Text style={[styles.headerTitle, { color: themeColors.text }]}>Training 💪</Text>
         <Text style={[styles.subTitle, { color: themeColors.subText }]}>Wiederhole bekannte Lektionen</Text>
@@ -168,8 +163,6 @@ export default function PracticeScreen() {
         <Text style={[styles.sectionTitle, { color: themeColors.sectionTitle }]}>Lektionen auswählen:</Text>
         <View style={[styles.card, { backgroundColor: themeColors.card }]}>
           {courseData.units.map((unit, uIndex) => {
-              
-              // Prüfen ob Unit generell freigeschaltet ist
               const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
               
               if (!isUnitUnlocked) return null;

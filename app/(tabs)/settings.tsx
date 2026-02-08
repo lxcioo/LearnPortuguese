@@ -3,7 +3,9 @@ import { Colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+// NEU: Import aus safe-area-context
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
   const { isDarkMode, toggleTheme, theme, gender, setGender } = useTheme();
@@ -27,7 +29,10 @@ export default function SettingsScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: currentColors.background }]}>
+    <SafeAreaView 
+      style={[styles.container, { backgroundColor: currentColors.background }]}
+      edges={['top', 'left', 'right']}
+    >
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: currentColors.text }]}>Einstellungen</Text>
       </View>

@@ -8,12 +8,13 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet, Text,
   TextInput, TouchableOpacity,
   View
 } from 'react-native';
+// NEU: Import aus safe-area-context
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../components/ThemeContext';
 import content from '../content.json';
@@ -31,13 +32,13 @@ interface Exercise {
   options?: string[];
   correctAnswerIndex?: number;
   optionsLanguage?: string;
-  gender?: 'm' | 'f'; // Neues Feld im Interface
+  gender?: 'm' | 'f';
 }
 
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { isDarkMode, gender } = useTheme(); // Gender aus dem Context holen
+  const { isDarkMode, gender } = useTheme(); 
   
   const lessonId = params.id as string; 
   const lessonType = params.type as string; 
@@ -92,7 +93,6 @@ export default function LessonScreen() {
             let allUnitExercises: Exercise[] = [];
             unit.levels.forEach(level => {
                 if (level.exercises) {
-                    // Type Assertion, da JSON generic ist
                     allUnitExercises = [...allUnitExercises, ...level.exercises as Exercise[]];
                 }
             });
@@ -109,24 +109,18 @@ export default function LessonScreen() {
       }
 
       // 2. Filtern nach Geschlecht
-      // Regel:
-      // - Keine Angabe ('gender' undefined) -> Alle sehen es
-      // - User ist 'd' (divers) -> Sieht ALLES (auch 'm' und 'f' spezifische)
-      // - User ist 'm' oder 'f' -> Sieht nur neutrale + passende
       let filteredExercises = rawExercises.filter(ex => {
-        if (!ex.gender) return true; // Neutral
-        if (gender === 'd') return true; // Divers sieht beide Varianten
-        return ex.gender === gender; // Match (m==m oder f==f)
+        if (!ex.gender) return true; 
+        if (gender === 'd') return true; 
+        return ex.gender === gender; 
       });
 
       // 3. Wenn Exam: Mischen und Begrenzen
       if (lessonType === 'exam') {
-          // Shuffle
           for (let i = filteredExercises.length - 1; i > 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
               [filteredExercises[i], filteredExercises[j]] = [filteredExercises[j], filteredExercises[i]];
           }
-          // Limit
           const count = Math.min(filteredExercises.length, 30);
           filteredExercises = filteredExercises.slice(0, count);
           
@@ -139,7 +133,7 @@ export default function LessonScreen() {
     };
 
     initLesson();
-  }, [lessonId, lessonType, gender]); // Gender als Dependency hinzufügen!
+  }, [lessonId, lessonType, gender]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
   
@@ -159,8 +153,6 @@ export default function LessonScreen() {
 
   const playAudio = async (filename: string) => {
     try {
-        // Hinweis: Dateinamen müssen nun evtl. '_m' oder '_f' enthalten, 
-        // da die IDs im JSON geändert wurden.
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
         if (sound) await sound.unloadAsync();
         const { sound: newSound } = await Audio.Sound.createAsync(
@@ -169,7 +161,6 @@ export default function LessonScreen() {
         );
         setSound(newSound);
     } catch (e) { 
-        // Silent fail oder Log, falls Audio noch nicht generiert wurde
         // console.log("Audio file missing for:", filename); 
     }
   };
@@ -242,7 +233,6 @@ export default function LessonScreen() {
 
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
-      // Fehlerhafte Übung später wiederholen
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
       if (remainingExercises > 0) {
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
@@ -319,7 +309,10 @@ export default function LessonScreen() {
       const isExam = lessonType === 'exam';
       
       return (
-        <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.background}]}>
+        <SafeAreaView 
+          style={[styles.container, {justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.background}]}
+          edges={['top', 'bottom', 'left', 'right']}
+        >
             {isExam ? (
                 <>
                     <Ionicons name="trophy" size={80} color="#FFD700" style={{marginBottom: 20}} />
@@ -369,7 +362,10 @@ export default function LessonScreen() {
 
   // --- MAIN SCREEN ---
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
+    <SafeAreaView 
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+      edges={['top', 'bottom', 'left', 'right']}
+    >
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         
         <View style={styles.header}>
