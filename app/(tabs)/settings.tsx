@@ -6,17 +6,14 @@ import React from 'react';
 import { Alert, SafeAreaView, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
 export default function SettingsScreen() {
-  const { isDarkMode, toggleTheme, theme } = useTheme();
+  const { isDarkMode, toggleTheme, theme, gender, setGender } = useTheme();
   const currentColors = Colors[theme];
 
   const performReset = async () => {
     try {
       await AsyncStorage.clear();
-      // Wenn der User Theme-Einstellungen behalten will, müssten wir das hier ausschließen,
-      // aber "Alles löschen" impliziert oft einen kompletten Reset.
-      // Falls das Theme bleiben soll, speichern wir es kurz zwischen oder setzen es neu.
-      // Hier löschen wir alles rigoros.
       Alert.alert("Erfolg", "Alle Daten wurden zurückgesetzt.");
+      // Optional: App neu starten oder Navigation resetten
     } catch (e) {
       console.error(e);
     }
@@ -38,6 +35,47 @@ export default function SettingsScreen() {
 
       <ScrollView contentContainerStyle={styles.content}>
         
+        {/* Sektion: Lernprofil (Gender) */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>LERN-PROFIL</Text>
+          <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
+             <Text style={[styles.cardText, { color: currentColors.text, marginBottom: 15 }]}>
+                Wähle deine Anredeform für passende Vokabeln (z.B. Obrigado vs. Obrigada):
+             </Text>
+             
+             <View style={styles.genderRow}>
+                <TouchableOpacity 
+                   style={[styles.genderBtn, gender === 'm' && styles.genderBtnActive]} 
+                   onPress={() => setGender('m')}
+                >
+                   <Text style={styles.genderIcon}>👨</Text>
+                   <Text style={[styles.genderLabel, gender === 'm' ? {color:'#fff'} : {color: currentColors.text}]}>Männlich</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                   style={[styles.genderBtn, gender === 'f' && styles.genderBtnActive]} 
+                   onPress={() => setGender('f')}
+                >
+                   <Text style={styles.genderIcon}>👩</Text>
+                   <Text style={[styles.genderLabel, gender === 'f' ? {color:'#fff'} : {color: currentColors.text}]}>Weiblich</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                   style={[styles.genderBtn, gender === 'd' && styles.genderBtnActive]} 
+                   onPress={() => setGender('d')}
+                >
+                   <Text style={styles.genderIcon}>🌈</Text>
+                   <Text style={[styles.genderLabel, gender === 'd' ? {color:'#fff'} : {color: currentColors.text}]}>Divers</Text>
+                </TouchableOpacity>
+             </View>
+             {gender === 'd' && (
+               <Text style={{color: '#999', fontSize: 12, marginTop: 10, textAlign:'center'}}>
+                 Modus 'Divers': Du lernst beide Formen (männlich & weiblich).
+               </Text>
+             )}
+          </View>
+        </View>
+
         {/* Sektion: Darstellung */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DARSTELLUNG</Text>
@@ -72,7 +110,7 @@ export default function SettingsScreen() {
         </View>
 
         <View style={{marginTop: 30, alignItems: 'center'}}>
-            <Text style={{color: '#999'}}>Version 1.0.0</Text>
+            <Text style={{color: '#999'}}>Version 1.1.0</Text>
         </View>
 
       </ScrollView>
@@ -95,5 +133,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 10
   },
-  rowText: { fontSize: 16, fontWeight: '500' }
+  card: { padding: 15, borderRadius: 12 },
+  cardText: { fontSize: 15 },
+  rowText: { fontSize: 16, fontWeight: '500' },
+  
+  genderRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 10 },
+  genderBtn: { 
+    flex: 1, 
+    alignItems: 'center', 
+    padding: 10, 
+    borderRadius: 10, 
+    borderWidth: 1, 
+    borderColor: '#ddd',
+    backgroundColor: 'transparent'
+  },
+  genderBtnActive: {
+    backgroundColor: '#58cc02',
+    borderColor: '#58cc02'
+  },
+  genderIcon: { fontSize: 24, marginBottom: 5 },
+  genderLabel: { fontSize: 12, fontWeight: '600' }
 });

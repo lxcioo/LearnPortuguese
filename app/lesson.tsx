@@ -15,15 +15,12 @@ import {
   View
 } from 'react-native';
 
-import content from '../content.json';
-// Importiere den Theme Hook
 import { useTheme } from '../components/ThemeContext';
+import content from '../content.json';
 
-// Wir greifen auf den ersten Kurs zu
 const courseData = content.courses[0];
 const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
 
-// Typ-Definitionen
 interface Exercise {
   id: string;
   type: string;
@@ -34,12 +31,13 @@ interface Exercise {
   options?: string[];
   correctAnswerIndex?: number;
   optionsLanguage?: string;
+  gender?: 'm' | 'f'; // Neues Feld im Interface
 }
 
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { isDarkMode } = useTheme(); // Theme Hook
+  const { isDarkMode, gender } = useTheme(); // Gender aus dem Context holen
   
   const lessonId = params.id as string; 
   const lessonType = params.type as string; 
@@ -67,7 +65,7 @@ export default function LessonScreen() {
       inputBg: isDarkMode ? '#232526' : '#f7f7f7',
       inputBorder: isDarkMode ? '#444' : '#e5e5e5',
       optionBorder: isDarkMode ? '#444' : '#e5e5e5',
-      optionSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff', // Dunkles Grün-Blau
+      optionSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff',
       speakerBg: isDarkMode ? '#232526' : '#ddf4ff',
       progressBarBg: isDarkMode ? '#333' : '#e5e5e5',
       footerBorder: isDarkMode ? '#333' : '#f0f0f0',
@@ -77,55 +75,71 @@ export default function LessonScreen() {
       finishSubText: isDarkMode ? '#bbb' : '#555',
   };
 
-  // --- INIT: Lektion laden ---
+  // --- INIT: Lektion laden & Filtern ---
   useEffect(() => {
     const initLesson = async () => {
-      let exercises: any[] = []; 
+      let rawExercises: Exercise[] = []; 
 
+      // 1. Übungen laden (Rohdaten)
       if (lessonId === 'practice') {
         const savedSession = await AsyncStorage.getItem('currentPracticeSession');
         if (savedSession) {
-          exercises = JSON.parse(savedSession);
+          rawExercises = JSON.parse(savedSession);
         }
-      
       } else if (lessonType === 'exam') {
         const unit = courseData.units.find(u => u.id === lessonId);
-        
         if (unit) {
-            let allUnitExercises: any[] = [];
+            let allUnitExercises: Exercise[] = [];
             unit.levels.forEach(level => {
                 if (level.exercises) {
-                    allUnitExercises = [...allUnitExercises, ...level.exercises];
+                    // Type Assertion, da JSON generic ist
+                    allUnitExercises = [...allUnitExercises, ...level.exercises as Exercise[]];
                 }
             });
-
-            for (let i = allUnitExercises.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allUnitExercises[i], allUnitExercises[j]] = [allUnitExercises[j], allUnitExercises[i]];
-            }
-
-            const count = Math.min(allUnitExercises.length, 30);
-            exercises = allUnitExercises.slice(0, count);
-            if(exercises.length === 0) Alert.alert("Ups", "Keine Übungen in diesem Kapitel gefunden!");
+            rawExercises = allUnitExercises;
         }
-
       } else {
         for (const unit of courseData.units) {
             const level = unit.levels.find(l => l.id === lessonId);
             if (level) {
-                exercises = [...level.exercises];
+                rawExercises = [...level.exercises] as Exercise[];
                 break; 
             }
         }
       }
 
-      setLessonQueue(exercises);
-      setTotalQuestions(exercises.length);
+      // 2. Filtern nach Geschlecht
+      // Regel:
+      // - Keine Angabe ('gender' undefined) -> Alle sehen es
+      // - User ist 'd' (divers) -> Sieht ALLES (auch 'm' und 'f' spezifische)
+      // - User ist 'm' oder 'f' -> Sieht nur neutrale + passende
+      let filteredExercises = rawExercises.filter(ex => {
+        if (!ex.gender) return true; // Neutral
+        if (gender === 'd') return true; // Divers sieht beide Varianten
+        return ex.gender === gender; // Match (m==m oder f==f)
+      });
+
+      // 3. Wenn Exam: Mischen und Begrenzen
+      if (lessonType === 'exam') {
+          // Shuffle
+          for (let i = filteredExercises.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [filteredExercises[i], filteredExercises[j]] = [filteredExercises[j], filteredExercises[i]];
+          }
+          // Limit
+          const count = Math.min(filteredExercises.length, 30);
+          filteredExercises = filteredExercises.slice(0, count);
+          
+          if(filteredExercises.length === 0) Alert.alert("Ups", "Keine passenden Übungen gefunden!");
+      }
+
+      setLessonQueue(filteredExercises);
+      setTotalQuestions(filteredExercises.length);
       setLoading(false);
     };
 
     initLesson();
-  }, [lessonId, lessonType]);
+  }, [lessonId, lessonType, gender]); // Gender als Dependency hinzufügen!
 
   const currentExercise = lessonQueue[currentExerciseIndex];
   
@@ -145,6 +159,8 @@ export default function LessonScreen() {
 
   const playAudio = async (filename: string) => {
     try {
+        // Hinweis: Dateinamen müssen nun evtl. '_m' oder '_f' enthalten, 
+        // da die IDs im JSON geändert wurden.
         const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
         if (sound) await sound.unloadAsync();
         const { sound: newSound } = await Audio.Sound.createAsync(
@@ -152,10 +168,12 @@ export default function LessonScreen() {
             { shouldPlay: true }
         );
         setSound(newSound);
-    } catch (e) { console.error("Audio Fehler:", e); }
+    } catch (e) { 
+        // Silent fail oder Log, falls Audio noch nicht generiert wurde
+        // console.log("Audio file missing for:", filename); 
+    }
   };
 
-  // Streak erhöhen
   const updateStreakProgress = async () => {
     try {
         const today = new Date().toDateString();
@@ -224,6 +242,7 @@ export default function LessonScreen() {
 
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
+      // Fehlerhafte Übung später wiederholen
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
       if (remainingExercises > 0) {
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
@@ -286,7 +305,7 @@ export default function LessonScreen() {
     return currentExercise.correctAnswer;
   };
 
-  if (loading) {
+  if (loading || !currentExercise) {
     return (
         <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: themeColors.background}}>
             <ActivityIndicator size="large" color="#58cc02" />

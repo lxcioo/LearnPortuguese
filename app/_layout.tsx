@@ -1,31 +1,82 @@
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import 'react-native-reanimated';
 
-import { ThemeProvider } from '@/components/ThemeContext';
+import { ThemeProvider, useTheme } from '@/components/ThemeContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-// Innere Komponente, die den Hook nutzt
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+// Komponente für das Gender-Auswahl-Modal beim ersten Start
+function GenderSelectionModal() {
+  const { gender, setGender, isLoading, isDarkMode } = useTheme();
+
+  // Wenn noch geladen wird oder Gender schon gesetzt ist, nichts anzeigen
+  if (isLoading || gender !== null) return null;
 
   return (
-    <NavigationThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <Modal visible={true} animationType="slide" transparent={false}>
+      <View style={[styles.modalContainer, { backgroundColor: isDarkMode ? '#151718' : '#fff' }]}>
+        <View style={styles.content}>
+            <Image 
+              source={{ uri: 'https://flagcdn.com/w160/pt.png' }} 
+              style={{ width: 80, height: 53, marginBottom: 30, borderRadius: 8 }} 
+            />
+            <Text style={[styles.title, { color: isDarkMode ? '#fff' : '#000' }]}>Bem-vindo!</Text>
+            <Text style={[styles.subtitle, { color: isDarkMode ? '#ccc' : '#555' }]}>
+              Im Portugiesischen hängen viele Wörter vom Geschlecht ab. 
+              Wie möchtest du angesprochen werden?
+            </Text>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.optionButton} onPress={() => setGender('m')}>
+                <Text style={styles.emoji}>👨</Text>
+                <Text style={styles.buttonText}>Männlich</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.optionButton} onPress={() => setGender('f')}>
+                <Text style={styles.emoji}>👩</Text>
+                <Text style={styles.buttonText}>Weiblich</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.optionButton} onPress={() => setGender('d')}>
+                <Text style={styles.emoji}>🌈</Text>
+                <Text style={styles.buttonText}>Divers</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={[styles.hint, { color: isDarkMode ? '#666' : '#999' }]}>
+              Dies beeinflusst, welche Vokabelformen du lernst (z.B. obrigado vs. obrigada). 
+              Du kannst das später in den Einstellungen ändern.
+            </Text>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function RootLayoutNav() {
+  const colorScheme = useColorScheme();
+  const { isDarkMode } = useTheme();
+
+  return (
+    <NavigationThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+        <Stack.Screen name="lesson" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      <GenderSelectionModal />
+      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
     </NavigationThemeProvider>
   );
 }
 
-// Hauptkomponente, die den Provider bereitstellt
 export default function RootLayout() {
   return (
     <ThemeProvider>
@@ -33,3 +84,23 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  content: { width: '100%', maxWidth: 400, alignItems: 'center' },
+  title: { fontSize: 32, fontWeight: 'bold', marginBottom: 15, textAlign: 'center' },
+  subtitle: { fontSize: 18, textAlign: 'center', marginBottom: 40, lineHeight: 26 },
+  buttonContainer: { width: '100%', gap: 15, marginBottom: 30 },
+  optionButton: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: '#f0f0f0', 
+    padding: 18, 
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: '#e5e5e5'
+  },
+  emoji: { fontSize: 24, marginRight: 15 },
+  buttonText: { fontSize: 18, fontWeight: '600', color: '#333' },
+  hint: { fontSize: 14, textAlign: 'center' }
+});
