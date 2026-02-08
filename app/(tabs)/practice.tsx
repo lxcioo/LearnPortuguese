@@ -32,10 +32,10 @@ export default function PracticeScreen() {
         try {
             // 1. Scores laden (für Freischaltung)
             const savedScores = await AsyncStorage.getItem('lessonScores');
-            if (savedScores) setScores(JSON.parse(savedScores));
+            setScores(savedScores ? JSON.parse(savedScores) : {});
 
             const savedExams = await AsyncStorage.getItem('examScores');
-            if (savedExams) setExamScores(JSON.parse(savedExams));
+            setExamScores(savedExams ? JSON.parse(savedExams) : {});
 
             // 2. Fehler von heute laden
             const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
@@ -47,6 +47,9 @@ export default function PracticeScreen() {
                 } else {
                     setMistakesCount(0);
                 }
+            } else {
+                // FIX: Wenn Reset gedrückt wurde (Storage leer), dann auch Anzeige auf 0 setzen
+                setMistakesCount(0);
             }
         } catch(e) { console.error(e); }
       };
