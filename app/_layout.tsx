@@ -12,11 +12,9 @@ export const unstable_settings = {
   anchor: '(tabs)',
 };
 
-// Komponente für das Gender-Auswahl-Modal beim ersten Start
 function GenderSelectionModal() {
   const { gender, setGender, isLoading, isDarkMode } = useTheme();
 
-  // Wenn noch geladen wird oder Gender schon gesetzt ist, nichts anzeigen
   if (isLoading || gender !== null) return null;
 
   return (
@@ -35,17 +33,14 @@ function GenderSelectionModal() {
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.optionButton} onPress={() => setGender('m')}>
-                <Text style={styles.emoji}>👨</Text>
                 <Text style={styles.buttonText}>Männlich</Text>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.optionButton} onPress={() => setGender('f')}>
-                <Text style={styles.emoji}>👩</Text>
                 <Text style={styles.buttonText}>Weiblich</Text>
               </TouchableOpacity>
               
               <TouchableOpacity style={styles.optionButton} onPress={() => setGender('d')}>
-                <Text style={styles.emoji}>🌈</Text>
                 <Text style={styles.buttonText}>Divers</Text>
               </TouchableOpacity>
             </View>
@@ -93,6 +88,7 @@ const styles = StyleSheet.create({
   buttonContainer: { width: '100%', gap: 15, marginBottom: 30 },
   optionButton: { 
     flexDirection: 'row', 
+    justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#f0f0f0', 
     padding: 18, 
@@ -100,7 +96,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#e5e5e5'
   },
-  emoji: { fontSize: 24, marginRight: 15 },
   buttonText: { fontSize: 18, fontWeight: '600', color: '#333' },
   hint: { fontSize: 14, textAlign: 'center' }
 });

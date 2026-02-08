@@ -13,7 +13,6 @@ export default function SettingsScreen() {
     try {
       await AsyncStorage.clear();
       Alert.alert("Erfolg", "Alle Daten wurden zurückgesetzt.");
-      // Optional: App neu starten oder Navigation resetten
     } catch (e) {
       console.error(e);
     }
@@ -48,7 +47,6 @@ export default function SettingsScreen() {
                    style={[styles.genderBtn, gender === 'm' && styles.genderBtnActive]} 
                    onPress={() => setGender('m')}
                 >
-                   <Text style={styles.genderIcon}>👨</Text>
                    <Text style={[styles.genderLabel, gender === 'm' ? {color:'#fff'} : {color: currentColors.text}]}>Männlich</Text>
                 </TouchableOpacity>
 
@@ -56,7 +54,6 @@ export default function SettingsScreen() {
                    style={[styles.genderBtn, gender === 'f' && styles.genderBtnActive]} 
                    onPress={() => setGender('f')}
                 >
-                   <Text style={styles.genderIcon}>👩</Text>
                    <Text style={[styles.genderLabel, gender === 'f' ? {color:'#fff'} : {color: currentColors.text}]}>Weiblich</Text>
                 </TouchableOpacity>
 
@@ -64,7 +61,6 @@ export default function SettingsScreen() {
                    style={[styles.genderBtn, gender === 'd' && styles.genderBtnActive]} 
                    onPress={() => setGender('d')}
                 >
-                   <Text style={styles.genderIcon}>🌈</Text>
                    <Text style={[styles.genderLabel, gender === 'd' ? {color:'#fff'} : {color: currentColors.text}]}>Divers</Text>
                 </TouchableOpacity>
              </View>
@@ -141,7 +137,7 @@ const styles = StyleSheet.create({
   genderBtn: { 
     flex: 1, 
     alignItems: 'center', 
-    padding: 10, 
+    padding: 15, 
     borderRadius: 10, 
     borderWidth: 1, 
     borderColor: '#ddd',
@@ -151,6 +147,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#58cc02',
     borderColor: '#58cc02'
   },
-  genderIcon: { fontSize: 24, marginBottom: 5 },
-  genderLabel: { fontSize: 12, fontWeight: '600' }
+  genderLabel: { fontSize: 14, fontWeight: '600' }
 });
