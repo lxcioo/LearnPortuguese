@@ -43,7 +43,7 @@
                 { "id": "u1_l2_e7", "type": "multiple_choice", "question": "Wie sagt man 'Sie ist'?", "correctAnswer": "Ela é", "options": ["Ele é", "Ela é", "Tu és"], "correctAnswerIndex": 1, "audioText": "Ela é" },
                 { "id": "u1_l2_e8", "type": "translate_to_pt", "question": "Der Mann", "correctAnswer": "O homem" },
                 { "id": "u1_l2_e9", "type": "translate_to_de", "question": "A mulher", "correctAnswer": "Die Frau" },
-                { "id": "u1_l2_e10", "type": "translate_to_pt", "question": "Ich bin Anna", "correctAnswer": "Eu sou a Anna", "alternativeAnswers": ["Eu sou Anna"] },
+                { "id": "u1_l2_e10", "type": "translate_to_pt", "question": "Ich bin Olivia", "correctAnswer": "Eu sou a Olivia", "alternativeAnswers": ["Eu sou Olivia"] },
                 { "id": "u1_l2_e11", "type": "multiple_choice", "question": "Was bedeutet 'Tudo bem'?", "correctAnswer": "Alles gut", "options": ["Guten Morgen", "Alles gut", "Ich bin"], "correctAnswerIndex": 1, "audioText": "Tudo bem", "optionsLanguage": "de" },
                 { "id": "u1_l2_e12", "type": "translate_to_de", "question": "Boa tarde", "correctAnswer": "Guten Tag", "alternativeAnswers": ["Guten Nachmittag"] },
                 { "id": "u1_l2_e13", "type": "translate_to_pt", "question": "Gute Nacht", "correctAnswer": "Boa noite" },
