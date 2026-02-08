@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 
 import content from '../content.json';
+// Importiere den Theme Hook
+import { useTheme } from '../components/ThemeContext';
 
 // Wir greifen auf den ersten Kurs zu
 const courseData = content.courses[0];
@@ -37,78 +39,82 @@ interface Exercise {
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
+  const { isDarkMode } = useTheme(); // Theme Hook
   
-  // Parameter aus der URL lesen
   const lessonId = params.id as string; 
-  const lessonType = params.type as string; // 'normal', 'exam' oder 'practice' (undefined ist 'normal')
+  const lessonType = params.type as string; 
 
   // --- STATE ---
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]); 
-  
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
   const [sound, setSound] = useState<Audio.Sound | undefined>();
-  
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
   const [examPassed, setExamPassed] = useState(false);
 
+  // --- DYNAMISCHE FARBEN ---
+  const themeColors = {
+      background: isDarkMode ? '#151718' : '#fff',
+      text: isDarkMode ? '#ECEDEE' : '#3c3c3c',
+      subText: isDarkMode ? '#9BA1A6' : '#777',
+      inputBg: isDarkMode ? '#232526' : '#f7f7f7',
+      inputBorder: isDarkMode ? '#444' : '#e5e5e5',
+      optionBorder: isDarkMode ? '#444' : '#e5e5e5',
+      optionSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff', // Dunkles Grün-Blau
+      speakerBg: isDarkMode ? '#232526' : '#ddf4ff',
+      progressBarBg: isDarkMode ? '#333' : '#e5e5e5',
+      footerBorder: isDarkMode ? '#333' : '#f0f0f0',
+      feedbackSuccessBg: isDarkMode ? '#1e3a1e' : '#d7ffb8',
+      feedbackErrorBg: isDarkMode ? '#3a1e1e' : '#ffdfe0',
+      feedbackText: isDarkMode ? '#ECEDEE' : '#3c3c3c',
+      finishSubText: isDarkMode ? '#bbb' : '#555',
+  };
+
   // --- INIT: Lektion laden ---
   useEffect(() => {
     const initLesson = async () => {
-      let exercises: any[] = []; // Hier kurz any erlauben beim Laden
+      let exercises: any[] = []; 
 
       if (lessonId === 'practice') {
-        // Fall 1: Übungsmodus (aus AsyncStorage)
         const savedSession = await AsyncStorage.getItem('currentPracticeSession');
         if (savedSession) {
           exercises = JSON.parse(savedSession);
         }
       
       } else if (lessonType === 'exam') {
-        // Fall 2: Prüfung (Sammle alle Aufgaben der Unit)
         const unit = courseData.units.find(u => u.id === lessonId);
         
         if (unit) {
             let allUnitExercises: any[] = [];
-            
-            // Alle Level durchgehen und Übungen sammeln
             unit.levels.forEach(level => {
                 if (level.exercises) {
                     allUnitExercises = [...allUnitExercises, ...level.exercises];
                 }
             });
 
-            // Mischen (Shuffle)
             for (let i = allUnitExercises.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [allUnitExercises[i], allUnitExercises[j]] = [allUnitExercises[j], allUnitExercises[i]];
             }
 
-            // Nimm maximal 30 Stück (oder weniger, wenn nicht genug da sind)
             const count = Math.min(allUnitExercises.length, 30);
             exercises = allUnitExercises.slice(0, count);
-            
             if(exercises.length === 0) Alert.alert("Ups", "Keine Übungen in diesem Kapitel gefunden!");
         }
 
       } else {
-        // Fall 3: Normale Lektion (Suche das Level in den Units)
-        // Wir suchen in jeder Unit nach dem Level mit der ID 'lessonId'
         for (const unit of courseData.units) {
             const level = unit.levels.find(l => l.id === lessonId);
             if (level) {
                 exercises = [...level.exercises];
-                break; // Gefunden, Suche beenden
+                break; 
             }
         }
       }
@@ -128,7 +134,6 @@ export default function LessonScreen() {
       : 0;
 
   // --- HELPER FUNKTIONEN ---
-
   useEffect(() => {
     return sound ? () => { sound.unloadAsync(); } : undefined;
   }, [sound]);
@@ -154,13 +159,10 @@ export default function LessonScreen() {
   const updateStreakProgress = async () => {
     try {
         const today = new Date().toDateString();
-        
         const dailyProgressStr = await AsyncStorage.getItem('dailyProgress');
         let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
 
-        if (dailyData.date !== today) {
-            dailyData = { count: 0, date: today };
-        }
+        if (dailyData.date !== today) dailyData = { count: 0, date: today };
 
         dailyData.count += 1;
         await AsyncStorage.setItem('dailyProgress', JSON.stringify(dailyData));
@@ -174,11 +176,8 @@ export default function LessonScreen() {
                 yesterday.setDate(yesterday.getDate() - 1);
                 const yesterdayStr = yesterday.toDateString();
 
-                if (streakData.lastStreakDate === yesterdayStr) {
-                    streakData.currentStreak += 1;
-                } else {
-                    streakData.currentStreak = 1;
-                }
+                if (streakData.lastStreakDate === yesterdayStr) streakData.currentStreak += 1;
+                else streakData.currentStreak = 1;
 
                 streakData.lastStreakDate = today;
                 await AsyncStorage.setItem('streakData', JSON.stringify(streakData));
@@ -187,21 +186,16 @@ export default function LessonScreen() {
     } catch(e) { console.error(e); }
   };
 
-  // Fehler speichern für "Daily Mistakes"
   const saveDailyMistake = async (exercise: Exercise) => {
     try {
         const today = new Date().toDateString();
         const storageKey = 'dailyMistakes';
-        
         const existingDataStr = await AsyncStorage.getItem(storageKey);
         let data = existingDataStr ? JSON.parse(existingDataStr) : { date: today, exercises: [] };
 
-        if (data.date !== today) {
-            data = { date: today, exercises: [] };
-        }
+        if (data.date !== today) data = { date: today, exercises: [] };
 
         const alreadyExists = data.exercises.some((ex: Exercise) => ex.id === exercise.id);
-        
         if (!alreadyExists) {
             data.exercises.push(exercise);
             await AsyncStorage.setItem(storageKey, JSON.stringify(data));
@@ -209,10 +203,8 @@ export default function LessonScreen() {
     } catch (e) { console.error(e); }
   };
 
-  // --- LOGIK: ANTWORT PRÜFEN ---
   const checkAnswer = () => {
     let correct = false;
-    
     if (currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') {
       const inputNorm = normalize(userInput);
       const answerNorm = normalize(currentExercise.correctAnswer);
@@ -223,22 +215,15 @@ export default function LessonScreen() {
     }
 
     setIsCorrect(correct);
-    
     if (correct) {
       playAudio(currentExercise.id);
       updateStreakProgress();
     } else {
       setMistakes(m => m + 1);
-      
-      // Nur bei normalen Lektionen Fehler speichern (nicht in der Prüfung, da ist eh alles Zufall)
-      if (lessonType !== 'exam') {
-          saveDailyMistake(currentExercise);
-      }
+      if (lessonType !== 'exam') saveDailyMistake(currentExercise);
 
       const newQueue = [...lessonQueue];
       const currentItem = newQueue[currentExerciseIndex];
-      
-      // Fehler wiederholen: Am Ende anfügen oder zufällig einschieben
       const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
       if (remainingExercises > 0) {
         const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
@@ -251,9 +236,7 @@ export default function LessonScreen() {
     setShowFeedback(true);
   };
 
-  // --- LOGIK: LEKTION BEENDEN ---
   const finishLesson = async () => {
-    // Echte Fehler zählen (ohne Wiederholungen)
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const scorePercentage = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
 
@@ -263,24 +246,17 @@ export default function LessonScreen() {
     else if (scorePercentage >= 50) stars = 1;
 
     setIsLessonFinished(true);
-
-    // FIX: Sterne IMMER für die UI setzen, egal welcher Modus
     setEarnedStars(stars);
 
-    // SPEICHERN
     if (lessonType === 'exam') {
-        // Prüfung bestanden?
         setExamPassed(true);
-        
         try {
             const existingExams = await AsyncStorage.getItem('examScores');
             let exams = existingExams ? JSON.parse(existingExams) : {};
-            exams[lessonId] = true; // lessonId ist hier die Unit-ID
+            exams[lessonId] = true; 
             await AsyncStorage.setItem('examScores', JSON.stringify(exams));
         } catch(e) {}
-
     } else if (lessonId !== 'practice') {
-        // Normale Lektion: Nur hier wird dauerhaft gespeichert
         try {
           const existingData = await AsyncStorage.getItem('lessonScores');
           let scores = existingData ? JSON.parse(existingData) : {};
@@ -297,7 +273,6 @@ export default function LessonScreen() {
     setShowFeedback(false);
     setUserInput('');
     setSelectedOption(null);
-
     if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(currentExerciseIndex + 1);
     } else {
@@ -313,60 +288,43 @@ export default function LessonScreen() {
 
   if (loading) {
     return (
-        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+        <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: themeColors.background}}>
             <ActivityIndicator size="large" color="#58cc02" />
         </View>
     );
   }
 
-  // --- END SCREEN (Unterschiedlich für Exam / Normal) ---
+  // --- END SCREEN ---
   if (isLessonFinished) {
       const isPractice = lessonId === 'practice';
       const isExam = lessonType === 'exam';
       
       return (
-        <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}>
-            
-            {/* PRÜFUNG BESTANDEN SCREEN */}
+        <SafeAreaView style={[styles.container, {justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.background}]}>
             {isExam ? (
                 <>
                     <Ionicons name="trophy" size={80} color="#FFD700" style={{marginBottom: 20}} />
                     <Text style={styles.finishTitle}>Kapitel gemeistert!</Text>
-                    <Text style={styles.finishSubText}>
+                    <Text style={[styles.finishSubText, {color: themeColors.finishSubText}]}>
                         Du hast die Prüfung bestanden und das nächste Kapitel freigeschaltet.
                     </Text>
-                    
-                    {/* Auch bei Prüfung Sterne anzeigen */}
                     <View style={styles.starsContainer}>
                         {[1, 2, 3].map((star) => (
-                            <Ionicons 
-                                key={star} 
-                                name={star <= earnedStars ? "star" : "star-outline"} 
-                                size={40} 
-                                color="#FFD700" 
-                            />
+                            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={40} color="#FFD700" />
                         ))}
                     </View>
                 </>
             ) : (
-                /* NORMALER SCREEN */
                 <>
                     <Text style={styles.finishTitle}>
                         {isPractice ? "Training beendet!" : "Lektion beendet!"}
                     </Text>
-                    
                     <View style={styles.starsContainer}>
                         {[1, 2, 3].map((star) => (
-                            <Ionicons 
-                                key={star} 
-                                name={star <= earnedStars ? "star" : "star-outline"} 
-                                size={60} 
-                                color="#FFD700" 
-                            />
+                            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
                         ))}
                     </View>
-
-                    <Text style={styles.finishSubText}>
+                    <Text style={[styles.finishSubText, {color: themeColors.finishSubText}]}>
                         {earnedStars === 3 ? "Perfekt! Alles richtig." : 
                          earnedStars === 2 ? "Super gemacht!" :
                          earnedStars === 1 ? "Gut, aber übe noch etwas." : 
@@ -392,34 +350,36 @@ export default function LessonScreen() {
 
   // --- MAIN SCREEN ---
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         
-        {/* Header mit Progressbar */}
         <View style={styles.header}>
-          <View style={styles.progressBarBackground}>
+          <View style={[styles.progressBarBackground, { backgroundColor: themeColors.progressBarBg }]}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.instruction}>
+          <Text style={[styles.instruction, { color: themeColors.subText }]}>
             {currentExercise.type === 'translate_to_pt' ? 'Übersetze ins Portugiesische' : 
              currentExercise.type === 'translate_to_de' ? 'Übersetze ins Deutsche' : 
              'Wähle die richtige Lösung'}
           </Text>
           
           <View style={styles.questionContainer}>
-            <TouchableOpacity style={styles.speakerButton} onPress={() => playAudio(currentExercise.id)}>
+            <TouchableOpacity style={[styles.speakerButton, { backgroundColor: themeColors.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
                <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
             </TouchableOpacity>
-            <Text style={styles.question}>{currentExercise.question}</Text>
+            <Text style={[styles.question, { color: themeColors.text }]}>{currentExercise.question}</Text>
           </View>
 
-          {/* Eingabefeld (für Übersetzungen) */}
+          {/* Eingabefeld */}
           {(currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') && (
             <TextInput 
-              style={styles.input} 
+              style={[
+                  styles.input, 
+                  { backgroundColor: themeColors.inputBg, borderColor: themeColors.inputBorder, color: themeColors.text }
+              ]} 
               placeholder={currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...'}
               placeholderTextColor="#ccc" 
               value={userInput} 
@@ -429,13 +389,17 @@ export default function LessonScreen() {
             />
           )}
 
-          {/* Multiple Choice Buttons */}
+          {/* Multiple Choice */}
           {currentExercise.type === 'multiple_choice' && (
             <View style={styles.optionsContainer}>
               {currentExercise.options?.map((option: string, index: number) => (
                 <TouchableOpacity 
                   key={index} 
-                  style={[styles.optionButton, selectedOption === index && styles.optionSelected]} 
+                  style={[
+                      styles.optionButton, 
+                      { borderColor: themeColors.optionBorder },
+                      selectedOption === index && { borderColor: '#1cb0f6', backgroundColor: themeColors.optionSelectedBg }
+                  ]} 
                   onPress={() => {
                     setSelectedOption(index);
                     playAudio(`${currentExercise.id}_opt_${index}`);
@@ -448,7 +412,7 @@ export default function LessonScreen() {
           )}
         </ScrollView>
 
-        <View style={styles.footer}>
+        <View style={[styles.footer, { borderColor: themeColors.footerBorder }]}>
           <TouchableOpacity 
             style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} 
             onPress={checkAnswer} 
@@ -459,21 +423,27 @@ export default function LessonScreen() {
         </View>
       </KeyboardAvoidingView>
 
-      {/* FEEDBACK MODAL (Unten) */}
+      {/* FEEDBACK MODAL */}
       <Modal animationType="slide" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
-          <View style={[styles.feedbackContainer, isCorrect ? styles.bgSuccess : styles.bgError]}>
-            <Text style={styles.feedbackTitle}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
+          <View style={[
+              styles.feedbackContainer, 
+              { backgroundColor: isCorrect ? themeColors.feedbackSuccessBg : themeColors.feedbackErrorBg }
+          ]}>
+            <Text style={[styles.feedbackTitle, { color: themeColors.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
             <View style={{ marginBottom: 20 }}>
-              <Text style={styles.feedbackSubtitle}>Lösung:</Text>
+              <Text style={[styles.feedbackSubtitle, { color: themeColors.subText }]}>Lösung:</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                  <TouchableOpacity onPress={() => playAudio(currentExercise.id)}>
-                    <Ionicons name="volume-medium" size={24} color="#555" style={{marginRight: 10}}/>
+                    <Ionicons name="volume-medium" size={24} color={isDarkMode ? "#ccc" : "#555"} style={{marginRight: 10}}/>
                  </TouchableOpacity>
-                 <Text style={styles.feedbackSolution}>{getSolutionDisplay()}</Text>
+                 <Text style={[styles.feedbackSolution, { color: themeColors.feedbackText }]}>{getSolutionDisplay()}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.continueButton} onPress={nextExercise}>
+            <TouchableOpacity 
+                style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} 
+                onPress={nextExercise}
+            >
               <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>
                 {isCorrect ? 'WEITER' : 'OKAY'}
               </Text>
@@ -486,35 +456,33 @@ export default function LessonScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', paddingTop: Platform.OS === 'android' ? 40 : 0 },
+  container: { flex: 1, paddingTop: Platform.OS === 'android' ? 40 : 0 },
   header: { padding: 20, flexDirection: 'row', alignItems: 'center' },
-  progressBarBackground: { flex: 1, height: 16, backgroundColor: '#e5e5e5', borderRadius: 8, overflow: 'hidden' },
+  progressBarBackground: { flex: 1, height: 16, borderRadius: 8, overflow: 'hidden' },
   progressBarFill: { height: '100%', backgroundColor: '#58cc02' },
   content: { padding: 20, flexGrow: 1, justifyContent: 'center' },
-  instruction: { fontSize: 18, color: '#777', marginBottom: 10, fontWeight: '600' },
+  instruction: { fontSize: 18, marginBottom: 10, fontWeight: '600' },
   questionContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
-  speakerButton: { marginRight: 15, padding: 10, backgroundColor: '#ddf4ff', borderRadius: 50 },
-  question: { fontSize: 26, fontWeight: 'bold', color: '#3c3c3c', flex: 1 }, 
-  input: { backgroundColor: '#f7f7f7', borderWidth: 2, borderColor: '#e5e5e5', borderRadius: 16, padding: 16, fontSize: 20, color: '#333' },
+  speakerButton: { marginRight: 15, padding: 10, borderRadius: 50 },
+  question: { fontSize: 26, fontWeight: 'bold', flex: 1 }, 
+  input: { borderWidth: 2, borderRadius: 16, padding: 16, fontSize: 20 },
   optionsContainer: { gap: 12 },
-  optionButton: { padding: 16, borderWidth: 2, borderColor: '#e5e5e5', borderRadius: 16, alignItems: 'center' },
-  optionSelected: { borderColor: '#1cb0f6', backgroundColor: '#ddf4ff' },
+  optionButton: { padding: 16, borderWidth: 2, borderRadius: 16, alignItems: 'center' },
   optionText: { fontSize: 18, fontWeight: '600', color: '#777' },
   optionTextSelected: { color: '#1cb0f6' },
-  footer: { padding: 20, borderTopWidth: 2, borderColor: '#f0f0f0' },
+  footer: { padding: 20, borderTopWidth: 2 },
   checkButton: { backgroundColor: '#58cc02', padding: 16, borderRadius: 16, alignItems: 'center', width: '100%' },
   disabledButton: { backgroundColor: '#e5e5e5' },
   checkButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', textAlign: 'center' },
   modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.2)' },
   feedbackContainer: { padding: 24, paddingBottom: 40, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
-  bgSuccess: { backgroundColor: '#d7ffb8' }, bgError: { backgroundColor: '#ffdfe0' },
-  feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: '#3c3c3c' },
-  feedbackSubtitle: { fontSize: 16, color: '#555', fontWeight: 'bold', marginBottom: 5 },
-  feedbackSolution: { fontSize: 19, color: '#3c3c3c', fontWeight: '600', flexShrink: 1 },
+  feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
+  feedbackSubtitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
+  feedbackSolution: { fontSize: 19, fontWeight: '600', flexShrink: 1 },
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
-  finishSubText: { fontSize: 18, color: '#555', marginBottom: 20, textAlign: 'center', paddingHorizontal: 20 },
+  finishSubText: { fontSize: 18, marginBottom: 20, textAlign: 'center', paddingHorizontal: 20 },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10 },
 });
