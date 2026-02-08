@@ -1,11 +1,22 @@
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme();
+  const themeColors = Colors[colorScheme ?? 'light'];
+
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: '#58cc02', headerShown: false }}>
+    <Tabs screenOptions={{ 
+      tabBarActiveTintColor: '#58cc02', 
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: themeColors.background,
+        borderTopColor: colorScheme === 'dark' ? '#333' : '#e0e0e0',
+      }
+    }}>
       
-      {/* Der Pfad-Screen (Home) */}
       <Tabs.Screen
         name="index"
         options={{
@@ -14,12 +25,20 @@ export default function TabLayout() {
         }}
       />
 
-      {/* NEU: Der Üben-Screen */}
       <Tabs.Screen
         name="practice"
         options={{
           title: 'Üben',
           tabBarIcon: ({ color }) => <Ionicons name="barbell" size={24} color={color} />,
+        }}
+      />
+
+      {/* NEUER TAB */}
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Profil',
+          tabBarIcon: ({ color }) => <Ionicons name="person-circle" size={24} color={color} />,
         }}
       />
 
