@@ -25,7 +25,7 @@ const downloadAudio = (text, filename) => {
         }
 
         console.log(`Generiere: ${filename}`);
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=pt&client=tw-ob`;
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=pt-PT&client=tw-ob`;
 
         https.get(url, (res) => {
             if (res.statusCode !== 200) {
