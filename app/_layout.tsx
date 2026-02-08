@@ -1,9 +1,10 @@
+import 'react-native-reanimated';
+
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import 'react-native-reanimated';
 
 import { ThemeProvider, useTheme } from '@/components/ThemeContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
