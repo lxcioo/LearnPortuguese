@@ -1,41 +1,59 @@
-name: Generate Audio & Deploy
+name: Deploy Content & Audio
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+  # Erlaubt manuelles Starten des Workflows
+  workflow_dispatch:
+
+# WICHTIG: Berechtigungen für den GITHUB_TOKEN setzen
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Verhindert, dass mehrere Deploys gleichzeitig laufen
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  # 1. Bauen (Audio generieren & Ordner vorbereiten)
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Generate Audio Files (Node Script)
+      - name: Generate Audio Files
         run: node generateAudio.js
 
       - name: Prepare Public Folder
         run: |
-          # 1. Erstelle den Public Ordner (das fehlte vorher!)
           mkdir -p public
-          
-          # 2. Kopiere die content.json
           cp content.json public/content.json
-          
-          # 3. Kopiere den Audio-Ordner (WICHTIG, sonst kein Ton!)
-          # Das -r bedeutet 'rekursiv' (den ganzen Ordnerinhalt)
-          cp -r audio public/audio
+          # Kopiere Audio-Dateien (falls vorhanden, sonst Fehler ignorieren damit Pipeline nicht bricht beim ersten Run)
+          if [ -d "audio" ]; then cp -r audio public/audio; fi
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Der moderne Weg: Artefakt hochladen statt git push
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          path: ./public
+
+  # 2. Deployen (Veröffentlichen)
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
