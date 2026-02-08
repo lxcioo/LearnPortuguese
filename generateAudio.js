@@ -9,30 +9,27 @@ const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
 // Wir speichern im Ordner 'audio'
 const AUDIO_DIR = path.join(__dirname, 'audio');
 
-// --- ÄNDERUNG: Alten Ordner komplett löschen für sauberen Neustart ---
+// Alten Ordner löschen für sauberen Neustart
 if (fs.existsSync(AUDIO_DIR)) {
     console.log("🗑️  Lösche alte Audio-Dateien...");
     fs.rmSync(AUDIO_DIR, { recursive: true, force: true });
 }
-// Neuen leeren Ordner erstellen
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
 
-
-// Download Funktion
-const downloadAudio = (text, filename) => {
+// Download Funktion mit Sprach-Parameter (Standard: pt-PT)
+const downloadAudio = (text, filename, lang = 'pt-PT') => {
     return new Promise((resolve, reject) => {
         const filePath = path.join(AUDIO_DIR, `${filename}.mp3`);
         
-        // (Der Check auf Existenz ist hier eigentlich überflüssig geworden, 
-        // da wir oben löschen, aber er schadet nicht als Sicherheit)
         if (fs.existsSync(filePath)) {
             resolve();
             return;
         }
 
-        console.log(`Generiere: ${filename}`);
-        // WICHTIG: tl=pt-PT erzwingt europäisches Portugiesisch
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=pt-PT&client=tw-ob`;
+        console.log(`Generiere (${lang}): ${filename} -> "${text}"`);
+        
+        // URL mit dynamischer Sprache (tl=...)
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
 
         https.get(url, (res) => {
             if (res.statusCode !== 200) {
@@ -54,7 +51,7 @@ const downloadAudio = (text, filename) => {
 };
 
 const run = async () => {
-    console.log("--- 🇵🇹 Audio Generierung gestartet (Alles neu) ---");
+    console.log("--- 🎧 Audio Generierung gestartet ---");
     const course = content.courses[0];
 
     if (course.units) {
@@ -63,28 +60,35 @@ const run = async () => {
                 for (const level of unit.levels) {
                     if (level.exercises) {
                         for (const exercise of level.exercises) {
-                            // 1. Übersetze PT -> DE (Antwort ist PT)
+                            
+                            // 1. Übersetze PT -> DE (Antwort ist PT -> Audio PT)
                             if (exercise.type === 'translate_to_pt') {
-                                await downloadAudio(exercise.correctAnswer, exercise.id);
+                                await downloadAudio(exercise.correctAnswer, exercise.id, 'pt-PT');
                             }
-                            // 2. Übersetze DE -> PT (Frage ist PT)
+                            
+                            // 2. Übersetze DE -> PT (Frage ist PT -> Audio PT)
                             else if (exercise.type === 'translate_to_de') {
-                                await downloadAudio(exercise.question, exercise.id);
+                                await downloadAudio(exercise.question, exercise.id, 'pt-PT');
                             }
+                            
                             // 3. Multiple Choice
                             else if (exercise.type === 'multiple_choice') {
-                                // Frage-Audio (wenn audioText gesetzt ist, sonst Frage selbst)
+                                // Frage-Audio (PT) - nur wenn audioText existiert
                                 if (exercise.audioText) {
-                                    await downloadAudio(exercise.audioText, exercise.id);
+                                    await downloadAudio(exercise.audioText, exercise.id, 'pt-PT');
                                 }
                                 
-                                // Antwort-Audio (wird oft nach dem Klick abgespielt)
-                                await downloadAudio(exercise.correctAnswer, `${exercise.id}_answer`);
+                                // Bestimme Sprache für Optionen und Antwort
+                                // Standard ist Portugiesisch, außer es steht explizit "de" in der content.json
+                                const optionsLang = exercise.optionsLanguage === 'de' ? 'de' : 'pt-PT';
                                 
-                                // Optionen (falls man sie vorlesen lassen will)
+                                // Antwort-Audio
+                                await downloadAudio(exercise.correctAnswer, `${exercise.id}_answer`, optionsLang);
+                                
+                                // Optionen-Audio
                                 if (exercise.options) {
                                     for (let i = 0; i < exercise.options.length; i++) {
-                                        await downloadAudio(exercise.options[i], `${exercise.id}_opt_${i}`);
+                                        await downloadAudio(exercise.options[i], `${exercise.id}_opt_${i}`, optionsLang);
                                     }
                                 }
                             }
