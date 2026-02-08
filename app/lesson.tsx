@@ -264,13 +264,14 @@ export default function LessonScreen() {
 
     setIsLessonFinished(true);
 
+    // FIX: Sterne IMMER für die UI setzen, egal welcher Modus
+    setEarnedStars(stars);
+
     // SPEICHERN
     if (lessonType === 'exam') {
-        // Prüfung bestanden? (Hier simpel: Wenn durchgehalten, dann bestanden)
-        // Man könnte auch sagen: Nur wenn stars >= 1
+        // Prüfung bestanden?
         setExamPassed(true);
-        setEarnedStars(stars); // Nur zur Anzeige
-
+        
         try {
             const existingExams = await AsyncStorage.getItem('examScores');
             let exams = existingExams ? JSON.parse(existingExams) : {};
@@ -279,8 +280,7 @@ export default function LessonScreen() {
         } catch(e) {}
 
     } else if (lessonId !== 'practice') {
-        // Normale Lektion
-        setEarnedStars(stars);
+        // Normale Lektion: Nur hier wird dauerhaft gespeichert
         try {
           const existingData = await AsyncStorage.getItem('lessonScores');
           let scores = existingData ? JSON.parse(existingData) : {};
@@ -335,6 +335,18 @@ export default function LessonScreen() {
                     <Text style={styles.finishSubText}>
                         Du hast die Prüfung bestanden und das nächste Kapitel freigeschaltet.
                     </Text>
+                    
+                    {/* Auch bei Prüfung Sterne anzeigen */}
+                    <View style={styles.starsContainer}>
+                        {[1, 2, 3].map((star) => (
+                            <Ionicons 
+                                key={star} 
+                                name={star <= earnedStars ? "star" : "star-outline"} 
+                                size={40} 
+                                color="#FFD700" 
+                            />
+                        ))}
+                    </View>
                 </>
             ) : (
                 /* NORMALER SCREEN */
