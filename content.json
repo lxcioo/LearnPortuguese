@@ -1,118 +1,147 @@
 {
-  "version": 3,
   "courses": [
     {
-      "id": "course_1",
+      "id": "portuguese_a1",
       "title": "Portugiesisch A1",
-      "lessons": [
+      "units": [
         {
-          "id": "l1",
-          "title": "Begrüßung & Basics",
+          "id": "unit_1",
+          "title": "Kapitel 1: Begrüßung",
           "color": "#58cc02",
-          "exercises": [
-            { "id": "l1_ex1", "type": "translate_to_pt", "question": "Hallo", "correctAnswer": "Olá", "alternativeAnswers": ["Ola"], "audioText": "Olá", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex2", "type": "translate_to_pt", "question": "Wie geht es dir?", "correctAnswer": "Como estás?", "alternativeAnswers": ["Como estas"], "audioText": "Como estás?", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex3", "type": "translate_to_de", "question": "Estou bem.", "correctAnswer": "Mir geht es gut.", "alternativeAnswers": ["Mir gehts gut"], "audioText": "Estou bem.", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex4", "type": "multiple_choice", "question": "Was bedeutet 'Obrigado'?", "options": ["Hallo", "Danke", "Bitte", "Tschüss"], "correctAnswer": "Danke", "correctAnswerIndex": 1, "audioText": "Obrigado", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l1_ex5", "type": "translate_to_pt", "question": "Guten Morgen", "correctAnswer": "Bom dia", "alternativeAnswers": [], "audioText": "Bom dia", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex6", "type": "translate_to_pt", "question": "Guten Tag (Nachmittag)", "correctAnswer": "Boa tarde", "alternativeAnswers": [], "audioText": "Boa tarde", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex7", "type": "translate_to_pt", "question": "Gute Nacht", "correctAnswer": "Boa noite", "alternativeAnswers": [], "audioText": "Boa noite", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex8", "type": "multiple_choice", "question": "Wie sagt man 'Tschüss'?", "options": ["Olá", "Adeus", "Sim", "Não"], "correctAnswer": "Adeus", "correctAnswerIndex": 1, "audioText": "Adeus", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l1_ex9", "type": "translate_to_de", "question": "Sim", "correctAnswer": "Ja", "alternativeAnswers": [], "audioText": "Sim", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex10", "type": "translate_to_de", "question": "Não", "correctAnswer": "Nein", "alternativeAnswers": [], "audioText": "Não", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex11", "type": "multiple_choice", "question": "Was bedeutet 'De nada'?", "options": ["Gern geschehen", "Entschuldigung", "Danke", "Hallo"], "correctAnswer": "Gern geschehen", "correctAnswerIndex": 0, "audioText": "De nada", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l1_ex12", "type": "translate_to_pt", "question": "Entschuldigung", "correctAnswer": "Desculpa", "alternativeAnswers": ["Desculpe"], "audioText": "Desculpa", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex13", "type": "translate_to_pt", "question": "Bis bald", "correctAnswer": "Até logo", "alternativeAnswers": [], "audioText": "Até logo", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex14", "type": "translate_to_de", "question": "Prazer em conhecer-te.", "correctAnswer": "Schön dich kennenzulernen.", "alternativeAnswers": ["Freut mich"], "audioText": "Prazer em conhecer-te.", "audioLanguage": "pt-PT" },
-            { "id": "l1_ex15", "type": "multiple_choice", "question": "Wähle 'Bitte' (um etwas zu bitten)", "options": ["Obrigado", "Por favor", "Adeus", "Desculpa"], "correctAnswer": "Por favor", "correctAnswerIndex": 1, "audioText": "Por favor", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" }
+          "levels": [
+            {
+              "id": "u1_l1",
+              "title": "Einführung",
+              "exercises": [
+                { "id": "u1_l1_e1", "type": "translate_to_de", "question": "Olá", "correctAnswer": "Hallo", "alternativeAnswers": ["Hi"] },
+                { "id": "u1_l1_e2", "type": "translate_to_pt", "question": "Ja", "correctAnswer": "Sim" },
+                { "id": "u1_l1_e3", "type": "translate_to_pt", "question": "Nein", "correctAnswer": "Não" },
+                { "id": "u1_l1_e4", "type": "multiple_choice", "question": "Was heißt 'Hallo'?", "correctAnswer": "Olá", "options": ["Olá", "Sim", "Não"], "correctAnswerIndex": 0, "audioText": "Ola" },
+                { "id": "u1_l1_e5", "type": "translate_to_de", "question": "Obrigado", "correctAnswer": "Danke" },
+                { "id": "u1_l1_e6", "type": "translate_to_pt", "question": "Tschüss", "correctAnswer": "Tchau" },
+                { "id": "u1_l1_e7", "type": "multiple_choice", "question": "Wähle 'Nein'", "correctAnswer": "Não", "options": ["Sim", "Olá", "Não"], "correctAnswerIndex": 2, "audioText": "Nao" },
+                { "id": "u1_l1_e8", "type": "translate_to_de", "question": "Por favor", "correctAnswer": "Bitte" },
+                { "id": "u1_l1_e9", "type": "translate_to_pt", "question": "Guten Morgen", "correctAnswer": "Bom dia" },
+                { "id": "u1_l1_e10", "type": "translate_to_de", "question": "De nada", "correctAnswer": "Gern geschehen", "alternativeAnswers": ["Bitte schön", "Nichts zu danken"] },
+                { "id": "u1_l1_e11", "type": "multiple_choice", "question": "Was heißt 'Danke'?", "correctAnswer": "Obrigado", "options": ["Bom dia", "Obrigado", "Tchau"], "correctAnswerIndex": 1, "audioText": "Obrigado" },
+                { "id": "u1_l1_e12", "type": "translate_to_pt", "question": "Entschuldigung", "correctAnswer": "Desculpe" },
+                { "id": "u1_l1_e13", "type": "translate_to_de", "question": "Sim, por favor", "correctAnswer": "Ja bitte", "alternativeAnswers": ["Ja, bitte"] },
+                { "id": "u1_l1_e14", "type": "translate_to_pt", "question": "Nein, danke", "correctAnswer": "Não, obrigado", "alternativeAnswers": ["Não obrigado"] },
+                { "id": "u1_l1_e15", "type": "multiple_choice", "question": "Wähle 'Guten Morgen'", "correctAnswer": "Bom dia", "options": ["Boa noite", "Bom dia", "Olá"], "correctAnswerIndex": 1, "audioText": "Bom dia" }
+              ]
+            },
+            {
+              "id": "u1_l2",
+              "title": "Grundlagen",
+              "exercises": [
+                { "id": "u1_l2_e1", "type": "translate_to_de", "question": "Eu sou", "correctAnswer": "Ich bin" },
+                { "id": "u1_l2_e2", "type": "translate_to_pt", "question": "Du bist", "correctAnswer": "Tu és" },
+                { "id": "u1_l2_e3", "type": "multiple_choice", "question": "Vervollständige: Eu ___ o Pedro.", "correctAnswer": "sou", "options": ["sou", "és", "é"], "correctAnswerIndex": 0, "audioText": "sou" },
+                { "id": "u1_l2_e4", "type": "translate_to_de", "question": "Como estás?", "correctAnswer": "Wie geht es dir", "alternativeAnswers": ["Wie gehts", "Wie geht es dir?"] },
+                { "id": "u1_l2_e5", "type": "translate_to_pt", "question": "Alles gut", "correctAnswer": "Tudo bem" },
+                { "id": "u1_l2_e6", "type": "translate_to_de", "question": "Ele é", "correctAnswer": "Er ist" },
+                { "id": "u1_l2_e7", "type": "multiple_choice", "question": "Wie sagt man 'Sie ist'?", "correctAnswer": "Ela é", "options": ["Ele é", "Ela é", "Tu és"], "correctAnswerIndex": 1, "audioText": "Ela e" },
+                { "id": "u1_l2_e8", "type": "translate_to_pt", "question": "Der Mann", "correctAnswer": "O homem" },
+                { "id": "u1_l2_e9", "type": "translate_to_de", "question": "A mulher", "correctAnswer": "Die Frau" },
+                { "id": "u1_l2_e10", "type": "translate_to_pt", "question": "Ich bin Anna", "correctAnswer": "Eu sou a Anna", "alternativeAnswers": ["Eu sou Anna"] },
+                { "id": "u1_l2_e11", "type": "multiple_choice", "question": "Was bedeutet 'Tudo bem'?", "correctAnswer": "Alles gut", "options": ["Guten Morgen", "Alles gut", "Ich bin"], "correctAnswerIndex": 1, "audioText": "Tudo bem" },
+                { "id": "u1_l2_e12", "type": "translate_to_de", "question": "Boa tarde", "correctAnswer": "Guten Tag", "alternativeAnswers": ["Guten Nachmittag"] },
+                { "id": "u1_l2_e13", "type": "translate_to_pt", "question": "Gute Nacht", "correctAnswer": "Boa noite" },
+                { "id": "u1_l2_e14", "type": "translate_to_de", "question": "O menino", "correctAnswer": "Der Junge" },
+                { "id": "u1_l2_e15", "type": "multiple_choice", "question": "Wähle 'Das Mädchen'", "correctAnswer": "A menina", "options": ["O menino", "A mulher", "A menina"], "correctAnswerIndex": 2, "audioText": "A menina" }
+              ]
+            },
+            {
+              "id": "u1_l3",
+              "title": "Erweiterung",
+              "exercises": [
+                { "id": "u1_l3_e1", "type": "translate_to_de", "question": "Prazer em conhecer", "correctAnswer": "Schön dich kennenzulernen", "alternativeAnswers": ["Freut mich", "Angenehm"] },
+                { "id": "u1_l3_e2", "type": "translate_to_pt", "question": "Wie heißt du?", "correctAnswer": "Como te chamas", "alternativeAnswers": ["Como te chamas?"] },
+                { "id": "u1_l3_e3", "type": "translate_to_de", "question": "Eu chamo-me Pedro", "correctAnswer": "Ich heiße Pedro" },
+                { "id": "u1_l3_e4", "type": "multiple_choice", "question": "Vervollständige: Eu falo ___.", "correctAnswer": "português", "options": ["português", "alemanha", "olá"], "correctAnswerIndex": 0, "audioText": "portugues" },
+                { "id": "u1_l3_e5", "type": "translate_to_pt", "question": "Ich spreche Deutsch", "correctAnswer": "Eu falo alemão" },
+                { "id": "u1_l3_e6", "type": "translate_to_de", "question": "Desculpe, não entendo", "correctAnswer": "Entschuldigung ich verstehe nicht", "alternativeAnswers": ["Entschuldigung, ich verstehe nicht"] },
+                { "id": "u1_l3_e7", "type": "translate_to_pt", "question": "Bis später", "correctAnswer": "Até logo" },
+                { "id": "u1_l3_e8", "type": "multiple_choice", "question": "Was heißt 'Bis morgen'?", "correctAnswer": "Até amanhã", "options": ["Até logo", "Até amanhã", "Boa noite"], "correctAnswerIndex": 1, "audioText": "Ate amanha" },
+                { "id": "u1_l3_e9", "type": "translate_to_de", "question": "Fala inglês?", "correctAnswer": "Sprichst du Englisch", "alternativeAnswers": ["Sprechen Sie Englisch?"] },
+                { "id": "u1_l3_e10", "type": "translate_to_pt", "question": "Ich bin aus Deutschland", "correctAnswer": "Eu sou da Alemanha" },
+                { "id": "u1_l3_e11", "type": "translate_to_de", "question": "Onde é?", "correctAnswer": "Wo ist es", "alternativeAnswers": ["Wo ist das?"] },
+                { "id": "u1_l3_e12", "type": "multiple_choice", "question": "Wähle 'Deutschland'", "correctAnswer": "Alemanha", "options": ["Portugal", "Alemanha", "Espanha"], "correctAnswerIndex": 1, "audioText": "Alemanha" },
+                { "id": "u1_l3_e13", "type": "translate_to_pt", "question": "Ich wohne in Berlin", "correctAnswer": "Eu moro em Berlim" },
+                { "id": "u1_l3_e14", "type": "translate_to_de", "question": "Muito prazer", "correctAnswer": "Sehr erfreut" },
+                { "id": "u1_l3_e15", "type": "translate_to_pt", "question": "Ein bisschen", "correctAnswer": "Um pouco" }
+              ]
+            }
           ]
         },
         {
-          "id": "l2",
-          "title": "Essen & Trinken",
+          "id": "unit_2",
+          "title": "Kapitel 2: Essen & Trinken",
           "color": "#ce82ff",
-          "exercises": [
-            { "id": "l2_ex1", "type": "translate_to_pt", "question": "Ich trinke Wasser.", "correctAnswer": "Eu bebo água.", "alternativeAnswers": ["Bebo água"], "audioText": "Eu bebo água.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex2", "type": "multiple_choice", "question": "Was ist 'O pão'?", "options": ["Der Käse", "Der Wein", "Das Brot", "Der Apfel"], "correctAnswer": "Das Brot", "correctAnswerIndex": 2, "audioText": "O pão", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l2_ex3", "type": "translate_to_pt", "question": "Die Milch", "correctAnswer": "O leite", "alternativeAnswers": ["Leite"], "audioText": "O leite", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex4", "type": "translate_to_de", "question": "Eu como pão.", "correctAnswer": "Ich esse Brot.", "alternativeAnswers": [], "audioText": "Eu como pão.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex5", "type": "multiple_choice", "question": "Wähle 'Kaffee'", "options": ["Chá", "Café", "Vinho", "Água"], "correctAnswer": "Café", "correctAnswerIndex": 1, "audioText": "Café", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l2_ex6", "type": "translate_to_pt", "question": "Tee", "correctAnswer": "Chá", "alternativeAnswers": ["O chá"], "audioText": "Chá", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex7", "type": "translate_to_de", "question": "Uma cerveja, por favor.", "correctAnswer": "Ein Bier, bitte.", "alternativeAnswers": ["Ein Bier bitte"], "audioText": "Uma cerveja, por favor.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex8", "type": "multiple_choice", "question": "Was ist 'O vinho'?", "options": ["Das Wasser", "Der Wein", "Die Milch", "Der Saft"], "correctAnswer": "Der Wein", "correctAnswerIndex": 1, "audioText": "O vinho", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l2_ex9", "type": "translate_to_pt", "question": "Der Fisch", "correctAnswer": "O peixe", "alternativeAnswers": ["Peixe"], "audioText": "O peixe", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex10", "type": "translate_to_pt", "question": "Das Fleisch", "correctAnswer": "A carne", "alternativeAnswers": ["Carne"], "audioText": "A carne", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex11", "type": "translate_to_de", "question": "Eu bebo leite.", "correctAnswer": "Ich trinke Milch.", "alternativeAnswers": [], "audioText": "Eu bebo leite.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex12", "type": "multiple_choice", "question": "Wähle 'Käse'", "options": ["Queijo", "Fiambre", "Manteiga", "Arroz"], "correctAnswer": "Queijo", "correctAnswerIndex": 0, "audioText": "Queijo", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l2_ex13", "type": "translate_to_pt", "question": "Die Rechnung, bitte.", "correctAnswer": "A conta, por favor.", "alternativeAnswers": ["A conta por favor"], "audioText": "A conta, por favor.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex14", "type": "translate_to_de", "question": "O pão é bom.", "correctAnswer": "Das Brot ist gut.", "alternativeAnswers": ["Brot ist gut"], "audioText": "O pão é bom.", "audioLanguage": "pt-PT" },
-            { "id": "l2_ex15", "type": "multiple_choice", "question": "Was trinks du?", "options": ["Eu bebo água", "Eu como pão"], "correctAnswer": "Eu bebo água", "correctAnswerIndex": 0, "audioText": "Eu bebo água", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" }
-          ]
-        },
-        {
-          "id": "l3",
-          "title": "Zahlen & Einkaufen",
-          "color": "#1cb0f6",
-          "exercises": [
-            { "id": "l3_ex1", "type": "translate_to_pt", "question": "Eins", "correctAnswer": "Um", "alternativeAnswers": ["Uma"], "audioText": "Um", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex2", "type": "translate_to_pt", "question": "Zwei", "correctAnswer": "Dois", "alternativeAnswers": ["Duas"], "audioText": "Dois", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex3", "type": "translate_to_pt", "question": "Drei", "correctAnswer": "Três", "alternativeAnswers": [], "audioText": "Três", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex4", "type": "multiple_choice", "question": "Wähle die Zahl 4", "options": ["Três", "Quatro", "Cinco", "Seis"], "correctAnswer": "Quatro", "correctAnswerIndex": 1, "audioText": "Quatro", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l3_ex5", "type": "multiple_choice", "question": "Wähle die Zahl 5", "options": ["Um", "Dez", "Cinco", "Dois"], "correctAnswer": "Cinco", "correctAnswerIndex": 2, "audioText": "Cinco", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l3_ex6", "type": "translate_to_pt", "question": "Wie viel kostet das?", "correctAnswer": "Quanto custa?", "alternativeAnswers": ["Quanto é"], "audioText": "Quanto custa?", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex7", "type": "translate_to_de", "question": "O dinheiro", "correctAnswer": "Das Geld", "alternativeAnswers": ["Geld"], "audioText": "O dinheiro", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex8", "type": "translate_to_de", "question": "Pagar com cartão.", "correctAnswer": "Mit Karte bezahlen.", "alternativeAnswers": [], "audioText": "Pagar com cartão.", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex9", "type": "multiple_choice", "question": "Was ist 'Caro'?", "options": ["Billig", "Teuer", "Groß", "Klein"], "correctAnswer": "Teuer", "correctAnswerIndex": 1, "audioText": "Caro", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l3_ex10", "type": "multiple_choice", "question": "Was ist 'Barato'?", "options": ["Teuer", "Billig", "Schnell", "Langsam"], "correctAnswer": "Billig", "correctAnswerIndex": 1, "audioText": "Barato", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l3_ex11", "type": "translate_to_pt", "question": "Ich möchte kaufen...", "correctAnswer": "Eu quero comprar...", "alternativeAnswers": [], "audioText": "Eu quero comprar...", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex12", "type": "translate_to_pt", "question": "Der Laden", "correctAnswer": "A loja", "alternativeAnswers": ["Loja"], "audioText": "A loja", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex13", "type": "translate_to_de", "question": "O mercado", "correctAnswer": "Der Markt", "alternativeAnswers": ["Markt"], "audioText": "O mercado", "audioLanguage": "pt-PT" },
-            { "id": "l3_ex14", "type": "multiple_choice", "question": "Wähle 'Zehn'", "options": ["Sete", "Oito", "Nove", "Dez"], "correctAnswer": "Dez", "correctAnswerIndex": 3, "audioText": "Dez", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l3_ex15", "type": "translate_to_pt", "question": "Sieben", "correctAnswer": "Sete", "alternativeAnswers": [], "audioText": "Sete", "audioLanguage": "pt-PT" }
-          ]
-        },
-        {
-          "id": "l4",
-          "title": "Familie & Freunde",
-          "color": "#ff9600",
-          "exercises": [
-            { "id": "l4_ex1", "type": "translate_to_pt", "question": "Die Mutter", "correctAnswer": "A mãe", "alternativeAnswers": ["Mãe"], "audioText": "A mãe", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex2", "type": "translate_to_pt", "question": "Der Vater", "correctAnswer": "O pai", "alternativeAnswers": ["Pai"], "audioText": "O pai", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex3", "type": "multiple_choice", "question": "Wähle 'Bruder'", "options": ["Irmão", "Irmã", "Filho", "Tio"], "correctAnswer": "Irmão", "correctAnswerIndex": 0, "audioText": "Irmão", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l4_ex4", "type": "multiple_choice", "question": "Wähle 'Schwester'", "options": ["Avó", "Irmã", "Mãe", "Prima"], "correctAnswer": "Irmã", "correctAnswerIndex": 1, "audioText": "Irmã", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l4_ex5", "type": "translate_to_de", "question": "O filho", "correctAnswer": "Der Sohn", "alternativeAnswers": ["Sohn"], "audioText": "O filho", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex6", "type": "translate_to_de", "question": "A filha", "correctAnswer": "Die Tochter", "alternativeAnswers": ["Tochter"], "audioText": "A filha", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex7", "type": "translate_to_pt", "question": "Die Familie", "correctAnswer": "A família", "alternativeAnswers": ["Família"], "audioText": "A família", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex8", "type": "multiple_choice", "question": "Was bedeutet 'Amigo'?", "options": ["Freund", "Feind", "Mann", "Kind"], "correctAnswer": "Freund", "correctAnswerIndex": 0, "audioText": "Amigo", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l4_ex9", "type": "translate_to_de", "question": "A amiga", "correctAnswer": "Die Freundin", "alternativeAnswers": ["Freundin"], "audioText": "A amiga", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex10", "type": "translate_to_pt", "question": "Das ist mein Vater.", "correctAnswer": "Este é o meu pai.", "alternativeAnswers": ["É o meu pai"], "audioText": "Este é o meu pai.", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex11", "type": "translate_to_pt", "question": "Das ist meine Mutter.", "correctAnswer": "Esta é a minha mãe.", "alternativeAnswers": ["É a minha mãe"], "audioText": "Esta é a minha mãe.", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex12", "type": "multiple_choice", "question": "Was heißt 'Wer ist das?'", "options": ["Como estás?", "Quem é?", "Onde estás?", "Quanto custa?"], "correctAnswer": "Quem é?", "correctAnswerIndex": 1, "audioText": "Quem é?", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l4_ex13", "type": "translate_to_de", "question": "O homem", "correctAnswer": "Der Mann", "alternativeAnswers": ["Mann"], "audioText": "O homem", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex14", "type": "translate_to_de", "question": "A mulher", "correctAnswer": "Die Frau", "alternativeAnswers": ["Frau"], "audioText": "A mulher", "audioLanguage": "pt-PT" },
-            { "id": "l4_ex15", "type": "translate_to_pt", "question": "Der Junge", "correctAnswer": "O menino", "alternativeAnswers": ["Menino"], "audioText": "O menino", "audioLanguage": "pt-PT" }
-          ]
-        },
-        {
-          "id": "l5",
-          "title": "Unterwegs & Orte",
-          "color": "#ff4b4b",
-          "exercises": [
-            { "id": "l5_ex1", "type": "translate_to_pt", "question": "Wo ist...?", "correctAnswer": "Onde fica...?", "alternativeAnswers": ["Onde é"], "audioText": "Onde fica...?", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex2", "type": "multiple_choice", "question": "Was ist 'O hotel'?", "options": ["Das Haus", "Das Hotel", "Das Zimmer", "Das Bett"], "correctAnswer": "Das Hotel", "correctAnswerIndex": 1, "audioText": "O hotel", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l5_ex3", "type": "translate_to_pt", "question": "Der Strand", "correctAnswer": "A praia", "alternativeAnswers": ["Praia"], "audioText": "A praia", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex4", "type": "translate_to_pt", "question": "Die Straße", "correctAnswer": "A rua", "alternativeAnswers": ["Rua"], "audioText": "A rua", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex5", "type": "translate_to_de", "question": "A casa", "correctAnswer": "Das Haus", "alternativeAnswers": ["Haus"], "audioText": "A casa", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex6", "type": "multiple_choice", "question": "Wähle 'Restaurant'", "options": ["Restaurante", "Museu", "Banco", "Café"], "correctAnswer": "Restaurante", "correctAnswerIndex": 0, "audioText": "O restaurante", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l5_ex7", "type": "translate_to_pt", "question": "Das Auto", "correctAnswer": "O carro", "alternativeAnswers": ["Carro"], "audioText": "O carro", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex8", "type": "translate_to_de", "question": "O comboio", "correctAnswer": "Der Zug", "alternativeAnswers": ["Zug"], "audioText": "O comboio", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex9", "type": "multiple_choice", "question": "Wähle 'Flughafen'", "options": ["Porto", "Aeroporto", "Estação", "Paragem"], "correctAnswer": "Aeroporto", "correctAnswerIndex": 1, "audioText": "O aeroporto", "audioLanguage": "pt-PT", "optionsLanguage": "pt-PT" },
-            { "id": "l5_ex10", "type": "translate_to_pt", "question": "Links", "correctAnswer": "Esquerda", "alternativeAnswers": [], "audioText": "Esquerda", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex11", "type": "translate_to_pt", "question": "Rechts", "correctAnswer": "Direita", "alternativeAnswers": [], "audioText": "Direita", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex12", "type": "multiple_choice", "question": "Was heißt 'Aqui'?", "options": ["Dort", "Hier", "Weit", "Nah"], "correctAnswer": "Hier", "correctAnswerIndex": 1, "audioText": "Aqui", "audioLanguage": "pt-PT", "optionsLanguage": "de-DE" },
-            { "id": "l5_ex13", "type": "translate_to_de", "question": "Ali", "correctAnswer": "Dort", "alternativeAnswers": [], "audioText": "Ali", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex14", "type": "translate_to_de", "question": "A cidade", "correctAnswer": "Die Stadt", "alternativeAnswers": ["Stadt"], "audioText": "A cidade", "audioLanguage": "pt-PT" },
-            { "id": "l5_ex15", "type": "translate_to_pt", "question": "Ich gehe nach Hause.", "correctAnswer": "Eu vou para casa.", "alternativeAnswers": [], "audioText": "Eu vou para casa.", "audioLanguage": "pt-PT" }
+          "levels": [
+            {
+              "id": "u2_l1",
+              "title": "Einführung",
+              "exercises": [
+                { "id": "u2_l1_e1", "type": "translate_to_de", "question": "O pão", "correctAnswer": "Das Brot" },
+                { "id": "u2_l1_e2", "type": "translate_to_pt", "question": "Das Wasser", "correctAnswer": "A água" },
+                { "id": "u2_l1_e3", "type": "multiple_choice", "question": "Was ist 'O leite'?", "correctAnswer": "Die Milch", "options": ["Der Wein", "Die Milch", "Das Wasser"], "correctAnswerIndex": 1, "audioText": "O leite" },
+                { "id": "u2_l1_e4", "type": "translate_to_de", "question": "Uma cerveja", "correctAnswer": "Ein Bier" },
+                { "id": "u2_l1_e5", "type": "translate_to_pt", "question": "Der Kaffee", "correctAnswer": "O café" },
+                { "id": "u2_l1_e6", "type": "translate_to_de", "question": "Eu como", "correctAnswer": "Ich esse" },
+                { "id": "u2_l1_e7", "type": "multiple_choice", "question": "Wähle 'Ich trinke'", "correctAnswer": "Eu bebo", "options": ["Eu como", "Eu falo", "Eu bebo"], "correctAnswerIndex": 2, "audioText": "Eu bebo" },
+                { "id": "u2_l1_e8", "type": "translate_to_pt", "question": "Der Apfel", "correctAnswer": "A maçã" },
+                { "id": "u2_l1_e9", "type": "translate_to_de", "question": "A fruta", "correctAnswer": "Das Obst", "alternativeAnswers": ["Die Frucht"] },
+                { "id": "u2_l1_e10", "type": "translate_to_pt", "question": "Der Käse", "correctAnswer": "O queijo" },
+                { "id": "u2_l1_e11", "type": "multiple_choice", "question": "Was ist 'O bolo'?", "correctAnswer": "Der Kuchen", "options": ["Das Brot", "Der Kuchen", "Der Käse"], "correctAnswerIndex": 1, "audioText": "O bolo" },
+                { "id": "u2_l1_e12", "type": "translate_to_de", "question": "O peixe", "correctAnswer": "Der Fisch" },
+                { "id": "u2_l1_e13", "type": "translate_to_pt", "question": "Das Fleisch", "correctAnswer": "A carne" },
+                { "id": "u2_l1_e14", "type": "translate_to_de", "question": "O vinho", "correctAnswer": "Der Wein" },
+                { "id": "u2_l1_e15", "type": "multiple_choice", "question": "Vervollständige: Pão e ___.", "correctAnswer": "água", "options": ["água", "carro", "olá"], "correctAnswerIndex": 0, "audioText": "agua" }
+              ]
+            },
+            {
+              "id": "u2_l2",
+              "title": "Grundlagen",
+              "exercises": [
+                { "id": "u2_l2_e1", "type": "translate_to_de", "question": "Estou com fome", "correctAnswer": "Ich habe Hunger" },
+                { "id": "u2_l2_e2", "type": "translate_to_pt", "question": "Ich habe Durst", "correctAnswer": "Estou com sede" },
+                { "id": "u2_l2_e3", "type": "multiple_choice", "question": "Wie bestellt man 'Die Rechnung'?", "correctAnswer": "A conta", "options": ["O menu", "A conta", "A mesa"], "correctAnswerIndex": 1, "audioText": "A conta" },
+                { "id": "u2_l2_e4", "type": "translate_to_de", "question": "O pequeno-almoço", "correctAnswer": "Das Frühstück" },
+                { "id": "u2_l2_e5", "type": "translate_to_pt", "question": "Das Mittagessen", "correctAnswer": "O almoço" },
+                { "id": "u2_l2_e6", "type": "translate_to_de", "question": "O jantar", "correctAnswer": "Das Abendessen" },
+                { "id": "u2_l2_e7", "type": "multiple_choice", "question": "Wähle 'Lecker'", "correctAnswer": "Delicioso", "options": ["Obrigado", "Delicioso", "Mau"], "correctAnswerIndex": 1, "audioText": "Delicioso" },
+                { "id": "u2_l2_e8", "type": "translate_to_pt", "question": "Ich möchte...", "correctAnswer": "Eu queria", "alternativeAnswers": ["Eu gostaria"] },
+                { "id": "u2_l2_e9", "type": "translate_to_de", "question": "Uma mesa para dois", "correctAnswer": "Ein Tisch für zwei" },
+                { "id": "u2_l2_e10", "type": "translate_to_pt", "question": "Das Restaurant", "correctAnswer": "O restaurante" },
+                { "id": "u2_l2_e11", "type": "translate_to_de", "question": "Bom apetite", "correctAnswer": "Guten Appetit" },
+                { "id": "u2_l2_e12", "type": "multiple_choice", "question": "Was heißt 'Ohne Zucker'?", "correctAnswer": "Sem açúcar", "options": ["Com açúcar", "Sem açúcar", "Com gelo"], "correctAnswerIndex": 1, "audioText": "Sem acucar" },
+                { "id": "u2_l2_e13", "type": "translate_to_pt", "question": "Mit Eis", "correctAnswer": "Com gelo" },
+                { "id": "u2_l2_e14", "type": "translate_to_de", "question": "Está quente", "correctAnswer": "Es ist heiß" },
+                { "id": "u2_l2_e15", "type": "translate_to_pt", "question": "Es ist kalt", "correctAnswer": "Está frio" }
+              ]
+            },
+            {
+              "id": "u2_l3",
+              "title": "Erweiterung",
+              "exercises": [
+                { "id": "u2_l3_e1", "type": "translate_to_de", "question": "Onde é o supermercado?", "correctAnswer": "Wo ist der Supermarkt", "alternativeAnswers": ["Wo ist der Supermarkt?"] },
+                { "id": "u2_l3_e2", "type": "translate_to_pt", "question": "Ich koche gerne", "correctAnswer": "Eu gosto de cozinhar" },
+                { "id": "u2_l3_e3", "type": "translate_to_de", "question": "Eu não como carne", "correctAnswer": "Ich esse kein Fleisch" },
+                { "id": "u2_l3_e4", "type": "multiple_choice", "question": "Wie sagt man 'Vegetarier'?", "correctAnswer": "Vegetariano", "options": ["Carne", "Vegetariano", "Peixe"], "correctAnswerIndex": 1, "audioText": "Vegetariano" },
+                { "id": "u2_l3_e5", "type": "translate_to_pt", "question": "Der Löffel", "correctAnswer": "A colher" },
+                { "id": "u2_l3_e6", "type": "translate_to_de", "question": "O garfo", "correctAnswer": "Die Gabel" },
+                { "id": "u2_l3_e7", "type": "translate_to_pt", "question": "Das Messer", "correctAnswer": "A faca" },
+                { "id": "u2_l3_e8", "type": "multiple_choice", "question": "Was ist 'O copo'?", "correctAnswer": "Das Glas", "options": ["Der Teller", "Das Glas", "Die Tasse"], "correctAnswerIndex": 1, "audioText": "O copo" },
+                { "id": "u2_l3_e9", "type": "translate_to_de", "question": "O prato", "correctAnswer": "Der Teller" },
+                { "id": "u2_l3_e10", "type": "translate_to_pt", "question": "Die Serviette", "correctAnswer": "O guardanapo" },
+                { "id": "u2_l3_e11", "type": "translate_to_de", "question": "Mais um, por favor", "correctAnswer": "Noch eins bitte", "alternativeAnswers": ["Noch einen bitte"] },
+                { "id": "u2_l3_e12", "type": "multiple_choice", "question": "Wähle 'Hähnchen'", "correctAnswer": "Frango", "options": ["Porco", "Vaca", "Frango"], "correctAnswerIndex": 2, "audioText": "Frango" },
+                { "id": "u2_l3_e13", "type": "translate_to_pt", "question": "Scharf (Essen)", "correctAnswer": "Picante" },
+                { "id": "u2_l3_e14", "type": "translate_to_de", "question": "Quanto custa?", "correctAnswer": "Wie viel kostet es", "alternativeAnswers": ["Wie viel kostet das?"] },
+                { "id": "u2_l3_e15", "type": "translate_to_pt", "question": "Das ist teuer", "correctAnswer": "É caro" }
+              ]
+            }
           ]
         }
       ]
