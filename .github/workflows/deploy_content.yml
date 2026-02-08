@@ -22,9 +22,17 @@ jobs:
       - name: Generate Audio Files (Node Script)
         run: node generateAudio.js
 
-      - name: Copy JSON to public folder
-        # Wir kopieren die content.json auch, damit die App sie laden kann
-        run: cp content.json public/content.json
+      - name: Prepare Public Folder
+        run: |
+          # 1. Erstelle den Public Ordner (das fehlte vorher!)
+          mkdir -p public
+          
+          # 2. Kopiere die content.json
+          cp content.json public/content.json
+          
+          # 3. Kopiere den Audio-Ordner (WICHTIG, sonst kein Ton!)
+          # Das -r bedeutet 'rekursiv' (den ganzen Ordnerinhalt)
+          cp -r audio public/audio
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
