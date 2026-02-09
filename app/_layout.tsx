@@ -2,12 +2,18 @@ import 'react-native-reanimated';
 
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ThemeProvider, useTheme } from '@/components/ThemeContext';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+
+// Hält den Splash-Screen sichtbar, bis wir dem System sagen, dass wir bereit sind.
+// Das verhindert den "White Screen" Flash beim Laden des Themes.
+SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -16,6 +22,7 @@ export const unstable_settings = {
 function GenderSelectionModal() {
   const { gender, setGender, isLoading, isDarkMode } = useTheme();
 
+  // Modal nicht zeigen, wenn noch geladen wird oder Gender schon gesetzt ist
   if (isLoading || gender !== null) return null;
 
   return (
@@ -58,7 +65,21 @@ function GenderSelectionModal() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, isLoading } = useTheme();
+
+  // Logik für den Splash Screen:
+  // Sobald das Theme fertig geladen ist (isLoading = false), blenden wir den Splash Screen aus.
+  useEffect(() => {
+    if (!isLoading) {
+      SplashScreen.hideAsync();
+    }
+  }, [isLoading]);
+
+  // Solange wir laden, geben wir "null" zurück. 
+  // Da der Splash Screen noch sichtbar ist (dank preventAutoHideAsync), sieht der User keinen weißen Bildschirm.
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <NavigationThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
@@ -75,9 +96,12 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <RootLayoutNav />
-    </ThemeProvider>
+    // WICHTIG: SafeAreaProvider muss die gesamte App umschließen, besonders für iOS!
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <RootLayoutNav />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
