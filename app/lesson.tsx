@@ -13,7 +13,6 @@ import {
   TextInput, TouchableOpacity,
   View
 } from 'react-native';
-// NEU: Import aus safe-area-context
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../components/ThemeContext';
@@ -57,6 +56,24 @@ export default function LessonScreen() {
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
   const [examPassed, setExamPassed] = useState(false);
+
+  // --- AUDIO KONFIGURATION (FIX FÜR IOS STUMMMODUS) ---
+  useEffect(() => {
+    const configureAudio = async () => {
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true, // WICHTIG: Ignoriert den Stumm-Schalter
+          allowsRecordingIOS: false,
+          staysActiveInBackground: false,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: false,
+        });
+      } catch (e) {
+        console.error("Audio Konfiguration fehlgeschlagen:", e);
+      }
+    };
+    configureAudio();
+  }, []);
 
   // --- DYNAMISCHE FARBEN ---
   const themeColors = {
@@ -161,7 +178,7 @@ export default function LessonScreen() {
         );
         setSound(newSound);
     } catch (e) { 
-        // console.log("Audio file missing for:", filename); 
+        console.error("Audio Error:", e);
     }
   };
 
