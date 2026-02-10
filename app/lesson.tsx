@@ -1,10 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Audio } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  ActivityIndicator, Alert,
+  ActivityIndicator,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -16,66 +14,36 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../components/ThemeContext';
-import content from '../content.json';
-
-const courseData = content.courses[0];
-const BASE_URL = 'https://lxcioo.github.io/LearnPortuguese';
-
-interface Exercise {
-  id: string;
-  type: string;
-  question: string;
-  correctAnswer: string;
-  alternativeAnswers?: string[];
-  audioText?: string;
-  options?: string[];
-  correctAnswerIndex?: number;
-  optionsLanguage?: string;
-  gender?: 'm' | 'f';
-}
+import { useAudioPlayer } from './hooks/useAudioPlayer';
+import { useLessonLogic } from './hooks/useLessonLogic';
 
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { isDarkMode, gender } = useTheme(); 
+  const { isDarkMode, gender } = useTheme();
   
-  const lessonId = params.id as string; 
-  const lessonType = params.type as string; 
+  const lessonId = params.id as string;
+  const lessonType = params.type as string;
 
-  // --- STATE ---
-  const [loading, setLoading] = useState(true);
-  const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]); 
-  const [totalQuestions, setTotalQuestions] = useState(0);
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [userInput, setUserInput] = useState('');
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
-  const [sound, setSound] = useState<Audio.Sound | undefined>();
-  const [mistakes, setMistakes] = useState(0);
-  const [isLessonFinished, setIsLessonFinished] = useState(false);
-  const [earnedStars, setEarnedStars] = useState(0);
-  const [examPassed, setExamPassed] = useState(false);
-
-  // --- AUDIO KONFIGURATION (FIX FÜR IOS STUMMMODUS) ---
-  useEffect(() => {
-    const configureAudio = async () => {
-      try {
-        await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true, // WICHTIG: Ignoriert den Stumm-Schalter
-          allowsRecordingIOS: false,
-          staysActiveInBackground: false,
-          shouldDuckAndroid: true,
-          playThroughEarpieceAndroid: false,
-        });
-      } catch (e) {
-        console.error("Audio Konfiguration fehlgeschlagen:", e);
-      }
-    };
-    configureAudio();
-  }, []);
+  // --- HOOKS NUTZEN ---
+  const { playAudio } = useAudioPlayer();
+  const {
+    loading,
+    currentExercise,
+    progressPercent,
+    userInput, setUserInput,
+    selectedOption, setSelectedOption,
+    showFeedback,
+    isCorrect,
+    isLessonFinished,
+    earnedStars,
+    checkAnswer,
+    nextExercise,
+    getSolutionDisplay
+  } = useLessonLogic(lessonId, lessonType, gender);
 
   // --- DYNAMISCHE FARBEN ---
+  // (Optional: Könnte man auch in eine eigene Datei auslagern, aber hier okay für UI Bezug)
   const themeColors = {
       background: isDarkMode ? '#151718' : '#fff',
       text: isDarkMode ? '#ECEDEE' : '#3c3c3c',
@@ -91,225 +59,6 @@ export default function LessonScreen() {
       feedbackErrorBg: isDarkMode ? '#3a1e1e' : '#ffdfe0',
       feedbackText: isDarkMode ? '#ECEDEE' : '#3c3c3c',
       finishSubText: isDarkMode ? '#bbb' : '#555',
-  };
-
-  // --- INIT: Lektion laden & Filtern ---
-  useEffect(() => {
-    const initLesson = async () => {
-      let rawExercises: Exercise[] = []; 
-
-      // 1. Übungen laden (Rohdaten)
-      if (lessonId === 'practice') {
-        const savedSession = await AsyncStorage.getItem('currentPracticeSession');
-        if (savedSession) {
-          rawExercises = JSON.parse(savedSession);
-        }
-      } else if (lessonType === 'exam') {
-        const unit = courseData.units.find(u => u.id === lessonId);
-        if (unit) {
-            let allUnitExercises: Exercise[] = [];
-            unit.levels.forEach(level => {
-                if (level.exercises) {
-                    allUnitExercises = [...allUnitExercises, ...level.exercises as Exercise[]];
-                }
-            });
-            rawExercises = allUnitExercises;
-        }
-      } else {
-        for (const unit of courseData.units) {
-            const level = unit.levels.find(l => l.id === lessonId);
-            if (level) {
-                rawExercises = [...level.exercises] as Exercise[];
-                break; 
-            }
-        }
-      }
-
-      // 2. Filtern nach Geschlecht
-      let filteredExercises = rawExercises.filter(ex => {
-        if (!ex.gender) return true; 
-        if (gender === 'd') return true; 
-        return ex.gender === gender; 
-      });
-
-      // 3. Wenn Exam: Mischen und Begrenzen
-      if (lessonType === 'exam') {
-          for (let i = filteredExercises.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [filteredExercises[i], filteredExercises[j]] = [filteredExercises[j], filteredExercises[i]];
-          }
-          const count = Math.min(filteredExercises.length, 30);
-          filteredExercises = filteredExercises.slice(0, count);
-          
-          if(filteredExercises.length === 0) Alert.alert("Ups", "Keine passenden Übungen gefunden!");
-      }
-
-      setLessonQueue(filteredExercises);
-      setTotalQuestions(filteredExercises.length);
-      setLoading(false);
-    };
-
-    initLesson();
-  }, [lessonId, lessonType, gender]);
-
-  const currentExercise = lessonQueue[currentExerciseIndex];
-  
-  const progressPercent = lessonQueue.length > 0 
-      ? (currentExerciseIndex / lessonQueue.length) * 100 
-      : 0;
-
-  // --- HELPER FUNKTIONEN ---
-  useEffect(() => {
-    return sound ? () => { sound.unloadAsync(); } : undefined;
-  }, [sound]);
-
-  const normalize = (str: string) => {
-    if (!str) return "";
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
-  };
-
-  const playAudio = async (filename: string) => {
-    try {
-        const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
-        if (sound) await sound.unloadAsync();
-        const { sound: newSound } = await Audio.Sound.createAsync(
-            { uri: audioUrl },
-            { shouldPlay: true }
-        );
-        setSound(newSound);
-    } catch (e) { 
-        console.error("Audio Error:", e);
-    }
-  };
-
-  const updateStreakProgress = async () => {
-    try {
-        const today = new Date().toDateString();
-        const dailyProgressStr = await AsyncStorage.getItem('dailyProgress');
-        let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
-
-        if (dailyData.date !== today) dailyData = { count: 0, date: today };
-
-        dailyData.count += 1;
-        await AsyncStorage.setItem('dailyProgress', JSON.stringify(dailyData));
-
-        if (dailyData.count >= 15) {
-            const streakDataStr = await AsyncStorage.getItem('streakData');
-            let streakData = streakDataStr ? JSON.parse(streakDataStr) : { currentStreak: 0, lastStreakDate: '' };
-
-            if (streakData.lastStreakDate !== today) {
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const yesterdayStr = yesterday.toDateString();
-
-                if (streakData.lastStreakDate === yesterdayStr) streakData.currentStreak += 1;
-                else streakData.currentStreak = 1;
-
-                streakData.lastStreakDate = today;
-                await AsyncStorage.setItem('streakData', JSON.stringify(streakData));
-            }
-        }
-    } catch(e) { console.error(e); }
-  };
-
-  const saveDailyMistake = async (exercise: Exercise) => {
-    try {
-        const today = new Date().toDateString();
-        const storageKey = 'dailyMistakes';
-        const existingDataStr = await AsyncStorage.getItem(storageKey);
-        let data = existingDataStr ? JSON.parse(existingDataStr) : { date: today, exercises: [] };
-
-        if (data.date !== today) data = { date: today, exercises: [] };
-
-        const alreadyExists = data.exercises.some((ex: Exercise) => ex.id === exercise.id);
-        if (!alreadyExists) {
-            data.exercises.push(exercise);
-            await AsyncStorage.setItem(storageKey, JSON.stringify(data));
-        }
-    } catch (e) { console.error(e); }
-  };
-
-  const checkAnswer = () => {
-    let correct = false;
-    if (currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') {
-      const inputNorm = normalize(userInput);
-      const answerNorm = normalize(currentExercise.correctAnswer);
-      const isAlt = currentExercise.alternativeAnswers?.some((alt: string) => normalize(alt) === inputNorm);
-      if (inputNorm === answerNorm || isAlt) correct = true;
-    } else if (currentExercise.type === 'multiple_choice') {
-      if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
-    }
-
-    setIsCorrect(correct);
-    if (correct) {
-      playAudio(currentExercise.id);
-      updateStreakProgress();
-    } else {
-      setMistakes(m => m + 1);
-      if (lessonType !== 'exam') saveDailyMistake(currentExercise);
-
-      const newQueue = [...lessonQueue];
-      const currentItem = newQueue[currentExerciseIndex];
-      const remainingExercises = newQueue.length - (currentExerciseIndex + 1);
-      if (remainingExercises > 0) {
-        const randomOffset = Math.floor(Math.random() * remainingExercises) + 1;
-        newQueue.splice(currentExerciseIndex + 1 + randomOffset, 0, currentItem);
-      } else {
-        newQueue.push(currentItem);
-      }
-      setLessonQueue(newQueue);
-    }
-    setShowFeedback(true);
-  };
-
-  const finishLesson = async () => {
-    const correctFirstTries = Math.max(0, totalQuestions - mistakes);
-    const scorePercentage = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
-
-    let stars = 0;
-    if (scorePercentage === 100) stars = 3;
-    else if (scorePercentage >= 75) stars = 2;
-    else if (scorePercentage >= 50) stars = 1;
-
-    setIsLessonFinished(true);
-    setEarnedStars(stars);
-
-    if (lessonType === 'exam') {
-        setExamPassed(true);
-        try {
-            const existingExams = await AsyncStorage.getItem('examScores');
-            let exams = existingExams ? JSON.parse(existingExams) : {};
-            exams[lessonId] = true; 
-            await AsyncStorage.setItem('examScores', JSON.stringify(exams));
-        } catch(e) {}
-    } else if (lessonId !== 'practice') {
-        try {
-          const existingData = await AsyncStorage.getItem('lessonScores');
-          let scores = existingData ? JSON.parse(existingData) : {};
-          const oldScore = scores[lessonId] || 0;
-          if (stars >= oldScore) {
-              scores[lessonId] = stars;
-              await AsyncStorage.setItem('lessonScores', JSON.stringify(scores));
-          }
-        } catch (e) { console.error(e); }
-    }
-  };
-
-  const nextExercise = async () => {
-    setShowFeedback(false);
-    setUserInput('');
-    setSelectedOption(null);
-    if (currentExerciseIndex < lessonQueue.length - 1) {
-      setCurrentExerciseIndex(currentExerciseIndex + 1);
-    } else {
-      finishLesson();
-    }
-  };
-
-  const getSolutionDisplay = () => {
-    if (currentExercise.type === 'translate_to_de') return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
-    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
-    return currentExercise.correctAnswer;
   };
 
   if (loading || !currentExercise) {
@@ -337,36 +86,20 @@ export default function LessonScreen() {
                     <Text style={[styles.finishSubText, {color: themeColors.finishSubText}]}>
                         Du hast die Prüfung bestanden und das nächste Kapitel freigeschaltet.
                     </Text>
-                    <View style={styles.starsContainer}>
-                        {[1, 2, 3].map((star) => (
-                            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={40} color="#FFD700" />
-                        ))}
-                    </View>
                 </>
             ) : (
                 <>
                     <Text style={styles.finishTitle}>
                         {isPractice ? "Training beendet!" : "Lektion beendet!"}
                     </Text>
-                    <View style={styles.starsContainer}>
-                        {[1, 2, 3].map((star) => (
-                            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
-                        ))}
-                    </View>
-                    <Text style={[styles.finishSubText, {color: themeColors.finishSubText}]}>
-                        {earnedStars === 3 ? "Perfekt! Alles richtig." : 
-                         earnedStars === 2 ? "Super gemacht!" :
-                         earnedStars === 1 ? "Gut, aber übe noch etwas." : 
-                         "Versuche es nochmal für mehr Sterne."}
-                    </Text>
                 </>
             )}
 
-            {isPractice && (
-                <Text style={{color: '#999', marginBottom: 20, fontStyle: 'italic'}}>
-                   (Ergebnis wird im Training nicht gespeichert)
-                </Text>
-            )}
+            <View style={styles.starsContainer}>
+                {[1, 2, 3].map((star) => (
+                    <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={isExam ? 40 : 60} color="#FFD700" />
+                ))}
+            </View>
 
             <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
                 <Text style={styles.checkButtonText}>
@@ -393,9 +126,9 @@ export default function LessonScreen() {
 
         <ScrollView contentContainerStyle={styles.content}>
           <Text style={[styles.instruction, { color: themeColors.subText }]}>
-            {currentExercise.type === 'translate_to_pt' ? 'Übersetze ins Portugiesische' : 
-             currentExercise.type === 'translate_to_de' ? 'Übersetze ins Deutsche' : 
-             'Wähle die richtige Lösung'}
+            {currentExercise.type.includes('translate') 
+              ? (currentExercise.type === 'translate_to_pt' ? 'Übersetze ins Portugiesische' : 'Übersetze ins Deutsche')
+              : 'Wähle die richtige Lösung'}
           </Text>
           
           <View style={styles.questionContainer}>
@@ -406,7 +139,7 @@ export default function LessonScreen() {
           </View>
 
           {/* Eingabefeld */}
-          {(currentExercise.type === 'translate_to_pt' || currentExercise.type === 'translate_to_de') && (
+          {currentExercise.type.includes('translate') && (
             <TextInput 
               style={[
                   styles.input, 
@@ -447,7 +180,7 @@ export default function LessonScreen() {
         <View style={[styles.footer, { borderColor: themeColors.footerBorder }]}>
           <TouchableOpacity 
             style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} 
-            onPress={checkAnswer} 
+            onPress={() => checkAnswer(playAudio)} // Audio wird übergeben, damit es bei Erfolg spielt
             disabled={!userInput && selectedOption === null}
           >
             <Text style={styles.checkButtonText}>ÜBERPRÜFEN</Text>
@@ -516,5 +249,5 @@ const styles = StyleSheet.create({
   textSuccess: { color: '#58cc02' }, textError: { color: '#ea2b2b' },
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   finishSubText: { fontSize: 18, marginBottom: 20, textAlign: 'center', paddingHorizontal: 20 },
-  starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10 },
+  starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10, justifyContent: 'center' },
 });
