@@ -1,16 +1,9 @@
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet, Text,
-  TextInput, TouchableOpacity,
-  View
-} from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from '../components/ThemeContext';
@@ -20,12 +13,13 @@ import { useLessonLogic } from './hooks/useLessonLogic';
 export default function LessonScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { isDarkMode, gender } = useTheme();
+  const { gender, isDarkMode } = useTheme();
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'light']; // NEU: Zugriff auf zentrales Theme
   
   const lessonId = params.id as string;
   const lessonType = params.type as string;
 
-  // --- HOOKS NUTZEN ---
   const { playAudio } = useAudioPlayer();
   const {
     loading,
@@ -42,48 +36,28 @@ export default function LessonScreen() {
     getSolutionDisplay
   } = useLessonLogic(lessonId, lessonType, gender);
 
-  // --- DYNAMISCHE FARBEN ---
-  // (Optional: Könnte man auch in eine eigene Datei auslagern, aber hier okay für UI Bezug)
-  const themeColors = {
-      background: isDarkMode ? '#151718' : '#fff',
-      text: isDarkMode ? '#ECEDEE' : '#3c3c3c',
-      subText: isDarkMode ? '#9BA1A6' : '#777',
-      inputBg: isDarkMode ? '#232526' : '#f7f7f7',
-      inputBorder: isDarkMode ? '#444' : '#e5e5e5',
-      optionBorder: isDarkMode ? '#444' : '#e5e5e5',
-      optionSelectedBg: isDarkMode ? '#1a3b1a' : '#ddf4ff',
-      speakerBg: isDarkMode ? '#232526' : '#ddf4ff',
-      progressBarBg: isDarkMode ? '#333' : '#e5e5e5',
-      footerBorder: isDarkMode ? '#333' : '#f0f0f0',
-      feedbackSuccessBg: isDarkMode ? '#1e3a1e' : '#d7ffb8',
-      feedbackErrorBg: isDarkMode ? '#3a1e1e' : '#ffdfe0',
-      feedbackText: isDarkMode ? '#ECEDEE' : '#3c3c3c',
-      finishSubText: isDarkMode ? '#bbb' : '#555',
-  };
-
   if (loading || !currentExercise) {
     return (
-        <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: themeColors.background}}>
+        <View style={{flex:1, justifyContent:'center', alignItems:'center', backgroundColor: theme.background}}>
             <ActivityIndicator size="large" color="#58cc02" />
         </View>
     );
   }
 
-  // --- END SCREEN ---
   if (isLessonFinished) {
       const isPractice = lessonId === 'practice';
       const isExam = lessonType === 'exam';
       
       return (
         <SafeAreaView 
-          style={[styles.container, {justifyContent: 'center', alignItems: 'center', backgroundColor: themeColors.background}]}
+          style={[styles.container, {justifyContent: 'center', alignItems: 'center', backgroundColor: theme.background}]}
           edges={['top', 'bottom', 'left', 'right']}
         >
             {isExam ? (
                 <>
                     <Ionicons name="trophy" size={80} color="#FFD700" style={{marginBottom: 20}} />
                     <Text style={styles.finishTitle}>Kapitel gemeistert!</Text>
-                    <Text style={[styles.finishSubText, {color: themeColors.finishSubText}]}>
+                    <Text style={[styles.finishSubText, {color: theme.subText}]}>
                         Du hast die Prüfung bestanden und das nächste Kapitel freigeschaltet.
                     </Text>
                 </>
@@ -110,40 +84,38 @@ export default function LessonScreen() {
       );
   }
 
-  // --- MAIN SCREEN ---
   return (
     <SafeAreaView 
-      style={[styles.container, { backgroundColor: themeColors.background }]}
+      style={[styles.container, { backgroundColor: theme.background }]}
       edges={['top', 'bottom', 'left', 'right']}
     >
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         
         <View style={styles.header}>
-          <View style={[styles.progressBarBackground, { backgroundColor: themeColors.progressBarBg }]}>
+          <View style={[styles.progressBarBackground, { backgroundColor: theme.progressBarBg }]}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={[styles.instruction, { color: themeColors.subText }]}>
+          <Text style={[styles.instruction, { color: theme.subText }]}>
             {currentExercise.type.includes('translate') 
               ? (currentExercise.type === 'translate_to_pt' ? 'Übersetze ins Portugiesische' : 'Übersetze ins Deutsche')
               : 'Wähle die richtige Lösung'}
           </Text>
           
           <View style={styles.questionContainer}>
-            <TouchableOpacity style={[styles.speakerButton, { backgroundColor: themeColors.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
+            <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
                <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
             </TouchableOpacity>
-            <Text style={[styles.question, { color: themeColors.text }]}>{currentExercise.question}</Text>
+            <Text style={[styles.question, { color: theme.text }]}>{currentExercise.question}</Text>
           </View>
 
-          {/* Eingabefeld */}
           {currentExercise.type.includes('translate') && (
             <TextInput 
               style={[
                   styles.input, 
-                  { backgroundColor: themeColors.inputBg, borderColor: themeColors.inputBorder, color: themeColors.text }
+                  { backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.text }
               ]} 
               placeholder={currentExercise.type === 'translate_to_pt' ? 'Auf Portugiesisch...' : 'Auf Deutsch...'}
               placeholderTextColor="#ccc" 
@@ -154,7 +126,6 @@ export default function LessonScreen() {
             />
           )}
 
-          {/* Multiple Choice */}
           {currentExercise.type === 'multiple_choice' && (
             <View style={styles.optionsContainer}>
               {currentExercise.options?.map((option: string, index: number) => (
@@ -162,8 +133,8 @@ export default function LessonScreen() {
                   key={index} 
                   style={[
                       styles.optionButton, 
-                      { borderColor: themeColors.optionBorder },
-                      selectedOption === index && { borderColor: '#1cb0f6', backgroundColor: themeColors.optionSelectedBg }
+                      { borderColor: theme.border },
+                      selectedOption === index && { borderColor: '#1cb0f6', backgroundColor: theme.optionSelectedBg }
                   ]} 
                   onPress={() => {
                     setSelectedOption(index);
@@ -177,10 +148,10 @@ export default function LessonScreen() {
           )}
         </ScrollView>
 
-        <View style={[styles.footer, { borderColor: themeColors.footerBorder }]}>
+        <View style={[styles.footer, { borderColor: theme.cardBorder }]}>
           <TouchableOpacity 
             style={[styles.checkButton, (!userInput && selectedOption === null) && styles.disabledButton]} 
-            onPress={() => checkAnswer(playAudio)} // Audio wird übergeben, damit es bei Erfolg spielt
+            onPress={() => checkAnswer(playAudio)} 
             disabled={!userInput && selectedOption === null}
           >
             <Text style={styles.checkButtonText}>ÜBERPRÜFEN</Text>
@@ -188,21 +159,20 @@ export default function LessonScreen() {
         </View>
       </KeyboardAvoidingView>
 
-      {/* FEEDBACK MODAL */}
       <Modal animationType="slide" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
           <View style={[
               styles.feedbackContainer, 
-              { backgroundColor: isCorrect ? themeColors.feedbackSuccessBg : themeColors.feedbackErrorBg }
+              { backgroundColor: isCorrect ? theme.feedbackSuccessBg : theme.feedbackErrorBg }
           ]}>
-            <Text style={[styles.feedbackTitle, { color: themeColors.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
+            <Text style={[styles.feedbackTitle, { color: theme.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
             <View style={{ marginBottom: 20 }}>
-              <Text style={[styles.feedbackSubtitle, { color: themeColors.subText }]}>Lösung:</Text>
+              <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                  <TouchableOpacity onPress={() => playAudio(currentExercise.id)}>
                     <Ionicons name="volume-medium" size={24} color={isDarkMode ? "#ccc" : "#555"} style={{marginRight: 10}}/>
                  </TouchableOpacity>
-                 <Text style={[styles.feedbackSolution, { color: themeColors.feedbackText }]}>{getSolutionDisplay()}</Text>
+                 <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{getSolutionDisplay()}</Text>
               </View>
             </View>
             <TouchableOpacity 
