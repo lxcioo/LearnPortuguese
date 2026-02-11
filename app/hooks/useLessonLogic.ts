@@ -1,41 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import content from '../../content.json'; // Pfad ggf. anpassen
+import content from '../../content.json';
 import { StorageService } from '../services/StorageService';
-import { Course, Exercise } from '../types/index';
+import { Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
+// Helper außerhalb des Hooks (Performance + Sauberkeit)
+const normalizeText = (str: string) => {
+  if (!str) return "";
+  return str.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
+    .toLowerCase()
+    .trim();
+};
+
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
+  // State
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  
+  // User Interaction State
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  
+  // Progress State
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
-  const [examPassed, setExamPassed] = useState(false);
 
-  // Initialisierung
+  // Initialisierung der Lektion
   useEffect(() => {
-    const initLesson = async () => {
+    const fetchExercises = async () => {
       let rawExercises: Exercise[] = [];
 
+      // 1. Datenquelle wählen
       if (lessonId === 'practice') {
         const session = await StorageService.getPracticeSession();
         if (session) rawExercises = session;
       } else if (lessonType === 'exam') {
-        const unit = courseData.units.find(u => u.id === lessonId);
+        const unit = courseData.units.find((u: Unit) => u.id === lessonId);
         if (unit) {
-          unit.levels.forEach(level => {
-            if (level.exercises) rawExercises = [...rawExercises, ...level.exercises];
-          });
+          rawExercises = unit.levels.flatMap(level => level.exercises || []);
         }
       } else {
+        // Normale Lektion suchen
         for (const unit of courseData.units) {
           const level = unit.levels.find(l => l.id === lessonId);
           if (level) {
@@ -45,21 +59,23 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         }
       }
 
-      // Filter nach Geschlecht
-      let filtered = rawExercises.filter(ex => {
-        if (!ex.gender) return true;
-        if (gender === 'd' || !gender) return true;
-        return ex.gender === gender;
-      });
+      // 2. Filtern (Geschlecht)
+      let filtered = rawExercises.filter(ex => 
+        !ex.gender || !gender || gender === 'd' || ex.gender === gender
+      );
 
-      // Exam Logik (Shuffle & Limit)
+      // 3. Exam Logik (Shuffle & Limit)
       if (lessonType === 'exam') {
+        // Fisher-Yates Shuffle
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
         }
         filtered = filtered.slice(0, 30);
-        if (filtered.length === 0) Alert.alert("Ups", "Keine Übungen gefunden!");
+        
+        if (filtered.length === 0) {
+          Alert.alert("Ups", "Keine Übungen gefunden!");
+        }
       }
 
       setLessonQueue(filtered);
@@ -67,24 +83,22 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
       setLoading(false);
     };
 
-    initLesson();
+    fetchExercises();
   }, [lessonId, lessonType, gender]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
-  // Helper
-  const normalize = (str: string) => {
-    if (!str) return "";
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "").toLowerCase().trim();
-  };
-
   const checkAnswer = (playAudioSuccess: (id: string) => void) => {
+    if (!currentExercise) return;
+
     let correct = false;
     
+    // Logik-Prüfung
     if (currentExercise.type.includes('translate')) {
-      const inputNorm = normalize(userInput);
-      const answerNorm = normalize(currentExercise.correctAnswer);
-      const isAlt = currentExercise.alternativeAnswers?.some(alt => normalize(alt) === inputNorm);
+      const inputNorm = normalizeText(userInput);
+      const answerNorm = normalizeText(currentExercise.correctAnswer);
+      const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
+      
       if (inputNorm === answerNorm || isAlt) correct = true;
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
@@ -96,24 +110,35 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
       playAudioSuccess(currentExercise.id);
       StorageService.updateStreak();
     } else {
-      setMistakes(m => m + 1);
-      if (lessonType !== 'exam') StorageService.saveDailyMistake(currentExercise);
-
-      // Wiederholungsschleife
-      const newQueue = [...lessonQueue];
-      const remaining = newQueue.length - (currentExerciseIndex + 1);
-      if (remaining > 0) {
-        const offset = Math.floor(Math.random() * remaining) + 1;
-        newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
-      } else {
-        newQueue.push(currentExercise);
-      }
-      setLessonQueue(newQueue);
+      handleMistake();
     }
     setShowFeedback(true);
   };
 
-  const nextExercise = async () => {
+  const handleMistake = () => {
+    setMistakes(prev => prev + 1);
+    if (lessonType !== 'exam') {
+      StorageService.saveDailyMistake(currentExercise);
+    }
+
+    // Übung später wiederholen (Spaced Repetition Light)
+    setLessonQueue(prevQueue => {
+      const newQueue = [...prevQueue];
+      const remaining = newQueue.length - (currentExerciseIndex + 1);
+      
+      if (remaining > 0) {
+        // Zufällig in die verbleibenden Übungen einschieben
+        const offset = Math.floor(Math.random() * remaining) + 1;
+        newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
+      } else {
+        // Ans Ende hängen
+        newQueue.push(currentExercise);
+      }
+      return newQueue;
+    });
+  };
+
+  const nextExercise = () => {
     setShowFeedback(false);
     setUserInput('');
     setSelectedOption(null);
@@ -121,38 +146,50 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(prev => prev + 1);
     } else {
-      // Lektion beendet
-      const correctFirstTries = Math.max(0, totalQuestions - mistakes);
-      const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
-      
-      let stars = 0;
-      if (score === 100) stars = 3;
-      else if (score >= 75) stars = 2;
-      else if (score >= 50) stars = 1;
-
-      setEarnedStars(stars);
-      setIsLessonFinished(true);
-
-      if (lessonType === 'exam') {
-        setExamPassed(true);
-        StorageService.markExamPassed(lessonId);
-      } else if (lessonId !== 'practice') {
-        StorageService.saveLessonScore(lessonId, stars);
-      }
+      finishLesson();
     }
   };
 
-  const getSolutionDisplay = () => {
-    if (!currentExercise) return "";
-    if (currentExercise.type === 'translate_to_de') return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
-    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
-    return currentExercise.correctAnswer;
+  const finishLesson = () => {
+    const correctFirstTries = Math.max(0, totalQuestions - mistakes);
+    // Vermeidung von Division durch Null
+    const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
+    
+    let stars = 0;
+    if (score === 100) stars = 3;
+    else if (score >= 75) stars = 2;
+    else if (score >= 50) stars = 1;
+
+    setEarnedStars(stars);
+    setIsLessonFinished(true);
+
+    if (lessonType === 'exam') {
+      StorageService.markExamPassed(lessonId);
+    } else if (lessonId !== 'practice') {
+      StorageService.saveLessonScore(lessonId, stars);
+    }
   };
+
+  const getSolutionDisplay = useCallback(() => {
+    if (!currentExercise) return "";
+    
+    if (currentExercise.type === 'translate_to_de') {
+        return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
+    }
+    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') {
+        return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
+    }
+    return currentExercise.correctAnswer;
+  }, [currentExercise]);
+
+  const progressPercent = lessonQueue.length > 0 
+    ? (currentExerciseIndex / lessonQueue.length) * 100 
+    : 0;
 
   return {
     loading,
     currentExercise,
-    progressPercent: lessonQueue.length > 0 ? (currentExerciseIndex / lessonQueue.length) * 100 : 0,
+    progressPercent,
     userInput, setUserInput,
     selectedOption, setSelectedOption,
     showFeedback,
