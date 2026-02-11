@@ -1,5 +1,5 @@
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Colors } from '@/app/src/constants/theme';
+import { useColorScheme } from '@/app/src/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
@@ -17,9 +17,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useTheme } from '../components/ThemeContext';
-import { useAudioPlayer } from './hooks/useAudioPlayer';
-import { useLessonLogic } from './hooks/useLessonLogic';
+import { useTheme } from './src/context/ThemeContext';
+import { useAudioPlayer } from './src/hooks/useAudioPlayer';
+import { useLessonLogic } from './src/hooks/useLessonLogic';
 
 export default function LessonScreen() {
   const router = useRouter();

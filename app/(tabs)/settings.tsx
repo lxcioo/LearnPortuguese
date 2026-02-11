@@ -1,5 +1,5 @@
-import { useTheme } from '@/components/ThemeContext';
-import { Colors } from '@/constants/theme';
+import { Colors } from '@/app/src/constants/theme';
+import { useTheme } from '@/app/src/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';

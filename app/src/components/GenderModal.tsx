@@ -1,4 +1,4 @@
-import { useTheme } from '@/components/ThemeContext';
+import { useTheme } from '@/app/src/context/ThemeContext';
 import React from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 

@@ -1,12 +1,12 @@
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useUserProgress } from '@/hooks/useUserProgress'; // NEU
+import { Colors } from '@/app/src/constants/theme';
+import { useColorScheme } from '@/app/src/hooks/useColorScheme';
+import { useUserProgress } from '@/app/src/hooks/useUserProgress'; // NEU
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import content from '../../content.json';
+import content from '../src/data/content.json';
 
 const courseData = content.courses[0];
 

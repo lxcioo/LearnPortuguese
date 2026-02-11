@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import content from '../../content.json';
+import content from '../data/content.json';
 import { StorageService } from '../services/StorageService';
 import { Course, Exercise, Unit } from '../types/index';
 
