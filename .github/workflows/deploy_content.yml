@@ -31,7 +31,7 @@ jobs:
           node-version: 18
 
       - name: Generate Audio Files
-        run: node generateAudio.js
+        run: node scripts/generateAudio.js
 
       - name: Prepare Public Folder
         run: |

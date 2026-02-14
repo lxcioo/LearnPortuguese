@@ -3,11 +3,11 @@ const path = require('path');
 const https = require('https');
 
 // Pfad zur content.json
-const contentPath = path.join(__dirname, 'content.json');
+const contentPath = path.join(__dirname, '../src/data/content.json');
 const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
 
 // Wir speichern im Ordner 'audio'
-const AUDIO_DIR = path.join(__dirname, 'audio');
+const AUDIO_DIR = path.join(__dirname, '../assets/audio');
 
 // Alten Ordner löschen für sauberen Neustart
 if (fs.existsSync(AUDIO_DIR)) {
