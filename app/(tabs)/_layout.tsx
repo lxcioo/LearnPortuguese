@@ -33,7 +33,6 @@ export default function TabLayout() {
         }}
       />
 
-      {/* NEUER TAB */}
       <Tabs.Screen
         name="settings"
         options={{

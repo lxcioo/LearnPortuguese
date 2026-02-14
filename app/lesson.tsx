@@ -1,10 +1,11 @@
 import { Colors } from '@/src/constants/theme';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React from 'react';
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -23,6 +24,7 @@ import { useLessonLogic } from '../src/hooks/useLessonLogic';
 
 export default function LessonScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
   const { id: lessonId, type: lessonType } = useLocalSearchParams<{ id: string, type: string }>();
   
   const { gender, isDarkMode } = useTheme();
@@ -45,7 +47,37 @@ export default function LessonScreen() {
     getSolutionDisplay
   } = useLessonLogic(lessonId, lessonType, gender);
 
-  // --- Sub-Render Functions für saubereres JSX ---
+  // --- Sicherheitsabfrage beim Verlassen ---
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      // Wenn die Lektion beendet ist, erlauben wir das Verlassen ohne Abfrage
+      if (isLessonFinished) {
+        return;
+      }
+
+      // Verhindert das sofortige Verlassen (gilt für Swipe, Hardware-Back und Button)
+      e.preventDefault();
+
+      // Zeigt den Bestätigungs-Dialog
+      Alert.alert(
+        'Lektion abbrechen?',
+        'Dein aktueller Fortschritt in dieser Lektion geht verloren.',
+        [
+          { text: 'Bleiben', style: 'cancel', onPress: () => {} },
+          {
+            text: 'Verlassen',
+            style: 'destructive',
+            // Führt die ursprünglich geplante Aktion (z.B. Zurückgehen) aus
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ]
+      );
+    });
+
+    return unsubscribe;
+  }, [navigation, isLessonFinished]);
+
+  // --- Sub-Render Functions ---
 
   const renderLoading = () => (
     <View style={[styles.centerContainer, { backgroundColor: theme.background }]}>
@@ -119,8 +151,16 @@ export default function LessonScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"} 
         style={styles.flex1}
       >
-        {/* Header mit Progress Bar */}
+        {/* Header mit Zurück-Pfeil und Progress Bar */}
         <View style={styles.header}>
+          <TouchableOpacity 
+            onPress={() => router.back()} 
+            style={styles.backButton}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Ionicons name="arrow-back" size={28} color={theme.subText} />
+          </TouchableOpacity>
+
           <View style={[styles.progressBarBackground, { backgroundColor: theme.progressBarBg }]}>
             <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
           </View>
@@ -252,7 +292,15 @@ const styles = StyleSheet.create({
   centerContent: { justifyContent: 'center', alignItems: 'center' },
   
   // Header
-  header: { padding: 20, flexDirection: 'row', alignItems: 'center' },
+  header: { 
+    padding: 16, 
+    flexDirection: 'row', 
+    alignItems: 'center',
+    gap: 16 // Abstand zwischen Pfeil und Balken
+  },
+  backButton: {
+    padding: 4, // Etwas Touch-Area
+  },
   progressBarBackground: { flex: 1, height: 16, borderRadius: 8, overflow: 'hidden' },
   progressBarFill: { height: '100%', backgroundColor: '#58cc02' },
   
