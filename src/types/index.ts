@@ -30,21 +30,32 @@ export interface Course {
   units: Unit[];
 }
 
-// --- NEU: Strukturen für Fehler-Tracking & Leitner ---
+// --- NEU: Tracking Strukturen für Turbo Spaced Repetition ---
+
+export type ConfidenceLevel = 'none' | 'low' | 'medium' | 'high' | 'perfect';
 
 export interface MistakeHistoryItem {
-  date: string; // ISO Date String
+  date: string; // ISO String
   result: 'correct' | 'wrong';
+  confidence?: ConfidenceLevel;
 }
 
-export interface MistakeEntry {
+export interface VocabEntry {
   exerciseId: string;
-  exerciseRef: Exercise; // Kopie der Übung für direkten Zugriff
-  leitnerBox: number; // 0 = Neu/Falsch, 1-5 = Boxen
-  nextReviewDate: string; // ISO Date String (wann ist sie wieder fällig?)
-  mistakeCount: number; // Absolute Anzahl Fehler
-  successCount: number; // Absolute Anzahl Erfolge
-  history: MistakeHistoryItem[]; // Historie für Diagramme
+  exerciseRef: Exercise; // Referenz für direkten Zugriff
+  
+  // Lern-Status
+  nextReviewDate: string; // ISO String (inkl. Uhrzeit!)
+  intervalMinutes: number; // Aktuelles Intervall in Minuten
+  
+  // Mastery Logik
+  perfectStreak: number; // Wie oft hintereinander "Perfekt"?
+  isMastered: boolean;   // True wenn 3x Perfekt -> wird ausgeblendet
+
+  // Statistik
+  mistakeCount: number;
+  successCount: number;
+  history: MistakeHistoryItem[];
 }
 
-export type MistakeDatabase = Record<string, MistakeEntry>;
+export type VocabDatabase = Record<string, VocabEntry>;

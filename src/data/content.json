@@ -67,14 +67,14 @@
                 { "id": "u1_l3_e7_m", "type": "multiple_choice", "question": "Wähle: Er ist verheiratet", "correctAnswer": "Ele é casado", "options": ["Ele é casada", "Ele é casado", "Ela é casada"], "correctAnswerIndex": 1, "audioText": "Ele é casado" },
                 { "id": "u1_l3_e7_f", "type": "multiple_choice", "question": "Wähle: Sie ist verheiratet", "correctAnswer": "Ela é casada", "options": ["Ela é casado", "Ela é casada", "Ele é casado"], "correctAnswerIndex": 1, "audioText": "Ela é casada" },
                 { "id": "u1_l3_e8", "type": "translate_to_de", "question": "Onde é a casa de banho?", "correctAnswer": "Wo ist die Toilette", "alternativeAnswers": ["Wo ist das Badezimmer?"] },
-                { "id": "u1_l3_e9", "type": "translate_to_pt", "question": "Ich weiß nicht", "correctAnswer": "Não sei" },
+                { "id": "u1_l3_e9", "type": "translate_to_pt", "question": "Ich weiß nicht", "correctAnswer": "Não sei", "alternativeAnswers": ["Eu não sei"] },
                 { "id": "u1_l3_e10", "type": "translate_to_de", "question": "Podes repetir?", "correctAnswer": "Kannst du das wiederholen", "alternativeAnswers": ["Kannst du wiederholen?"] },
                 { "id": "u1_l3_e11", "type": "translate_to_de", "question": "Devagar, por favor", "correctAnswer": "Langsam bitte" },
                 { "id": "u1_l3_e12", "type": "multiple_choice", "question": "Was heißt 'Ich verstehe'?", "correctAnswer": "Eu entendo", "options": ["Eu entendo", "Não sei", "Falo"], "correctAnswerIndex": 0, "audioText": "Eu entendo" },
                 { "id": "u1_l3_e13", "type": "translate_to_pt", "question": "Ja, klar", "correctAnswer": "Sim claro", "alternativeAnswers": ["Claro"] },
                 { "id": "u1_l3_e14_m", "type": "translate_to_de", "question": "Obrigado pela ajuda", "correctAnswer": "Danke für die Hilfe", "gender": "m" },
                 { "id": "u1_l3_e14_f", "type": "translate_to_de", "question": "Obrigada pela ajuda", "correctAnswer": "Danke für die Hilfe", "gender": "f" },
-                { "id": "u1_l3_e15", "type": "translate_to_pt", "question": "Es tut mir leid", "correctAnswer": "Sinto muito" }
+                { "id": "u1_l3_e15", "type": "translate_to_pt", "question": "Es tut mir leid", "correctAnswer": "Sinto muito", "alternativeAnswers": ["Desculpa"] }
               ]
             }
           ]

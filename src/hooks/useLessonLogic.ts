@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import content from '../data/content.json';
 import { StorageService } from '../services/StorageService';
-import { Course, Exercise, Unit } from '../types/index';
+import { ConfidenceLevel, Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
@@ -16,29 +16,24 @@ const normalizeText = (str: string) => {
 };
 
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
-  // State
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   
-  // User Interaction State
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   
-  // Progress State
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
 
-  // Initialisierung der Lektion
   useEffect(() => {
     const fetchExercises = async () => {
       let rawExercises: Exercise[] = [];
 
-      // 1. Datenquelle wählen
       if (lessonId === 'practice') {
         const session = await StorageService.getPracticeSession();
         if (session) rawExercises = session;
@@ -48,7 +43,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
           rawExercises = unit.levels.flatMap(level => level.exercises || []);
         }
       } else {
-        // Normale Lektion suchen
         for (const unit of courseData.units) {
           const level = unit.levels.find(l => l.id === lessonId);
           if (level) {
@@ -58,14 +52,11 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         }
       }
 
-      // 2. Filtern (Geschlecht)
       let filtered = rawExercises.filter(ex => 
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
-      // 3. Exam Logik (Shuffle & Limit)
       if (lessonType === 'exam') {
-        // Fisher-Yates Shuffle
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
@@ -92,7 +83,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
     let correct = false;
     
-    // Logik-Prüfung
     if (currentExercise.type.includes('translate')) {
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
@@ -104,33 +94,40 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     }
 
     setIsCorrect(correct);
+    setShowFeedback(true);
 
-    // --- NEU: Tracking für alle Lektionen (Normal, Exam & Practice) ---
-    StorageService.trackExerciseResult(currentExercise, correct);
-    
     if (correct) {
       playAudioSuccess(currentExercise.id);
       StorageService.updateStreak();
+      // Tracking passiert JETZT ERST im Modal über rateConfidence!
     } else {
-      handleMistake();
+      // Wenn falsch -> Sofort tracken als 'none' (0 min)
+      StorageService.trackResult(currentExercise, 'none');
+      handleMistakeInSession();
     }
-    setShowFeedback(true);
   };
 
-  const handleMistake = () => {
-    setMistakes(prev => prev + 1);
+  // Diese Funktion wird vom UI aufgerufen, wenn der Nutzer auf einen Button klickt
+  const rateConfidence = (confidence: ConfidenceLevel) => {
+      if (!currentExercise) return;
+      
+      // Nur tracken wenn Richtig, da 'Falsch' schon in checkAnswer getrackt wurde
+      if (isCorrect) {
+          StorageService.trackResult(currentExercise, confidence);
+      }
+      nextExercise();
+  };
 
-    // Übung in der aktuellen Session wiederholen (Spaced Repetition Light)
+  const handleMistakeInSession = () => {
+    setMistakes(prev => prev + 1);
     setLessonQueue(prevQueue => {
       const newQueue = [...prevQueue];
       const remaining = newQueue.length - (currentExerciseIndex + 1);
       
       if (remaining > 0) {
-        // Zufällig in die verbleibenden Übungen einschieben
         const offset = Math.floor(Math.random() * remaining) + 1;
         newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
       } else {
-        // Ans Ende hängen
         newQueue.push(currentExercise);
       }
       return newQueue;
@@ -195,6 +192,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     isLessonFinished,
     earnedStars,
     checkAnswer,
+    rateConfidence, // WICHTIG: Exportieren
     nextExercise,
     getSolutionDisplay
   };
