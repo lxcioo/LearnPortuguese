@@ -36,9 +36,8 @@ jobs:
       - name: Prepare Public Folder
         run: |
           mkdir -p public
-          cp content.json public/content.json
-          # Kopiere Audio-Dateien (falls vorhanden, sonst Fehler ignorieren damit Pipeline nicht bricht beim ersten Run)
-          if [ -d "audio" ]; then cp -r audio public/audio; fi
+          cp src/data/content.json public/content.json
+          if [ -d "assets/audio" ]; then cp -r assets/audio public/; fi
 
       # Der moderne Weg: Artefakt hochladen statt git push
       - name: Upload Pages Artifact
