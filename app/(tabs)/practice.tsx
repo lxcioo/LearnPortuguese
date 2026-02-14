@@ -20,13 +20,12 @@ export default function PracticeScreen() {
   
   const { scores, examScores } = useUserProgress();
   
-  // States für Diagramme & Daten
   const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
   const [leitnerCounts, setLeitnerCounts] = useState([0,0,0,0,0,0]);
   
-  // States für Freies Training
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
-  const [questionCount, setQuestionCount] = useState(10);
+  // questionCount kann jetzt 'all' sein
+  const [questionCount, setQuestionCount] = useState<number | 'all'>(10);
   const [trainingMode, setTrainingMode] = useState<'random' | 'leitner'>('random');
 
   useFocusEffect(
@@ -38,7 +37,6 @@ export default function PracticeScreen() {
   const loadData = async () => {
     const daily = await StorageService.getDailyStats();
     setDailyStats({ wordsLearned: daily.wordsLearned, mistakesMade: daily.mistakesMade });
-    
     const leitner = await StorageService.getLeitnerStats();
     setLeitnerCounts(leitner);
   };
@@ -46,8 +44,6 @@ export default function PracticeScreen() {
   const toggleLesson = (id: string) => {
     setSelectedLessons(prev => ({ ...prev, [id]: !prev[id] }));
   };
-
-  // --- Buttons Logik ---
 
   const startTodayMistakes = async () => {
       const exercises = await StorageService.getTodayMistakes();
@@ -94,13 +90,11 @@ export default function PracticeScreen() {
         return;
       }
 
-      // Smart Selection (Zufall oder Leitner)
       const session = await StorageService.getSmartSelection(pool, trainingMode, questionCount);
       await StorageService.savePracticeSession(session);
       router.push({ pathname: "/lesson", params: { id: 'practice' } });
   };
 
-  // --- Helper für Balkenhöhe ---
   const getMaxLeitner = () => Math.max(1, ...leitnerCounts);
   const getMaxDaily = () => Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
 
@@ -112,7 +106,6 @@ export default function PracticeScreen() {
 
       <ScrollView contentContainerStyle={styles.content}>
         
-        {/* DIAGRAMM 1: HEUTE */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Statistik Heute:</Text>
         <View style={[styles.card, { backgroundColor: theme.card, flexDirection: 'row', alignItems: 'flex-end', height: 150, justifyContent: 'space-around', paddingBottom: 20 }]}>
             <View style={{alignItems: 'center'}}>
@@ -127,7 +120,6 @@ export default function PracticeScreen() {
             </View>
         </View>
 
-        {/* DIAGRAMM 2: LEITNER SYSTEM */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Leitner System (Lernstand):</Text>
         <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 10 }]}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 130}}>
@@ -145,12 +137,9 @@ export default function PracticeScreen() {
                     </View>
                 ))}
             </View>
-            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 10}}>
-                Box 1 (Neu/Schwer) → Box 5 (Meister)
-            </Text>
+            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 10}}>Box 1 (Neu) → Box 5 (Meister)</Text>
         </View>
 
-        {/* OPTIONEN */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Was möchtest du üben?</Text>
 
         <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startTodayMistakes}>
@@ -165,11 +154,9 @@ export default function PracticeScreen() {
 
         <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startArchEnemies}>
             <Ionicons name="flame" size={24} color="#ffa502" style={{marginRight: 10}}/>
-            <Text style={[styles.optionText, {color: theme.text}]}>Erzfeinde (Top 20 Fehler)</Text>
+            <Text style={[styles.optionText, {color: theme.text}]}>Erzfeinde (Top 20)</Text>
         </TouchableOpacity>
 
-
-        {/* FREIES TRAINING */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Freies Training:</Text>
         <View style={[styles.card, { backgroundColor: theme.card }]}>
             <Text style={{fontWeight: 'bold', marginBottom: 10, color: theme.text}}>1. Lektionen wählen:</Text>
@@ -206,6 +193,10 @@ export default function PracticeScreen() {
 
             <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 10, color: theme.text}}>3. Anzahl Vokabeln:</Text>
             <View style={styles.countContainer}>
+                {/* HIER IST DIE "ALLE" OPTION */}
+                <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
+                    <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
+                </TouchableOpacity>
                 {[5, 10, 20].map(num => (
                     <TouchableOpacity key={num} style={[styles.countBtn, questionCount === num && styles.countBtnActive]} onPress={() => setQuestionCount(num)}>
                         <Text style={[styles.countText, questionCount === num && styles.countTextActive]}>{num}</Text>
@@ -234,20 +225,16 @@ const styles = StyleSheet.create({
   optionText: { fontSize: 16, fontWeight: '600' },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1 },
   label: { fontSize: 14 },
-  
-  // Modus & Count Styles
   modeContainer: { flexDirection: 'row', gap: 10 },
   modeBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
   modeBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
   modeText: { color: '#555' },
   modeTextActive: { color: '#fff', fontWeight: 'bold' },
-  
   countContainer: { flexDirection: 'row', gap: 10 },
   countBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
   countBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
   countText: { color: '#555' },
   countTextActive: { color: '#fff', fontWeight: 'bold' },
-
   startBtn: { backgroundColor: '#58cc02', padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 20 },
   startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
 });

@@ -26,12 +26,16 @@ export default function LessonScreen() {
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
-    checkAnswer, nextExercise, getSolutionDisplay
+    checkAnswer, nextExercise, ratePractice, isPractice,
+    getSolutionDisplay
   } = useLessonLogic(lessonId, lessonType, gender);
 
+  // --- Alert Logik ---
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-      if (isLessonFinished) return;
+      // Wenn Lektion beendet ODER es ist Practice -> kein Alert
+      if (isLessonFinished || isPractice) return;
+
       e.preventDefault();
       Alert.alert('Lektion abbrechen?', 'Fortschritt geht verloren.', [
           { text: 'Bleiben', style: 'cancel', onPress: () => {} },
@@ -39,7 +43,7 @@ export default function LessonScreen() {
       ]);
     });
     return unsubscribe;
-  }, [navigation, isLessonFinished]);
+  }, [navigation, isLessonFinished, isPractice]);
 
   const renderLoading = () => (
     <View style={[styles.centerContainer, { backgroundColor: theme.background }]}>
@@ -48,7 +52,6 @@ export default function LessonScreen() {
   );
 
   const renderFinishScreen = () => {
-      const isPractice = lessonId === 'practice';
       return (
         <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
           <Text style={styles.finishTitle}>{isPractice ? "Training beendet!" : "Lektion beendet!"}</Text>
@@ -138,9 +141,29 @@ export default function LessonScreen() {
                  <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{getSolutionDisplay()}</Text>
               </View>
             </View>
-            <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={nextExercise}>
-              <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
-            </TouchableOpacity>
+
+            {/* PRACTICE: Zeige Box-Buttons zur Einordnung */}
+            {isPractice ? (
+                <View>
+                    <Text style={{color: theme.subText, marginBottom: 10, fontWeight: 'bold'}}>In welche Box gehört das?</Text>
+                    <View style={{flexDirection: 'row', gap: 5}}>
+                         {[1, 2, 3, 4, 5].map(box => (
+                             <TouchableOpacity 
+                                key={box}
+                                style={[styles.boxBtn, {backgroundColor: box === 1 ? '#ff7675' : '#74b9ff'}]} 
+                                onPress={() => ratePractice(box)}
+                             >
+                                <Text style={styles.boxBtnText}>{box}</Text>
+                             </TouchableOpacity>
+                         ))}
+                    </View>
+                </View>
+            ) : (
+                /* LERNPFAD: Nur Weiter */
+                <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={nextExercise}>
+                  <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
+                </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>
@@ -183,5 +206,9 @@ const styles = StyleSheet.create({
   textError: { color: '#ea2b2b' },
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10, justifyContent: 'center' },
-  marginBottom20: { marginBottom: 20 }
+  marginBottom20: { marginBottom: 20 },
+  
+  // Box Buttons
+  boxBtn: { flex: 1, padding: 15, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  boxBtnText: { color: 'white', fontWeight: 'bold', fontSize: 20 }
 });

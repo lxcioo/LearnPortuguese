@@ -56,7 +56,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
-      // Exam Shuffle
       if (lessonType === 'exam') {
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -93,28 +92,43 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setIsCorrect(correct);
     setShowFeedback(true);
 
-    // TRACKING: Sowohl bei Lesson als auch bei Practice
-    StorageService.trackResult(currentExercise, correct, isPractice ? 'practice' : 'lesson');
-
     if (correct) {
-      playAudioSuccess(currentExercise.id);
-      StorageService.updateStreak();
+        playAudioSuccess(currentExercise.id);
+        StorageService.updateStreak();
     } else {
-      setMistakes(prev => prev + 1);
-      
-      // Fehler-Wiederholung innerhalb der Session
-      setLessonQueue(prevQueue => {
-        const newQueue = [...prevQueue];
-        const remaining = newQueue.length - (currentExerciseIndex + 1);
-        if (remaining > 0) {
-          const offset = Math.floor(Math.random() * remaining) + 1;
-          newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
-        } else {
-          newQueue.push(currentExercise);
-        }
-        return newQueue;
-      });
+        setMistakes(prev => prev + 1);
     }
+
+    // LERNPFAD: Sofort tracken
+    // PRACTICE: Warten auf manuelle Box-Wahl (passiert nicht hier)
+    if (!isPractice) {
+        StorageService.trackResult(currentExercise, correct, 'lesson');
+        
+        if (!correct) {
+            // Fehlerwiederholung im Lernpfad
+            setLessonQueue(prevQueue => {
+                const newQueue = [...prevQueue];
+                const remaining = newQueue.length - (currentExerciseIndex + 1);
+                if (remaining > 0) {
+                    const offset = Math.floor(Math.random() * remaining) + 1;
+                    newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
+                } else {
+                    newQueue.push(currentExercise);
+                }
+                return newQueue;
+            });
+        }
+    }
+  };
+
+  // NEU: Wird NUR im Practice-Mode vom Modal aufgerufen
+  const ratePractice = (box: number) => {
+      if (!currentExercise) return;
+      // Hier übergeben wir die manuelle Box und das Ergebnis
+      // Wenn Box 1 gewählt wurde, werten wir es als "Falsch" für die Statistik, sonst "Richtig"
+      const effectiveCorrect = box > 1; 
+      StorageService.trackResult(currentExercise, effectiveCorrect, 'practice', box);
+      nextExercise();
   };
 
   const nextExercise = () => {
@@ -160,6 +174,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
-    checkAnswer, nextExercise, getSolutionDisplay
+    checkAnswer, nextExercise, ratePractice, // ratePractice exportieren
+    getSolutionDisplay, isPractice // isPractice exportieren für UI Logik
   };
 };
