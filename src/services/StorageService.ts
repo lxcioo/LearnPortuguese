@@ -11,19 +11,21 @@ const KEYS = {
   DAILY_STATS: 'dailyStats_v2',
 };
 
-const INTERVALS = [0, 1, 3, 7, 14, 30]; 
+// Intervalle in MINUTEN
+// Index 0 (unbenutzt), Box 1 (10m), Box 2 (30m), Box 3 (1h), Box 4 (6h), Box 5 (1d), Box 6 (30d)
+const INTERVAL_MINUTES = [0, 10, 30, 60, 360, 1440, 43200]; 
 
 export const StorageService = {
 
   // --- 1. Tracking Logik ---
   
-  // source: 'lesson' (Lernpfad -> Auto) oder 'practice' (Übung -> Manuell)
-  // manualBox: Optional, wenn der User selbst entscheidet (1-5)
   async trackResult(exercise: Exercise, isCorrect: boolean, source: 'lesson' | 'practice', manualBox?: number) {
     try {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
       const db: VocabDatabase = json ? JSON.parse(json) : {};
-      const today = new Date().toISOString().split('T')[0];
+      
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
 
       let entry = db[exercise.id];
       if (!entry) {
@@ -31,7 +33,8 @@ export const StorageService = {
           exerciseId: exercise.id,
           exerciseRef: exercise,
           box: 0,
-          nextReviewDate: today,
+          nextReviewDate: now.toISOString(),
+          box5Streak: 0,
           mistakeCount: 0,
           successCount: 0,
           lastPracticed: '',
@@ -40,11 +43,11 @@ export const StorageService = {
         };
       }
 
-      if (entry.lastPracticed !== today) {
+      if (entry.lastPracticed !== todayStr) {
         entry.mistakesToday = 0;
         entry.solvedToday = 0;
       }
-      entry.lastPracticed = today;
+      entry.lastPracticed = todayStr;
 
       if (isCorrect) {
         entry.successCount++;
@@ -54,33 +57,55 @@ export const StorageService = {
         entry.mistakesToday++;
       }
 
-      // --- BOX LOGIK ---
-      if (source === 'practice' && manualBox !== undefined) {
-          // Manuelle Einstufung (Übungsmodus)
-          entry.box = manualBox;
-      } else if (source === 'lesson') {
-          // Automatische Einstufung (Lernpfad)
-          if (isCorrect) {
-             // Wenn neu, setze auf Box 1 (Gelernt). Sonst nichts tun (bleibt wo es ist)
-             if (entry.box === 0) entry.box = 1;
-          } else {
-             // Bei Fehler im Lernpfad: Zurück auf Box 1
-             entry.box = 1; 
-          }
-      } 
-      // Fallback für Practice ohne manualBox (sollte nicht passieren, aber zur Sicherheit):
-      // Nichts tun oder Standard-Logik. Wir lassen es hier unverändert.
+      // --- BOX LOGIK (Der spannende Teil) ---
+      
+      let targetBox = entry.box;
 
-      // Nächstes Datum berechnen basierend auf der (neuen) Box
-      const days = INTERVALS[entry.box] || 1;
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + days);
-      entry.nextReviewDate = nextDate.toISOString().split('T')[0];
+      if (source === 'practice' && manualBox !== undefined) {
+          // User wählt Button (1 bis 5)
+          const chosenBox = manualBox;
+          
+          if (chosenBox === 5) {
+             // User sagt "Einfach" (Box 5)
+             entry.box5Streak = (entry.box5Streak || 0) + 1;
+             
+             // Wenn 3x hintereinander Box 5 -> Aufstieg in Box 6
+             if (entry.box5Streak >= 3) {
+                 targetBox = 6;
+                 // Streak resetten oder behalten? Resetten ist sicherer.
+                 entry.box5Streak = 0; 
+             } else {
+                 targetBox = 5;
+             }
+          } else {
+             // Wenn User < 5 wählt (z.B. Schwer/Mittel), Streak kaputt
+             entry.box5Streak = 0;
+             targetBox = chosenBox;
+          }
+
+      } else if (source === 'lesson') {
+          // Lernpfad Logik (Automatik)
+          entry.box5Streak = 0; // Lernpfad resetet Streak sicherheitshalber
+          if (isCorrect) {
+             // Neu -> Box 1 (10 min)
+             if (entry.box === 0) targetBox = 1;
+          } else {
+             // Fehler -> Box 1
+             targetBox = 1; 
+          }
+      }
+
+      // Box setzen
+      entry.box = targetBox;
+
+      // Neues Datum berechnen (Minuten addieren)
+      const minutesToAdd = INTERVAL_MINUTES[targetBox] || 10;
+      const nextDate = new Date(now.getTime() + minutesToAdd * 60000);
+      entry.nextReviewDate = nextDate.toISOString();
 
       db[exercise.id] = entry;
       await AsyncStorage.setItem(KEYS.GLOBAL_VOCAB, JSON.stringify(db));
 
-      // Stats update
       await this.updateDailyStats(isCorrect, entry.solvedToday >= 3 || entry.box > 0);
 
     } catch (e) { console.error("Error tracking result", e); }
@@ -119,12 +144,13 @@ export const StorageService = {
       try {
         const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
         const db: VocabDatabase = json ? JSON.parse(json) : {};
-        const counts = [0, 0, 0, 0, 0, 0];
+        // Box 0..6 (Index 0..6)
+        const counts = [0, 0, 0, 0, 0, 0, 0];
         Object.values(db).forEach(e => {
-            if (e.box >= 0 && e.box <= 5) counts[e.box]++;
+            if (e.box >= 0 && e.box <= 6) counts[e.box]++;
         });
         return counts;
-      } catch(e) { return [0,0,0,0,0,0]; }
+      } catch(e) { return [0,0,0,0,0,0,0]; }
   },
 
   async getTodayMistakes(): Promise<Exercise[]> {
@@ -144,9 +170,10 @@ export const StorageService = {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
       if (!json) return [];
       const db: VocabDatabase = JSON.parse(json);
-      const today = new Date().toISOString().split('T')[0];
+      const nowISO = new Date().toISOString(); // Jetzt mit Uhrzeit
+
       return Object.values(db)
-        .filter(e => e.nextReviewDate <= today && e.box < 5)
+        .filter(e => e.nextReviewDate <= nowISO && e.box > 0) // Alles was Vergangenheit ist & nicht Box 0
         .map(e => e.exerciseRef);
     } catch (e) { return []; }
   },
@@ -165,9 +192,7 @@ export const StorageService = {
   },
 
   async getSmartSelection(candidates: Exercise[], mode: 'random' | 'leitner', limit: number | 'all'): Promise<Exercise[]> {
-      // Wenn limit 'all' ist, nehmen wir einfach eine sehr hohe Zahl
       const actualLimit = limit === 'all' ? candidates.length : limit;
-
       if (mode === 'random') {
           const pool = [...candidates];
           for (let i = pool.length - 1; i > 0; i--) {
@@ -176,19 +201,18 @@ export const StorageService = {
           }
           return pool.slice(0, actualLimit);
       } else {
-          // Leitner Logik
           const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
           const db: VocabDatabase = json ? JSON.parse(json) : {};
-          const today = new Date().toISOString().split('T')[0];
+          const nowISO = new Date().toISOString();
 
           const due: Exercise[] = [];
           const unknown: Exercise[] = [];
-          const mastered: Exercise[] = [];
+          const mastered: Exercise[] = []; // Nicht fällig
 
           candidates.forEach(ex => {
               const entry = db[ex.id];
               if (!entry) unknown.push(ex);
-              else if (entry.nextReviewDate <= today && entry.box < 5) due.push(ex);
+              else if (entry.nextReviewDate <= nowISO) due.push(ex);
               else mastered.push(ex);
           });
 
@@ -211,6 +235,7 @@ export const StorageService = {
       }
   },
 
+  // --- 3. Standard Methoden --- (Unverändert)
   async saveLessonScore(lessonId: string, stars: number) {
     try {
       const existingData = await AsyncStorage.getItem(KEYS.LESSON_SCORES);
@@ -222,7 +247,6 @@ export const StorageService = {
       }
     } catch (e) {}
   },
-
   async markExamPassed(lessonId: string) {
     try {
       const existingExams = await AsyncStorage.getItem(KEYS.EXAM_SCORES);
@@ -231,7 +255,6 @@ export const StorageService = {
       await AsyncStorage.setItem(KEYS.EXAM_SCORES, JSON.stringify(exams));
     } catch (e) {}
   },
-
   async updateStreak() {
     try {
       const today = new Date().toDateString();
@@ -253,11 +276,9 @@ export const StorageService = {
       }
     } catch (e) {}
   },
-
   async savePracticeSession(exercises: Exercise[]) {
       await AsyncStorage.setItem(KEYS.PRACTICE_SESSION, JSON.stringify(exercises));
   },
-
   async getPracticeSession(): Promise<Exercise[] | null> {
     const session = await AsyncStorage.getItem(KEYS.PRACTICE_SESSION);
     return session ? JSON.parse(session) : null;

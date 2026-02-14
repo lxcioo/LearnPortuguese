@@ -37,23 +37,26 @@ export interface VocabEntry {
   exerciseRef: Exercise;
   
   // Leitner Status
-  box: number; // 0=Neu/Unbekannt, 1-5=Leitner Boxen
-  nextReviewDate: string; // ISO Date String (YYYY-MM-DD)
+  box: number; // 1-6 (Box 6 ist der "Monats-Status")
+  nextReviewDate: string; // ISO Date String (jetzt mit Uhrzeit wichtig!)
   
+  // Logic für Box 6 Aufstieg
+  box5Streak: number; // Wie oft hintereinander Box 5 gewählt?
+
   // Stats
   mistakeCount: number;
   successCount: number;
-  lastPracticed: string; // ISO Date String
+  lastPracticed: string; // YYYY-MM-DD
   
   // Für "Heutige Fehler" Logik
   mistakesToday: number; 
-  solvedToday: number; // Wie oft heute richtig gelöst?
+  solvedToday: number;
 }
 
 export type VocabDatabase = Record<string, VocabEntry>;
 
 export interface DailyStats {
   date: string;
-  wordsLearned: number; // Box > 0 oder heute 3x gelöst
+  wordsLearned: number;
   mistakesMade: number;
 }
