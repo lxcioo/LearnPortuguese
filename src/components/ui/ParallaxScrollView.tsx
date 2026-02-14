@@ -1,15 +1,15 @@
 import type { PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollOffset,
+    interpolate,
+    useAnimatedRef,
+    useAnimatedStyle,
+    useScrollOffset,
 } from 'react-native-reanimated';
 
-import { ThemedView } from '@/app/src/components/ui/ThemedView';
-import { useColorScheme } from '@/app/src/hooks/useColorScheme';
-import { useThemeColor } from '@/app/src/hooks/useThemeColor';
+import { ThemedView } from '@/src/components/ui/ThemedView';
+import { useColorScheme } from '@/src/hooks/useColorScheme';
+import { useThemeColor } from '@/src/hooks/useThemeColor';
 
 const HEADER_HEIGHT = 250;
 

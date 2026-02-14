@@ -1,14 +1,14 @@
-import { Colors } from '@/app/src/constants/theme'; // NEU: Zentrales Theme
-import { useColorScheme } from '@/app/src/hooks/useColorScheme';
-import { useUserProgress } from '@/app/src/hooks/useUserProgress'; // NEU: Zentraler Hook
+import { Colors } from '@/src/constants/theme'; // NEU: Zentrales Theme
+import { useColorScheme } from '@/src/hooks/useColorScheme';
+import { useUserProgress } from '@/src/hooks/useUserProgress'; // NEU: Zentraler Hook
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '../src/context/ThemeContext';
-import content from '../src/data/content.json';
+import { useTheme } from '../../src/context/ThemeContext';
+import content from '../../src/data/content.json';
 
 const courseData = content.courses[0];
 

@@ -6,8 +6,8 @@ import React, { useEffect } from 'react';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { GenderModal } from '@/app/src/components/GenderModal'; // NEU: Importiert
-import { ThemeProvider, useTheme } from '@/app/src/context/ThemeContext';
+import { GenderModal } from '@/src/components/GenderModal'; // NEU: Importiert
+import { ThemeProvider, useTheme } from '@/src/context/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 

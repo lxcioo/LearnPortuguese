@@ -1,5 +1,5 @@
-import { Colors } from '@/app/src/constants/theme';
-import { useColorScheme } from '@/app/src/hooks/useColorScheme';
+import { Colors } from '@/src/constants/theme';
+import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
