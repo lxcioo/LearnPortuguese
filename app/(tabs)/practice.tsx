@@ -20,13 +20,10 @@ export default function PracticeScreen() {
   
   const { scores, examScores } = useUserProgress();
   
-  // Box 0..6 -> 7 Elemente
   const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
   const [leitnerCounts, setLeitnerCounts] = useState([0,0,0,0,0,0,0]);
-  
   const [dueCount, setDueCount] = useState(0);
   const [todayMistakeCount, setTodayMistakeCount] = useState(0);
-  
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
   const [questionCount, setQuestionCount] = useState<number | 'all'>(10);
   const [trainingMode, setTrainingMode] = useState<'random' | 'leitner'>('random');
@@ -59,7 +56,8 @@ export default function PracticeScreen() {
           return;
       }
       await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice' } });
+      // Mode 'leitner' damit Bewertungen angezeigt werden (zur Korrektur)
+      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
   };
 
   const startLeitnerReview = async () => {
@@ -69,7 +67,7 @@ export default function PracticeScreen() {
           return;
       }
       await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice' } });
+      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
   };
 
   const startArchEnemies = async () => {
@@ -79,7 +77,7 @@ export default function PracticeScreen() {
           return;
       }
       await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice' } });
+      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
   };
 
   const startFreeTraining = async () => {
@@ -97,7 +95,8 @@ export default function PracticeScreen() {
 
       const session = await StorageService.getSmartSelection(pool, trainingMode, questionCount);
       await StorageService.savePracticeSession(session);
-      router.push({ pathname: "/lesson", params: { id: 'practice' } });
+      // Mode durchreichen
+      router.push({ pathname: "/lesson", params: { id: 'practice', mode: trainingMode } });
   };
 
   const getMaxLeitner = () => Math.max(1, ...leitnerCounts);
@@ -128,14 +127,13 @@ export default function PracticeScreen() {
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Leitner System (Lernstand):</Text>
         <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 10 }]}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 130}}>
-                {/* Zeige Box 1 bis 6 */}
                 {[1, 2, 3, 4, 5, 6].map(box => (
                     <View key={box} style={{alignItems: 'center', flex: 1}}>
                         <Text style={{fontSize: 9, color: theme.subText, marginBottom: 2}}>{leitnerCounts[box] || 0}</Text>
                         <View style={{
                             width: 12, 
                             height: (leitnerCounts[box] / getMaxLeitner()) * 100, 
-                            backgroundColor: box === 6 ? '#FFD700' : '#1cb0f6', // Box 6 ist Gold
+                            backgroundColor: box === 6 ? '#FFD700' : '#1cb0f6',
                             minHeight: 5, 
                             borderRadius: 3
                         }}/>
@@ -245,17 +243,11 @@ const styles = StyleSheet.create({
   content: { padding: 20, paddingBottom: 50 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
   card: { borderRadius: 16, padding: 15, elevation: 2, marginBottom: 10 },
-  optionBtn: { 
-      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
-      padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 
-  },
+  optionBtn: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 },
   optionContent: { flexDirection: 'row', alignItems: 'center' },
   optionText: { fontSize: 16, fontWeight: '600' },
   optionDesc: { fontSize: 12, color: '#888', marginTop: 2, maxWidth: 220 },
-  badge: { 
-      backgroundColor: '#ff4757', paddingHorizontal: 10, paddingVertical: 4, 
-      borderRadius: 12, minWidth: 24, alignItems: 'center' 
-  },
+  badge: { backgroundColor: '#ff4757', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, minWidth: 24, alignItems: 'center' },
   badgeText: { color: 'white', fontWeight: 'bold', fontSize: 12 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1 },
   label: { fontSize: 14 },

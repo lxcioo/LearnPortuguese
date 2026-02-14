@@ -15,7 +15,7 @@ const normalizeText = (str: string) => {
     .trim();
 };
 
-export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
+export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null, practiceMode?: string) => {
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -95,17 +95,22 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     if (correct) {
         playAudioSuccess(currentExercise.id);
         StorageService.updateStreak();
+        
+        // Wenn "Random Mode", verhalten wir uns wie im Lernpfad (Auto-Track)
+        if (isPractice && practiceMode === 'random') {
+             StorageService.trackResult(currentExercise, true, 'lesson'); // Nutzt Auto-Logik
+        }
     } else {
         setMistakes(prev => prev + 1);
+        // Bei Fehler: IMMER sofort tracken (Box 1), egal welcher Modus
+        StorageService.trackResult(currentExercise, false, 'practice', 1);
     }
 
-    // LERNPFAD: Sofort tracken
-    // PRACTICE: Warten auf manuelle Box-Wahl (passiert nicht hier)
+    // LERNPFAD: Sofort tracken (Box 1 oder Auto)
     if (!isPractice) {
         StorageService.trackResult(currentExercise, correct, 'lesson');
         
         if (!correct) {
-            // Fehlerwiederholung im Lernpfad
             setLessonQueue(prevQueue => {
                 const newQueue = [...prevQueue];
                 const remaining = newQueue.length - (currentExerciseIndex + 1);
@@ -121,13 +126,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     }
   };
 
-  // NEU: Wird NUR im Practice-Mode vom Modal aufgerufen
   const ratePractice = (box: number) => {
       if (!currentExercise) return;
-      // Hier übergeben wir die manuelle Box und das Ergebnis
-      // Wenn Box 1 gewählt wurde, werten wir es als "Falsch" für die Statistik, sonst "Richtig"
-      const effectiveCorrect = box > 1; 
-      StorageService.trackResult(currentExercise, effectiveCorrect, 'practice', box);
+      // Nur wenn User richtig lag und Box wählt
+      StorageService.trackResult(currentExercise, true, 'practice', box);
       nextExercise();
   };
 
@@ -174,7 +176,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
-    checkAnswer, nextExercise, ratePractice, // ratePractice exportieren
-    getSolutionDisplay, isPractice // isPractice exportieren für UI Logik
+    checkAnswer, nextExercise, ratePractice, isPractice,
+    getSolutionDisplay
   };
 };

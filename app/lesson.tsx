@@ -15,20 +15,21 @@ import { useLessonLogic } from '../src/hooks/useLessonLogic';
 export default function LessonScreen() {
   const router = useRouter();
   const navigation = useNavigation();
-  const { id: lessonId, type: lessonType } = useLocalSearchParams<{ id: string, type: string }>();
+  const { id: lessonId, type: lessonType, mode: lessonMode } = useLocalSearchParams<{ id: string, type: string, mode: string }>();
   
   const { gender, isDarkMode } = useTheme();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
 
   const { playAudio } = useAudioPlayer();
+  // Mode an den Hook übergeben
   const {
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
     getSolutionDisplay
-  } = useLessonLogic(lessonId, lessonType, gender);
+  } = useLessonLogic(lessonId, lessonType, gender, lessonMode);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -75,7 +76,6 @@ export default function LessonScreen() {
   const placeholderText = isTranslateToPt ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   const isButtonDisabled = !userInput && selectedOption === null;
 
-  // Buttons Configuration für das Practice Modal
   const ratingButtons = [
       { box: 1, label: 'Nochmal', sub: '10m', color: '#ff7675' },
       { box: 2, label: 'Schwer', sub: '30m', color: '#fdcb6e' },
@@ -83,6 +83,12 @@ export default function LessonScreen() {
       { box: 4, label: 'Gut', sub: '6h', color: '#55efc4' },
       { box: 5, label: 'Einfach', sub: '1 Tag', color: '#00b894' },
   ];
+
+  // Entscheidungslogik: Wann zeigen wir Rating Buttons?
+  // 1. Es muss Übungsmodus sein (isPractice)
+  // 2. Es muss RICHTIG sein (isCorrect) - bei Falsch wurde schon automatisch getrackt
+  // 3. Es darf NICHT "random" Modus sein (dort wollen wir keine Skala)
+  const showRating = isPractice && isCorrect && lessonMode !== 'random';
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'bottom', 'left', 'right']}>
@@ -148,7 +154,7 @@ export default function LessonScreen() {
               </View>
             </View>
 
-            {isPractice ? (
+            {showRating ? (
                 <View>
                     <Text style={{color: theme.subText, marginBottom: 10, fontWeight: 'bold'}}>Wie gut wusstest du es?</Text>
                     <View style={{flexDirection: 'row', gap: 5}}>
@@ -212,8 +218,6 @@ const styles = StyleSheet.create({
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10, justifyContent: 'center' },
   marginBottom20: { marginBottom: 20 },
-  
-  // Neue Box Button Styles
   boxBtn: { flex: 1, paddingVertical: 10, paddingHorizontal: 2, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   boxBtnLabel: { color: '#333', fontWeight: 'bold', fontSize: 11, marginBottom: 2 },
   boxBtnSub: { color: '#555', fontSize: 9 }

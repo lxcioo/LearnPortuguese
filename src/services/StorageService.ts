@@ -11,7 +11,6 @@ const KEYS = {
   DAILY_STATS: 'dailyStats_v2',
 };
 
-// Intervalle in MINUTEN
 // Index 0 (unbenutzt), Box 1 (10m), Box 2 (30m), Box 3 (1h), Box 4 (6h), Box 5 (1d), Box 6 (30d)
 const INTERVAL_MINUTES = [0, 10, 30, 60, 360, 1440, 43200]; 
 
@@ -25,7 +24,7 @@ export const StorageService = {
       const db: VocabDatabase = json ? JSON.parse(json) : {};
       
       const now = new Date();
-      const todayStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+      const todayStr = now.toISOString().split('T')[0];
 
       let entry = db[exercise.id];
       if (!entry) {
@@ -57,48 +56,45 @@ export const StorageService = {
         entry.mistakesToday++;
       }
 
-      // --- BOX LOGIK (Der spannende Teil) ---
+      // --- BOX LOGIK ---
       
       let targetBox = entry.box;
 
       if (source === 'practice' && manualBox !== undefined) {
-          // User wählt Button (1 bis 5)
+          // Manuelle Bewertung
           const chosenBox = manualBox;
           
+          // NEU: Wenn "Mittel" (Box 3) oder besser gewählt wird -> Fehlerstatus von heute löschen
+          if (chosenBox >= 3) {
+              entry.mistakesToday = 0;
+          }
+
           if (chosenBox === 5) {
-             // User sagt "Einfach" (Box 5)
              entry.box5Streak = (entry.box5Streak || 0) + 1;
-             
-             // Wenn 3x hintereinander Box 5 -> Aufstieg in Box 6
              if (entry.box5Streak >= 3) {
                  targetBox = 6;
-                 // Streak resetten oder behalten? Resetten ist sicherer.
                  entry.box5Streak = 0; 
              } else {
                  targetBox = 5;
              }
           } else {
-             // Wenn User < 5 wählt (z.B. Schwer/Mittel), Streak kaputt
              entry.box5Streak = 0;
              targetBox = chosenBox;
           }
 
-      } else if (source === 'lesson') {
-          // Lernpfad Logik (Automatik)
-          entry.box5Streak = 0; // Lernpfad resetet Streak sicherheitshalber
+      } else if (source === 'lesson' || (source === 'practice' && !isCorrect)) {
+          // Lernpfad ODER Falsche Antwort im Practice-Mode -> Automatik
+          entry.box5Streak = 0; 
           if (isCorrect) {
-             // Neu -> Box 1 (10 min)
              if (entry.box === 0) targetBox = 1;
           } else {
-             // Fehler -> Box 1
+             // Fehler -> Sofort Box 1 (Absturz)
              targetBox = 1; 
           }
       }
 
-      // Box setzen
       entry.box = targetBox;
 
-      // Neues Datum berechnen (Minuten addieren)
       const minutesToAdd = INTERVAL_MINUTES[targetBox] || 10;
       const nextDate = new Date(now.getTime() + minutesToAdd * 60000);
       entry.nextReviewDate = nextDate.toISOString();
@@ -116,10 +112,7 @@ export const StorageService = {
         const today = new Date().toISOString().split('T')[0];
         const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
         let stats: DailyStats = json ? JSON.parse(json) : { date: today, wordsLearned: 0, mistakesMade: 0 };
-
-        if (stats.date !== today) {
-            stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
-        }
+        if (stats.date !== today) stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
 
         if (!isCorrect) stats.mistakesMade++;
         else if (isLearned) stats.wordsLearned++; 
@@ -128,8 +121,7 @@ export const StorageService = {
       } catch(e) {}
   },
 
-  // --- 2. Abruf-Methoden ---
-
+  // --- Abruf Methoden (Unverändert) ---
   async getDailyStats(): Promise<DailyStats> {
       const today = new Date().toISOString().split('T')[0];
       const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
@@ -139,12 +131,10 @@ export const StorageService = {
       }
       return { date: today, wordsLearned: 0, mistakesMade: 0 };
   },
-
   async getLeitnerStats(): Promise<number[]> {
       try {
         const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
         const db: VocabDatabase = json ? JSON.parse(json) : {};
-        // Box 0..6 (Index 0..6)
         const counts = [0, 0, 0, 0, 0, 0, 0];
         Object.values(db).forEach(e => {
             if (e.box >= 0 && e.box <= 6) counts[e.box]++;
@@ -152,7 +142,6 @@ export const StorageService = {
         return counts;
       } catch(e) { return [0,0,0,0,0,0,0]; }
   },
-
   async getTodayMistakes(): Promise<Exercise[]> {
     try {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
@@ -164,20 +153,17 @@ export const StorageService = {
         .map(e => e.exerciseRef);
     } catch (e) { return []; }
   },
-
   async getLeitnerDue(): Promise<Exercise[]> {
     try {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
       if (!json) return [];
       const db: VocabDatabase = JSON.parse(json);
-      const nowISO = new Date().toISOString(); // Jetzt mit Uhrzeit
-
+      const nowISO = new Date().toISOString();
       return Object.values(db)
-        .filter(e => e.nextReviewDate <= nowISO && e.box > 0) // Alles was Vergangenheit ist & nicht Box 0
+        .filter(e => e.nextReviewDate <= nowISO && e.box > 0)
         .map(e => e.exerciseRef);
     } catch (e) { return []; }
   },
-
   async getArchEnemies(): Promise<Exercise[]> {
       try {
         const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
@@ -190,7 +176,6 @@ export const StorageService = {
             .map(e => e.exerciseRef);
       } catch(e) { return []; }
   },
-
   async getSmartSelection(candidates: Exercise[], mode: 'random' | 'leitner', limit: number | 'all'): Promise<Exercise[]> {
       const actualLimit = limit === 'all' ? candidates.length : limit;
       if (mode === 'random') {
@@ -204,18 +189,15 @@ export const StorageService = {
           const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
           const db: VocabDatabase = json ? JSON.parse(json) : {};
           const nowISO = new Date().toISOString();
-
           const due: Exercise[] = [];
           const unknown: Exercise[] = [];
-          const mastered: Exercise[] = []; // Nicht fällig
-
+          const mastered: Exercise[] = [];
           candidates.forEach(ex => {
               const entry = db[ex.id];
               if (!entry) unknown.push(ex);
               else if (entry.nextReviewDate <= nowISO) due.push(ex);
               else mastered.push(ex);
           });
-
           let result = [...due];
           if (result.length < actualLimit) {
               for (let i = unknown.length - 1; i > 0; i--) {
@@ -234,8 +216,7 @@ export const StorageService = {
           return result.slice(0, actualLimit);
       }
   },
-
-  // --- 3. Standard Methoden --- (Unverändert)
+  // Standard Methoden
   async saveLessonScore(lessonId: string, stars: number) {
     try {
       const existingData = await AsyncStorage.getItem(KEYS.LESSON_SCORES);
