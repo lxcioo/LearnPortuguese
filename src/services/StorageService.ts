@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ConfidenceLevel, Exercise, VocabDatabase } from '../types';
+import { DailyStats, Exercise, VocabDatabase } from '../types';
 
 const KEYS = {
   LESSON_SCORES: 'lessonScores',
@@ -7,228 +7,217 @@ const KEYS = {
   DAILY_PROGRESS: 'dailyProgress',
   STREAK_DATA: 'streakData',
   PRACTICE_SESSION: 'currentPracticeSession',
-  GLOBAL_VOCAB: 'globalVocabDB', // Neue Datenbank
+  GLOBAL_VOCAB: 'globalVocabDB',
+  DAILY_STATS: 'dailyStats_v2', // Neuer Key für Diagramm-Daten
 };
+
+// Leitner Intervalle in Tagen (Box 1..5)
+const INTERVALS = [0, 1, 3, 7, 14, 30]; 
 
 export const StorageService = {
 
-  // --- 1. Neue Tracking Logik (Turbo Spaced Repetition) ---
+  // --- 1. Tracking Logik ---
   
-  async trackResult(exercise: Exercise, confidence: ConfidenceLevel) {
+  async trackResult(exercise: Exercise, isCorrect: boolean, source: 'lesson' | 'practice') {
     try {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
       const db: VocabDatabase = json ? JSON.parse(json) : {};
-      const now = new Date();
+      const today = new Date().toISOString().split('T')[0];
 
       let entry = db[exercise.id];
       if (!entry) {
         entry = {
           exerciseId: exercise.id,
           exerciseRef: exercise,
-          nextReviewDate: now.toISOString(),
-          intervalMinutes: 0,
-          perfectStreak: 0,
-          isMastered: false,
+          box: 0,
+          nextReviewDate: today,
           mistakeCount: 0,
           successCount: 0,
-          history: []
+          lastPracticed: '',
+          mistakesToday: 0,
+          solvedToday: 0
         };
       }
 
-      // Mapping: Confidence -> Minuten
-      let addedMinutes = 0;
-      let isCorrect = true;
-
-      switch (confidence) {
-        case 'none': // Gar nicht (Falsch) -> Sofort (0 min)
-          addedMinutes = 0;
-          isCorrect = false;
-          entry.perfectStreak = 0; // Reset
-          break;
-        case 'low': // Kaum -> 5 min
-          addedMinutes = 5;
-          entry.perfectStreak = 0;
-          break;
-        case 'medium': // Unsicher -> 10 min
-          addedMinutes = 10;
-          entry.perfectStreak = 0;
-          break;
-        case 'high': // Fast sicher -> 30 min
-          addedMinutes = 30;
-          entry.perfectStreak = 0;
-          break;
-        case 'perfect': // Komplett gewusst -> 60 min
-          addedMinutes = 60;
-          entry.perfectStreak += 1;
-          break;
+      // Reset Daily Counters wenn neuer Tag
+      if (entry.lastPracticed !== today) {
+        entry.mistakesToday = 0;
+        entry.solvedToday = 0;
       }
+      entry.lastPracticed = today;
 
-      // Mastery Check (3x Perfekt hintereinander)
-      if (entry.perfectStreak >= 3) {
-        entry.isMastered = true;
-        // Wird effektiv aus dem Pool genommen (Datum sehr weit in Zukunft oder Flag prüfen)
-        addedMinutes = 525600; // 1 Jahr Ruhe
-      } else {
-        // Falls es vorher mastered war, aber jetzt nicht mehr perfekt gewusst wurde:
-        if (confidence !== 'perfect') {
-            entry.isMastered = false;
+      if (isCorrect) {
+        entry.successCount++;
+        entry.solvedToday++;
+        
+        // Leitner Logik
+        if (source === 'lesson') {
+            // Im Lernpfad: Initialisierung auf Box 1 (Gelernt)
+            if (entry.box === 0) entry.box = 1;
+        } else {
+            // Im Übungsmodus: Aufstieg
+            if (entry.box < 5) entry.box++;
         }
+      } else {
+        entry.mistakeCount++;
+        entry.mistakesToday++;
+        entry.box = 1; // Rückfall auf Box 1 (oder 0, je nach Härtegrad. 1 ist fair)
       }
 
-      // Neues Fälligkeitsdatum berechnen
-      const nextDate = new Date(now.getTime() + addedMinutes * 60000);
-      entry.nextReviewDate = nextDate.toISOString();
-      entry.intervalMinutes = addedMinutes;
-
-      // Stats update
-      if (isCorrect) entry.successCount++;
-      else entry.mistakeCount++;
-
-      entry.history.push({
-        date: now.toISOString(),
-        result: isCorrect ? 'correct' : 'wrong',
-        confidence
-      });
+      // Nächstes Datum setzen
+      const days = INTERVALS[entry.box] || 1;
+      const nextDate = new Date();
+      nextDate.setDate(nextDate.getDate() + days);
+      entry.nextReviewDate = nextDate.toISOString().split('T')[0];
 
       db[exercise.id] = entry;
       await AsyncStorage.setItem(KEYS.GLOBAL_VOCAB, JSON.stringify(db));
 
+      // Update Daily Stats Diagramm
+      await this.updateDailyStats(isCorrect, entry.solvedToday >= 3 || entry.box > 0);
+
     } catch (e) { console.error("Error tracking result", e); }
   },
 
-  // --- 2. Datenabruf Strategien ---
+  async updateDailyStats(isCorrect: boolean, isLearned: boolean) {
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
+        let stats: DailyStats = json ? JSON.parse(json) : { date: today, wordsLearned: 0, mistakesMade: 0 };
 
-  // Strategie A: Alles was fällig ist (Spaced Repetition)
-  async getDueExercises(): Promise<Exercise[]> {
-    try {
-      const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
-      if (!json) return [];
-      const db: VocabDatabase = JSON.parse(json);
-      const now = new Date().toISOString();
+        if (stats.date !== today) {
+            stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
+        }
 
-      return Object.values(db)
-        .filter(e => !e.isMastered && e.nextReviewDate <= now) // Nicht gemeistert & Zeit abgelaufen
-        .map(e => e.exerciseRef);
-    } catch (e) { return []; }
+        if (!isCorrect) {
+            stats.mistakesMade++;
+        } else if (isLearned) {
+            // Wir zählen es als "gelernt" für die Statistik, wenn es korrekt war 
+            // Hier könnte man verfeinern (nur zählen wenn es VORHER noch nicht gelernt war), 
+            // aber für einfache "Aktivität heute" reicht inkrementieren oft.
+            // Besser: Wir zählen "Aktivität".
+            stats.wordsLearned++; 
+        }
+        await AsyncStorage.setItem(KEYS.DAILY_STATS, JSON.stringify(stats));
+      } catch(e) {}
   },
 
-  // Strategie B: Fehler von HEUTE (für "Fehler heute" Button)
+  // --- 2. Abruf-Methoden für Practice Screen ---
+
+  async getDailyStats(): Promise<DailyStats> {
+      const today = new Date().toISOString().split('T')[0];
+      const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
+      if (json) {
+          const stats = JSON.parse(json);
+          if (stats.date === today) return stats;
+      }
+      return { date: today, wordsLearned: 0, mistakesMade: 0 };
+  },
+
+  async getLeitnerStats(): Promise<number[]> {
+      // Return array [box0_count, box1_count, ..., box5_count]
+      try {
+        const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
+        const db: VocabDatabase = json ? JSON.parse(json) : {};
+        const counts = [0, 0, 0, 0, 0, 0];
+        
+        Object.values(db).forEach(e => {
+            if (e.box >= 0 && e.box <= 5) counts[e.box]++;
+        });
+        return counts;
+      } catch(e) { return [0,0,0,0,0,0]; }
+  },
+
   async getTodayMistakes(): Promise<Exercise[]> {
     try {
       const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
       if (!json) return [];
       const db: VocabDatabase = JSON.parse(json);
-      
-      // Heute Start (00:00 Uhr)
-      const startToday = new Date();
-      startToday.setHours(0,0,0,0);
-      
-      const mistakes: Exercise[] = [];
-      
-      Object.values(db).forEach(entry => {
-        // Hat irgendeinen History-Eintrag von heute mit 'wrong' oder confidence 'none'?
-        const hasMistakeToday = entry.history.some(h => {
-            const hDate = new Date(h.date);
-            return hDate >= startToday && (h.result === 'wrong' || h.confidence === 'none');
-        });
-        
-        // Nur hinzufügen, wenn noch nicht gemeistert (Sicherheitsnetz)
-        if (hasMistakeToday && !entry.isMastered) {
-            mistakes.push(entry.exerciseRef);
-        }
-      });
-      
-      return mistakes;
+      const today = new Date().toISOString().split('T')[0];
+
+      return Object.values(db)
+        .filter(e => e.lastPracticed === today && e.mistakesToday > 0)
+        .map(e => e.exerciseRef);
     } catch (e) { return []; }
   },
 
-  // Strategie C: Intelligentes "Freies Training" (Smart Select)
-  async getSmartSelection(candidateExercises: Exercise[], limit: number = 20): Promise<Exercise[]> {
+  async getLeitnerDue(): Promise<Exercise[]> {
     try {
-        const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
-        const db: VocabDatabase = json ? JSON.parse(json) : {};
-        const now = new Date().toISOString();
+      const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
+      if (!json) return [];
+      const db: VocabDatabase = JSON.parse(json);
+      const today = new Date().toISOString().split('T')[0];
 
-        const dueList: Exercise[] = [];
-        const newItems: Exercise[] = [];
-        const notDueButActive: Exercise[] = [];
-
-        for (const ex of candidateExercises) {
-            const entry = db[ex.id];
-
-            if (!entry) {
-                // Noch nie gemacht -> Neu
-                newItems.push(ex);
-            } else if (entry.isMastered) {
-                // Gemeistert -> Ignorieren!
-                continue;
-            } else if (entry.nextReviewDate <= now) {
-                // Fällig -> Priorität
-                dueList.push(ex);
-            } else {
-                // Noch nicht fällig, aber im Lernprozess
-                notDueButActive.push(ex);
-            }
-        }
-
-        // 1. Fällige
-        let result = [...dueList];
-        
-        // 2. Neue (zufällig gemischt)
-        if (result.length < limit) {
-            for (let i = newItems.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newItems[i], newItems[j]] = [newItems[j], newItems[i]];
-            }
-            result = [...result, ...newItems];
-        }
-
-        // 3. Laufende (zum Auffüllen)
-        if (result.length < limit) {
-             result = [...result, ...notDueButActive];
-        }
-
-        return result.slice(0, limit);
-
-    } catch (e) { return candidateExercises.slice(0, limit); }
+      return Object.values(db)
+        .filter(e => e.nextReviewDate <= today && e.box < 5) // Fällig & nicht gemeistert
+        .map(e => e.exerciseRef);
+    } catch (e) { return []; }
   },
 
-  // --- 3. Statistik Daten ---
-  
-  async getGlobalProgressStats() {
+  async getArchEnemies(): Promise<Exercise[]> {
       try {
         const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
-        const db: VocabDatabase = json ? JSON.parse(json) : {};
-        const values = Object.values(db);
-
-        const stats = {
-            total: values.length,
-            mastered: 0,
-            learning: 0,
-            struggling: 0,
-            new: 0 
-        };
-
-        values.forEach(v => {
-            if (v.isMastered) {
-                stats.mastered++;
-            } else {
-                const last = v.history[v.history.length - 1];
-                // Als "Struggling" werten, wenn das letzte Mal falsch/schlecht war
-                if (last && (last.confidence === 'none' || last.confidence === 'low')) {
-                    stats.struggling++;
-                } else {
-                    stats.learning++;
-                }
-            }
-        });
+        if (!json) return [];
+        const db: VocabDatabase = JSON.parse(json);
         
-        return stats;
-      } catch (e) { return { total:0, mastered:0, learning:0, struggling:0, new:0 }; }
+        return Object.values(db)
+            .sort((a, b) => b.mistakeCount - a.mistakeCount)
+            .slice(0, 20)
+            .filter(e => e.mistakeCount > 0)
+            .map(e => e.exerciseRef);
+      } catch(e) { return []; }
   },
 
-  // --- 4. Bestehende Methoden ---
+  async getSmartSelection(candidates: Exercise[], mode: 'random' | 'leitner', limit: number): Promise<Exercise[]> {
+      if (mode === 'random') {
+          // Einfach mischen und limitieren
+          const pool = [...candidates];
+          for (let i = pool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [pool[i], pool[j]] = [pool[j], pool[i]];
+          }
+          return pool.slice(0, limit);
+      } else {
+          // Leitner Logik INNERHALB der Auswahl
+          const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
+          const db: VocabDatabase = json ? JSON.parse(json) : {};
+          const today = new Date().toISOString().split('T')[0];
 
+          // Priorität: 1. Fällig, 2. Neu, 3. Gemeistert (zufällig)
+          const due: Exercise[] = [];
+          const unknown: Exercise[] = [];
+          const mastered: Exercise[] = [];
+
+          candidates.forEach(ex => {
+              const entry = db[ex.id];
+              if (!entry) unknown.push(ex);
+              else if (entry.nextReviewDate <= today && entry.box < 5) due.push(ex);
+              else mastered.push(ex); // Oder noch nicht fällig
+          });
+
+          let result = [...due];
+          if (result.length < limit) {
+              // Neue dazumischen
+              for (let i = unknown.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [unknown[i], unknown[j]] = [unknown[j], unknown[i]];
+              }
+              result = [...result, ...unknown];
+          }
+          if (result.length < limit) {
+              // Rest auffüllen
+               for (let i = mastered.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [mastered[i], mastered[j]] = [mastered[j], mastered[i]];
+              }
+              result = [...result, ...mastered];
+          }
+          return result.slice(0, limit);
+      }
+  },
+
+  // --- 3. Standard Methoden (Unverändert) ---
+  
   async saveLessonScore(lessonId: string, stars: number) {
     try {
       const existingData = await AsyncStorage.getItem(KEYS.LESSON_SCORES);
@@ -238,7 +227,7 @@ export const StorageService = {
         scores[lessonId] = stars;
         await AsyncStorage.setItem(KEYS.LESSON_SCORES, JSON.stringify(scores));
       }
-    } catch (e) { console.error("Error saving score", e); }
+    } catch (e) {}
   },
 
   async markExamPassed(lessonId: string) {
@@ -247,7 +236,7 @@ export const StorageService = {
       let exams = existingExams ? JSON.parse(existingExams) : {};
       exams[lessonId] = true;
       await AsyncStorage.setItem(KEYS.EXAM_SCORES, JSON.stringify(exams));
-    } catch (e) { console.error("Error saving exam", e); }
+    } catch (e) {}
   },
 
   async updateStreak() {
@@ -255,30 +244,21 @@ export const StorageService = {
       const today = new Date().toDateString();
       const dailyProgressStr = await AsyncStorage.getItem(KEYS.DAILY_PROGRESS);
       let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: today };
-
       if (dailyData.date !== today) dailyData = { count: 0, date: today };
-
       dailyData.count += 1;
       await AsyncStorage.setItem(KEYS.DAILY_PROGRESS, JSON.stringify(dailyData));
-
       if (dailyData.count >= 15) {
         const streakDataStr = await AsyncStorage.getItem(KEYS.STREAK_DATA);
         let streakData = streakDataStr ? JSON.parse(streakDataStr) : { currentStreak: 0, lastStreakDate: '' };
-
         if (streakData.lastStreakDate !== today) {
-          const yesterday = new Date();
-          yesterday.setDate(yesterday.getDate() - 1);
-          
-          if (streakData.lastStreakDate === yesterday.toDateString()) {
-            streakData.currentStreak += 1;
-          } else {
-            streakData.currentStreak = 1;
-          }
+          const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+          if (streakData.lastStreakDate === yesterday.toDateString()) streakData.currentStreak += 1;
+          else streakData.currentStreak = 1;
           streakData.lastStreakDate = today;
           await AsyncStorage.setItem(KEYS.STREAK_DATA, JSON.stringify(streakData));
         }
       }
-    } catch (e) { console.error("Error updating streak", e); }
+    } catch (e) {}
   },
 
   async savePracticeSession(exercises: Exercise[]) {

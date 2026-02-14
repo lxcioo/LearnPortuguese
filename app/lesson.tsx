@@ -4,20 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import {
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
+  ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform,
+  ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { useTheme } from '../src/context/ThemeContext';
 import { useAudioPlayer } from '../src/hooks/useAudioPlayer';
 import { useLessonLogic } from '../src/hooks/useLessonLogic';
@@ -33,33 +23,20 @@ export default function LessonScreen() {
 
   const { playAudio } = useAudioPlayer();
   const {
-    loading,
-    currentExercise,
-    progressPercent,
-    userInput, setUserInput,
-    selectedOption, setSelectedOption,
-    showFeedback,
-    isCorrect,
-    isLessonFinished,
-    earnedStars,
-    checkAnswer,
-    rateConfidence, // NEU
-    getSolutionDisplay
+    loading, currentExercise, progressPercent,
+    userInput, setUserInput, selectedOption, setSelectedOption,
+    showFeedback, isCorrect, isLessonFinished, earnedStars,
+    checkAnswer, nextExercise, getSolutionDisplay
   } = useLessonLogic(lessonId, lessonType, gender);
 
-  // --- Sicherheitsabfrage beim Verlassen ---
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (isLessonFinished) return;
       e.preventDefault();
-      Alert.alert(
-        'Lektion abbrechen?',
-        'Dein aktueller Fortschritt in dieser Lektion geht verloren.',
-        [
+      Alert.alert('Lektion abbrechen?', 'Fortschritt geht verloren.', [
           { text: 'Bleiben', style: 'cancel', onPress: () => {} },
           { text: 'Verlassen', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
-        ]
-      );
+      ]);
     });
     return unsubscribe;
   }, [navigation, isLessonFinished]);
@@ -71,24 +48,20 @@ export default function LessonScreen() {
   );
 
   const renderFinishScreen = () => {
-    const isExam = lessonType === 'exam';
-    const isPractice = lessonId === 'practice';
-    
-    return (
-      <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
-        <Text style={styles.finishTitle}>
-            {isPractice ? "Training beendet!" : "Lektion beendet!"}
-        </Text>
-        <View style={styles.starsContainer}>
-          {[1, 2, 3].map((star) => (
-            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
-          ))}
-        </View>
-        <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
-          <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
+      const isPractice = lessonId === 'practice';
+      return (
+        <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
+          <Text style={styles.finishTitle}>{isPractice ? "Training beendet!" : "Lektion beendet!"}</Text>
+          <View style={styles.starsContainer}>
+            {[1, 2, 3].map((star) => (
+              <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
+            ))}
+          </View>
+          <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
+            <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      );
   };
 
   if (loading || !currentExercise) return renderLoading();
@@ -155,51 +128,19 @@ export default function LessonScreen() {
         </View>
       </KeyboardAvoidingView>
 
-      {/* FEEDBACK MODAL */}
       <Modal animationType="slide" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
           <View style={[styles.feedbackContainer, { backgroundColor: isCorrect ? theme.feedbackSuccessBg : theme.feedbackErrorBg }]}>
             <Text style={[styles.feedbackTitle, { color: theme.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
-            
             <View style={styles.marginBottom20}>
               <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
               <View style={styles.solutionRow}>
                  <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{getSolutionDisplay()}</Text>
               </View>
             </View>
-
-            {/* BEWERTUNGS-LOGIK */}
-            {isCorrect ? (
-                <View>
-                    <Text style={{color: theme.subText, marginBottom: 10, fontWeight: 'bold'}}>Wie sicher warst du?</Text>
-                    <View style={styles.ratingContainer}>
-                        <TouchableOpacity style={[styles.ratingBtn, {backgroundColor: '#ffeaa7'}]} onPress={() => rateConfidence('low')}>
-                            <Text style={styles.ratingEmoji}>🤔</Text>
-                            <Text style={styles.ratingText}>Kaum</Text>
-                            <Text style={styles.ratingTime}>5 min</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.ratingBtn, {backgroundColor: '#74b9ff'}]} onPress={() => rateConfidence('medium')}>
-                            <Text style={styles.ratingEmoji}>😐</Text>
-                            <Text style={styles.ratingText}>Unsicher</Text>
-                            <Text style={styles.ratingTime}>10 min</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.ratingBtn, {backgroundColor: '#55efc4'}]} onPress={() => rateConfidence('high')}>
-                            <Text style={styles.ratingEmoji}>🙂</Text>
-                            <Text style={styles.ratingText}>Sicher</Text>
-                            <Text style={styles.ratingTime}>30 min</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.ratingBtn, {backgroundColor: '#00b894'}]} onPress={() => rateConfidence('perfect')}>
-                            <Text style={styles.ratingEmoji}>😎</Text>
-                            <Text style={styles.ratingText}>Perfekt</Text>
-                            <Text style={styles.ratingTime}>1 h</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            ) : (
-                <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={() => rateConfidence('none')}>
-                  <Text style={[styles.continueButtonText, styles.textError]}>OKAY (0 min)</Text>
-                </TouchableOpacity>
-            )}
+            <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={nextExercise}>
+              <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -242,12 +183,5 @@ const styles = StyleSheet.create({
   textError: { color: '#ea2b2b' },
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10, justifyContent: 'center' },
-  marginBottom20: { marginBottom: 20 },
-  
-  // Rating Styles
-  ratingContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
-  ratingBtn: { alignItems: 'center', padding: 10, borderRadius: 10, flex: 1, marginHorizontal: 3 },
-  ratingEmoji: { fontSize: 20 },
-  ratingText: { fontSize: 10, fontWeight: 'bold', color: '#333' },
-  ratingTime: { fontSize: 9, color: '#555' }
+  marginBottom20: { marginBottom: 20 }
 });
