@@ -6,7 +6,6 @@ import { Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
-// Helper außerhalb des Hooks (Performance + Sauberkeit)
 const normalizeText = (str: string) => {
   if (!str) return "";
   return str.normalize("NFD")
@@ -105,6 +104,9 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     }
 
     setIsCorrect(correct);
+
+    // --- NEU: Tracking für alle Lektionen (Normal, Exam & Practice) ---
+    StorageService.trackExerciseResult(currentExercise, correct);
     
     if (correct) {
       playAudioSuccess(currentExercise.id);
@@ -117,11 +119,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const handleMistake = () => {
     setMistakes(prev => prev + 1);
-    if (lessonType !== 'exam') {
-      StorageService.saveDailyMistake(currentExercise);
-    }
 
-    // Übung später wiederholen (Spaced Repetition Light)
+    // Übung in der aktuellen Session wiederholen (Spaced Repetition Light)
     setLessonQueue(prevQueue => {
       const newQueue = [...prevQueue];
       const remaining = newQueue.length - (currentExerciseIndex + 1);
@@ -152,7 +151,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const finishLesson = () => {
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
-    // Vermeidung von Division durch Null
     const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
     
     let stars = 0;

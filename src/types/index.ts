@@ -29,3 +29,22 @@ export interface Course {
   title: string;
   units: Unit[];
 }
+
+// --- NEU: Strukturen für Fehler-Tracking & Leitner ---
+
+export interface MistakeHistoryItem {
+  date: string; // ISO Date String
+  result: 'correct' | 'wrong';
+}
+
+export interface MistakeEntry {
+  exerciseId: string;
+  exerciseRef: Exercise; // Kopie der Übung für direkten Zugriff
+  leitnerBox: number; // 0 = Neu/Falsch, 1-5 = Boxen
+  nextReviewDate: string; // ISO Date String (wann ist sie wieder fällig?)
+  mistakeCount: number; // Absolute Anzahl Fehler
+  successCount: number; // Absolute Anzahl Erfolge
+  history: MistakeHistoryItem[]; // Historie für Diagramme
+}
+
+export type MistakeDatabase = Record<string, MistakeEntry>;
