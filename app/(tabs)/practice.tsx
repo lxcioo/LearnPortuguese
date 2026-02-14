@@ -20,9 +20,15 @@ export default function PracticeScreen() {
   
   const { scores, examScores } = useUserProgress();
   
+  // States für Diagramme & Daten
   const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
   const [leitnerCounts, setLeitnerCounts] = useState([0,0,0,0,0,0]);
   
+  // States für Counter (Badges)
+  const [dueCount, setDueCount] = useState(0);
+  const [todayMistakeCount, setTodayMistakeCount] = useState(0);
+  
+  // States für Freies Training
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
   // questionCount kann jetzt 'all' sein
   const [questionCount, setQuestionCount] = useState<number | 'all'>(10);
@@ -35,15 +41,26 @@ export default function PracticeScreen() {
   );
 
   const loadData = async () => {
+    // Statistiken laden
     const daily = await StorageService.getDailyStats();
     setDailyStats({ wordsLearned: daily.wordsLearned, mistakesMade: daily.mistakesMade });
+    
     const leitner = await StorageService.getLeitnerStats();
     setLeitnerCounts(leitner);
+
+    // Counter für Buttons laden
+    const dueExercises = await StorageService.getLeitnerDue();
+    setDueCount(dueExercises.length);
+
+    const todayMistakes = await StorageService.getTodayMistakes();
+    setTodayMistakeCount(todayMistakes.length);
   };
 
   const toggleLesson = (id: string) => {
     setSelectedLessons(prev => ({ ...prev, [id]: !prev[id] }));
   };
+
+  // --- Buttons Logik ---
 
   const startTodayMistakes = async () => {
       const exercises = await StorageService.getTodayMistakes();
@@ -95,6 +112,7 @@ export default function PracticeScreen() {
       router.push({ pathname: "/lesson", params: { id: 'practice' } });
   };
 
+  // --- Helper für Balkenhöhe ---
   const getMaxLeitner = () => Math.max(1, ...leitnerCounts);
   const getMaxDaily = () => Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
 
@@ -106,6 +124,7 @@ export default function PracticeScreen() {
 
       <ScrollView contentContainerStyle={styles.content}>
         
+        {/* DIAGRAMM 1: HEUTE */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Statistik Heute:</Text>
         <View style={[styles.card, { backgroundColor: theme.card, flexDirection: 'row', alignItems: 'flex-end', height: 150, justifyContent: 'space-around', paddingBottom: 20 }]}>
             <View style={{alignItems: 'center'}}>
@@ -120,6 +139,7 @@ export default function PracticeScreen() {
             </View>
         </View>
 
+        {/* DIAGRAMM 2: LEITNER SYSTEM */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Leitner System (Lernstand):</Text>
         <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 10 }]}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 130}}>
@@ -137,26 +157,49 @@ export default function PracticeScreen() {
                     </View>
                 ))}
             </View>
-            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 10}}>Box 1 (Neu) → Box 5 (Meister)</Text>
+            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 10}}>
+                Box 1 (Neu/Schwer) → Box 5 (Meister)
+            </Text>
         </View>
 
+        {/* OPTIONEN */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Was möchtest du üben?</Text>
 
+        {/* Heutige Fehler Button */}
         <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startTodayMistakes}>
-            <Ionicons name="bandage" size={24} color="#ff4757" style={{marginRight: 10}}/>
-            <Text style={[styles.optionText, {color: theme.text}]}>Heutige Fehler</Text>
+            <View style={styles.optionContent}>
+                <Ionicons name="bandage" size={24} color="#ff4757" style={{marginRight: 10}}/>
+                <Text style={[styles.optionText, {color: theme.text}]}>Heutige Fehler</Text>
+            </View>
+            {todayMistakeCount > 0 && (
+                <View style={styles.badge}>
+                    <Text style={styles.badgeText}>{todayMistakeCount}</Text>
+                </View>
+            )}
         </TouchableOpacity>
 
+        {/* Leitner Button */}
         <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startLeitnerReview}>
-            <Ionicons name="infinite" size={24} color="#1cb0f6" style={{marginRight: 10}}/>
-            <Text style={[styles.optionText, {color: theme.text}]}>Leitner System (Fällige)</Text>
+            <View style={styles.optionContent}>
+                <Ionicons name="infinite" size={24} color="#1cb0f6" style={{marginRight: 10}}/>
+                <Text style={[styles.optionText, {color: theme.text}]}>Leitner System (Fällige)</Text>
+            </View>
+            {dueCount > 0 && (
+                <View style={[styles.badge, {backgroundColor: '#1cb0f6'}]}>
+                    <Text style={styles.badgeText}>{dueCount}</Text>
+                </View>
+            )}
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startArchEnemies}>
-            <Ionicons name="flame" size={24} color="#ffa502" style={{marginRight: 10}}/>
-            <Text style={[styles.optionText, {color: theme.text}]}>Erzfeinde (Top 20)</Text>
+            <View style={styles.optionContent}>
+                <Ionicons name="flame" size={24} color="#ffa502" style={{marginRight: 10}}/>
+                <Text style={[styles.optionText, {color: theme.text}]}>Erzfeinde (Top 20 Fehler)</Text>
+            </View>
         </TouchableOpacity>
 
+
+        {/* FREIES TRAINING */}
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Freies Training:</Text>
         <View style={[styles.card, { backgroundColor: theme.card }]}>
             <Text style={{fontWeight: 'bold', marginBottom: 10, color: theme.text}}>1. Lektionen wählen:</Text>
@@ -193,7 +236,6 @@ export default function PracticeScreen() {
 
             <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 10, color: theme.text}}>3. Anzahl Vokabeln:</Text>
             <View style={styles.countContainer}>
-                {/* HIER IST DIE "ALLE" OPTION */}
                 <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
                     <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
                 </TouchableOpacity>
@@ -221,20 +263,37 @@ const styles = StyleSheet.create({
   content: { padding: 20, paddingBottom: 50 },
   sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
   card: { borderRadius: 16, padding: 15, elevation: 2, marginBottom: 10 },
-  optionBtn: { flexDirection: 'row', alignItems: 'center', padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 },
+  
+  // Updated Option Button Styles
+  optionBtn: { 
+      flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
+      padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 
+  },
+  optionContent: { flexDirection: 'row', alignItems: 'center' },
   optionText: { fontSize: 16, fontWeight: '600' },
+  
+  // Badge Styles
+  badge: { 
+      backgroundColor: '#ff4757', paddingHorizontal: 10, paddingVertical: 4, 
+      borderRadius: 12, minWidth: 24, alignItems: 'center' 
+  },
+  badgeText: { color: 'white', fontWeight: 'bold', fontSize: 12 },
+
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1 },
   label: { fontSize: 14 },
+  
   modeContainer: { flexDirection: 'row', gap: 10 },
   modeBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
   modeBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
   modeText: { color: '#555' },
   modeTextActive: { color: '#fff', fontWeight: 'bold' },
+  
   countContainer: { flexDirection: 'row', gap: 10 },
   countBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
   countBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
   countText: { color: '#555' },
   countTextActive: { color: '#fff', fontWeight: 'bold' },
+  
   startBtn: { backgroundColor: '#58cc02', padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 20 },
   startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
 });
