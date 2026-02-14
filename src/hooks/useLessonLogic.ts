@@ -6,13 +6,15 @@ import { Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
+// Aktualisierte Normalisierung: Entfernt Akzente, Satzzeichen UND Leerzeichen
+// Damit wird "chamo-me", "chamo me" und "chamome" alles zu "chamome" -> Match!
 const normalizeText = (str: string) => {
   if (!str) return "";
   return str.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
-    .toLowerCase()
-    .trim();
+    .replace(/[\u0300-\u036f]/g, "") // Entfernt Akzente (z.B. ã -> a)
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "") // Entfernt Satzzeichen ink. Bindestrich
+    .replace(/\s+/g, "") // Entfernt ALLE Leerzeichen
+    .toLowerCase();
 };
 
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null, practiceMode?: string) => {
@@ -83,7 +85,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     if (currentExercise.type.includes('translate')) {
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
+      
+      // Prüft Hauptantwort und alle Alternativen
       const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
+      
       if (inputNorm === answerNorm || isAlt) correct = true;
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
@@ -96,17 +101,14 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         playAudioSuccess(currentExercise.id);
         StorageService.updateStreak();
         
-        // Wenn "Random Mode", verhalten wir uns wie im Lernpfad (Auto-Track)
         if (isPractice && practiceMode === 'random') {
-             StorageService.trackResult(currentExercise, true, 'lesson'); // Nutzt Auto-Logik
+             StorageService.trackResult(currentExercise, true, 'lesson');
         }
     } else {
         setMistakes(prev => prev + 1);
-        // Bei Fehler: IMMER sofort tracken (Box 1), egal welcher Modus
         StorageService.trackResult(currentExercise, false, 'practice', 1);
     }
 
-    // LERNPFAD: Sofort tracken (Box 1 oder Auto)
     if (!isPractice) {
         StorageService.trackResult(currentExercise, correct, 'lesson');
         
@@ -128,7 +130,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const ratePractice = (box: number) => {
       if (!currentExercise) return;
-      // Nur wenn User richtig lag und Box wählt
       StorageService.trackResult(currentExercise, true, 'practice', box);
       nextExercise();
   };

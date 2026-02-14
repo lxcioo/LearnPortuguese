@@ -35,7 +35,7 @@
               "id": "u1_l2",
               "title": "Sich vorstellen",
               "exercises": [
-                { "id": "u1_l2_e1", "type": "translate_to_de", "question": "Eu sou o Pedro", "correctAnswer": "Ich bin Pedro" },
+                { "id": "u1_l2_e1", "type": "translate_to_de", "question": "Eu sou o Pedro", "correctAnswer": "Ich bin Pedro", "alternativeAnswers": ["Ich bin der Pedro"] },
                 { "id": "u1_l2_e2", "type": "translate_to_pt", "question": "Ich heiße Maria", "correctAnswer": "Chamo-me Maria", "alternativeAnswers": ["Eu chamo-me Maria"] },
                 { "id": "u1_l2_e3", "type": "multiple_choice", "question": "Wie fragt man 'Wie heißt du?' (informell)", "correctAnswer": "Como te chamas?", "options": ["Como se chama?", "Como te chamas?", "Quem és?"], "correctAnswerIndex": 1, "audioText": "Como te chamas" },
                 { "id": "u1_l2_e4", "type": "translate_to_de", "question": "Prazer em conhecer", "correctAnswer": "Schön dich kennenzulernen", "alternativeAnswers": ["Freut mich"] },
@@ -44,10 +44,10 @@
                 { "id": "u1_l2_e7", "type": "multiple_choice", "question": "Wie heißt Sie? (formell)", "correctAnswer": "Como se chama?", "options": ["Como te chamas?", "Como se chama?", "Tudo bem?"], "correctAnswerIndex": 1, "audioText": "Como se chama" },
                 { "id": "u1_l2_e8", "type": "translate_to_pt", "question": "Ich bin aus Deutschland", "correctAnswer": "Eu sou da Alemanha", "alternativeAnswers": ["Sou da Alemanha"] },
                 { "id": "u1_l2_e9", "type": "translate_to_pt", "question": "Ich wohne in Berlin", "correctAnswer": "Moro em Berlim", "alternativeAnswers": ["Eu moro em Berlim"] },
-                { "id": "u1_l2_e10_m", "type": "translate_to_pt", "question": "Ich bin Deutscher", "correctAnswer": "Eu sou alemão", "gender": "m" },
-                { "id": "u1_l2_e10_f", "type": "translate_to_pt", "question": "Ich bin Deutsche", "correctAnswer": "Eu sou alemã", "gender": "f" },
+                { "id": "u1_l2_e10_m", "type": "translate_to_pt", "question": "Ich bin Deutscher", "correctAnswer": "Eu sou alemão", "gender": "m", "alternativeAnswers": ["Sou alemão"] },
+                { "id": "u1_l2_e10_f", "type": "translate_to_pt", "question": "Ich bin Deutsche", "correctAnswer": "Eu sou alemã", "gender": "f", "alternativeAnswers": ["Sou alemã"] },
                 { "id": "u1_l2_e11", "type": "translate_to_pt", "question": "Und du?", "correctAnswer": "E tu?" },
-                { "id": "u1_l2_e12", "type": "translate_to_pt", "question": "Und Sie? (formell)", "correctAnswer": "E o senhor?", "alternativeAnswers": ["E a senhora?", "E voce?"] },
+                { "id": "u1_l2_e12", "type": "translate_to_pt", "question": "Und Sie? (formell)", "correctAnswer": "E voce?", "alternativeAnswers": ["E a senhora?", "E o senhor?"] },
                 { "id": "u1_l2_e13", "type": "multiple_choice", "question": "Vervollständige: Eu ___ Português.", "correctAnswer": "falo", "options": ["fala", "falo", "falas"], "correctAnswerIndex": 1, "audioText": "falo" },
                 { "id": "u1_l2_e14", "type": "translate_to_de", "question": "Não falo português", "correctAnswer": "Ich spreche kein Portugiesisch" },
                 { "id": "u1_l2_e15", "type": "translate_to_pt", "question": "Sprichst du Englisch?", "correctAnswer": "Falas inglês?", "alternativeAnswers": ["Tu falas inglês?"] }
@@ -96,10 +96,10 @@
                 { "id": "u2_l1_e6", "type": "translate_to_de", "question": "O pão com manteiga", "correctAnswer": "Das Brot mit Butter" },
                 { "id": "u2_l1_e7", "type": "multiple_choice", "question": "Wähle 'Der Käse'", "correctAnswer": "O queijo", "options": ["O queijo", "O fiambre", "O sumo"], "correctAnswerIndex": 0, "audioText": "O queijo" },
                 { "id": "u2_l1_e8", "type": "translate_to_pt", "question": "Der Schinken (gekocht)", "correctAnswer": "O fiambre" },
-                { "id": "u2_l1_e9", "type": "translate_to_de", "question": "Sumo de laranja natural", "correctAnswer": "Frisch gepresster Orangensaft", "alternativeAnswers": ["Orangensaft"] },
+                { "id": "u2_l1_e9", "type": "translate_to_de", "question": "Sumo de laranja", "correctAnswer": "Orangensaft" },
                 { "id": "u2_l1_e10", "type": "translate_to_pt", "question": "Eine Tasse Tee", "correctAnswer": "Uma chávena de chá" },
-                { "id": "u2_l1_e11", "type": "translate_to_de", "question": "O pastel de nata", "correctAnswer": "Das Puddingtörtchen", "alternativeAnswers": ["Pastel de Nata"] },
-                { "id": "u2_l1_e12", "type": "translate_to_pt", "question": "Ich möchte...", "correctAnswer": "Queria...", "alternativeAnswers": ["Eu queria"] },
+                { "id": "u2_l1_e11", "type": "translate_to_pt", "question": "Das Puddingtörtchen", "correctAnswer": "O pastel de nata", "alternativeAnswers": ["Pastel de Nata"] },
+                { "id": "u2_l1_e12", "type": "translate_to_pt", "question": "Ich möchte...", "correctAnswer": "Queria...", "alternativeAnswers": ["Eu queria", "Quero...", "Eu quero"] },
                 { "id": "u2_l1_e13", "type": "translate_to_de", "question": "Queria um galão", "correctAnswer": "Ich möchte einen Milchkaffee" },
                 { "id": "u2_l1_e14", "type": "multiple_choice", "question": "Was ist 'A torrada'?", "correctAnswer": "Der Toast", "options": ["Der Toast", "Der Kuchen", "Das Ei"], "correctAnswerIndex": 0, "audioText": "A torrada", "optionsLanguage": "de" },
                 { "id": "u2_l1_e15", "type": "translate_to_pt", "question": "Ist das alles?", "correctAnswer": "É tudo?" }
@@ -114,7 +114,7 @@
                 { "id": "u2_l2_e3", "type": "translate_to_de", "question": "O prato do dia", "correctAnswer": "Das Tagesgericht" },
                 { "id": "u2_l2_e4", "type": "multiple_choice", "question": "Was bestellt man als Vorspeise?", "correctAnswer": "A entrada", "options": ["A sobremesa", "A entrada", "O café"], "correctAnswerIndex": 1, "audioText": "A entrada", "optionsLanguage": "pt" },
                 { "id": "u2_l2_e5", "type": "translate_to_pt", "question": "Fisch oder Fleisch?", "correctAnswer": "Peixe ou carne?" },
-                { "id": "u2_l2_e6", "type": "translate_to_de", "question": "Bacalhau", "correctAnswer": "Kabeljau", "alternativeAnswers": ["Stockfisch"] },
+                { "id": "u2_l2_e6", "type": "translate_to_de", "question": "Bacalhau", "correctAnswer": "Stockfisch", "alternativeAnswers": ["Kabeljau"] },
                 { "id": "u2_l2_e7", "type": "translate_to_pt", "question": "Das Hähnchen", "correctAnswer": "O frango" },
                 { "id": "u2_l2_e8", "type": "translate_to_de", "question": "Bem passado", "correctAnswer": "Gut durchgebraten" },
                 { "id": "u2_l2_e9", "type": "translate_to_pt", "question": "Ein Glas Rotwein", "correctAnswer": "Um copo de vinho tinto" },
@@ -142,7 +142,7 @@
                 { "id": "u2_l3_e10", "type": "translate_to_pt", "question": "Das Brot ist frisch", "correctAnswer": "O pão é fresco" },
                 { "id": "u2_l3_e11", "type": "translate_to_de", "question": "O saco", "correctAnswer": "Die Tüte", "alternativeAnswers": ["Der Beutel"] },
                 { "id": "u2_l3_e12", "type": "translate_to_pt", "question": "Kann ich probieren?", "correctAnswer": "Posso provar?" },
-                { "id": "u2_l3_e13", "type": "translate_to_de", "question": "Dinheiro", "correctAnswer": "Bargeld" },
+                { "id": "u2_l3_e13", "type": "translate_to_de", "question": "Dinheiro", "correctAnswer": "Bargeld", "alternativeAnswers": ["Geld"] },
                 { "id": "u2_l3_e14", "type": "multiple_choice", "question": "Vervollständige: Pagar com ___.", "correctAnswer": "dinheiro", "options": ["dinheiro", "carro", "olá"], "correctAnswerIndex": 0, "audioText": "dinheiro" },
                 { "id": "u2_l3_e15", "type": "translate_to_pt", "question": "Schönen Tag noch", "correctAnswer": "Tenha um bom dia", "alternativeAnswers": ["Bom dia"] }
               ]
@@ -159,7 +159,7 @@
               "title": "Verkehrsmittel",
               "exercises": [
                 { "id": "u3_l1_e1", "type": "translate_to_de", "question": "O comboio", "correctAnswer": "Der Zug" },
-                { "id": "u3_l1_e2", "type": "translate_to_pt", "question": "Der Bus (in Portugal)", "correctAnswer": "O autocarro" },
+                { "id": "u3_l1_e2", "type": "translate_to_pt", "question": "Der Bus", "correctAnswer": "O autocarro" },
                 { "id": "u3_l1_e3", "type": "multiple_choice", "question": "Wähle 'Die Straßenbahn' (Lissabon)", "correctAnswer": "O elétrico", "options": ["O metro", "O elétrico", "O barco"], "correctAnswerIndex": 1, "audioText": "O elétrico" },
                 { "id": "u3_l1_e4", "type": "translate_to_de", "question": "A paragem", "correctAnswer": "Die Haltestelle" },
                 { "id": "u3_l1_e5", "type": "translate_to_pt", "question": "Der Bahnhof", "correctAnswer": "A estação" },
