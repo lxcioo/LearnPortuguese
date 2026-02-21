@@ -11,6 +11,7 @@ import { useTheme } from '../../src/context/ThemeContext';
 import content from '../../src/data/content.json';
 
 const courseData = content.courses[0];
+const BOX_LABELS = ["neu", "1h", "6h", "1d", "3d", "1w", "✨"]; // Labels unter dem Chart
 
 export default function PracticeScreen() {
   const router = useRouter();
@@ -24,7 +25,10 @@ export default function PracticeScreen() {
   const [leitnerCounts, setLeitnerCounts] = useState([0,0,0,0,0,0,0]);
   const [dueCount, setDueCount] = useState(0);
   const [todayMistakeCount, setTodayMistakeCount] = useState(0);
+  
   const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
+  const [selectedBoxes, setSelectedBoxes] = useState<Record<number, boolean>>({}); // NEU: Box Filter
+
   const [questionCount, setQuestionCount] = useState<number | 'all'>(10);
   const [trainingMode, setTrainingMode] = useState<'random' | 'leitner'>('random');
 
@@ -48,6 +52,10 @@ export default function PracticeScreen() {
   const toggleLesson = (id: string) => {
     setSelectedLessons(prev => ({ ...prev, [id]: !prev[id] }));
   };
+  
+  const toggleBox = (box: number) => {
+      setSelectedBoxes(prev => ({ ...prev, [box]: !prev[box] }));
+  };
 
   const startTodayMistakes = async () => {
       const exercises = await StorageService.getTodayMistakes();
@@ -56,7 +64,6 @@ export default function PracticeScreen() {
           return;
       }
       await StorageService.savePracticeSession(exercises);
-      // Mode 'leitner' damit Bewertungen angezeigt werden (zur Korrektur)
       router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
   };
 
@@ -82,6 +89,8 @@ export default function PracticeScreen() {
 
   const startFreeTraining = async () => {
       let pool: any[] = [];
+      
+      // 1. Sammle alle Übungen aus den gewählten Kapiteln
       courseData.units.forEach(unit => {
           unit.levels.forEach(level => {
               if (selectedLessons[level.id]) pool = [...pool, ...level.exercises];
@@ -93,9 +102,18 @@ export default function PracticeScreen() {
         return;
       }
 
-      const session = await StorageService.getSmartSelection(pool, trainingMode, questionCount);
+      // 2. Ermittle gewählte Boxen
+      const activeBoxes = Object.keys(selectedBoxes).filter(k => selectedBoxes[parseInt(k)]).map(Number);
+
+      // 3. Smart Selection mit Box-Filter
+      const session = await StorageService.getSmartSelection(pool, trainingMode, questionCount, activeBoxes);
+      
+      if (session.length === 0) {
+          Alert.alert("Keine Vokabeln gefunden", "Deine Auswahl enthält keine Vokabeln (vielleicht sind in den gewählten Boxen keine Wörter aus diesen Lektionen?).");
+          return;
+      }
+
       await StorageService.savePracticeSession(session);
-      // Mode durchreichen
       router.push({ pathname: "/lesson", params: { id: 'practice', mode: trainingMode } });
   };
 
@@ -125,9 +143,11 @@ export default function PracticeScreen() {
         </View>
 
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Leitner System (Lernstand):</Text>
-        <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 10 }]}>
+        <View style={[styles.card, { backgroundColor: theme.card, height: 200, justifyContent: 'flex-end', paddingBottom: 10 }]}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 130}}>
-                {[1, 2, 3, 4, 5, 6].map(box => (
+                {[0, 1, 2, 3, 4, 5, 6].map(box => {
+                    if (box === 0) return null; // Box 0 (Neu) zeigen wir hier vllt nicht, oder doch? Der User wollte Box 1-6 sehen.
+                    return (
                     <View key={box} style={{alignItems: 'center', flex: 1}}>
                         <Text style={{fontSize: 9, color: theme.subText, marginBottom: 2}}>{leitnerCounts[box] || 0}</Text>
                         <View style={{
@@ -138,10 +158,11 @@ export default function PracticeScreen() {
                             borderRadius: 3
                         }}/>
                         <Text style={{color: theme.text, fontSize: 10, marginTop: 5}}>{box===6 ? '★' : box}</Text>
+                        <Text style={{color: theme.subText, fontSize: 8, marginTop: 2}}>{BOX_LABELS[box]}</Text>
                     </View>
-                ))}
+                )})}
             </View>
-            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 10}}>Box 1 (10min) → Box 6 (30 Tage)</Text>
+            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 15}}>Box 1 (1h) → Box 6 (Ruhe)</Text>
         </View>
 
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Was möchtest du üben?</Text>
@@ -180,31 +201,48 @@ export default function PracticeScreen() {
 
         <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Freies Training:</Text>
         <View style={[styles.card, { backgroundColor: theme.card }]}>
+            
             <Text style={{fontWeight: 'bold', marginBottom: 5, color: theme.text}}>1. Lektionen wählen:</Text>
-            <Text style={{color: theme.subText, fontSize: 12, marginBottom: 10}}>Wähle Themenbereiche aus, aus denen Vokabeln kommen sollen.</Text>
-            {courseData.units.map((unit, uIndex) => {
-                const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
-                if (!isUnitUnlocked) return null;
-                return (
-                    <View key={unit.id}>
-                         <Text style={{color: theme.subText, fontSize: 12, marginTop: 5}}>{unit.title}</Text>
-                         {unit.levels.map((level, lIndex) => {
-                            const isLevelUnlocked = lIndex === 0 || (scores[unit.levels[lIndex - 1].id] || 0) > 0;
-                            if (!isLevelUnlocked) return null;
-                            return (
-                                <View key={level.id} style={[styles.row, { borderBottomColor: theme.cardBorder }]}>
-                                    <Text style={[styles.label, { color: theme.text }]}>{level.title}</Text>
-                                    <Switch value={!!selectedLessons[level.id]} onValueChange={() => toggleLesson(level.id)}
-                                    trackColor={{ false: theme.border, true: "#58cc02" }} thumbColor={"#fff"} />
-                                </View>
-                            );
-                         })}
-                    </View>
-                );
-            })}
+            <View style={{maxHeight: 200}}>
+                <ScrollView nestedScrollEnabled style={{maxHeight: 200}}>
+                    {courseData.units.map((unit, uIndex) => {
+                        const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
+                        if (!isUnitUnlocked) return null;
+                        return (
+                            <View key={unit.id}>
+                                <Text style={{color: theme.subText, fontSize: 12, marginTop: 5}}>{unit.title}</Text>
+                                {unit.levels.map((level, lIndex) => {
+                                    const isLevelUnlocked = lIndex === 0 || (scores[unit.levels[lIndex - 1].id] || 0) > 0;
+                                    if (!isLevelUnlocked) return null;
+                                    return (
+                                        <View key={level.id} style={[styles.row, { borderBottomColor: theme.cardBorder }]}>
+                                            <Text style={[styles.label, { color: theme.text }]}>{level.title}</Text>
+                                            <Switch value={!!selectedLessons[level.id]} onValueChange={() => toggleLesson(level.id)}
+                                            trackColor={{ false: theme.border, true: "#58cc02" }} thumbColor={"#fff"} />
+                                        </View>
+                                    );
+                                })}
+                            </View>
+                        );
+                    })}
+                </ScrollView>
+            </View>
 
-            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 5, color: theme.text}}>2. Modus wählen:</Text>
-            <Text style={{color: theme.subText, fontSize: 12, marginBottom: 10}}>Zufall mischt bunt durch. Leitner bevorzugt fällige & unbekannte Wörter aus deiner Auswahl.</Text>
+            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 5, color: theme.text}}>2. (Optional) Boxen filtern:</Text>
+            <Text style={{color: theme.subText, fontSize: 12, marginBottom: 10}}>Wenn leer, werden alle gewählt.</Text>
+            <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10}}>
+                {[1, 2, 3, 4, 5, 6].map(box => (
+                    <TouchableOpacity 
+                        key={box} 
+                        style={[styles.filterBoxBtn, selectedBoxes[box] && {backgroundColor: '#1cb0f6', borderColor: '#1cb0f6'}]}
+                        onPress={() => toggleBox(box)}
+                    >
+                        <Text style={[styles.filterBoxText, selectedBoxes[box] && {color: 'white'}]}>Box {box}</Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
+
+            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 5, color: theme.text}}>3. Modus wählen:</Text>
             <View style={styles.modeContainer}>
                 <TouchableOpacity style={[styles.modeBtn, trainingMode === 'random' && styles.modeBtnActive]} onPress={() => setTrainingMode('random')}>
                     <Text style={[styles.modeText, trainingMode === 'random' && styles.modeTextActive]}>Zufall 🎲</Text>
@@ -214,7 +252,7 @@ export default function PracticeScreen() {
                 </TouchableOpacity>
             </View>
 
-            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 10, color: theme.text}}>3. Anzahl Vokabeln:</Text>
+            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 10, color: theme.text}}>4. Anzahl Vokabeln:</Text>
             <View style={styles.countContainer}>
                 <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
                     <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
@@ -262,5 +300,7 @@ const styles = StyleSheet.create({
   countText: { color: '#555' },
   countTextActive: { color: '#fff', fontWeight: 'bold' },
   startBtn: { backgroundColor: '#58cc02', padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 20 },
-  startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
+  startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  filterBoxBtn: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20, borderWidth: 1, borderColor: '#ccc' },
+  filterBoxText: { fontSize: 12, fontWeight: '600', color: '#555' }
 });

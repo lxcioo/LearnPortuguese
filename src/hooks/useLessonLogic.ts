@@ -1,3 +1,5 @@
+import * as Haptics from 'expo-haptics';
+import * as Speech from 'expo-speech';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import content from '../data/content.json';
@@ -6,14 +8,12 @@ import { Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
-// Aktualisierte Normalisierung: Entfernt Akzente, Satzzeichen UND Leerzeichen
-// Damit wird "chamo-me", "chamo me" und "chamome" alles zu "chamome" -> Match!
 const normalizeText = (str: string) => {
   if (!str) return "";
   return str.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Entfernt Akzente (z.B. ã -> a)
-    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "") // Entfernt Satzzeichen ink. Bindestrich
-    .replace(/\s+/g, "") // Entfernt ALLE Leerzeichen
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
+    .replace(/\s+/g, "")
     .toLowerCase();
 };
 
@@ -77,6 +77,28 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
+  // Helper zum Vorlesen der Korrektur
+  const speakCorrection = (exercise: Exercise) => {
+      let textToSpeak = exercise.correctAnswer;
+      
+      // Wenn es ein Lückentext ist (Frage enthält "___"), Satz bauen
+      if (exercise.question.includes('___')) {
+          textToSpeak = exercise.question.replace('___', exercise.correctAnswer);
+      } else if (exercise.type === 'translate_to_pt') {
+          // Bei Übersetzung ins PT ist die Antwort der portugiesische Satz -> Vorlesen
+          textToSpeak = exercise.correctAnswer;
+      } else if (exercise.type === 'translate_to_de') {
+          // Bei Übersetzung ins DE wollen wir den portugiesischen Ursprungssatz nochmal hören
+          textToSpeak = exercise.question;
+      } else if (exercise.type === 'multiple_choice' && exercise.audioText) {
+          // Spezifischer AudioText falls vorhanden
+          textToSpeak = exercise.audioText;
+      }
+
+      // Sprache setzen (PT für Portugiesisch)
+      Speech.speak(textToSpeak, { language: 'pt-PT' });
+  };
+
   const checkAnswer = (playAudioSuccess: (id: string) => void) => {
     if (!currentExercise) return;
 
@@ -85,10 +107,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     if (currentExercise.type.includes('translate')) {
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
-      
-      // Prüft Hauptantwort und alle Alternativen
       const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
-      
       if (inputNorm === answerNorm || isAlt) correct = true;
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
@@ -98,15 +117,25 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setShowFeedback(true);
 
     if (correct) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         playAudioSuccess(currentExercise.id);
         StorageService.updateStreak();
         
+        // Tracking: Wenn Practice UND Random Modus
         if (isPractice && practiceMode === 'random') {
-             StorageService.trackResult(currentExercise, true, 'lesson');
+             StorageService.trackResult(currentExercise, true, 'practice_random');
         }
     } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setMistakes(prev => prev + 1);
-        StorageService.trackResult(currentExercise, false, 'practice', 1);
+        
+        // Automatisch richtige Antwort vorlesen
+        speakCorrection(currentExercise);
+
+        // Tracking: Falsch ist immer "schlecht", egal welcher Modus
+        // Wir nutzen 'practice_leitner' als Source hier nur, damit die Logik nicht durcheinander kommt,
+        // aber eigentlich fängt StorageService (!isCorrect) sowieso global ab.
+        StorageService.trackResult(currentExercise, false, 'practice_random'); // Source fast egal bei Fehler
     }
 
     if (!isPractice) {
@@ -130,7 +159,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const ratePractice = (box: number) => {
       if (!currentExercise) return;
-      StorageService.trackResult(currentExercise, true, 'practice', box);
+      // Hier ist der explizite Leitner-Modus
+      StorageService.trackResult(currentExercise, true, 'practice_leitner', box);
       nextExercise();
   };
 
@@ -146,6 +176,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
   };
 
   const finishLesson = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // Abschluss-Vibration
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
     

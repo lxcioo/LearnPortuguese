@@ -22,7 +22,7 @@ export default function LessonScreen() {
   const theme = Colors[colorScheme ?? 'light'];
 
   const { playAudio } = useAudioPlayer();
-  // Mode an den Hook übergeben
+  
   const {
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
@@ -76,18 +76,15 @@ export default function LessonScreen() {
   const placeholderText = isTranslateToPt ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   const isButtonDisabled = !userInput && selectedOption === null;
 
+  // NEU: Zeiten angepasst
   const ratingButtons = [
-      { box: 1, label: 'Nochmal', sub: '10m', color: '#ff7675' },
-      { box: 2, label: 'Schwer', sub: '30m', color: '#fdcb6e' },
-      { box: 3, label: 'Mittel', sub: '1h', color: '#ffeaa7' },
-      { box: 4, label: 'Gut', sub: '6h', color: '#55efc4' },
-      { box: 5, label: 'Einfach', sub: '1 Tag', color: '#00b894' },
+      { box: 1, label: 'Nochmal', sub: '1h', color: '#ff7675' },
+      { box: 2, label: 'Schwer', sub: '6h', color: '#fdcb6e' },
+      { box: 3, label: 'Mittel', sub: '1 Tag', color: '#ffeaa7' },
+      { box: 4, label: 'Gut', sub: '3 Tage', color: '#55efc4' },
+      { box: 5, label: 'Einfach', sub: '1 Wo', color: '#00b894' },
   ];
 
-  // Entscheidungslogik: Wann zeigen wir Rating Buttons?
-  // 1. Es muss Übungsmodus sein (isPractice)
-  // 2. Es muss RICHTIG sein (isCorrect) - bei Falsch wurde schon automatisch getrackt
-  // 3. Es darf NICHT "random" Modus sein (dort wollen wir keine Skala)
   const showRating = isPractice && isCorrect && lessonMode !== 'random';
 
   return (
