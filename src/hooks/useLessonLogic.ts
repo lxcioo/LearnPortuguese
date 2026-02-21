@@ -1,5 +1,6 @@
 import * as Haptics from 'expo-haptics';
-import * as Speech from 'expo-speech';
+// Speech wird nicht mehr benötigt, da wir die Audiodateien nutzen
+// import * as Speech from 'expo-speech'; 
 import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import content from '../data/content.json';
@@ -77,29 +78,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
-  // Helper zum Vorlesen der Korrektur
-  const speakCorrection = (exercise: Exercise) => {
-      let textToSpeak = exercise.correctAnswer;
-      
-      // Wenn es ein Lückentext ist (Frage enthält "___"), Satz bauen
-      if (exercise.question.includes('___')) {
-          textToSpeak = exercise.question.replace('___', exercise.correctAnswer);
-      } else if (exercise.type === 'translate_to_pt') {
-          // Bei Übersetzung ins PT ist die Antwort der portugiesische Satz -> Vorlesen
-          textToSpeak = exercise.correctAnswer;
-      } else if (exercise.type === 'translate_to_de') {
-          // Bei Übersetzung ins DE wollen wir den portugiesischen Ursprungssatz nochmal hören
-          textToSpeak = exercise.question;
-      } else if (exercise.type === 'multiple_choice' && exercise.audioText) {
-          // Spezifischer AudioText falls vorhanden
-          textToSpeak = exercise.audioText;
-      }
-
-      // Sprache setzen (PT für Portugiesisch)
-      Speech.speak(textToSpeak, { language: 'pt-PT' });
-  };
-
-  const checkAnswer = (playAudioSuccess: (id: string) => void) => {
+  // HIER GEÄNDERT: playAudioSuccess umbenannt zu playAudio, um Klarheit zu schaffen
+  const checkAnswer = (playAudio: (id: string) => void) => {
     if (!currentExercise) return;
 
     let correct = false;
@@ -118,10 +98,12 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
     if (correct) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        playAudioSuccess(currentExercise.id);
+        
+        // Spielt die hochwertige Audiodatei ab
+        playAudio(currentExercise.id);
+        
         StorageService.updateStreak();
         
-        // Tracking: Wenn Practice UND Random Modus
         if (isPractice && practiceMode === 'random') {
              StorageService.trackResult(currentExercise, true, 'practice_random');
         }
@@ -129,13 +111,11 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setMistakes(prev => prev + 1);
         
-        // Automatisch richtige Antwort vorlesen
-        speakCorrection(currentExercise);
+        // HIER GEÄNDERT: Statt speakCorrection() nutzen wir jetzt AUCH hier die Audiodatei.
+        // Das garantiert, dass die Stimme konsistent zur "richtigen" Antwort ist (europäisch).
+        playAudio(currentExercise.id);
 
-        // Tracking: Falsch ist immer "schlecht", egal welcher Modus
-        // Wir nutzen 'practice_leitner' als Source hier nur, damit die Logik nicht durcheinander kommt,
-        // aber eigentlich fängt StorageService (!isCorrect) sowieso global ab.
-        StorageService.trackResult(currentExercise, false, 'practice_random'); // Source fast egal bei Fehler
+        StorageService.trackResult(currentExercise, false, 'practice_random'); 
     }
 
     if (!isPractice) {
@@ -159,7 +139,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const ratePractice = (box: number) => {
       if (!currentExercise) return;
-      // Hier ist der explizite Leitner-Modus
       StorageService.trackResult(currentExercise, true, 'practice_leitner', box);
       nextExercise();
   };
@@ -176,7 +155,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
   };
 
   const finishLesson = () => {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); // Abschluss-Vibration
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
     
