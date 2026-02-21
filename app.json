@@ -40,7 +40,9 @@
       "policy": "sdkVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/338aadcb-a650-4922-bdb0-2b6151ae2dfe"
+      "url": "https://u.expo.dev/338aadcb-a650-4922-bdb0-2b6151ae2dfe",
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
     }
   }
 }
