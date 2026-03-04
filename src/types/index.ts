@@ -60,3 +60,11 @@ export interface DailyStats {
   wordsLearned: number;
   mistakesMade: number;
 }
+
+// --- NEU: Streak Tracking System ---
+export interface StreakData {
+  currentStreak: number;
+  lastStreakDate: string;
+  streakOnIceCount: number; // Anzahl der blauen Flammen (Aussetzer)
+  history: Record<string, 'learned' | 'frozen'>; // Map von "YYYY-MM-DD" zu Status
+}

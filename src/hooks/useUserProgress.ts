@@ -1,11 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
+import { StorageService } from '../services/StorageService';
+import { StreakData } from '../types';
 
 export function useUserProgress() {
   const [scores, setScores] = useState<Record<string, number>>({});
   const [examScores, setExamScores] = useState<Record<string, boolean>>({});
   const [streak, setStreak] = useState(0);
+  const [streakData, setStreakData] = useState<StreakData | null>(null);
   const [mistakesCount, setMistakesCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -21,21 +24,10 @@ export function useUserProgress() {
       const savedExams = await AsyncStorage.getItem('examScores');
       setExamScores(savedExams ? JSON.parse(savedExams) : {});
 
-      // 3. Streak berechnen
-      const streakDataStr = await AsyncStorage.getItem('streakData');
-      if (streakDataStr) {
-        const { currentStreak, lastStreakDate } = JSON.parse(streakDataStr);
-        const today = new Date().toDateString();
-        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-        
-        if (lastStreakDate === today || lastStreakDate === yesterday.toDateString()) {
-            setStreak(currentStreak);
-        } else {
-            setStreak(0);
-        }
-      } else {
-        setStreak(0);
-      }
+      // 3. Streak berechnen & reparieren (falls Aussetzer)
+      const validatedStreak = await StorageService.checkAndRepairStreak();
+      setStreakData(validatedStreak);
+      setStreak(validatedStreak.currentStreak);
 
       // 4. Tagesfehler laden
       const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
@@ -58,12 +50,11 @@ export function useUserProgress() {
     }
   }, []);
 
-  // Lädt Daten neu, wenn der Screen den Fokus bekommt
   useFocusEffect(
     useCallback(() => {
       loadData();
     }, [loadData])
   );
 
-  return { scores, examScores, streak, mistakesCount, loading, reload: loadData };
+  return { scores, examScores, streak, streakData, mistakesCount, loading, reload: loadData };
 }

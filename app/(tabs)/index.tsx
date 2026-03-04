@@ -1,6 +1,6 @@
 import { Colors } from '@/src/constants/theme';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
-import { useUserProgress } from '@/src/hooks/useUserProgress'; // NEU
+import { useUserProgress } from '@/src/hooks/useUserProgress';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -15,8 +15,7 @@ export default function PathScreen() {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
   
-  // ALTE LOGIK WEG, NEUE LOGIK HIN:
-  const { scores, examScores, streak } = useUserProgress();
+  const { scores, examScores, streak, streakData } = useUserProgress();
   
   const [showExamModal, setShowExamModal] = useState(false);
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
@@ -27,6 +26,14 @@ export default function PathScreen() {
           router.push({ pathname: "/lesson", params: { id: selectedUnitId, type: 'exam' } });
       }
   };
+
+  // Berechne die letzten 7 Tage für die Timeline
+  const last7Days = Array.from({length: 7}).map((_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      return d;
+  });
+  const daysOfWeek = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
@@ -44,6 +51,53 @@ export default function PathScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.pathContainer}>
+        
+        {/* NEU: Streak Timeline */}
+        <View style={[styles.timelineContainer, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+            <View style={styles.timelineHeader}>
+                <Text style={[styles.timelineTitle, { color: theme.text }]}>Deine Woche</Text>
+                <View style={[styles.iceBadge, { backgroundColor: theme.background, borderColor: theme.border }]}>
+                    <Ionicons name="flame" size={16} color="#4DA8DA" />
+                    <Text style={[styles.iceBadgeText, { color: theme.text }]}>x{streakData?.streakOnIceCount || 0}</Text>
+                </View>
+            </View>
+            
+            <View style={styles.daysRow}>
+                {last7Days.map((date) => {
+                    const dateStr = date.toISOString().split('T')[0];
+                    const isToday = dateStr === new Date().toISOString().split('T')[0];
+                    const status = streakData?.history[dateStr]; // 'learned' oder 'frozen'
+                    
+                    let flameColor = theme.border;
+                    if (status === 'learned') flameColor = "#ff9600"; // Orange
+                    else if (status === 'frozen') flameColor = "#4DA8DA"; // Blaue Flamme
+
+                    return (
+                        <View key={dateStr} style={styles.dayItem}>
+                            <Text style={[styles.dayName, { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }]}>
+                                {daysOfWeek[date.getDay()]}
+                            </Text>
+                            <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
+                                <Ionicons name="flame" size={20} color={flameColor} />
+                            </View>
+                            {isToday && <View style={[styles.todayDot, { backgroundColor: theme.text }]} />}
+                        </View>
+                    );
+                })}
+            </View>
+
+            <View style={styles.streakProgressContainer}>
+                 <Text style={[styles.streakProgressText, { color: theme.icon }]}>
+                     Noch {7 - ((streakData?.currentStreak || 0) % 7)} Tage lernen bis zur nächsten blauen Flamme!
+                 </Text>
+                 <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
+                     <View style={[styles.progressBarFill, { width: `${(((streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
+                 </View>
+            </View>
+        </View>
+        {/* ENDE Streak Timeline */}
+
+
         {courseData.units.map((unit, unitIndex) => {
             const isUnitUnlocked = unitIndex === 0 || examScores[courseData.units[unitIndex - 1].id];
             const allLevelsDone = unit.levels.every(l => (scores[l.id] || 0) > 0);
@@ -153,6 +207,23 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: 22, fontWeight: 'bold', marginRight: 10 },
   flagImage: { width: 30, height: 20, borderRadius: 3 },
   streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
+  
+  // NEU: Styles für die Timeline
+  timelineContainer: { margin: 20, padding: 15, borderRadius: 20, borderWidth: 1 },
+  timelineHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 },
+  timelineTitle: { fontSize: 18, fontWeight: 'bold' },
+  iceBadge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
+  iceBadgeText: { fontWeight: 'bold', marginLeft: 4, fontSize: 14 },
+  daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  dayItem: { alignItems: 'center' },
+  dayName: { fontSize: 12, marginBottom: 5 },
+  flameCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 2, justifyContent: 'center', alignItems: 'center' },
+  todayDot: { width: 6, height: 6, borderRadius: 3, marginTop: 5 },
+  streakProgressContainer: { marginTop: 15 },
+  streakProgressText: { fontSize: 12, textAlign: 'center', marginBottom: 8 },
+  progressBarBg: { height: 8, borderRadius: 4, overflow: 'hidden' },
+  progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 4 },
+  
   pathContainer: { paddingBottom: 100 },
   unitContainer: { marginBottom: 40 },
   unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
