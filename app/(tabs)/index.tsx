@@ -4,9 +4,14 @@ import { useUserProgress } from '@/src/hooks/useUserProgress';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import content from '../../src/data/content.json';
+
+// Aktiviere LayoutAnimation für flüssiges Aufklappen unter Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const courseData = content.courses[0];
 
@@ -19,12 +24,21 @@ export default function PathScreen() {
   
   const [showExamModal, setShowExamModal] = useState(false);
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
+  
+  // NEU: State für die einklappbare Timeline (Standard: zu)
+  const [isTimelineExpanded, setIsTimelineExpanded] = useState(false);
 
   const startExam = () => {
       if (selectedUnitId) {
           setShowExamModal(false);
           router.push({ pathname: "/lesson", params: { id: selectedUnitId, type: 'exam' } });
       }
+  };
+
+  const toggleTimeline = () => {
+      // Sorgt für ein weiches Auf- und Zuklappen
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      setIsTimelineExpanded(!isTimelineExpanded);
   };
 
   // Berechne die letzten 7 Tage für die kompakte Timeline
@@ -40,14 +54,17 @@ export default function PathScreen() {
       
       {/* Sticky Header Bereich (Überschrift + Timeline nahtlos verbunden) */}
       <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder }]}>
-          <View style={styles.header}>
+          
+          {/* Header ist jetzt antippbar zum Ein-/Ausklappen */}
+          <TouchableOpacity style={styles.header} onPress={toggleTimeline} activeOpacity={0.7}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
+                <Ionicons name={isTimelineExpanded ? "chevron-up" : "chevron-down"} size={20} color={theme.icon} style={{marginRight: 10}} />
                 <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage}/>
             </View>
             <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
                 
-                {/* NEU: Kleine blaue Flammen-Anzeige, nur wenn > 0 */}
+                {/* Kleine blaue Flammen-Anzeige, nur sichtbar wenn man welche hat! */}
                 {streakData && streakData.streakOnIceCount > 0 && (
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Ionicons name="flame" size={16} color="#4DA8DA" />
@@ -61,45 +78,46 @@ export default function PathScreen() {
                     <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>{streak}</Text>
                 </View>
             </View>
-          </View>
+          </TouchableOpacity>
 
-          {/* Kompakte Timeline nahtlos unter dem Header */}
-          <View style={styles.timelineContainer}>
-            <View style={styles.daysRow}>
-                {last7Days.map((date) => {
-                    const dateStr = date.toISOString().split('T')[0];
-                    const isToday = dateStr === new Date().toISOString().split('T')[0];
-                    const status = streakData?.history[dateStr]; // 'learned' oder 'frozen'
-                    
-                    let flameColor = theme.border;
-                    if (status === 'learned') flameColor = "#ff9600";
-                    else if (status === 'frozen') flameColor = "#4DA8DA";
+          {/* Kompakte Timeline, wird nur gerendert wenn isTimelineExpanded true ist */}
+          {isTimelineExpanded && (
+              <View style={styles.timelineContainer}>
+                <View style={styles.daysRow}>
+                    {last7Days.map((date) => {
+                        const dateStr = date.toISOString().split('T')[0];
+                        const isToday = dateStr === new Date().toISOString().split('T')[0];
+                        const status = streakData?.history[dateStr]; // 'learned' oder 'frozen'
+                        
+                        let flameColor = theme.border;
+                        if (status === 'learned') flameColor = "#ff9600";
+                        else if (status === 'frozen') flameColor = "#4DA8DA";
 
-                    return (
-                        <View key={dateStr} style={styles.dayItem}>
-                            <Text style={[styles.dayName, { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }]}>
-                                {daysOfWeek[date.getDay()]}
-                            </Text>
-                            <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
-                                <Ionicons name="flame" size={14} color={flameColor} />
+                        return (
+                            <View key={dateStr} style={styles.dayItem}>
+                                <Text style={[styles.dayName, { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }]}>
+                                    {daysOfWeek[date.getDay()]}
+                                </Text>
+                                <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
+                                    <Ionicons name="flame" size={14} color={flameColor} />
+                                </View>
+                                {/* Punkt für "Heute", ansonsten unsichtbarer Platzhalter für sauberes Layout */}
+                                {isToday ? <View style={[styles.todayDot, { backgroundColor: theme.text }]} /> : <View style={styles.todayDotPlaceholder} />}
                             </View>
-                            {/* Punkt für "Heute", ansonsten unsichtbarer Platzhalter für sauberes Layout */}
-                            {isToday ? <View style={[styles.todayDot, { backgroundColor: theme.text }]} /> : <View style={styles.todayDotPlaceholder} />}
-                        </View>
-                    );
-                })}
-            </View>
+                        );
+                    })}
+                </View>
 
-            {/* Balken ohne Text, mit blauer Flamme am Ende */}
-            <View style={styles.streakProgressContainer}>
-                 <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
-                     <View style={[styles.progressBarFill, { width: `${(((streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
-                 </View>
-                 <Ionicons name="flame" size={18} color="#4DA8DA" style={{ marginLeft: 8 }} />
-            </View>
-          </View>
+                {/* Balken ohne Text, mit blauer Flamme am Ende */}
+                <View style={styles.streakProgressContainer}>
+                    <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
+                        <View style={[styles.progressBarFill, { width: `${(((streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
+                    </View>
+                    <Ionicons name="flame" size={18} color="#4DA8DA" style={{ marginLeft: 8 }} />
+                </View>
+              </View>
+          )}
       </View>
-      {/* ENDE Sticky Header Bereich */}
 
 
       <ScrollView contentContainerStyle={styles.pathContainer}>
@@ -210,15 +228,15 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   
   // Header Bereich vereint mit Timeline
-  headerContainer: { borderBottomWidth: 1, paddingBottom: 15 },
-  header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  headerTitle: { fontSize: 22, fontWeight: 'bold', marginRight: 10 },
+  headerContainer: { borderBottomWidth: 1 },
+  header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  headerTitle: { fontSize: 22, fontWeight: 'bold' },
   flagImage: { width: 30, height: 20, borderRadius: 3 },
   streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
   iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 }, // Etwas kleiner als die Streak
   
   // Kompakte Timeline Styles
-  timelineContainer: { paddingHorizontal: 20 },
+  timelineContainer: { paddingHorizontal: 20, paddingBottom: 15, overflow: 'hidden' },
   daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   dayItem: { alignItems: 'center' },
   dayName: { fontSize: 10, marginBottom: 4 },
