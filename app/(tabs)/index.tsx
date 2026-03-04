@@ -27,7 +27,7 @@ export default function PathScreen() {
       }
   };
 
-  // Berechne die letzten 7 Tage für die Timeline
+  // Berechne die letzten 7 Tage für die kompakte Timeline
   const last7Days = Array.from({length: 7}).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
@@ -37,31 +37,34 @@ export default function PathScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <View style={[styles.header, { borderBottomColor: theme.cardBorder }]}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
-            <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage}/>
-        </View>
-        <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+      
+      {/* Sticky Header Bereich (Überschrift + Timeline nahtlos verbunden) */}
+      <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder }]}>
+          <View style={styles.header}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Ionicons name="flame" size={24} color={streak > 0 ? "#ff9600" : theme.icon} />
-                <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>{streak}</Text>
+                <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
+                <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage}/>
             </View>
-        </View>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.pathContainer}>
-        
-        {/* NEU: Streak Timeline */}
-        <View style={[styles.timelineContainer, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-            <View style={styles.timelineHeader}>
-                <Text style={[styles.timelineTitle, { color: theme.text }]}>Deine Woche</Text>
-                <View style={[styles.iceBadge, { backgroundColor: theme.background, borderColor: theme.border }]}>
-                    <Ionicons name="flame" size={16} color="#4DA8DA" />
-                    <Text style={[styles.iceBadgeText, { color: theme.text }]}>x{streakData?.streakOnIceCount || 0}</Text>
+            <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+                
+                {/* NEU: Kleine blaue Flammen-Anzeige, nur wenn > 0 */}
+                {streakData && streakData.streakOnIceCount > 0 && (
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Ionicons name="flame" size={16} color="#4DA8DA" />
+                        <Text style={[styles.iceText, {color: "#4DA8DA"}]}>{streakData.streakOnIceCount}</Text>
+                    </View>
+                )}
+                
+                {/* Normale Streak-Anzeige */}
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Ionicons name="flame" size={24} color={streak > 0 ? "#ff9600" : theme.icon} />
+                    <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>{streak}</Text>
                 </View>
             </View>
-            
+          </View>
+
+          {/* Kompakte Timeline nahtlos unter dem Header */}
+          <View style={styles.timelineContainer}>
             <View style={styles.daysRow}>
                 {last7Days.map((date) => {
                     const dateStr = date.toISOString().split('T')[0];
@@ -69,8 +72,8 @@ export default function PathScreen() {
                     const status = streakData?.history[dateStr]; // 'learned' oder 'frozen'
                     
                     let flameColor = theme.border;
-                    if (status === 'learned') flameColor = "#ff9600"; // Orange
-                    else if (status === 'frozen') flameColor = "#4DA8DA"; // Blaue Flamme
+                    if (status === 'learned') flameColor = "#ff9600";
+                    else if (status === 'frozen') flameColor = "#4DA8DA";
 
                     return (
                         <View key={dateStr} style={styles.dayItem}>
@@ -78,26 +81,28 @@ export default function PathScreen() {
                                 {daysOfWeek[date.getDay()]}
                             </Text>
                             <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
-                                <Ionicons name="flame" size={20} color={flameColor} />
+                                <Ionicons name="flame" size={14} color={flameColor} />
                             </View>
-                            {isToday && <View style={[styles.todayDot, { backgroundColor: theme.text }]} />}
+                            {/* Punkt für "Heute", ansonsten unsichtbarer Platzhalter für sauberes Layout */}
+                            {isToday ? <View style={[styles.todayDot, { backgroundColor: theme.text }]} /> : <View style={styles.todayDotPlaceholder} />}
                         </View>
                     );
                 })}
             </View>
 
+            {/* Balken ohne Text, mit blauer Flamme am Ende */}
             <View style={styles.streakProgressContainer}>
-                 <Text style={[styles.streakProgressText, { color: theme.icon }]}>
-                     Noch {7 - ((streakData?.currentStreak || 0) % 7)} Tage lernen bis zur nächsten blauen Flamme!
-                 </Text>
                  <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
                      <View style={[styles.progressBarFill, { width: `${(((streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
                  </View>
+                 <Ionicons name="flame" size={18} color="#4DA8DA" style={{ marginLeft: 8 }} />
             </View>
-        </View>
-        {/* ENDE Streak Timeline */}
+          </View>
+      </View>
+      {/* ENDE Sticky Header Bereich */}
 
 
+      <ScrollView contentContainerStyle={styles.pathContainer}>
         {courseData.units.map((unit, unitIndex) => {
             const isUnitUnlocked = unitIndex === 0 || examScores[courseData.units[unitIndex - 1].id];
             const allLevelsDone = unit.levels.every(l => (scores[l.id] || 0) > 0);
@@ -203,28 +208,29 @@ export default function PathScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, borderBottomWidth: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  
+  // Header Bereich vereint mit Timeline
+  headerContainer: { borderBottomWidth: 1, paddingBottom: 15 },
+  header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   headerTitle: { fontSize: 22, fontWeight: 'bold', marginRight: 10 },
   flagImage: { width: 30, height: 20, borderRadius: 3 },
   streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
+  iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 }, // Etwas kleiner als die Streak
   
-  // NEU: Styles für die Timeline
-  timelineContainer: { margin: 20, padding: 15, borderRadius: 20, borderWidth: 1 },
-  timelineHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 },
-  timelineTitle: { fontSize: 18, fontWeight: 'bold' },
-  iceBadge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, borderWidth: 1 },
-  iceBadgeText: { fontWeight: 'bold', marginLeft: 4, fontSize: 14 },
+  // Kompakte Timeline Styles
+  timelineContainer: { paddingHorizontal: 20 },
   daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   dayItem: { alignItems: 'center' },
-  dayName: { fontSize: 12, marginBottom: 5 },
-  flameCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 2, justifyContent: 'center', alignItems: 'center' },
-  todayDot: { width: 6, height: 6, borderRadius: 3, marginTop: 5 },
-  streakProgressContainer: { marginTop: 15 },
-  streakProgressText: { fontSize: 12, textAlign: 'center', marginBottom: 8 },
-  progressBarBg: { height: 8, borderRadius: 4, overflow: 'hidden' },
-  progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 4 },
+  dayName: { fontSize: 10, marginBottom: 4 },
+  flameCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+  todayDot: { width: 4, height: 4, borderRadius: 2, marginTop: 4 },
+  todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 }, // Damit die Flammen alle auf einer Höhe bleiben
+  streakProgressContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
+  progressBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
+  progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 3 },
   
-  pathContainer: { paddingBottom: 100 },
+  // Lernpfad
+  pathContainer: { paddingTop: 20, paddingBottom: 100 },
   unitContainer: { marginBottom: 40 },
   unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
   unitTitle: { fontSize: 24, fontWeight: 'bold', color: '#fff' },
@@ -237,6 +243,8 @@ const styles = StyleSheet.create({
   examWrapper: { alignItems: 'center', marginTop: 30 },
   connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
   examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
+  
+  // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
   modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },
   modalTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
