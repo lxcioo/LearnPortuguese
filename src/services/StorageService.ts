@@ -148,7 +148,7 @@ export const StorageService = {
         if (stats.date !== today) stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
 
         if (!isCorrect) stats.mistakesMade++;
-        else if (isLearned) stats.wordsLearned++; 
+        else if (isCorrect) stats.wordsLearned++; 
         
         await AsyncStorage.setItem(KEYS.DAILY_STATS, JSON.stringify(stats));
       } catch(e) {}
