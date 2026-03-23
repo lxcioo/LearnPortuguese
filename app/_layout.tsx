@@ -76,7 +76,8 @@ function RootLayoutNav() {
   async function registerForPushNotificationsAsync() {
     if (Platform.OS === 'web') return;
 
-    // NEU: Android benötigt zwingend einen Benachrichtigungskanal
+    let channelId = 'daily-reminder';
+
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
         name: 'Erinnerungen',
@@ -95,6 +96,7 @@ function RootLayoutNav() {
     }
     
     if (finalStatus !== 'granted') {
+      console.log("Benachrichtigungen wurden vom Nutzer abgelehnt.");
       return;
     }
 
@@ -105,12 +107,14 @@ function RootLayoutNav() {
       content: {
         title: "Zeit für Portugiesisch! 🇵🇹",
         body: "Halte deinen Streak am Leben. 5 Minuten reichen!",
+        sound: true, // Wichtig für Android
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
         hour: 18,
         minute: 0,
         repeats: true,
+        ...(Platform.OS === 'android' ? { channelId } : {}),
       },
     });
   }
