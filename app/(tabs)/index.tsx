@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import content from '../../src/data/content.json';
+import content from '../../src/data/content';
 
 // Aktiviere LayoutAnimation für flüssiges Aufklappen unter Android
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {

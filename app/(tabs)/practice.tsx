@@ -8,7 +8,7 @@ import React, { useCallback, useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../src/context/ThemeContext';
-import content from '../../src/data/content.json';
+import content from '../../src/data/content';
 
 const courseData = content.courses[0];
 const BOX_LABELS = ["neu", "1h", "6h", "1d", "3d", "1w", "✨"]; // Labels unter dem Chart
