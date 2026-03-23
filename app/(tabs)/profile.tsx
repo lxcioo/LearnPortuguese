@@ -10,28 +10,34 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
-  const { theme } = useTheme();
+  const { theme, gender } = useTheme();
   const currentColors = Colors[theme];
   const { scores, streak } = useUserProgress();
   const router = useRouter();
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
-  // NEU: useFocusEffect lädt die Daten jedes Mal neu, wenn die Seite sichtbar wird
   useFocusEffect(
     useCallback(() => {
       StorageService.getUserProfile().then(setProfile);
     }, [])
   );
 
-  // --- LOGIK: Fortschritt & Level ---
-  const totalStars = Object.values(scores).reduce((sum, stars) => sum + stars, 0);
-  const totalXP = (totalStars * 10) + (streak * 5);
+  // --- LOGIK: Fortschritt & Level (Mit Absturzsicherung) ---
+  const safeScores = scores || {};
+  const totalStars = Object.values(safeScores).reduce<number>((sum, stars) => sum + (typeof stars === 'number' ? stars : 0), 0);
+  const safeStreak = typeof streak === 'number' ? streak : 0;
+  const totalXP = (totalStars * 10) + (safeStreak * 5);
   
   const currentLevel = Math.floor(totalXP / 100) + 1;
   const xpForNextLevel = 100;
   const currentLevelXP = totalXP % 100;
   const progressPercent = (currentLevelXP / xpForNextLevel) * 100;
+
+  // --- LOGIK: Gendern ---
+  let studentTitle = 'Portugiesisch-Schüler';
+  if (gender === 'f') studentTitle = 'Portugiesisch-Schülerin';
+  if (gender === 'd') studentTitle = 'Portugiesisch-Schüler*in';
 
   // --- LOGIK: Errungenschaften ---
   const achievements: Achievement[] = [
@@ -40,27 +46,26 @@ export default function ProfileScreen() {
       title: 'Erste Schritte',
       description: 'Schließe deine erste Lektion ab.',
       icon: 'footsteps',
-      isUnlocked: Object.keys(scores).length > 0,
+      isUnlocked: Object.keys(safeScores).length > 0,
     },
     {
       id: 'perfectionist',
       title: 'Perfektionist',
       description: 'Hole 3 Sterne in einer Lektion.',
       icon: 'star',
-      isUnlocked: Object.values(scores).some(stars => stars === 3),
+      isUnlocked: Object.values(safeScores).some(stars => stars === 3),
     },
     {
       id: 'on_fire',
       title: 'Feuer & Flamme',
       description: 'Erreiche eine 7-Tage-Lernserie.',
       icon: 'flame',
-      isUnlocked: streak >= 7,
+      isUnlocked: safeStreak >= 7,
     }
   ];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: currentColors.background }]} edges={['top', 'left', 'right']}>
-      {/* Header mit Einstellungen-Rädchen */}
       <View style={styles.header}>
         <Text style={[styles.headerTitle, { color: currentColors.text }]}>Profil</Text>
         <Ionicons 
@@ -72,16 +77,16 @@ export default function ProfileScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.content}>
-        {/* Nutzer-Info */}
         <View style={styles.userInfoContainer}>
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{profile?.name?.charAt(0)?.toUpperCase() || '?'}</Text>
+            <Text style={styles.avatarText}>
+              {profile?.name?.trim() ? profile.name.trim().charAt(0).toUpperCase() : '?'}
+            </Text>
           </View>
-          <Text style={[styles.userName, { color: currentColors.text }]}>{profile?.name || 'Gast'}</Text>
-          <Text style={{ color: currentColors.icon }}>Level {currentLevel} Portugiesisch-Schüler</Text>
+          <Text style={[styles.userName, { color: currentColors.text }]}>{profile?.name?.trim() || 'Gast'}</Text>
+          <Text style={{ color: currentColors.icon }}>Level {currentLevel} {studentTitle}</Text>
         </View>
 
-        {/* Fortschrittsbalken */}
         <View style={[styles.card, { backgroundColor: theme === 'dark' ? '#222' : '#f9f9f9' }]}>
           <View style={styles.levelHeader}>
             <Text style={[styles.cardTitle, { color: currentColors.text }]}>Level {currentLevel}</Text>
@@ -93,7 +98,6 @@ export default function ProfileScreen() {
           <Text style={styles.progressHint}>Noch {xpForNextLevel - currentLevelXP} XP bis Level {currentLevel + 1}!</Text>
         </View>
 
-        {/* Errungenschaften */}
         <Text style={[styles.sectionTitle, { color: currentColors.icon, marginTop: 20 }]}>ERRUNGENSCHAFTEN</Text>
         <View style={styles.achievementsGrid}>
           {achievements.map((ach) => (

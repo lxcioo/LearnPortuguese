@@ -1,3 +1,4 @@
+import { ThemeProvider, useTheme } from '@/src/context/ThemeContext';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
@@ -8,9 +9,6 @@ import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import { GenderModal } from '@/src/components/GenderModal';
-import { ThemeProvider, useTheme } from '@/src/context/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -120,7 +118,6 @@ function RootLayoutNav() {
         <Stack.Screen name="lesson" options={{ headerShown: false }} />
         <Stack.Screen name="settings_modal" options={{ presentation: 'modal', title: 'Einstellungen' }} />
       </Stack>
-      <GenderModal /> 
       <StatusBar style={isDarkMode ? 'light' : 'dark'} />
     </NavigationThemeProvider>
   );

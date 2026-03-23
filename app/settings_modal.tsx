@@ -11,20 +11,42 @@ export default function SettingsModal() {
   const { isDarkMode, toggleTheme, theme, gender, setGender } = useTheme();
   const currentColors = Colors[theme];
 
-  // NEU: State für den Namen
   const [name, setName] = useState('');
+  const [feedback, setFeedback] = useState('');
 
-  // NEU: Namen beim Laden der Seite abrufen
   useEffect(() => {
     StorageService.getUserProfile().then(profile => {
       if (profile) setName(profile.name);
     });
   }, []);
 
-  // NEU: Namen speichern, wenn das Textfeld verlassen wird
   const handleSaveName = async () => {
     if (name.trim()) {
       await StorageService.saveUserProfile(name.trim());
+    }
+  };
+
+  const submitFeedback = async () => {
+    if (!feedback.trim()) return;
+    try {
+        // Hier kommt später dein Webhook Link rein!
+        const webhookUrl = "DEIN_DISCORD_WEBHOOK_URL_HIER"; 
+        
+        if (webhookUrl === "DEIN_DISCORD_WEBHOOK_URL_HIER") {
+            Alert.alert("Bereit!", "Feedback System ist vorbereitet. Füge später einfach die Discord-Webhook-URL in den Code ein!");
+            return;
+        }
+
+        await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: `**Neues Feedback:**\n${feedback}` })
+        });
+        
+        Alert.alert("Danke!", "Dein Feedback wurde erfolgreich gesendet.");
+        setFeedback('');
+    } catch (e) {
+        Alert.alert("Fehler", "Senden fehlgeschlagen. Bitte überprüfe deine Internetverbindung.");
     }
   };
 
@@ -52,7 +74,6 @@ export default function SettingsModal() {
     >
       <ScrollView contentContainerStyle={styles.content}>
         
-        {/* NEU: Sektion für den Namen */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DEIN PROFIL</Text>
           <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
@@ -63,7 +84,7 @@ export default function SettingsModal() {
                style={[styles.input, { color: currentColors.text, borderColor: currentColors.border }]}
                value={name}
                onChangeText={setName}
-               onEndEditing={handleSaveName} // Speichert automatisch, wenn die Tastatur zugeht
+               onEndEditing={handleSaveName}
                placeholder="Dein Name"
                placeholderTextColor={currentColors.icon}
              />
@@ -102,6 +123,27 @@ export default function SettingsModal() {
           </View>
         </View>
 
+        {/* FEEDBACK SEKTION */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>FEEDBACK</Text>
+          <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
+             <Text style={[styles.cardText, { color: currentColors.text, marginBottom: 10 }]}>
+                Hilf uns, die App zu verbessern:
+             </Text>
+             <TextInput
+               style={[styles.input, { color: currentColors.text, borderColor: currentColors.border, minHeight: 80, textAlignVertical: 'top' }]}
+               value={feedback}
+               onChangeText={setFeedback}
+               placeholder="Gefundene Fehler, Ideen oder Wünsche?"
+               placeholderTextColor={currentColors.icon}
+               multiline
+             />
+             <TouchableOpacity style={[styles.actionBtn, { marginTop: 15 }]} onPress={submitFeedback}>
+                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>Senden</Text>
+             </TouchableOpacity>
+          </View>
+        </View>
+
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DARSTELLUNG</Text>
           
@@ -133,7 +175,7 @@ export default function SettingsModal() {
           </TouchableOpacity>
         </View>
 
-        <View style={{marginTop: 30, alignItems: 'center'}}>
+        <View style={{marginTop: 30, marginBottom: 50, alignItems: 'center'}}>
             <Text style={{color: '#999'}}>Version 1.1.0</Text>
         </View>
 
@@ -159,7 +201,6 @@ const styles = StyleSheet.create({
   cardText: { fontSize: 15 },
   rowText: { fontSize: 16, fontWeight: '500' },
   
-  // NEU: Style für das Textfeld
   input: {
     borderWidth: 1,
     padding: 12,
@@ -181,5 +222,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#58cc02',
     borderColor: '#58cc02'
   },
-  genderLabel: { fontSize: 14, fontWeight: '600' }
+  genderLabel: { fontSize: 14, fontWeight: '600' },
+  actionBtn: { backgroundColor: '#58cc02', padding: 14, borderRadius: 8, alignItems: 'center' }
 });
