@@ -2,9 +2,29 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-// Pfad zur content.json
-const contentPath = path.join(__dirname, '../src/data/content.json');
-const content = JSON.parse(fs.readFileSync(contentPath, 'utf8'));
+// Neuer Pfad: Wir lesen jetzt den gesamten Ordner 'units' aus
+const unitsDir = path.join(__dirname, '../src/data/units');
+
+// Alle Dateien im Ordner finden, die auf .json enden
+const unitFiles = fs.readdirSync(unitsDir).filter(file => file.endsWith('.json'));
+
+// Ein leeres Array, um alle Kapitel-Objekte zu sammeln
+const loadedUnits = [];
+
+for (const file of unitFiles) {
+    const filePath = path.join(unitsDir, file);
+    const unitData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    loadedUnits.push(unitData);
+}
+
+// Wir bauen künstlich die Struktur nach, die das Skript weiter unten erwartet
+const content = {
+    courses: [
+        {
+            units: loadedUnits
+        }
+    ]
+};
 
 // Wir speichern im Ordner 'audio'
 const AUDIO_DIR = path.join(__dirname, '../assets/audio');
