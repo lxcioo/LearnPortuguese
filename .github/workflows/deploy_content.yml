@@ -36,7 +36,37 @@ jobs:
       - name: Prepare Public Folder
         run: |
           mkdir -p public
-          cp src/data/content.json public/content.json
+
+          # Führt ein kurzes Node-Skript aus, um die JSON-Dateien zu vereinen
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const unitsDir = 'src/data/units';
+
+          // Lese alle JSON Dateien im Ordner
+          const files = fs.readdirSync(unitsDir).filter(f => f.endsWith('.json'));
+          const units = [];
+
+          for (const file of files) {
+            units.push(JSON.parse(fs.readFileSync(path.join(unitsDir, file), 'utf8')));
+          }
+
+          // Baue das Haupt-Objekt
+          const content = {
+            courses: [
+              {
+                id: 'portuguese_a1',
+                title: 'Portugiesisch A1',
+                units: units
+              }
+            ]
+          };
+
+          // Speichere es als fertige content.json im public Ordner
+          fs.writeFileSync('public/content.json', JSON.stringify(content));
+          "
+
+          # Kopiere die generierten Audio-Dateien
           if [ -d "assets/audio" ]; then cp -r assets/audio public/; fi
 
       # Der moderne Weg: Artefakt hochladen statt git push
