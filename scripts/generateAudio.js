@@ -2,22 +2,20 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-// Neuer Pfad: Wir lesen jetzt den gesamten Ordner 'units' aus
 const unitsDir = path.join(__dirname, '../src/data/units');
+const AUDIO_DIR = path.join(__dirname, '../assets/audio');
+const MANIFEST_PATH = path.join(AUDIO_DIR, 'audio_manifest.json');
 
 // Alle Dateien im Ordner finden, die auf .json enden
 const unitFiles = fs.readdirSync(unitsDir).filter(file => file.endsWith('.json'));
 
-// Ein leeres Array, um alle Kapitel-Objekte zu sammeln
 const loadedUnits = [];
-
 for (const file of unitFiles) {
     const filePath = path.join(unitsDir, file);
     const unitData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     loadedUnits.push(unitData);
 }
 
-// Wir bauen künstlich die Struktur nach, die das Skript weiter unten erwartet
 const content = {
     courses: [
         {
@@ -26,29 +24,36 @@ const content = {
     ]
 };
 
-// Wir speichern im Ordner 'audio'
-const AUDIO_DIR = path.join(__dirname, '../assets/audio');
-
-// Alten Ordner löschen für sauberen Neustart
-if (fs.existsSync(AUDIO_DIR)) {
-    console.log("🗑️  Lösche alte Audio-Dateien...");
-    fs.rmSync(AUDIO_DIR, { recursive: true, force: true });
+// 1. Ordner NICHT mehr löschen, sondern nur erstellen falls er fehlt
+if (!fs.existsSync(AUDIO_DIR)) {
+    fs.mkdirSync(AUDIO_DIR, { recursive: true });
 }
-fs.mkdirSync(AUDIO_DIR, { recursive: true });
 
-// Download Funktion mit Sprach-Parameter (Standard: pt-PT)
+// 2. Manifest laden (speichert welcher Text zu welcher Datei gehört)
+let manifest = {};
+if (fs.existsSync(MANIFEST_PATH)) {
+    manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+}
+
+// 3. Set für alle aktuell benötigten Dateien
+const requiredFiles = new Set();
+
 const downloadAudio = (text, filename, lang = 'pt-PT') => {
     return new Promise((resolve, reject) => {
-        const filePath = path.join(AUDIO_DIR, `${filename}.mp3`);
+        const fileNameWithExt = `${filename}.mp3`;
+        const filePath = path.join(AUDIO_DIR, fileNameWithExt);
         
-        if (fs.existsSync(filePath)) {
+        // Diese Datei wird benötigt, also zur Liste hinzufügen
+        requiredFiles.add(fileNameWithExt);
+
+        // Prüfen: Existiert die Datei UND hat sich der Text NICHT geändert?
+        if (fs.existsSync(filePath) && manifest[fileNameWithExt] === text) {
             resolve();
             return;
         }
 
         console.log(`Generiere (${lang}): ${filename} -> "${text}"`);
         
-        // URL mit dynamischer Sprache (tl=...)
         const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
 
         https.get(url, (res) => {
@@ -61,6 +66,8 @@ const downloadAudio = (text, filename, lang = 'pt-PT') => {
             res.pipe(fileStream);
             fileStream.on('finish', () => {
                 fileStream.close();
+                // Neuen Text im Manifest speichern
+                manifest[fileNameWithExt] = text;
                 resolve();
             });
         }).on('error', (err) => {
@@ -81,31 +88,21 @@ const run = async () => {
                     if (level.exercises) {
                         for (const exercise of level.exercises) {
                             
-                            // 1. Übersetze PT -> DE (Antwort ist PT -> Audio PT)
                             if (exercise.type === 'translate_to_pt') {
                                 await downloadAudio(exercise.correctAnswer, exercise.id, 'pt-PT');
                             }
-                            
-                            // 2. Übersetze DE -> PT (Frage ist PT -> Audio PT)
                             else if (exercise.type === 'translate_to_de') {
                                 await downloadAudio(exercise.question, exercise.id, 'pt-PT');
                             }
-                            
-                            // 3. Multiple Choice
                             else if (exercise.type === 'multiple_choice') {
-                                // Frage-Audio (PT) - nur wenn audioText existiert
                                 if (exercise.audioText) {
                                     await downloadAudio(exercise.audioText, exercise.id, 'pt-PT');
                                 }
                                 
-                                // Bestimme Sprache für Optionen und Antwort
-                                // Standard ist Portugiesisch, außer es steht explizit "de" in der content.json
                                 const optionsLang = exercise.optionsLanguage === 'de' ? 'de' : 'pt-PT';
                                 
-                                // Antwort-Audio
                                 await downloadAudio(exercise.correctAnswer, `${exercise.id}_answer`, optionsLang);
                                 
-                                // Optionen-Audio
                                 if (exercise.options) {
                                     for (let i = 0; i < exercise.options.length; i++) {
                                         await downloadAudio(exercise.options[i], `${exercise.id}_opt_${i}`, optionsLang);
@@ -118,7 +115,25 @@ const run = async () => {
             }
         }
     }
-    console.log("--- ✅ Fertig! Alle Dateien wurden neu erstellt. ---");
+
+    // 4. Aufräumen: Alle nicht mehr benötigten Dateien löschen
+    console.log("--- 🧹 Räume alte Dateien auf ---");
+    const existingFiles = fs.readdirSync(AUDIO_DIR).filter(f => f.endsWith('.mp3'));
+    let deletedCount = 0;
+    
+    for (const file of existingFiles) {
+        if (!requiredFiles.has(file)) {
+            fs.unlinkSync(path.join(AUDIO_DIR, file));
+            delete manifest[file]; // Auch aus dem Manifest entfernen
+            deletedCount++;
+            console.log(`🗑️  Gelöscht: ${file}`);
+        }
+    }
+
+    // 5. Manifest speichern für den nächsten Durchlauf
+    fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2), 'utf8');
+
+    console.log(`--- ✅ Fertig! ${deletedCount} alte Dateien gelöscht. ---`);
 };
 
 run();
