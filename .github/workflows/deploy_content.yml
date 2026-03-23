@@ -30,6 +30,18 @@ jobs:
         with:
           node-version: 18
 
+      # --- NEU: Caching für den Audio-Ordner ---
+      - name: Cache Audio Files
+        uses: actions/cache@v4
+        with:
+          path: assets/audio
+          # Ein einzigartiger Key für diesen Lauf, damit am Ende immer neu gespeichert wird
+          key: audio-cache-${{ github.run_id }}
+          # Lädt den aktuellsten Cache aus vorherigen Läufen herunter
+          restore-keys: |
+            audio-cache-
+      # -----------------------------------------
+
       - name: Generate Audio Files
         run: node scripts/generateAudio.js
 
