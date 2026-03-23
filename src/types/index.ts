@@ -68,3 +68,16 @@ export interface StreakData {
   streakOnIceCount: number; // Anzahl der blauen Flammen (Aussetzer)
   history: Record<string, 'learned' | 'frozen'>; // Map von "YYYY-MM-DD" zu Status
 }
+
+export interface UserProfile {
+  name: string;
+  hasCompletedOnboarding: boolean;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: any; // Ionicons Name
+  isUnlocked: boolean;
+}

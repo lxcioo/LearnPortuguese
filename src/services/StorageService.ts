@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { DailyStats, Exercise, StreakData, VocabDatabase } from '../types';
+import { DailyStats, Exercise, StreakData, UserProfile, VocabDatabase } from '../types';
 
 const KEYS = {
   LESSON_SCORES: 'lessonScores',
@@ -10,6 +10,7 @@ const KEYS = {
   GLOBAL_VOCAB: 'globalVocabDB',
   DAILY_STATS: 'dailyStats_v2',
   LAST_BOX6_REFRESH: 'lastBox6Refresh',
+  USER_PROFILE: 'userProfile',
 };
 
 // Box 0 (Neu), Box 1 (1h), Box 2 (6h), Box 3 (1d), Box 4 (3d), Box 5 (7d), Box 6 (30d/Ruhe)
@@ -406,5 +407,18 @@ export const StorageService = {
         }
         return null;
       } catch(e) { return null; }
-  }
+  },
+  async getUserProfile(): Promise<UserProfile | null> {
+    try {
+      const json = await AsyncStorage.getItem('userProfile');
+      return json ? JSON.parse(json) : null;
+    } catch (e) { return null; }
+  },
+
+  async saveUserProfile(name: string): Promise<void> {
+    try {
+      const profile: UserProfile = { name, hasCompletedOnboarding: true };
+      await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
+    } catch (e) {}
+  },
 };

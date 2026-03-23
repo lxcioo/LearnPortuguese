@@ -118,6 +118,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         <Stack.Screen name="lesson" options={{ headerShown: false }} />
+        <Stack.Screen name="settings_modal" options={{ presentation: 'modal', title: 'Einstellungen' }} />
       </Stack>
       <GenderModal /> 
       <StatusBar style={isDarkMode ? 'light' : 'dark'} />

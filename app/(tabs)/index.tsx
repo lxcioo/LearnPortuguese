@@ -1,9 +1,10 @@
 import { Colors } from '@/src/constants/theme';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { useUserProgress } from '@/src/hooks/useUserProgress';
+import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import content from '../../src/data/content';
@@ -14,6 +15,16 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 const courseData = content.courses[0];
+
+// Innerhalb deiner Start-Komponente:
+const router = useRouter();
+useEffect(() => {
+  StorageService.getUserProfile().then(profile => {
+    if (!profile || !profile.hasCompletedOnboarding) {
+      router.replace('/onboarding'); // Verweist auf eine neue app/onboarding.tsx Seite
+    }
+  });
+}, []);
 
 export default function PathScreen() {
   const router = useRouter();

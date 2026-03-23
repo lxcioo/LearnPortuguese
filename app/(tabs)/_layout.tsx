@@ -67,7 +67,7 @@ export default function TabLayout() {
       />
 
       <MaterialTopTabs.Screen
-        name="settings"
+        name="profile"
         options={{
           title: 'Profil',
           tabBarIcon: ({ color }: { color: string }) => <Ionicons name="person-circle" size={24} color={color} />,

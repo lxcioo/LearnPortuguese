@@ -4,17 +4,16 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { Alert, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
-// NEU: Import aus safe-area-context
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function SettingsScreen() {
+export default function SettingsModal() {
   const { isDarkMode, toggleTheme, theme, gender, setGender } = useTheme();
   const currentColors = Colors[theme];
 
   const performReset = async () => {
     try {
       await AsyncStorage.clear();
-      Alert.alert("Erfolg", "Alle Daten wurden zurückgesetzt.");
+      Alert.alert("Erfolg", "Alle Daten wurden zurückgesetzt. Bitte starte die App neu.");
     } catch (e) {
       console.error(e);
     }
@@ -31,20 +30,15 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView 
       style={[styles.container, { backgroundColor: currentColors.background }]}
-      edges={['top', 'left', 'right']}
+      edges={['top', 'left', 'right', 'bottom']}
     >
-      <View style={styles.header}>
-        <Text style={[styles.headerTitle, { color: currentColors.text }]}>Einstellungen</Text>
-      </View>
-
       <ScrollView contentContainerStyle={styles.content}>
         
-        {/* Sektion: Lernprofil (Gender) */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>LERN-PROFIL</Text>
           <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
              <Text style={[styles.cardText, { color: currentColors.text, marginBottom: 15 }]}>
-                Wähle deine Anredeform für passende Vokabeln (z.B. Obrigado vs. Obrigada):
+                Wähle deine Anredeform:
              </Text>
              
              <View style={styles.genderRow}>
@@ -69,15 +63,9 @@ export default function SettingsScreen() {
                    <Text style={[styles.genderLabel, gender === 'd' ? {color:'#fff'} : {color: currentColors.text}]}>Divers</Text>
                 </TouchableOpacity>
              </View>
-             {gender === 'd' && (
-               <Text style={{color: '#999', fontSize: 12, marginTop: 10, textAlign:'center'}}>
-                 Modus 'Divers': Du lernst beide Formen (männlich & weiblich).
-               </Text>
-             )}
           </View>
         </View>
 
-        {/* Sektion: Darstellung */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DARSTELLUNG</Text>
           
@@ -95,7 +83,6 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* Sektion: Daten */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DATEN</Text>
           
@@ -121,8 +108,6 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { padding: 20, paddingTop: 20, borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.05)' },
-  headerTitle: { fontSize: 24, fontWeight: 'bold' },
   content: { padding: 20 },
   section: { marginBottom: 30 },
   sectionTitle: { fontSize: 13, fontWeight: '600', marginBottom: 10, marginLeft: 5 },
