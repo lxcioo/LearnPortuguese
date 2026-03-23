@@ -6,7 +6,7 @@ const unitsDir = path.join(__dirname, '../src/data/units');
 const AUDIO_DIR = path.join(__dirname, '../assets/audio');
 const MANIFEST_PATH = path.join(AUDIO_DIR, 'audio_manifest.json');
 
-// Alle Dateien im Ordner finden, die auf .json enden
+// Alle Dateien im Ordner finden, die auf .json enden.
 const unitFiles = fs.readdirSync(unitsDir).filter(file => file.endsWith('.json'));
 
 const loadedUnits = [];
