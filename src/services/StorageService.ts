@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DailyStats, Exercise, StreakData, UserProfile, VocabDatabase } from '../types';
+import { NotificationService } from './NotificationService';
 
 const KEYS = {
   LESSON_SCORES: 'lessonScores',
@@ -354,38 +355,37 @@ export const StorageService = {
       dailyData.count += 1;
       await AsyncStorage.setItem(KEYS.DAILY_PROGRESS, JSON.stringify(dailyData));
       
-      if (dailyData.count >= 15) { 
+    if (dailyData.count >= 15) { 
         let streakData = await this.checkAndRepairStreak();
-        
+
         if (streakData.history[todayStr] !== 'learned') {
             streakData.history[todayStr] = 'learned';
-            
+
             if (streakData.lastStreakDate !== todayStr) {
                 const lastDateStr = new Date(streakData.lastStreakDate || todayObj);
                 lastDateStr.setHours(0,0,0,0);
                 const todayReset = new Date(todayObj);
                 todayReset.setHours(0,0,0,0);
-                
+
                 const diffTime = todayReset.getTime() - lastDateStr.getTime();
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                
-                // Normales Hochzählen der Streak
+
                 if (diffDays === 1 || streakData.lastStreakDate === '') {
-                     streakData.currentStreak += 1;
-                } else if (diffDays === 0) {
-                    // Passiert nicht wegen if !== todayStr, aber zur Sicherheit
-                } else {
-                     streakData.currentStreak = 1;
+                      streakData.currentStreak += 1;
+                } else if (diffDays !== 0) {
+                      streakData.currentStreak = 1;
                 }
-                
+
                 streakData.lastStreakDate = todayStr;
-                
-                // Belohnung: Blaue Flamme alle 7 Tage vergeben
+
                 if (streakData.currentStreak > 0 && streakData.currentStreak % 7 === 0) {
                     streakData.streakOnIceCount += 1;
                 }
             }
             await AsyncStorage.setItem(KEYS.STREAK_DATA, JSON.stringify(streakData));
+
+            // NEU: Tagesziel erreicht! Wir stornieren die heutigen Benachrichtigungen
+            NotificationService.rescheduleReminders(true);
         }
       }
     } catch (e) {}
@@ -421,4 +421,14 @@ export const StorageService = {
       await AsyncStorage.setItem('userProfile', JSON.stringify(profile));
     } catch (e) {}
   },
+  
+  async hasCompletedDailyGoal(): Promise<boolean> {
+    try {
+      const json = await AsyncStorage.getItem(KEYS.STREAK_DATA);
+      if (!json) return false;
+      const streakData: StreakData = JSON.parse(json);
+      const todayStr = new Date().toISOString().split('T')[0];
+      return streakData.history?.[todayStr] === 'learned';
+    } catch (e) { return false; }
+  }
 };

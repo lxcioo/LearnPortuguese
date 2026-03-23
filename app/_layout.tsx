@@ -1,4 +1,6 @@
 import { ThemeProvider, useTheme } from '@/src/context/ThemeContext';
+import { NotificationService } from '@/src/services/NotificationService';
+import { StorageService } from '@/src/services/StorageService';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import { Stack } from 'expo-router';
@@ -6,7 +8,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import React, { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -66,58 +67,15 @@ function RootLayoutNav() {
   }, []);
 
   useEffect(() => {
-    // Splash Screen erst ausblenden, wenn Theme UND Update-Check fertig sind
-    if (!isThemeLoading && !isUpdateChecking) {
-      SplashScreen.hideAsync();
-      registerForPushNotificationsAsync();
-    }
-  }, [isThemeLoading, isUpdateChecking]);
+      if (!isThemeLoading && !isUpdateChecking) {
+        SplashScreen.hideAsync();
 
-  async function registerForPushNotificationsAsync() {
-    if (Platform.OS === 'web') return;
-
-    let channelId = 'daily-reminder';
-
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'Erinnerungen',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#58cc02', // Passend zur App-Farbe
-      });
-    }
-
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    
-    if (finalStatus !== 'granted') {
-      console.log("Benachrichtigungen wurden vom Nutzer abgelehnt.");
-      return;
-    }
-
-    // Lösche alte Schedule um Duplikate zu vermeiden
-    await Notifications.cancelAllScheduledNotificationsAsync();
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Zeit für Portugiesisch! 🇵🇹",
-        body: "Halte deinen Streak am Leben. 5 Minuten reichen!",
-        sound: true, // Wichtig für Android
-      },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
-        hour: 18,
-        minute: 0,
-        repeats: true,
-        ...(Platform.OS === 'android' ? { channelId } : {}),
-      },
-    });
-  }
+        // Prüfen, ob heute schon gelernt wurde und Benachrichtigungen entsprechend planen
+        StorageService.hasCompletedDailyGoal().then(hasCompleted => {
+          NotificationService.setupNotifications(hasCompleted);
+        });
+      }
+    }, [isThemeLoading, isUpdateChecking]);
 
   // Solange geladen wird, nichts rendern (Splash Screen ist noch sichtbar)
   if (isThemeLoading || isUpdateChecking) {
