@@ -4,8 +4,8 @@ import { useUserProgress } from '@/src/hooks/useUserProgress';
 import { StorageService } from '@/src/services/StorageService';
 import { Achievement, UserProfile } from '@/src/types';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -17,12 +17,14 @@ export default function ProfileScreen() {
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
-  useEffect(() => {
-    StorageService.getUserProfile().then(setProfile);
-  }, []);
+  // NEU: useFocusEffect lädt die Daten jedes Mal neu, wenn die Seite sichtbar wird
+  useFocusEffect(
+    useCallback(() => {
+      StorageService.getUserProfile().then(setProfile);
+    }, [])
+  );
 
   // --- LOGIK: Fortschritt & Level ---
-  // Berechne gesamte XP (Beispiel: 10 XP pro Stern, 5 XP pro Streak-Tag)
   const totalStars = Object.values(scores).reduce((sum, stars) => sum + stars, 0);
   const totalXP = (totalStars * 10) + (streak * 5);
   

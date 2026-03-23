@@ -1,14 +1,32 @@
 import { Colors } from '@/src/constants/theme';
 import { useTheme } from '@/src/context/ThemeContext';
+import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
-import { Alert, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsModal() {
   const { isDarkMode, toggleTheme, theme, gender, setGender } = useTheme();
   const currentColors = Colors[theme];
+
+  // NEU: State für den Namen
+  const [name, setName] = useState('');
+
+  // NEU: Namen beim Laden der Seite abrufen
+  useEffect(() => {
+    StorageService.getUserProfile().then(profile => {
+      if (profile) setName(profile.name);
+    });
+  }, []);
+
+  // NEU: Namen speichern, wenn das Textfeld verlassen wird
+  const handleSaveName = async () => {
+    if (name.trim()) {
+      await StorageService.saveUserProfile(name.trim());
+    }
+  };
 
   const performReset = async () => {
     try {
@@ -34,8 +52,26 @@ export default function SettingsModal() {
     >
       <ScrollView contentContainerStyle={styles.content}>
         
+        {/* NEU: Sektion für den Namen */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>LERN-PROFIL</Text>
+          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DEIN PROFIL</Text>
+          <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
+             <Text style={[styles.cardText, { color: currentColors.text, marginBottom: 10 }]}>
+                Anzeigename:
+             </Text>
+             <TextInput
+               style={[styles.input, { color: currentColors.text, borderColor: currentColors.border }]}
+               value={name}
+               onChangeText={setName}
+               onEndEditing={handleSaveName} // Speichert automatisch, wenn die Tastatur zugeht
+               placeholder="Dein Name"
+               placeholderTextColor={currentColors.icon}
+             />
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>LERN-EINSTELLUNGEN</Text>
           <View style={[styles.card, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]}>
              <Text style={[styles.cardText, { color: currentColors.text, marginBottom: 15 }]}>
                 Wähle deine Anredeform:
@@ -122,6 +158,14 @@ const styles = StyleSheet.create({
   card: { padding: 15, borderRadius: 12 },
   cardText: { fontSize: 15 },
   rowText: { fontSize: 16, fontWeight: '500' },
+  
+  // NEU: Style für das Textfeld
+  input: {
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 8,
+    fontSize: 16,
+  },
   
   genderRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 10 },
   genderBtn: { 
