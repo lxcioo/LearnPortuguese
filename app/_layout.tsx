@@ -76,6 +76,16 @@ function RootLayoutNav() {
   async function registerForPushNotificationsAsync() {
     if (Platform.OS === 'web') return;
 
+    // NEU: Android benötigt zwingend einen Benachrichtigungskanal
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'Erinnerungen',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#58cc02', // Passend zur App-Farbe
+      });
+    }
+
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
     
