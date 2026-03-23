@@ -1,0 +1,368 @@
+{
+    "id": "unit_5",
+    "title": "Kapitel 5: Menschen & Familie",
+    "color": "#ff6b6b",
+    "levels": [
+        {
+            "id": "u5_l1",
+            "title": "Familienmitglieder",
+            "exercises": [
+                {
+                    "id": "u5_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "A família",
+                    "correctAnswer": "Die Familie"
+                },
+                {
+                    "id": "u5_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Vater",
+                    "correctAnswer": "O pai"
+                },
+                {
+                    "id": "u5_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "A mãe",
+                    "correctAnswer": "Die Mutter"
+                },
+                {
+                    "id": "u5_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Die Eltern'?",
+                    "correctAnswer": "Os pais",
+                    "options": [
+                        "Os pais",
+                        "Os avós",
+                        "Os tios"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Os pais"
+                },
+                {
+                    "id": "u5_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Der Sohn",
+                    "correctAnswer": "O filho"
+                },
+                {
+                    "id": "u5_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A filha",
+                    "correctAnswer": "Die Tochter"
+                },
+                {
+                    "id": "u5_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Bruder",
+                    "correctAnswer": "O irmão"
+                },
+                {
+                    "id": "u5_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "A irmã",
+                    "correctAnswer": "Die Schwester"
+                },
+                {
+                    "id": "u5_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Os irmãos'?",
+                    "correctAnswer": "Die Geschwister",
+                    "options": [
+                        "Die Eltern",
+                        "Die Geschwister",
+                        "Die Kinder"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Os irmãos",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u5_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Großvater",
+                    "correctAnswer": "O avô"
+                },
+                {
+                    "id": "u5_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "A avó",
+                    "correctAnswer": "Die Großmutter",
+                    "alternativeAnswers": [
+                        "Die Oma"
+                    ]
+                },
+                {
+                    "id": "u5_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Onkel",
+                    "correctAnswer": "O tio"
+                },
+                {
+                    "id": "u5_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A tia",
+                    "correctAnswer": "Die Tante"
+                },
+                {
+                    "id": "u5_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Der Cousin",
+                    "correctAnswer": "O primo"
+                },
+                {
+                    "id": "u5_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Hast du Kinder?",
+                    "correctAnswer": "Tens filhos?",
+                    "alternativeAnswers": [
+                        "Tu tens filhos?"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u5_l2",
+            "title": "Aussehen beschreiben",
+            "exercises": [
+                {
+                    "id": "u5_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A aparência",
+                    "correctAnswer": "Das Aussehen"
+                },
+                {
+                    "id": "u5_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Er ist groß (Körpergröße)",
+                    "correctAnswer": "Ele é alto"
+                },
+                {
+                    "id": "u5_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "Ela é baixa",
+                    "correctAnswer": "Sie ist klein"
+                },
+                {
+                    "id": "u5_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wähle 'Schlank / Dünn'",
+                    "correctAnswer": "Magro",
+                    "options": [
+                        "Gordo",
+                        "Magro",
+                        "Alto"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Magro"
+                },
+                {
+                    "id": "u5_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Jung",
+                    "correctAnswer": "Jovem",
+                    "alternativeAnswers": [
+                        "Novo"
+                    ]
+                },
+                {
+                    "id": "u5_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Velho",
+                    "correctAnswer": "Alt"
+                },
+                {
+                    "id": "u5_l2_e7_m",
+                    "type": "translate_to_pt",
+                    "question": "Schön (männlich)",
+                    "correctAnswer": "Bonito",
+                    "gender": "m"
+                },
+                {
+                    "id": "u5_l2_e7_f",
+                    "type": "translate_to_pt",
+                    "question": "Schön (weiblich)",
+                    "correctAnswer": "Bonita",
+                    "gender": "f"
+                },
+                {
+                    "id": "u5_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Feio'?",
+                    "correctAnswer": "Hässlich",
+                    "options": [
+                        "Hässlich",
+                        "Schön",
+                        "Groß"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Feio",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u5_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Blonde Haare",
+                    "correctAnswer": "Cabelo loiro"
+                },
+                {
+                    "id": "u5_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Cabelo castanho",
+                    "correctAnswer": "Braune Haare",
+                    "alternativeAnswers": [
+                        "Braunes Haar"
+                    ]
+                },
+                {
+                    "id": "u5_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Kurze Haare",
+                    "correctAnswer": "Cabelo curto"
+                },
+                {
+                    "id": "u5_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "Olhos azuis",
+                    "correctAnswer": "Blaue Augen"
+                },
+                {
+                    "id": "u5_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Grüne Augen",
+                    "correctAnswer": "Olhos verdes"
+                },
+                {
+                    "id": "u5_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Sie trägt eine Brille",
+                    "correctAnswer": "Ela usa óculos"
+                }
+            ]
+        },
+        {
+            "id": "u5_l3",
+            "title": "Charakter & Persönlichkeit",
+            "exercises": [
+                {
+                    "id": "u5_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "A personalidade",
+                    "correctAnswer": "Die Persönlichkeit",
+                    "alternativeAnswers": [
+                        "Der Charakter"
+                    ]
+                },
+                {
+                    "id": "u5_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Sympathisch",
+                    "correctAnswer": "Simpático"
+                },
+                {
+                    "id": "u5_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Antipático",
+                    "correctAnswer": "Unsympathisch"
+                },
+                {
+                    "id": "u5_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Intelligent'?",
+                    "correctAnswer": "Inteligente",
+                    "options": [
+                        "Inteligente",
+                        "Estúpido",
+                        "Engraçado"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Inteligente"
+                },
+                {
+                    "id": "u5_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Lustig",
+                    "correctAnswer": "Engraçado",
+                    "alternativeAnswers": [
+                        "Divertido"
+                    ]
+                },
+                {
+                    "id": "u5_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Chato",
+                    "correctAnswer": "Langweilig",
+                    "alternativeAnswers": [
+                        "Nervig"
+                    ]
+                },
+                {
+                    "id": "u5_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Schüchtern",
+                    "correctAnswer": "Tímido"
+                },
+                {
+                    "id": "u5_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Preguiçoso",
+                    "correctAnswer": "Faul"
+                },
+                {
+                    "id": "u5_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist das Gegenteil von faul?",
+                    "correctAnswer": "Trabalhador",
+                    "options": [
+                        "Nervoso",
+                        "Trabalhador",
+                        "Triste"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Trabalhador"
+                },
+                {
+                    "id": "u5_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Fleißig",
+                    "correctAnswer": "Trabalhador"
+                },
+                {
+                    "id": "u5_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Calmo",
+                    "correctAnswer": "Ruhig",
+                    "alternativeAnswers": [
+                        "Gelassen"
+                    ]
+                },
+                {
+                    "id": "u5_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Nervös",
+                    "correctAnswer": "Nervoso"
+                },
+                {
+                    "id": "u5_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Feliz",
+                    "correctAnswer": "Glücklich"
+                },
+                {
+                    "id": "u5_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Traurig",
+                    "correctAnswer": "Triste"
+                },
+                {
+                    "id": "u5_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Bist du glücklich?",
+                    "correctAnswer": "Estás feliz?",
+                    "alternativeAnswers": [
+                        "Tu estás feliz?"
+                    ]
+                }
+            ]
+        }
+    ]
+}

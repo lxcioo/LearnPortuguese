@@ -1,0 +1,405 @@
+{
+    "id": "unit_6",
+    "title": "Kapitel 6: Zeit & Tagesablauf",
+    "color": "#f39c12",
+    "levels": [
+        {
+            "id": "u6_l1",
+            "title": "Uhrzeiten & Tageszeiten",
+            "exercises": [
+                {
+                    "id": "u6_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "Que horas são?",
+                    "correctAnswer": "Wie spät ist es",
+                    "alternativeAnswers": [
+                        "Wie spät ist es?"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Es ist ein Uhr",
+                    "correctAnswer": "É uma hora"
+                },
+                {
+                    "id": "u6_l1_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Es ist zwei Uhr'?",
+                    "correctAnswer": "São duas horas",
+                    "options": [
+                        "São dois horas",
+                        "É duas horas",
+                        "São duas horas"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "São duas horas"
+                },
+                {
+                    "id": "u6_l1_e4",
+                    "type": "translate_to_de",
+                    "question": "Meio-dia",
+                    "correctAnswer": "Mittag",
+                    "alternativeAnswers": [
+                        "Der Mittag"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Mitternacht",
+                    "correctAnswer": "Meia-noite",
+                    "alternativeAnswers": [
+                        "A meia-noite"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A que horas?",
+                    "correctAnswer": "Um wie viel Uhr",
+                    "alternativeAnswers": [
+                        "Wann?"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Um acht Uhr",
+                    "correctAnswer": "Às oito horas",
+                    "alternativeAnswers": [
+                        "As oito horas",
+                        "Às oito"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e8",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Viertel nach' (z.B. Viertel nach drei)?",
+                    "correctAnswer": "E um quarto",
+                    "options": [
+                        "Menos um quarto",
+                        "E meia",
+                        "E um quarto"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "E um quarto"
+                },
+                {
+                    "id": "u6_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "E meia",
+                    "correctAnswer": "Und halb",
+                    "alternativeAnswers": [
+                        "Halb"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Viertel vor",
+                    "correctAnswer": "Menos um quarto"
+                },
+                {
+                    "id": "u6_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "De manhã",
+                    "correctAnswer": "Morgens",
+                    "alternativeAnswers": [
+                        "Am Morgen"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Am Nachmittag",
+                    "correctAnswer": "À tarde",
+                    "alternativeAnswers": [
+                        "De tarde"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "À noite",
+                    "correctAnswer": "Nachts",
+                    "alternativeAnswers": [
+                        "Am Abend",
+                        "Abends"
+                    ]
+                },
+                {
+                    "id": "u6_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Heute Morgen",
+                    "correctAnswer": "Hoje de manhã"
+                },
+                {
+                    "id": "u6_l1_e15",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Gestern Abend'?",
+                    "correctAnswer": "Ontem à noite",
+                    "options": [
+                        "Hoje à noite",
+                        "Ontem à noite",
+                        "Amanhã de manhã"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Ontem à noite"
+                }
+            ]
+        },
+        {
+            "id": "u6_l2",
+            "title": "Wochentage & Zeitangaben",
+            "exercises": [
+                {
+                    "id": "u6_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A semana",
+                    "correctAnswer": "Die Woche"
+                },
+                {
+                    "id": "u6_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Montag",
+                    "correctAnswer": "Segunda-feira",
+                    "alternativeAnswers": [
+                        "Segunda"
+                    ]
+                },
+                {
+                    "id": "u6_l2_e3",
+                    "type": "multiple_choice",
+                    "question": "Wähle 'Dienstag'",
+                    "correctAnswer": "Terça-feira",
+                    "options": [
+                        "Segunda-feira",
+                        "Terça-feira",
+                        "Quarta-feira"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Terça-feira"
+                },
+                {
+                    "id": "u6_l2_e4",
+                    "type": "translate_to_de",
+                    "question": "Quarta-feira",
+                    "correctAnswer": "Mittwoch"
+                },
+                {
+                    "id": "u6_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Donnerstag",
+                    "correctAnswer": "Quinta-feira",
+                    "alternativeAnswers": [
+                        "Quinta"
+                    ]
+                },
+                {
+                    "id": "u6_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Sexta-feira",
+                    "correctAnswer": "Freitag"
+                },
+                {
+                    "id": "u6_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Samstag",
+                    "correctAnswer": "Sábado"
+                },
+                {
+                    "id": "u6_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Domingo",
+                    "correctAnswer": "Sonntag"
+                },
+                {
+                    "id": "u6_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O fim de semana'?",
+                    "correctAnswer": "Das Wochenende",
+                    "options": [
+                        "Der Feierabend",
+                        "Das Wochenende",
+                        "Der Urlaub"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O fim de semana",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u6_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Monat",
+                    "correctAnswer": "O mês"
+                },
+                {
+                    "id": "u6_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "O ano",
+                    "correctAnswer": "Das Jahr"
+                },
+                {
+                    "id": "u6_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Nächste Woche",
+                    "correctAnswer": "Na próxima semana",
+                    "alternativeAnswers": [
+                        "Para a semana"
+                    ]
+                },
+                {
+                    "id": "u6_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "O ano passado",
+                    "correctAnswer": "Letztes Jahr",
+                    "alternativeAnswers": [
+                        "Das letzte Jahr"
+                    ]
+                },
+                {
+                    "id": "u6_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Gestern, heute, morgen",
+                    "correctAnswer": "Ontem, hoje, amanhã",
+                    "alternativeAnswers": [
+                        "Ontem hoje amanhã"
+                    ]
+                },
+                {
+                    "id": "u6_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Jeden Tag",
+                    "correctAnswer": "Todos os dias"
+                }
+            ]
+        },
+        {
+            "id": "u6_l3",
+            "title": "Die tägliche Routine",
+            "exercises": [
+                {
+                    "id": "u6_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Acordar",
+                    "correctAnswer": "Aufwachen"
+                },
+                {
+                    "id": "u6_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Aufstehen",
+                    "correctAnswer": "Levantar-se"
+                },
+                {
+                    "id": "u6_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Eu levanto-me",
+                    "correctAnswer": "Ich stehe auf"
+                },
+                {
+                    "id": "u6_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Frühstücken' in Portugal?",
+                    "correctAnswer": "Tomar o pequeno-almoço",
+                    "options": [
+                        "Tomar o pequeno-almoço",
+                        "Tomar café da manhã",
+                        "Comer pão"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Tomar o pequeno-almoço"
+                },
+                {
+                    "id": "u6_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Duschen",
+                    "correctAnswer": "Tomar banho"
+                },
+                {
+                    "id": "u6_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Lavar os dentes",
+                    "correctAnswer": "Die Zähne putzen",
+                    "alternativeAnswers": [
+                        "Zähne putzen"
+                    ]
+                },
+                {
+                    "id": "u6_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Sich anziehen",
+                    "correctAnswer": "Vestir-se"
+                },
+                {
+                    "id": "u6_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Ir para o trabalho",
+                    "correctAnswer": "Zur Arbeit gehen"
+                },
+                {
+                    "id": "u6_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Zu Mittag essen'?",
+                    "correctAnswer": "Almoçar",
+                    "options": [
+                        "Jantar",
+                        "Lanchar",
+                        "Almoçar"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Almoçar"
+                },
+                {
+                    "id": "u6_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Anfangen",
+                    "correctAnswer": "Começar"
+                },
+                {
+                    "id": "u6_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Terminar o trabalho",
+                    "correctAnswer": "Die Arbeit beenden",
+                    "alternativeAnswers": [
+                        "Aufhören zu arbeiten"
+                    ]
+                },
+                {
+                    "id": "u6_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Nach Hause zurückkehren",
+                    "correctAnswer": "Voltar para casa",
+                    "alternativeAnswers": [
+                        "Regressar a casa"
+                    ]
+                },
+                {
+                    "id": "u6_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Jantar",
+                    "correctAnswer": "Zu Abend essen",
+                    "alternativeAnswers": [
+                        "Abendessen"
+                    ]
+                },
+                {
+                    "id": "u6_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Fernsehen",
+                    "correctAnswer": "Ver televisão",
+                    "alternativeAnswers": [
+                        "Ver a televisão",
+                        "Assistir televisão"
+                    ]
+                },
+                {
+                    "id": "u6_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Ins Bett gehen",
+                    "correctAnswer": "Ir para a cama"
+                }
+            ]
+        }
+    ]
+}

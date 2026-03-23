@@ -1,0 +1,451 @@
+{
+    "id": "unit_1",
+    "title": "Kapitel 1: Die ersten Schritte",
+    "color": "#58cc02",
+    "levels": [
+        {
+            "id": "u1_l1",
+            "title": "Begrüßung & Abschied",
+            "exercises": [
+                {
+                    "id": "u1_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "Olá",
+                    "correctAnswer": "Hallo",
+                    "alternativeAnswers": [
+                        "Hi"
+                    ]
+                },
+                {
+                    "id": "u1_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Guten Morgen",
+                    "correctAnswer": "Bom dia"
+                },
+                {
+                    "id": "u1_l1_e3",
+                    "type": "translate_to_pt",
+                    "question": "Guten Tag (Nachmittag)",
+                    "correctAnswer": "Boa tarde"
+                },
+                {
+                    "id": "u1_l1_e4",
+                    "type": "translate_to_pt",
+                    "question": "Gute Nacht",
+                    "correctAnswer": "Boa noite"
+                },
+                {
+                    "id": "u1_l1_e5",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Tschüss' / 'Auf Wiedersehen'?",
+                    "correctAnswer": "Adeus",
+                    "options": [
+                        "Olá",
+                        "Bom dia",
+                        "Adeus"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Adeus"
+                },
+                {
+                    "id": "u1_l1_e6",
+                    "type": "translate_to_pt",
+                    "question": "Bis bald",
+                    "correctAnswer": "Até logo"
+                },
+                {
+                    "id": "u1_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Bis morgen",
+                    "correctAnswer": "Até amanhã"
+                },
+                {
+                    "id": "u1_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Até já",
+                    "correctAnswer": "Bis gleich",
+                    "alternativeAnswers": [
+                        "Bis später"
+                    ]
+                },
+                {
+                    "id": "u1_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "Tudo bem?",
+                    "correctAnswer": "Alles gut",
+                    "alternativeAnswers": [
+                        "Wie gehts",
+                        "Alles in Ordnung",
+                        "Alles klar"
+                    ]
+                },
+                {
+                    "id": "u1_l1_e10_m",
+                    "type": "translate_to_pt",
+                    "question": "Danke (als Mann)",
+                    "correctAnswer": "Obrigado",
+                    "gender": "m"
+                },
+                {
+                    "id": "u1_l1_e10_f",
+                    "type": "translate_to_pt",
+                    "question": "Danke (als Frau)",
+                    "correctAnswer": "Obrigada",
+                    "gender": "f"
+                },
+                {
+                    "id": "u1_l1_e12",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Bitte'?",
+                    "correctAnswer": "Por favor",
+                    "options": [
+                        "Obrigado",
+                        "Por favor",
+                        "De nada"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Por favor"
+                },
+                {
+                    "id": "u1_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "De nada",
+                    "correctAnswer": "Gern geschehen",
+                    "alternativeAnswers": [
+                        "Nichts zu danken",
+                        "Bitte schön",
+                        "Bitte"
+                    ]
+                },
+                {
+                    "id": "u1_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ja",
+                    "correctAnswer": "Sim"
+                },
+                {
+                    "id": "u1_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Nein",
+                    "correctAnswer": "Não"
+                }
+            ]
+        },
+        {
+            "id": "u1_l2",
+            "title": "Sich vorstellen & Herkunft",
+            "exercises": [
+                {
+                    "id": "u1_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "Chamo-me Pedro",
+                    "correctAnswer": "Ich heiße Pedro",
+                    "alternativeAnswers": [
+                        "Mein Name ist Pedro"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich heiße Maria",
+                    "correctAnswer": "Chamo-me Maria",
+                    "alternativeAnswers": [
+                        "O meu nome é Maria",
+                        "Eu chamo-me Maria"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man 'Wie heißt du?' (informell)",
+                    "correctAnswer": "Como te chamas?",
+                    "options": [
+                        "Como se chama?",
+                        "Como te chamas?",
+                        "Tudo bem?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Como te chamas"
+                },
+                {
+                    "id": "u1_l2_e4",
+                    "type": "translate_to_pt",
+                    "question": "Wie heißen Sie? (formell)",
+                    "correctAnswer": "Como se chama?",
+                    "alternativeAnswers": [
+                        "Como o senhor se chama",
+                        "Como a senhora se chama"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e5",
+                    "type": "translate_to_de",
+                    "question": "Prazer em conhecer",
+                    "correctAnswer": "Schön dich kennenzulernen",
+                    "alternativeAnswers": [
+                        "Freut mich",
+                        "Sehr erfreut",
+                        "Schön Sie kennenzulernen"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e6",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin aus Deutschland",
+                    "correctAnswer": "Sou da Alemanha",
+                    "alternativeAnswers": [
+                        "Eu sou da Alemanha"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin aus der Schweiz",
+                    "correctAnswer": "Sou da Suíça",
+                    "alternativeAnswers": [
+                        "Eu sou da Suíça"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e8",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin aus Österreich",
+                    "correctAnswer": "Sou da Áustria",
+                    "alternativeAnswers": [
+                        "Eu sou da Áustria"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e9",
+                    "type": "translate_to_de",
+                    "question": "Moro em Berlim",
+                    "correctAnswer": "Ich wohne in Berlin",
+                    "alternativeAnswers": [
+                        "Ich lebe in Berlin"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e10_m",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin Deutscher",
+                    "correctAnswer": "Sou alemão",
+                    "gender": "m",
+                    "alternativeAnswers": [
+                        "Eu sou alemão"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e10_f",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin Deutsche",
+                    "correctAnswer": "Sou alemã",
+                    "gender": "f",
+                    "alternativeAnswers": [
+                        "Eu sou alemã"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e12",
+                    "type": "translate_to_de",
+                    "question": "E tu?",
+                    "correctAnswer": "Und du?"
+                },
+                {
+                    "id": "u1_l2_e13",
+                    "type": "multiple_choice",
+                    "question": "Vervollständige: Eu ___ português.",
+                    "correctAnswer": "falo",
+                    "options": [
+                        "fala",
+                        "falo",
+                        "falas"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "falo"
+                },
+                {
+                    "id": "u1_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich spreche kein Portugiesisch",
+                    "correctAnswer": "Não falo português",
+                    "alternativeAnswers": [
+                        "Eu não falo português"
+                    ]
+                },
+                {
+                    "id": "u1_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Sprichst du Englisch?",
+                    "correctAnswer": "Falas inglês?",
+                    "alternativeAnswers": [
+                        "Tu falas inglês"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u1_l3",
+            "title": "Zahlen (1-100) & Alter",
+            "exercises": [
+                {
+                    "id": "u1_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Um, dois, três",
+                    "correctAnswer": "Eins zwei drei",
+                    "alternativeAnswers": [
+                        "Eins, zwei, drei",
+                        "1 2 3",
+                        "1, 2, 3"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Vier, fünf, sechs",
+                    "correctAnswer": "Quatro, cinco, seis",
+                    "alternativeAnswers": [
+                        "Quatro cinco seis",
+                        "4 5 6"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie heißt 'Sieben'?",
+                    "correctAnswer": "Sete",
+                    "options": [
+                        "Seis",
+                        "Sete",
+                        "Oito"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Sete",
+                    "optionsLanguage": "pt"
+                },
+                {
+                    "id": "u1_l3_e4",
+                    "type": "translate_to_de",
+                    "question": "Oito, nove, dez",
+                    "correctAnswer": "Acht neun zehn",
+                    "alternativeAnswers": [
+                        "Acht, neun, zehn",
+                        "8 9 10"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Elf, zwölf",
+                    "correctAnswer": "Onze, doze",
+                    "alternativeAnswers": [
+                        "Onze doze",
+                        "11 12"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e6",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'Dezasseis'?",
+                    "correctAnswer": "Sechzehn",
+                    "options": [
+                        "Sechzehn",
+                        "Siebzehn",
+                        "Sechs"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Dezasseis",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u1_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Zwanzig",
+                    "correctAnswer": "Vinte",
+                    "alternativeAnswers": [
+                        "20"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Trinta",
+                    "correctAnswer": "Dreißig",
+                    "alternativeAnswers": [
+                        "30"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e9",
+                    "type": "translate_to_pt",
+                    "question": "Vierzig",
+                    "correctAnswer": "Quarenta",
+                    "alternativeAnswers": [
+                        "40"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e10",
+                    "type": "translate_to_de",
+                    "question": "Cinquenta",
+                    "correctAnswer": "Fünfzig",
+                    "alternativeAnswers": [
+                        "50"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e11",
+                    "type": "translate_to_pt",
+                    "question": "Hundert",
+                    "correctAnswer": "Cem",
+                    "alternativeAnswers": [
+                        "100"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e12",
+                    "type": "translate_to_de",
+                    "question": "Quantos anos tens?",
+                    "correctAnswer": "Wie alt bist du",
+                    "alternativeAnswers": [
+                        "Wie alt bist du?"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e13",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man 'Wie alt sind Sie?' (formell)",
+                    "correctAnswer": "Quantos anos tem?",
+                    "options": [
+                        "Quantos anos tens?",
+                        "Quantos anos tem?",
+                        "Como se chama?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Quantos anos tem"
+                },
+                {
+                    "id": "u1_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin zwanzig Jahre alt",
+                    "correctAnswer": "Tenho vinte anos",
+                    "alternativeAnswers": [
+                        "Eu tenho vinte anos",
+                        "Tenho 20 anos",
+                        "Eu tenho 20 anos"
+                    ]
+                },
+                {
+                    "id": "u1_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "Ele tem trinta anos",
+                    "correctAnswer": "Er ist dreißig Jahre alt",
+                    "alternativeAnswers": [
+                        "Er ist 30 Jahre alt",
+                        "Er ist dreißig",
+                        "Er ist 30"
+                    ]
+                }
+            ]
+        }
+    ]
+}

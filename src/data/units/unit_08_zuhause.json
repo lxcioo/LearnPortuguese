@@ -1,0 +1,385 @@
+{
+    "id": "unit_8",
+    "title": "Kapitel 8: Mein Zuhause",
+    "color": "#1abc9c",
+    "levels": [
+        {
+            "id": "u8_l1",
+            "title": "Räume & Möbel",
+            "exercises": [
+                {
+                    "id": "u8_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "A casa",
+                    "correctAnswer": "Das Haus"
+                },
+                {
+                    "id": "u8_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Wohnung",
+                    "correctAnswer": "O apartamento"
+                },
+                {
+                    "id": "u8_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "A sala de estar",
+                    "correctAnswer": "Das Wohnzimmer",
+                    "alternativeAnswers": [
+                        "Das Wohnzimmer"
+                    ]
+                },
+                {
+                    "id": "u8_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Das Schlafzimmer'?",
+                    "correctAnswer": "O quarto",
+                    "options": [
+                        "A sala",
+                        "O quarto",
+                        "A cozinha"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O quarto"
+                },
+                {
+                    "id": "u8_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Küche",
+                    "correctAnswer": "A cozinha"
+                },
+                {
+                    "id": "u8_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A casa de banho",
+                    "correctAnswer": "Das Badezimmer",
+                    "alternativeAnswers": [
+                        "Das Bad",
+                        "Die Toilette"
+                    ]
+                },
+                {
+                    "id": "u8_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Balkon",
+                    "correctAnswer": "A varanda"
+                },
+                {
+                    "id": "u8_l1_e8",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A mesa'?",
+                    "correctAnswer": "Der Tisch",
+                    "options": [
+                        "Der Stuhl",
+                        "Der Tisch",
+                        "Das Sofa"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A mesa",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u8_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "A cadeira",
+                    "correctAnswer": "Der Stuhl"
+                },
+                {
+                    "id": "u8_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Das Sofa",
+                    "correctAnswer": "O sofá"
+                },
+                {
+                    "id": "u8_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "A cama",
+                    "correctAnswer": "Das Bett"
+                },
+                {
+                    "id": "u8_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Schrank",
+                    "correctAnswer": "O armário",
+                    "alternativeAnswers": [
+                        "O roupeiro"
+                    ]
+                },
+                {
+                    "id": "u8_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A porta",
+                    "correctAnswer": "Die Tür"
+                },
+                {
+                    "id": "u8_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Das Fenster",
+                    "correctAnswer": "A janela"
+                },
+                {
+                    "id": "u8_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Der Schlüssel",
+                    "correctAnswer": "A chave"
+                }
+            ]
+        },
+        {
+            "id": "u8_l2",
+            "title": "Hausarbeit & Alltagspflichten",
+            "exercises": [
+                {
+                    "id": "u8_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "Arrumar",
+                    "correctAnswer": "Aufräumen"
+                },
+                {
+                    "id": "u8_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Zimmer aufräumen",
+                    "correctAnswer": "Arrumar o quarto"
+                },
+                {
+                    "id": "u8_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "Limpar a casa",
+                    "correctAnswer": "Das Haus putzen",
+                    "alternativeAnswers": [
+                        "Das Haus reinigen"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Den Abwasch machen' / 'Spülen'?",
+                    "correctAnswer": "Lavar a loiça",
+                    "options": [
+                        "Lavar o carro",
+                        "Lavar a loiça",
+                        "Lavar as mãos"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Lavar a loiça"
+                },
+                {
+                    "id": "u8_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Wäsche waschen",
+                    "correctAnswer": "Lavar a roupa",
+                    "alternativeAnswers": [
+                        "Lavar roupa"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Cozinhar",
+                    "correctAnswer": "Kochen"
+                },
+                {
+                    "id": "u8_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Das Abendessen machen",
+                    "correctAnswer": "Fazer o jantar"
+                },
+                {
+                    "id": "u8_l2_e8",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Den Tisch decken'?",
+                    "correctAnswer": "Pôr a mesa",
+                    "options": [
+                        "Limpar a mesa",
+                        "Comprar a mesa",
+                        "Pôr a mesa"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Pôr a mesa"
+                },
+                {
+                    "id": "u8_l2_e9",
+                    "type": "translate_to_de",
+                    "question": "Deitar o lixo fora",
+                    "correctAnswer": "Den Müll rausbringen",
+                    "alternativeAnswers": [
+                        "Den Müll wegwerfen"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Staub saugen",
+                    "correctAnswer": "Aspirar",
+                    "alternativeAnswers": [
+                        "Passar o aspirador"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Fazer a cama",
+                    "correctAnswer": "Das Bett machen"
+                },
+                {
+                    "id": "u8_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Bügeln",
+                    "correctAnswer": "Passar a ferro",
+                    "alternativeAnswers": [
+                        "Engomar"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "Ir às compras",
+                    "correctAnswer": "Einkaufen gehen",
+                    "alternativeAnswers": [
+                        "Einkaufen"
+                    ]
+                },
+                {
+                    "id": "u8_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Helfen",
+                    "correctAnswer": "Ajudar"
+                },
+                {
+                    "id": "u8_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Ich helfe dir",
+                    "correctAnswer": "Eu ajudo-te",
+                    "alternativeAnswers": [
+                        "Ajudo-te"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u8_l3",
+            "title": "Auf der Wohnungssuche",
+            "exercises": [
+                {
+                    "id": "u8_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Alugar",
+                    "correctAnswer": "Mieten"
+                },
+                {
+                    "id": "u8_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Miete",
+                    "correctAnswer": "A renda"
+                },
+                {
+                    "id": "u8_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Comprar",
+                    "correctAnswer": "Kaufen"
+                },
+                {
+                    "id": "u8_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Umziehen' (Wohnungswechsel)?",
+                    "correctAnswer": "Mudar de casa",
+                    "options": [
+                        "Mudar de roupa",
+                        "Mudar de casa",
+                        "Limpar a casa"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Mudar de casa"
+                },
+                {
+                    "id": "u8_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Rechnung",
+                    "correctAnswer": "A fatura",
+                    "alternativeAnswers": [
+                        "A conta"
+                    ]
+                },
+                {
+                    "id": "u8_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "A eletricidade",
+                    "correctAnswer": "Der Strom",
+                    "alternativeAnswers": [
+                        "Die Elektrizität"
+                    ]
+                },
+                {
+                    "id": "u8_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Das Wasser",
+                    "correctAnswer": "A água"
+                },
+                {
+                    "id": "u8_l3_e8",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'No rés do chão'?",
+                    "correctAnswer": "Im Erdgeschoss",
+                    "options": [
+                        "Im ersten Stock",
+                        "Im Erdgeschoss",
+                        "Im Keller"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "No rés do chão",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u8_l3_e9",
+                    "type": "translate_to_de",
+                    "question": "O primeiro andar",
+                    "correctAnswer": "Der erste Stock",
+                    "alternativeAnswers": [
+                        "Das erste Stockwerk"
+                    ]
+                },
+                {
+                    "id": "u8_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Nachbar",
+                    "correctAnswer": "O vizinho"
+                },
+                {
+                    "id": "u8_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "É muito caro",
+                    "correctAnswer": "Es ist sehr teuer",
+                    "alternativeAnswers": [
+                        "Das ist sehr teuer"
+                    ]
+                },
+                {
+                    "id": "u8_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Es ist günstig (billig)",
+                    "correctAnswer": "É barato"
+                },
+                {
+                    "id": "u8_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "O apartamento tem muita luz",
+                    "correctAnswer": "Die Wohnung ist sehr hell",
+                    "alternativeAnswers": [
+                        "Die Wohnung hat viel Licht"
+                    ]
+                },
+                {
+                    "id": "u8_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Dunkel",
+                    "correctAnswer": "Escuro"
+                },
+                {
+                    "id": "u8_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Wie viele Zimmer hat die Wohnung?",
+                    "correctAnswer": "Quantos quartos tem o apartamento?"
+                }
+            ]
+        }
+    ]
+}

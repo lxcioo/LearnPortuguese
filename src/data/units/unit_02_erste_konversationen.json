@@ -1,0 +1,436 @@
+{
+    "id": "unit_2",
+    "title": "Kapitel 2: Erste Konversationen",
+    "color": "#ce82ff",
+    "levels": [
+        {
+            "id": "u2_l1",
+            "title": "Befinden & Höflichkeit",
+            "exercises": [
+                {
+                    "id": "u2_l1_e1",
+                    "type": "translate_to_pt",
+                    "question": "Wie geht es dir?",
+                    "correctAnswer": "Como estás?",
+                    "alternativeAnswers": [
+                        "Como é que estás"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wie geht es Ihnen? (formell)",
+                    "correctAnswer": "Como está?",
+                    "alternativeAnswers": [
+                        "Como o senhor está",
+                        "Como a senhora está"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "Estou bem, e tu?",
+                    "correctAnswer": "Mir geht es gut und dir",
+                    "alternativeAnswers": [
+                        "Mir geht es gut, und dir?",
+                        "Mir gehts gut und dir"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man formell 'Und Ihnen?'",
+                    "correctAnswer": "E consigo?",
+                    "options": [
+                        "E contigo?",
+                        "E consigo?",
+                        "E tu?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "E consigo"
+                },
+                {
+                    "id": "u2_l1_e5",
+                    "type": "translate_to_de",
+                    "question": "Mais ou menos",
+                    "correctAnswer": "Mehr oder weniger",
+                    "alternativeAnswers": [
+                        "Geht so"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e6",
+                    "type": "translate_to_pt",
+                    "question": "Entschuldigung (um durchzugehen / Aufmerksamkeit)",
+                    "correctAnswer": "Com licença"
+                },
+                {
+                    "id": "u2_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Entschuldigung (für einen Fehler - formell)",
+                    "correctAnswer": "Desculpe"
+                },
+                {
+                    "id": "u2_l1_e8",
+                    "type": "translate_to_pt",
+                    "question": "Entschuldigung (für einen Fehler - informell)",
+                    "correctAnswer": "Desculpa"
+                },
+                {
+                    "id": "u2_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "Sinto muito",
+                    "correctAnswer": "Es tut mir leid"
+                },
+                {
+                    "id": "u2_l1_e10",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Das macht nichts' / 'Kein Problem'?",
+                    "correctAnswer": "Não faz mal",
+                    "options": [
+                        "Sinto muito",
+                        "Tudo bem",
+                        "Não faz mal"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Não faz mal"
+                },
+                {
+                    "id": "u2_l1_e11_m",
+                    "type": "translate_to_de",
+                    "question": "Seja bem-vindo",
+                    "correctAnswer": "Herzlich willkommen",
+                    "gender": "m",
+                    "alternativeAnswers": [
+                        "Willkommen"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e11_f",
+                    "type": "translate_to_de",
+                    "question": "Seja bem-vinda",
+                    "correctAnswer": "Herzlich willkommen",
+                    "gender": "f",
+                    "alternativeAnswers": [
+                        "Willkommen"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e13",
+                    "type": "translate_to_pt",
+                    "question": "Viel Glück",
+                    "correctAnswer": "Boa sorte"
+                },
+                {
+                    "id": "u2_l1_e14",
+                    "type": "translate_to_de",
+                    "question": "Com certeza",
+                    "correctAnswer": "Sicher",
+                    "alternativeAnswers": [
+                        "Natürlich",
+                        "Selbstverständlich"
+                    ]
+                },
+                {
+                    "id": "u2_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Vielleicht",
+                    "correctAnswer": "Talvez"
+                }
+            ]
+        },
+        {
+            "id": "u2_l2",
+            "title": "Wichtige Fragen",
+            "exercises": [
+                {
+                    "id": "u2_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O que é isto?",
+                    "correctAnswer": "Was ist das",
+                    "alternativeAnswers": [
+                        "Was ist das?",
+                        "Was ist dies?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wer ist das?",
+                    "correctAnswer": "Quem é?",
+                    "alternativeAnswers": [
+                        "Quem é isso?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man 'Wo?'",
+                    "correctAnswer": "Onde?",
+                    "options": [
+                        "Quando?",
+                        "Como?",
+                        "Onde?"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Onde"
+                },
+                {
+                    "id": "u2_l2_e4",
+                    "type": "translate_to_de",
+                    "question": "Onde é a casa de banho?",
+                    "correctAnswer": "Wo ist die Toilette",
+                    "alternativeAnswers": [
+                        "Wo ist das Badezimmer?",
+                        "Wo ist das Klo?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Wo befindet sich das Hotel?",
+                    "correctAnswer": "Onde fica o hotel?",
+                    "alternativeAnswers": [
+                        "Onde é o hotel?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e6",
+                    "type": "translate_to_pt",
+                    "question": "Wann?",
+                    "correctAnswer": "Quando?"
+                },
+                {
+                    "id": "u2_l2_e7",
+                    "type": "translate_to_de",
+                    "question": "Porquê?",
+                    "correctAnswer": "Warum",
+                    "alternativeAnswers": [
+                        "Wieso"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e8",
+                    "type": "translate_to_pt",
+                    "question": "Wie viel kostet das?",
+                    "correctAnswer": "Quanto custa?",
+                    "alternativeAnswers": [
+                        "Quanto é?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man 'Was ist das Problem?'",
+                    "correctAnswer": "Qual é o problema?",
+                    "options": [
+                        "Quem é o problema?",
+                        "Qual é o problema?",
+                        "Onde é o problema?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Qual é o problema"
+                },
+                {
+                    "id": "u2_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Bist du sicher?",
+                    "correctAnswer": "Tens a certeza?",
+                    "alternativeAnswers": [
+                        "Tu tens a certeza?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e11",
+                    "type": "translate_to_pt",
+                    "question": "Sind Sie sicher? (formell)",
+                    "correctAnswer": "Tem a certeza?",
+                    "alternativeAnswers": [
+                        "O senhor tem a certeza?",
+                        "A senhora tem a certeza?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e12",
+                    "type": "translate_to_de",
+                    "question": "Posso ajudar?",
+                    "correctAnswer": "Kann ich helfen",
+                    "alternativeAnswers": [
+                        "Darf ich helfen?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e13",
+                    "type": "translate_to_pt",
+                    "question": "Kannst du mir helfen?",
+                    "correctAnswer": "Podes ajudar-me?",
+                    "alternativeAnswers": [
+                        "Podes me ajudar?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Können Sie mir helfen? (formell)",
+                    "correctAnswer": "Pode ajudar-me?",
+                    "alternativeAnswers": [
+                        "Pode me ajudar?"
+                    ]
+                },
+                {
+                    "id": "u2_l2_e15",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Was machst du?'",
+                    "correctAnswer": "O que fazes?",
+                    "options": [
+                        "O que fazes?",
+                        "O que é isso?",
+                        "Quem és?"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "O que fazes"
+                }
+            ]
+        },
+        {
+            "id": "u2_l3",
+            "title": "Sprachen & Verständigung",
+            "exercises": [
+                {
+                    "id": "u2_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Eu não percebo",
+                    "correctAnswer": "Ich verstehe nicht",
+                    "alternativeAnswers": [
+                        "Ich verstehe das nicht",
+                        "Ich kapiere es nicht"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich verstehe (PT-PT)",
+                    "correctAnswer": "Eu percebo",
+                    "alternativeAnswers": [
+                        "Percebo",
+                        "Compreendo",
+                        "Eu compreendo"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e3",
+                    "type": "translate_to_pt",
+                    "question": "Kannst du das bitte wiederholen?",
+                    "correctAnswer": "Podes repetir por favor?",
+                    "alternativeAnswers": [
+                        "Podes repetir, por favor?",
+                        "Podes repetir?"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie bittet man formell um Wiederholung?",
+                    "correctAnswer": "Pode repetir, por favor?",
+                    "options": [
+                        "Podes repetir, por favor?",
+                        "Pode repetir, por favor?",
+                        "Não percebo."
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Pode repetir por favor"
+                },
+                {
+                    "id": "u2_l3_e5",
+                    "type": "translate_to_de",
+                    "question": "Fale mais devagar, por favor",
+                    "correctAnswer": "Sprechen Sie bitte langsamer",
+                    "alternativeAnswers": [
+                        "Sprechen Sie langsamer bitte"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e6",
+                    "type": "translate_to_pt",
+                    "question": "Sprich langsamer",
+                    "correctAnswer": "Fala mais devagar"
+                },
+                {
+                    "id": "u2_l3_e7",
+                    "type": "translate_to_de",
+                    "question": "Não sei",
+                    "correctAnswer": "Ich weiß nicht",
+                    "alternativeAnswers": [
+                        "Ich weiß es nicht"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e8",
+                    "type": "translate_to_pt",
+                    "question": "Wie schreibt man das?",
+                    "correctAnswer": "Como se escreve?"
+                },
+                {
+                    "id": "u2_l3_e9",
+                    "type": "translate_to_de",
+                    "question": "O que significa isto?",
+                    "correctAnswer": "Was bedeutet das",
+                    "alternativeAnswers": [
+                        "Was bedeutet dies?",
+                        "Was heißt das?"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Wie sagt man 'Hallo' auf Portugiesisch?",
+                    "correctAnswer": "Como se diz Olá em português?",
+                    "alternativeAnswers": [
+                        "Como se diz 'Olá' em português?"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e11",
+                    "type": "translate_to_pt",
+                    "question": "Ich spreche ein bisschen Portugiesisch",
+                    "correctAnswer": "Falo um pouco de português",
+                    "alternativeAnswers": [
+                        "Eu falo um pouco de português"
+                    ]
+                },
+                {
+                    "id": "u2_l3_e12",
+                    "type": "translate_to_de",
+                    "question": "Ele fala alemão",
+                    "correctAnswer": "Er spricht Deutsch"
+                },
+                {
+                    "id": "u2_l3_e13",
+                    "type": "translate_to_pt",
+                    "question": "Sie spricht kein Englisch",
+                    "correctAnswer": "Ela não fala inglês"
+                },
+                {
+                    "id": "u2_l3_e14",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Die Sprache'?",
+                    "correctAnswer": "A língua",
+                    "options": [
+                        "A palavra",
+                        "A língua",
+                        "A voz"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A língua",
+                    "optionsLanguage": "pt"
+                },
+                {
+                    "id": "u2_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "A palavra",
+                    "correctAnswer": "Das Wort"
+                }
+            ]
+        }
+    ]
+}

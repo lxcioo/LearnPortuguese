@@ -1,0 +1,379 @@
+{
+    "id": "unit_10",
+    "title": "Kapitel 10: Körper & Gesundheit",
+    "color": "#e84393",
+    "levels": [
+        {
+            "id": "u10_l1",
+            "title": "Die Körperteile",
+            "exercises": [
+                {
+                    "id": "u10_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O corpo",
+                    "correctAnswer": "Der Körper"
+                },
+                {
+                    "id": "u10_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Kopf",
+                    "correctAnswer": "A cabeça"
+                },
+                {
+                    "id": "u10_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "A cara",
+                    "correctAnswer": "Das Gesicht",
+                    "alternativeAnswers": [
+                        "Das Gesicht"
+                    ]
+                },
+                {
+                    "id": "u10_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Os olhos'?",
+                    "correctAnswer": "Die Augen",
+                    "options": [
+                        "Die Ohren",
+                        "Die Augen",
+                        "Die Haare"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Os olhos",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u10_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Ohr",
+                    "correctAnswer": "A orelha"
+                },
+                {
+                    "id": "u10_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O nariz",
+                    "correctAnswer": "Die Nase"
+                },
+                {
+                    "id": "u10_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Mund",
+                    "correctAnswer": "A boca"
+                },
+                {
+                    "id": "u10_l1_e8",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Der Arm'?",
+                    "correctAnswer": "O braço",
+                    "options": [
+                        "A perna",
+                        "O braço",
+                        "As costas"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O braço"
+                },
+                {
+                    "id": "u10_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "A mão",
+                    "correctAnswer": "Die Hand"
+                },
+                {
+                    "id": "u10_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Finger",
+                    "correctAnswer": "O dedo"
+                },
+                {
+                    "id": "u10_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "A perna",
+                    "correctAnswer": "Das Bein"
+                },
+                {
+                    "id": "u10_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Fuß",
+                    "correctAnswer": "O pé"
+                },
+                {
+                    "id": "u10_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "As costas",
+                    "correctAnswer": "Der Rücken"
+                },
+                {
+                    "id": "u10_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Der Bauch",
+                    "correctAnswer": "A barriga"
+                },
+                {
+                    "id": "u10_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Das Herz",
+                    "correctAnswer": "O coração"
+                }
+            ]
+        },
+        {
+            "id": "u10_l2",
+            "title": "Symptome & Beim Arzt",
+            "exercises": [
+                {
+                    "id": "u10_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O médico",
+                    "correctAnswer": "Der Arzt"
+                },
+                {
+                    "id": "u10_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Termin (beim Arzt)",
+                    "correctAnswer": "A consulta",
+                    "alternativeAnswers": [
+                        "A consulta médica"
+                    ]
+                },
+                {
+                    "id": "u10_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "Estou doente",
+                    "correctAnswer": "Ich bin krank"
+                },
+                {
+                    "id": "u10_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Ich habe Schmerzen'?",
+                    "correctAnswer": "Tenho dores",
+                    "options": [
+                        "Tenho fome",
+                        "Tenho dores",
+                        "Estou bem"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Tenho dores"
+                },
+                {
+                    "id": "u10_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ich habe Kopfschmerzen",
+                    "correctAnswer": "Tenho dor de cabeça",
+                    "alternativeAnswers": [
+                        "Tenho dores de cabeça"
+                    ]
+                },
+                {
+                    "id": "u10_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "A febre",
+                    "correctAnswer": "Das Fieber"
+                },
+                {
+                    "id": "u10_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Husten",
+                    "correctAnswer": "A tosse"
+                },
+                {
+                    "id": "u10_l2_e8_m",
+                    "type": "translate_to_de",
+                    "question": "Estou maldisposto",
+                    "correctAnswer": "Mir ist übel",
+                    "gender": "m",
+                    "alternativeAnswers": [
+                        "Mir ist schlecht"
+                    ]
+                },
+                {
+                    "id": "u10_l2_e8_f",
+                    "type": "translate_to_de",
+                    "question": "Estou maldisposta",
+                    "correctAnswer": "Mir ist übel",
+                    "gender": "f",
+                    "alternativeAnswers": [
+                        "Mir ist schlecht"
+                    ]
+                },
+                {
+                    "id": "u10_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Ich brauche einen Arzt",
+                    "correctAnswer": "Preciso de um médico"
+                },
+                {
+                    "id": "u10_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "É urgente",
+                    "correctAnswer": "Es ist dringend"
+                },
+                {
+                    "id": "u10_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Helfen Sie mir! (formell)",
+                    "correctAnswer": "Ajude-me!"
+                },
+                {
+                    "id": "u10_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "A saúde",
+                    "correctAnswer": "Die Gesundheit"
+                },
+                {
+                    "id": "u10_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Atmen",
+                    "correctAnswer": "Respirar"
+                },
+                {
+                    "id": "u10_l2_e15",
+                    "type": "multiple_choice",
+                    "question": "Was sagt man in Portugal für 'Gute Besserung'?",
+                    "correctAnswer": "As melhoras",
+                    "options": [
+                        "Bom dia",
+                        "Boa sorte",
+                        "As melhoras"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "As melhoras"
+                }
+            ]
+        },
+        {
+            "id": "u10_l3",
+            "title": "In der Apotheke",
+            "exercises": [
+                {
+                    "id": "u10_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "A farmácia",
+                    "correctAnswer": "Die Apotheke"
+                },
+                {
+                    "id": "u10_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Medikament",
+                    "correctAnswer": "O medicamento",
+                    "alternativeAnswers": [
+                        "O remédio"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "A receita médica",
+                    "correctAnswer": "Das Rezept",
+                    "alternativeAnswers": [
+                        "Das ärztliche Rezept",
+                        "Die Verschreibung"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O comprimido'?",
+                    "correctAnswer": "Die Tablette",
+                    "options": [
+                        "Die Salbe",
+                        "Die Tablette",
+                        "Das Pflaster"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O comprimido",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u10_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Salbe",
+                    "correctAnswer": "A pomada"
+                },
+                {
+                    "id": "u10_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "O penso rápido",
+                    "correctAnswer": "Das Pflaster"
+                },
+                {
+                    "id": "u10_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Spritze",
+                    "correctAnswer": "A injeção"
+                },
+                {
+                    "id": "u10_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Tem alguma coisa para a tosse?",
+                    "correctAnswer": "Haben Sie etwas gegen Husten",
+                    "alternativeAnswers": [
+                        "Haben Sie etwas gegen den Husten?"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Zweimal am Tag'?",
+                    "correctAnswer": "Duas vezes ao dia",
+                    "options": [
+                        "Uma vez ao dia",
+                        "Duas vezes ao dia",
+                        "Três vezes ao dia"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Duas vezes ao dia"
+                },
+                {
+                    "id": "u10_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Vor dem Essen",
+                    "correctAnswer": "Antes de comer",
+                    "alternativeAnswers": [
+                        "Antes da refeição"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Depois de comer",
+                    "correctAnswer": "Nach dem Essen",
+                    "alternativeAnswers": [
+                        "Nach der Mahlzeit"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Ich habe eine Allergie",
+                    "correctAnswer": "Tenho uma alergia",
+                    "alternativeAnswers": [
+                        "Eu tenho uma alergia"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "As gotas",
+                    "correctAnswer": "Die Tropfen"
+                },
+                {
+                    "id": "u10_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Schmerztablette",
+                    "correctAnswer": "Analgésico",
+                    "alternativeAnswers": [
+                        "O analgésico",
+                        "Comprimido para a dor"
+                    ]
+                },
+                {
+                    "id": "u10_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Vorsicht (Seien Sie vorsichtig)",
+                    "correctAnswer": "Tenha cuidado"
+                }
+            ]
+        }
+    ]
+}

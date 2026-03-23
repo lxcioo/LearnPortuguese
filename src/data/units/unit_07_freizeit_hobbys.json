@@ -1,0 +1,390 @@
+{
+    "id": "unit_7",
+    "title": "Kapitel 7: Freizeit & Hobbys",
+    "color": "#e74c3c",
+    "levels": [
+        {
+            "id": "u7_l1",
+            "title": "Sport & Aktivitäten",
+            "exercises": [
+                {
+                    "id": "u7_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O tempo livre",
+                    "correctAnswer": "Die Freizeit"
+                },
+                {
+                    "id": "u7_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Was machst du in deiner Freizeit?",
+                    "correctAnswer": "O que fazes nos teus tempos livres?",
+                    "alternativeAnswers": [
+                        "O que fazes no teu tempo livre?"
+                    ]
+                },
+                {
+                    "id": "u7_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O passatempo",
+                    "correctAnswer": "Das Hobby"
+                },
+                {
+                    "id": "u7_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Sport treiben / machen' (PT-PT)?",
+                    "correctAnswer": "Fazer desporto",
+                    "options": [
+                        "Fazer desporto",
+                        "Fazer esporte",
+                        "Jogar desporto"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Fazer desporto"
+                },
+                {
+                    "id": "u7_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ich spiele Fußball",
+                    "correctAnswer": "Jogo futebol",
+                    "alternativeAnswers": [
+                        "Eu jogo futebol"
+                    ]
+                },
+                {
+                    "id": "u7_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "Nadar",
+                    "correctAnswer": "Schwimmen"
+                },
+                {
+                    "id": "u7_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Laufen (Rennen)",
+                    "correctAnswer": "Correr"
+                },
+                {
+                    "id": "u7_l1_e8",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Andar de bicicleta'?",
+                    "correctAnswer": "Fahrrad fahren",
+                    "options": [
+                        "Auto fahren",
+                        "Fahrrad fahren",
+                        "Motorrad fahren"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Andar de bicicleta",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u7_l1_e9",
+                    "type": "translate_to_de",
+                    "question": "Passear",
+                    "correctAnswer": "Spazieren gehen",
+                    "alternativeAnswers": [
+                        "Spazieren"
+                    ]
+                },
+                {
+                    "id": "u7_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Ins Fitnessstudio gehen",
+                    "correctAnswer": "Ir ao ginásio"
+                },
+                {
+                    "id": "u7_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "Fazer caminhadas",
+                    "correctAnswer": "Wandern",
+                    "alternativeAnswers": [
+                        "Wandern gehen"
+                    ]
+                },
+                {
+                    "id": "u7_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Tennis spielen",
+                    "correctAnswer": "Jogar ténis"
+                },
+                {
+                    "id": "u7_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "Dançar",
+                    "correctAnswer": "Tanzen"
+                },
+                {
+                    "id": "u7_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich mag das Meer",
+                    "correctAnswer": "Gosto do mar",
+                    "alternativeAnswers": [
+                        "Eu gosto do mar"
+                    ]
+                },
+                {
+                    "id": "u7_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Kochen",
+                    "correctAnswer": "Cozinhar"
+                }
+            ]
+        },
+        {
+            "id": "u7_l2",
+            "title": "Musik, Kino & Bücher",
+            "exercises": [
+                {
+                    "id": "u7_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "Ouvir música",
+                    "correctAnswer": "Musik hören"
+                },
+                {
+                    "id": "u7_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Lesen",
+                    "correctAnswer": "Ler"
+                },
+                {
+                    "id": "u7_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "O livro",
+                    "correctAnswer": "Das Buch"
+                },
+                {
+                    "id": "u7_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Ins Kino gehen'?",
+                    "correctAnswer": "Ir ao cinema",
+                    "options": [
+                        "Ir ao teatro",
+                        "Ir à escola",
+                        "Ir ao cinema"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Ir ao cinema"
+                },
+                {
+                    "id": "u7_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Einen Film schauen",
+                    "correctAnswer": "Ver um filme"
+                },
+                {
+                    "id": "u7_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O concerto",
+                    "correctAnswer": "Das Konzert"
+                },
+                {
+                    "id": "u7_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Singen",
+                    "correctAnswer": "Cantar"
+                },
+                {
+                    "id": "u7_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Escrever",
+                    "correctAnswer": "Schreiben"
+                },
+                {
+                    "id": "u7_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O jornal'?",
+                    "correctAnswer": "Die Zeitung",
+                    "options": [
+                        "Die Zeitschrift",
+                        "Die Zeitung",
+                        "Das Buch"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O jornal",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u7_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Zeitschrift",
+                    "correctAnswer": "A revista"
+                },
+                {
+                    "id": "u7_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Tocas algum instrumento?",
+                    "correctAnswer": "Spielst du ein Instrument",
+                    "alternativeAnswers": [
+                        "Spielst du ein Instrument?"
+                    ]
+                },
+                {
+                    "id": "u7_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Ich spiele Gitarre",
+                    "correctAnswer": "Toco guitarra",
+                    "alternativeAnswers": [
+                        "Eu toco guitarra"
+                    ]
+                },
+                {
+                    "id": "u7_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "A fotografia",
+                    "correctAnswer": "Die Fotografie",
+                    "alternativeAnswers": [
+                        "Das Foto"
+                    ]
+                },
+                {
+                    "id": "u7_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Fotos machen",
+                    "correctAnswer": "Tirar fotografias",
+                    "alternativeAnswers": [
+                        "Tirar fotos"
+                    ]
+                },
+                {
+                    "id": "u7_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "O teatro",
+                    "correctAnswer": "Das Theater"
+                }
+            ]
+        },
+        {
+            "id": "u7_l3",
+            "title": "Verabredungen treffen",
+            "exercises": [
+                {
+                    "id": "u7_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Estar com amigos",
+                    "correctAnswer": "Mit Freunden zusammen sein",
+                    "alternativeAnswers": [
+                        "Sich mit Freunden treffen"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Gehen wir aus?",
+                    "correctAnswer": "Vamos sair?"
+                },
+                {
+                    "id": "u7_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Estás livre hoje à noite?",
+                    "correctAnswer": "Hast du heute Abend Zeit",
+                    "alternativeAnswers": [
+                        "Bist du heute Abend frei?",
+                        "Hast du heute Abend Zeit?"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Wollen wir einen Kaffee trinken gehen?'?",
+                    "correctAnswer": "Vamos beber um café?",
+                    "options": [
+                        "Vamos beber um café?",
+                        "Queres comer?",
+                        "Onde fica o café?"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Vamos beber um café"
+                },
+                {
+                    "id": "u7_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Wann treffen wir uns?",
+                    "correctAnswer": "A que horas nos encontramos?"
+                },
+                {
+                    "id": "u7_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Onde nos encontramos?",
+                    "correctAnswer": "Wo treffen wir uns",
+                    "alternativeAnswers": [
+                        "Wo treffen wir uns?"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Kommst du mit?",
+                    "correctAnswer": "Vens comigo?",
+                    "alternativeAnswers": [
+                        "Vens connosco?"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Infelizmente não posso",
+                    "correctAnswer": "Leider kann ich nicht"
+                },
+                {
+                    "id": "u7_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Ich habe keine Zeit'?",
+                    "correctAnswer": "Não tenho tempo",
+                    "options": [
+                        "Não tenho tempo",
+                        "Não sei",
+                        "Não quero"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Não tenho tempo"
+                },
+                {
+                    "id": "u7_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Vielleicht morgen?",
+                    "correctAnswer": "Talvez amanhã?"
+                },
+                {
+                    "id": "u7_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "É uma boa ideia",
+                    "correctAnswer": "Das ist eine gute Idee"
+                },
+                {
+                    "id": "u7_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Ich lade dich ein",
+                    "correctAnswer": "Eu convido-te",
+                    "alternativeAnswers": [
+                        "Convido-te"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Combinado!",
+                    "correctAnswer": "Abgemacht",
+                    "alternativeAnswers": [
+                        "Abgemacht!",
+                        "Vereinbart",
+                        "Alles klar"
+                    ]
+                },
+                {
+                    "id": "u7_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Bis später!",
+                    "correctAnswer": "Até logo!"
+                },
+                {
+                    "id": "u7_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Bis dann!",
+                    "correctAnswer": "Até lá!",
+                    "alternativeAnswers": [
+                        "Até depois!"
+                    ]
+                }
+            ]
+        }
+    ]
+}

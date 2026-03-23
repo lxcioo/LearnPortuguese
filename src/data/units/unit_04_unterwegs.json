@@ -1,0 +1,393 @@
+{
+    "id": "unit_4",
+    "title": "Kapitel 4: Unterwegs in der Stadt",
+    "color": "#ffb347",
+    "levels": [
+        {
+            "id": "u4_l1",
+            "title": "Verkehrsmittel & Tickets",
+            "exercises": [
+                {
+                    "id": "u4_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O comboio",
+                    "correctAnswer": "Der Zug"
+                },
+                {
+                    "id": "u4_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Bus",
+                    "correctAnswer": "O autocarro"
+                },
+                {
+                    "id": "u4_l1_e3",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O elétrico' (sehr typisch für Lissabon)?",
+                    "correctAnswer": "Die Straßenbahn",
+                    "options": [
+                        "Die U-Bahn",
+                        "Die Straßenbahn",
+                        "Das Auto"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O elétrico",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u4_l1_e4",
+                    "type": "translate_to_de",
+                    "question": "O metro",
+                    "correctAnswer": "Die U-Bahn"
+                },
+                {
+                    "id": "u4_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Ticket",
+                    "correctAnswer": "O bilhete",
+                    "alternativeAnswers": [
+                        "A passagem"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A paragem",
+                    "correctAnswer": "Die Haltestelle",
+                    "alternativeAnswers": [
+                        "Die Bushaltestelle"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Bahnhof",
+                    "correctAnswer": "A estação",
+                    "alternativeAnswers": [
+                        "A estação de comboios"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e8",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Entwerten' (z.B. ein Ticket)?",
+                    "correctAnswer": "Validar",
+                    "options": [
+                        "Comprar",
+                        "Validar",
+                        "Viajar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Validar"
+                },
+                {
+                    "id": "u4_l1_e9",
+                    "type": "translate_to_pt",
+                    "question": "Ein Ticket nach Lissabon, bitte.",
+                    "correctAnswer": "Um bilhete para Lisboa, por favor.",
+                    "alternativeAnswers": [
+                        "Um bilhete para Lisboa por favor"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e10",
+                    "type": "translate_to_de",
+                    "question": "O aeroporto",
+                    "correctAnswer": "Der Flughafen"
+                },
+                {
+                    "id": "u4_l1_e11",
+                    "type": "translate_to_pt",
+                    "question": "Das Flugzeug",
+                    "correctAnswer": "O avião"
+                },
+                {
+                    "id": "u4_l1_e12",
+                    "type": "translate_to_de",
+                    "question": "A partida",
+                    "correctAnswer": "Die Abfahrt",
+                    "alternativeAnswers": [
+                        "Der Abflug"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A chegada",
+                    "correctAnswer": "Die Ankunft"
+                },
+                {
+                    "id": "u4_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Wo kaufe ich Tickets?",
+                    "correctAnswer": "Onde compro bilhetes?",
+                    "alternativeAnswers": [
+                        "Onde é que compro bilhetes"
+                    ]
+                },
+                {
+                    "id": "u4_l1_e15",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Ein Auto mieten'?",
+                    "correctAnswer": "Alugar um carro",
+                    "options": [
+                        "Comprar um carro",
+                        "Alugar um carro",
+                        "Lavar um carro"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Alugar um carro"
+                }
+            ]
+        },
+        {
+            "id": "u4_l2",
+            "title": "Orte in der Stadt",
+            "exercises": [
+                {
+                    "id": "u4_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A cidade",
+                    "correctAnswer": "Die Stadt"
+                },
+                {
+                    "id": "u4_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Zentrum",
+                    "correctAnswer": "O centro",
+                    "alternativeAnswers": [
+                        "O centro da cidade"
+                    ]
+                },
+                {
+                    "id": "u4_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "A rua",
+                    "correctAnswer": "Die Straße"
+                },
+                {
+                    "id": "u4_l2_e4",
+                    "type": "translate_to_pt",
+                    "question": "Der Platz",
+                    "correctAnswer": "A praça"
+                },
+                {
+                    "id": "u4_l2_e5",
+                    "type": "multiple_choice",
+                    "question": "Wähle 'Die Brücke'",
+                    "correctAnswer": "A ponte",
+                    "options": [
+                        "A ponte",
+                        "A porta",
+                        "O parque"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "A ponte"
+                },
+                {
+                    "id": "u4_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O museu",
+                    "correctAnswer": "Das Museum"
+                },
+                {
+                    "id": "u4_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Kirche",
+                    "correctAnswer": "A igreja"
+                },
+                {
+                    "id": "u4_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "O banco",
+                    "correctAnswer": "Die Bank"
+                },
+                {
+                    "id": "u4_l2_e9",
+                    "type": "translate_to_pt",
+                    "question": "Die Post",
+                    "correctAnswer": "Os correios",
+                    "alternativeAnswers": [
+                        "O correio"
+                    ]
+                },
+                {
+                    "id": "u4_l2_e10",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'A loja'?",
+                    "correctAnswer": "Das Geschäft",
+                    "options": [
+                        "Das Krankenhaus",
+                        "Das Geschäft",
+                        "Das Hotel"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A loja",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u4_l2_e11",
+                    "type": "translate_to_pt",
+                    "question": "Das Krankenhaus",
+                    "correctAnswer": "O hospital"
+                },
+                {
+                    "id": "u4_l2_e12",
+                    "type": "translate_to_de",
+                    "question": "A farmácia",
+                    "correctAnswer": "Die Apotheke"
+                },
+                {
+                    "id": "u4_l2_e13",
+                    "type": "translate_to_pt",
+                    "question": "Die Bäckerei",
+                    "correctAnswer": "A padaria"
+                },
+                {
+                    "id": "u4_l2_e14",
+                    "type": "translate_to_de",
+                    "question": "O mercado",
+                    "correctAnswer": "Der Markt"
+                },
+                {
+                    "id": "u4_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Der Strand",
+                    "correctAnswer": "A praia"
+                }
+            ]
+        },
+        {
+            "id": "u4_l3",
+            "title": "Wegbeschreibungen",
+            "exercises": [
+                {
+                    "id": "u4_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Com licença, onde fica o museu?",
+                    "correctAnswer": "Entschuldigung wo ist das Museum",
+                    "alternativeAnswers": [
+                        "Entschuldigung, wo befindet sich das Museum?"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Geradeaus",
+                    "correctAnswer": "Sempre em frente",
+                    "alternativeAnswers": [
+                        "Em frente"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Biegen Sie rechts ab' (formell)?",
+                    "correctAnswer": "Vire à direita",
+                    "options": [
+                        "Vire à esquerda",
+                        "Vire à direita",
+                        "Sempre em frente"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Vire à direita"
+                },
+                {
+                    "id": "u4_l3_e4",
+                    "type": "translate_to_de",
+                    "question": "Vire à esquerda",
+                    "correctAnswer": "Biegen Sie links ab",
+                    "alternativeAnswers": [
+                        "Nach links abbiegen"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ist es weit?",
+                    "correctAnswer": "É longe?"
+                },
+                {
+                    "id": "u4_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Não, é muito perto.",
+                    "correctAnswer": "Nein es ist sehr nah",
+                    "alternativeAnswers": [
+                        "Nein, es ist ganz in der Nähe"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Hier",
+                    "correctAnswer": "Aqui",
+                    "alternativeAnswers": [
+                        "Cá"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Ali",
+                    "correctAnswer": "Dort"
+                },
+                {
+                    "id": "u4_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Am Ende der Straße'?",
+                    "correctAnswer": "No fim da rua",
+                    "options": [
+                        "No fim da rua",
+                        "Ao lado da rua",
+                        "Atravessar a rua"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "No fim da rua"
+                },
+                {
+                    "id": "u4_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Straße überqueren",
+                    "correctAnswer": "Atravessar a rua"
+                },
+                {
+                    "id": "u4_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Ao lado do banco",
+                    "correctAnswer": "Neben der Bank"
+                },
+                {
+                    "id": "u4_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Die Karte (Stadtplan)",
+                    "correctAnswer": "O mapa"
+                },
+                {
+                    "id": "u4_l3_e13_m",
+                    "type": "translate_to_de",
+                    "question": "Estou perdido",
+                    "correctAnswer": "Ich habe mich verlaufen",
+                    "gender": "m",
+                    "alternativeAnswers": [
+                        "Ich bin verloren"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e13_f",
+                    "type": "translate_to_de",
+                    "question": "Estou perdida",
+                    "correctAnswer": "Ich habe mich verlaufen",
+                    "gender": "f",
+                    "alternativeAnswers": [
+                        "Ich bin verloren"
+                    ]
+                },
+                {
+                    "id": "u4_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Die Ecke",
+                    "correctAnswer": "A esquina"
+                }
+            ]
+        }
+    ]
+}

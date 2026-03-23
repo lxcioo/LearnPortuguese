@@ -1,0 +1,423 @@
+{
+    "id": "unit_3",
+    "title": "Kapitel 3: Essen & Trinken",
+    "color": "#4b9ce2",
+    "levels": [
+        {
+            "id": "u3_l1",
+            "title": "Frühstück & Im Café",
+            "exercises": [
+                {
+                    "id": "u3_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O pequeno-almoço",
+                    "correctAnswer": "Das Frühstück"
+                },
+                {
+                    "id": "u3_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich möchte einen Kaffee (Espresso)",
+                    "correctAnswer": "Queria um café",
+                    "alternativeAnswers": [
+                        "Queria uma bica",
+                        "Eu queria um café"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e3",
+                    "type": "multiple_choice",
+                    "question": "Was ist ein 'Galão'?",
+                    "correctAnswer": "Ein Milchkaffee (im Glas)",
+                    "options": [
+                        "Ein schwarzer Tee",
+                        "Ein Milchkaffee (im Glas)",
+                        "Ein Orangensaft"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Um galão",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u3_l1_e4",
+                    "type": "translate_to_pt",
+                    "question": "Ein Milchkaffee (in der Tasse)",
+                    "correctAnswer": "Uma meia de leite"
+                },
+                {
+                    "id": "u3_l1_e5",
+                    "type": "translate_to_de",
+                    "question": "O pão com manteiga",
+                    "correctAnswer": "Das Brot mit Butter",
+                    "alternativeAnswers": [
+                        "Brot mit Butter"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e6",
+                    "type": "translate_to_pt",
+                    "question": "Käse und Schinken",
+                    "correctAnswer": "Queijo e fiambre",
+                    "alternativeAnswers": [
+                        "O queijo e o fiambre"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e7",
+                    "type": "translate_to_de",
+                    "question": "A torrada",
+                    "correctAnswer": "Der Toast",
+                    "alternativeAnswers": [
+                        "Das Toastbrot"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e8",
+                    "type": "translate_to_pt",
+                    "question": "Das Puddingtörtchen",
+                    "correctAnswer": "O pastel de nata",
+                    "alternativeAnswers": [
+                        "Pastel de nata"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie bestellt man höflich 'Ich hätte gerne / Ich möchte'?",
+                    "correctAnswer": "Queria...",
+                    "options": [
+                        "Falo...",
+                        "Queria...",
+                        "Tenho..."
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Queria"
+                },
+                {
+                    "id": "u3_l1_e10",
+                    "type": "translate_to_de",
+                    "question": "Com açúcar ou sem açúcar?",
+                    "correctAnswer": "Mit Zucker oder ohne Zucker",
+                    "alternativeAnswers": [
+                        "Mit Zucker oder ohne Zucker?"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e11",
+                    "type": "translate_to_pt",
+                    "question": "Der Orangensaft",
+                    "correctAnswer": "O sumo de laranja",
+                    "alternativeAnswers": [
+                        "Sumo de laranja"
+                    ]
+                },
+                {
+                    "id": "u3_l1_e12",
+                    "type": "translate_to_de",
+                    "question": "Um chá preto",
+                    "correctAnswer": "Ein schwarzer Tee"
+                },
+                {
+                    "id": "u3_l1_e13",
+                    "type": "translate_to_pt",
+                    "question": "Ein Glas Wasser",
+                    "correctAnswer": "Um copo de água"
+                },
+                {
+                    "id": "u3_l1_e14",
+                    "type": "multiple_choice",
+                    "question": "Was sagt der Kellner oft? 'Mais alguma coisa?'",
+                    "correctAnswer": "Noch etwas?",
+                    "options": [
+                        "Noch etwas?",
+                        "Wie viel kostet das?",
+                        "Guten Appetit"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Mais alguma coisa",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u3_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Nein, danke. Das ist alles.",
+                    "correctAnswer": "Não obrigado, é tudo.",
+                    "alternativeAnswers": [
+                        "Não obrigada, é tudo.",
+                        "Não, é tudo."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u3_l2",
+            "title": "Lebensmittel & Supermarkt",
+            "exercises": [
+                {
+                    "id": "u3_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O supermercado",
+                    "correctAnswer": "Der Supermarkt"
+                },
+                {
+                    "id": "u3_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Obst und das Gemüse",
+                    "correctAnswer": "A fruta e os legumes",
+                    "alternativeAnswers": [
+                        "As frutas e os legumes"
+                    ]
+                },
+                {
+                    "id": "u3_l2_e3",
+                    "type": "multiple_choice",
+                    "question": "Wähle 'Der Apfel'",
+                    "correctAnswer": "A maçã",
+                    "options": [
+                        "A maçã",
+                        "A banana",
+                        "A pera"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "A maçã"
+                },
+                {
+                    "id": "u3_l2_e4",
+                    "type": "translate_to_de",
+                    "question": "O tomate e a batata",
+                    "correctAnswer": "Die Tomate und die Kartoffel",
+                    "alternativeAnswers": [
+                        "Tomate und Kartoffel"
+                    ]
+                },
+                {
+                    "id": "u3_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Milch",
+                    "correctAnswer": "O leite"
+                },
+                {
+                    "id": "u3_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Os ovos",
+                    "correctAnswer": "Die Eier"
+                },
+                {
+                    "id": "u3_l2_e7",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O peixe'?",
+                    "correctAnswer": "Der Fisch",
+                    "options": [
+                        "Das Fleisch",
+                        "Der Fisch",
+                        "Das Brot"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O peixe",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u3_l2_e8",
+                    "type": "translate_to_pt",
+                    "question": "Das Fleisch",
+                    "correctAnswer": "A carne"
+                },
+                {
+                    "id": "u3_l2_e9",
+                    "type": "translate_to_de",
+                    "question": "O frango",
+                    "correctAnswer": "Das Hähnchen",
+                    "alternativeAnswers": [
+                        "Das Huhn"
+                    ]
+                },
+                {
+                    "id": "u3_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Reis",
+                    "correctAnswer": "O arroz"
+                },
+                {
+                    "id": "u3_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "A massa",
+                    "correctAnswer": "Die Nudeln",
+                    "alternativeAnswers": [
+                        "Die Pasta"
+                    ]
+                },
+                {
+                    "id": "u3_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Das Olivenöl",
+                    "correctAnswer": "O azeite"
+                },
+                {
+                    "id": "u3_l2_e13",
+                    "type": "multiple_choice",
+                    "question": "Wähle 'Die Plastiktüte'",
+                    "correctAnswer": "O saco de plástico",
+                    "options": [
+                        "O carro",
+                        "O saco de plástico",
+                        "A garrafa"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O saco de plástico"
+                },
+                {
+                    "id": "u3_l2_e14",
+                    "type": "translate_to_de",
+                    "question": "Pagar em dinheiro",
+                    "correctAnswer": "Bar bezahlen",
+                    "alternativeAnswers": [
+                        "Bar zahlen",
+                        "Mit Bargeld bezahlen"
+                    ]
+                },
+                {
+                    "id": "u3_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Mit Karte bezahlen",
+                    "correctAnswer": "Pagar com cartão",
+                    "alternativeAnswers": [
+                        "Pagar com multibanco"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u3_l3",
+            "title": "Im Restaurant bestellen & bezahlen",
+            "exercises": [
+                {
+                    "id": "u3_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "O restaurante",
+                    "correctAnswer": "Das Restaurant"
+                },
+                {
+                    "id": "u3_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Einen Tisch für zwei Personen, bitte.",
+                    "correctAnswer": "Uma mesa para duas pessoas, por favor.",
+                    "alternativeAnswers": [
+                        "Uma mesa para dois por favor"
+                    ]
+                },
+                {
+                    "id": "u3_l3_e3",
+                    "type": "multiple_choice",
+                    "question": "Wie heißt 'Die Speisekarte' in Portugal?",
+                    "correctAnswer": "A ementa",
+                    "options": [
+                        "A conta",
+                        "O prato",
+                        "A ementa"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "A ementa"
+                },
+                {
+                    "id": "u3_l3_e4",
+                    "type": "translate_to_de",
+                    "question": "O prato do dia",
+                    "correctAnswer": "Das Tagesgericht"
+                },
+                {
+                    "id": "u3_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Vorspeise",
+                    "correctAnswer": "A entrada"
+                },
+                {
+                    "id": "u3_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "O prato principal",
+                    "correctAnswer": "Das Hauptgericht"
+                },
+                {
+                    "id": "u3_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Nachtisch (Das Dessert)",
+                    "correctAnswer": "A sobremesa"
+                },
+                {
+                    "id": "u3_l3_e8",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt man: 'Was empfehlen Sie?'",
+                    "correctAnswer": "O que recomenda?",
+                    "options": [
+                        "O que é isto?",
+                        "O que recomenda?",
+                        "Onde fica?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O que recomenda"
+                },
+                {
+                    "id": "u3_l3_e9",
+                    "type": "translate_to_de",
+                    "question": "E para beber?",
+                    "correctAnswer": "Und zum Trinken",
+                    "alternativeAnswers": [
+                        "Und zu trinken?",
+                        "Und zum Trinken?"
+                    ]
+                },
+                {
+                    "id": "u3_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Eine Flasche Rotwein",
+                    "correctAnswer": "Uma garrafa de vinho tinto",
+                    "alternativeAnswers": [
+                        "Garrafa de vinho tinto"
+                    ]
+                },
+                {
+                    "id": "u3_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Vinho branco",
+                    "correctAnswer": "Weißwein",
+                    "alternativeAnswers": [
+                        "Weißer Wein"
+                    ]
+                },
+                {
+                    "id": "u3_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Wasser mit Kohlensäure",
+                    "correctAnswer": "Água com gás"
+                },
+                {
+                    "id": "u3_l3_e13",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Bem passado'?",
+                    "correctAnswer": "Gut durchgebraten (Fleisch)",
+                    "options": [
+                        "Blutig (Fleisch)",
+                        "Gut durchgebraten (Fleisch)",
+                        "Roh (Fleisch)"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Bem passado",
+                    "optionsLanguage": "de"
+                },
+                {
+                    "id": "u3_l3_e14",
+                    "type": "translate_to_de",
+                    "question": "Estava delicioso",
+                    "correctAnswer": "Es war lecker",
+                    "alternativeAnswers": [
+                        "Es war köstlich"
+                    ]
+                },
+                {
+                    "id": "u3_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Die Rechnung, bitte.",
+                    "correctAnswer": "A conta, por favor."
+                }
+            ]
+        }
+    ]
+}
