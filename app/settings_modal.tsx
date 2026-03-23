@@ -32,13 +32,8 @@ export default function SettingsModal() {
     if (!feedback.trim()) return;
     try {
         // Hier kommt später dein Webhook Link rein!
-        const webhookUrl = "DEIN_DISCORD_WEBHOOK_URL_HIER"; 
+        const webhookUrl = "https://discord.com/api/webhooks/1485684433297346781/4EDBqfF4uwY4PA0A6Ah2oqgLMK3_Z-Z9UZ07OcF5FQD7tWxLdJu2_N5dqybM1AJg--SW"; 
         
-        if (webhookUrl === "DEIN_DISCORD_WEBHOOK_URL_HIER") {
-            Alert.alert("Bereit!", "Feedback System ist vorbereitet. Füge später einfach die Discord-Webhook-URL in den Code ein!");
-            return;
-        }
-
         // Metadaten sammeln
         const osName = Platform.OS === 'ios' ? '🍏 iOS' : Platform.OS === 'android' ? '🤖 Android' : '💻 Web/Andere';
         const senderName = name.trim() ? name.trim() : "Unbekannt (Gast)";
