@@ -3,7 +3,6 @@ import { useTheme } from '@/src/context/ThemeContext';
 import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
 import { Alert, Platform, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,18 +26,14 @@ export default function SettingsModal() {
     }
   };
 
-  // NEU: Die angepasste Feedback-Funktion mit Geräte-Infos
   const submitFeedback = async () => {
     if (!feedback.trim()) return;
     try {
-        // Hier kommt später dein Webhook Link rein!
         const webhookUrl = "https://discord.com/api/webhooks/1485684433297346781/4EDBqfF4uwY4PA0A6Ah2oqgLMK3_Z-Z9UZ07OcF5FQD7tWxLdJu2_N5dqybM1AJg--SW"; 
         
-        // Metadaten sammeln
         const osName = Platform.OS === 'ios' ? '🍏 iOS' : Platform.OS === 'android' ? '🤖 Android' : '💻 Web/Andere';
         const senderName = name.trim() ? name.trim() : "Unbekannt (Gast)";
 
-        // Nachricht für Discord schön formatieren
         const discordMessage = `**💡 Neues Feedback**\n**Von:** ${senderName}\n**Gerät:** ${osName}\n\n**Nachricht:**\n> ${feedback}`;
 
         await fetch(webhookUrl, {
@@ -48,7 +43,7 @@ export default function SettingsModal() {
         });
         
         Alert.alert("Danke!", "Dein Feedback wurde erfolgreich gesendet.");
-        setFeedback(''); // Textfeld nach Erfolg leeren
+        setFeedback(''); 
     } catch (e) {
         Alert.alert("Fehler", "Senden fehlgeschlagen. Bitte überprüfe deine Internetverbindung.");
     }
@@ -61,23 +56,6 @@ export default function SettingsModal() {
     } catch (e) {
       console.error(e);
     }
-  };
-
-  const testNotification = async () => {
-    Alert.alert("Achtung", "Schließe die App (oder lege sie in den Hintergrund). Die Benachrichtigung kommt in 5 Sekunden!");
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Test erfolgreich! 🎉",
-        body: "Android Benachrichtigungen funktionieren jetzt einwandfrei.",
-        sound: true,
-      },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds: 5,
-        repeats: false,
-        channelId: 'daily-reminder', // iOS ignoriert das automatisch, kein Platform.OS Check nötig
-      },
-    });
   };
 
   const resetProgress = () => {
@@ -183,19 +161,6 @@ export default function SettingsModal() {
 
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>DATEN</Text>
-
-          <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: currentColors.icon }]}>ENTWICKLER-TOOLS</Text>
-          <TouchableOpacity 
-            style={[styles.row, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]} 
-            onPress={testNotification}
-          >
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-                <Ionicons name="notifications-outline" size={22} color="#58cc02" />
-                <Text style={[styles.rowText, { color: currentColors.text }]}>Sende Test-Benachrichtigung (5s)</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
           
           <TouchableOpacity 
             style={[styles.row, { backgroundColor: isDarkMode ? '#222' : '#f9f9f9' }]} 
