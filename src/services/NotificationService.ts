@@ -35,7 +35,7 @@ export const NotificationService = {
     const { status } = await Notifications.getPermissionsAsync();
     if (status !== 'granted') return;
 
-    // 1. Alle alten Benachrichtigungen löschen
+    // 1. Alle alten Benachrichtigungen löschen (Rettet uns vor dem Spam!)
     await Notifications.cancelAllScheduledNotificationsAsync();
 
     const now = new Date();
@@ -58,9 +58,11 @@ export const NotificationService = {
             sound: true,
           },
           trigger: {
+            // NEU: Diese Zeile zwingt Expo dazu, auf das Datum zu warten!
+            type: Notifications.SchedulableTriggerInputTypes.DATE, 
             date: d18,
-            channelId: 'daily-reminder', // Für Android wichtig, iOS ignoriert es
-          } as any, // "as any" verhindert lästige TypeScript-Fehler bei Expo
+            ...(Platform.OS === 'android' ? { channelId: 'daily-reminder' } : {}),
+          },
         });
       }
 
@@ -77,9 +79,11 @@ export const NotificationService = {
             sound: true,
           },
           trigger: {
+            // NEU: Diese Zeile zwingt Expo dazu, auf das Datum zu warten!
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
             date: d22,
-            channelId: 'daily-reminder',
-          } as any,
+            ...(Platform.OS === 'android' ? { channelId: 'daily-reminder' } : {}),
+          },
         });
       }
     }
