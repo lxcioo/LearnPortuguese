@@ -40,7 +40,7 @@ jobs:
           # Lädt den aktuellsten Cache aus vorherigen Läufen herunter
           restore-keys: |
             audio-cache-
-      # -----------------------------------------
+      # ------------------------------------------
 
       - name: Generate Audio Files
         run: node scripts/generateAudio.js
