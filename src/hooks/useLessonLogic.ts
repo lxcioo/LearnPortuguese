@@ -9,13 +9,35 @@ import { Course, Exercise, Unit } from '../types/index';
 
 const courseData = content.courses[0] as Course;
 
-const normalizeText = (str: string) => {
+const normalizeText = (str: string, removeArticle: boolean = false) => {
   if (!str) return "";
-  return str.normalize("NFD")
+  
+  // Erstmal in Kleinbuchstaben umwandeln und Leerzeichen am Rand entfernen
+  let lowerStr = str.toLowerCase().trim();
+
+  // Wenn gewünscht, Artikel am Anfang des Strings abschneiden
+  if (removeArticle) {
+    const articles = [
+      // Portugiesische Artikel
+      "o ", "a ", "os ", "as ", "um ", "uma ", "uns ", "umas ",
+      // Deutsche Artikel
+      "der ", "die ", "das ", "ein ", "eine ", "einen ", "einem ", "einer "
+    ];
+    
+    for (const article of articles) {
+      if (lowerStr.startsWith(article)) {
+        // Schneidet den Artikel ab und entfernt übrige Leerzeichen
+        lowerStr = lowerStr.substring(article.length).trim();
+        break; // Sobald ein Artikel gefunden und entfernt wurde, Schleife beenden
+      }
+    }
+  }
+
+  // Danach der normale "Aufräum"-Prozess (Akzente, Satzzeichen und Leerzeichen entfernen)
+  return lowerStr.normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
-    .replace(/\s+/g, "")
-    .toLowerCase();
+    .replace(/\s+/g, "");
 };
 
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null, practiceMode?: string) => {
@@ -85,10 +107,23 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     let correct = false;
     
     if (currentExercise.type.includes('translate')) {
+      // 1. Versuch: Strikter Check (inklusive Artikel)
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
       const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
-      if (inputNorm === answerNorm || isAlt) correct = true;
+      
+      if (inputNorm === answerNorm || isAlt) {
+        correct = true;
+      } else {
+        // 2. Versuch: Weicher Check (Artikel ignorieren)
+        const inputSoft = normalizeText(userInput, true);
+        const answerSoft = normalizeText(currentExercise.correctAnswer, true);
+        const isAltSoft = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt, true) === inputSoft);
+        
+        if (inputSoft === answerSoft || isAltSoft) {
+          correct = true;
+        }
+      }
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
     }
