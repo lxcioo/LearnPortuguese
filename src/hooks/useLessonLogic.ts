@@ -137,8 +137,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         // Spielt die hochwertige Audiodatei ab
         playAudio(currentExercise.id);
         
-        StorageService.updateStreak();
-        
+        if (isPractice) {
+          StorageService.updateStreak();
+        }
+
         if (isPractice && practiceMode === 'random') {
              StorageService.trackResult(currentExercise, true, 'practice_random');
         }
@@ -201,6 +203,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
     setEarnedStars(stars);
     setIsLessonFinished(true);
+
+    if (!isPractice) {
+      StorageService.updateStreak();
+    }
 
     if (lessonType === 'exam') {
       StorageService.markExamPassed(lessonId);
