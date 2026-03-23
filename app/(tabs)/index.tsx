@@ -3,8 +3,8 @@ import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { useUserProgress } from '@/src/hooks/useUserProgress';
 import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useState } from 'react';
 import { Alert, Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import content from '../../src/data/content';
@@ -16,16 +16,6 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 const courseData = content.courses[0];
 
-// Innerhalb deiner Start-Komponente:
-const router = useRouter();
-useEffect(() => {
-  StorageService.getUserProfile().then(profile => {
-    if (!profile || !profile.hasCompletedOnboarding) {
-      router.replace('/onboarding'); // Verweist auf eine neue app/onboarding.tsx Seite
-    }
-  });
-}, []);
-
 export default function PathScreen() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -35,9 +25,18 @@ export default function PathScreen() {
   
   const [showExamModal, setShowExamModal] = useState(false);
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
-  
-  // NEU: State für die einklappbare Timeline (Standard: zu)
   const [isTimelineExpanded, setIsTimelineExpanded] = useState(false);
+
+  // KORREKT: Der Onboarding-Check ist nun sicher innerhalb der Komponente!
+  useFocusEffect(
+    useCallback(() => {
+      StorageService.getUserProfile().then(profile => {
+        if (!profile || !profile.hasCompletedOnboarding) {
+          router.replace('/onboarding');
+        }
+      });
+    }, [])
+  );
 
   const startExam = () => {
       if (selectedUnitId) {
@@ -47,12 +46,10 @@ export default function PathScreen() {
   };
 
   const toggleTimeline = () => {
-      // Sorgt für ein weiches Auf- und Zuklappen
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
       setIsTimelineExpanded(!isTimelineExpanded);
   };
 
-  // Berechne die letzten 7 Tage für die kompakte Timeline
   const last7Days = Array.from({length: 7}).map((_, i) => {
       const d = new Date();
       d.setDate(d.getDate() - (6 - i));
@@ -63,10 +60,7 @@ export default function PathScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
       
-      {/* Sticky Header Bereich (Überschrift + Timeline nahtlos verbunden) */}
       <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder }]}>
-          
-          {/* Header ist jetzt antippbar zum Ein-/Ausklappen */}
           <TouchableOpacity style={styles.header} onPress={toggleTimeline} activeOpacity={0.7}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
@@ -74,16 +68,12 @@ export default function PathScreen() {
                 <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage}/>
             </View>
             <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
-                
-                {/* Kleine blaue Flammen-Anzeige, nur sichtbar wenn man welche hat! */}
                 {streakData && streakData.streakOnIceCount > 0 && (
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <Ionicons name="flame" size={16} color="#4DA8DA" />
                         <Text style={[styles.iceText, {color: "#4DA8DA"}]}>{streakData.streakOnIceCount}</Text>
                     </View>
                 )}
-                
-                {/* Normale Streak-Anzeige */}
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Ionicons name="flame" size={24} color={streak > 0 ? "#ff9600" : theme.icon} />
                     <Text style={[styles.streakText, {color: streak > 0 ? "#ff9600" : "#bbb"}]}>{streak}</Text>
@@ -91,14 +81,13 @@ export default function PathScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* Kompakte Timeline, wird nur gerendert wenn isTimelineExpanded true ist */}
           {isTimelineExpanded && (
               <View style={styles.timelineContainer}>
                 <View style={styles.daysRow}>
                     {last7Days.map((date) => {
                         const dateStr = date.toISOString().split('T')[0];
                         const isToday = dateStr === new Date().toISOString().split('T')[0];
-                        const status = streakData?.history[dateStr]; // 'learned' oder 'frozen'
+                        const status = streakData?.history[dateStr];
                         
                         let flameColor = theme.border;
                         if (status === 'learned') flameColor = "#ff9600";
@@ -112,14 +101,12 @@ export default function PathScreen() {
                                 <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
                                     <Ionicons name="flame" size={14} color={flameColor} />
                                 </View>
-                                {/* Punkt für "Heute", ansonsten unsichtbarer Platzhalter für sauberes Layout */}
                                 {isToday ? <View style={[styles.todayDot, { backgroundColor: theme.text }]} /> : <View style={styles.todayDotPlaceholder} />}
                             </View>
                         );
                     })}
                 </View>
 
-                {/* Balken ohne Text, mit blauer Flamme am Ende */}
                 <View style={styles.streakProgressContainer}>
                     <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
                         <View style={[styles.progressBarFill, { width: `${(((streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
@@ -237,28 +224,22 @@ export default function PathScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  
-  // Header Bereich vereint mit Timeline
   headerContainer: { borderBottomWidth: 1 },
   header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   headerTitle: { fontSize: 22, fontWeight: 'bold' },
   flagImage: { width: 30, height: 20, borderRadius: 3 },
   streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
-  iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 }, // Etwas kleiner als die Streak
-  
-  // Kompakte Timeline Styles
+  iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 },
   timelineContainer: { paddingHorizontal: 20, paddingBottom: 15, overflow: 'hidden' },
   daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   dayItem: { alignItems: 'center' },
   dayName: { fontSize: 10, marginBottom: 4 },
   flameCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
   todayDot: { width: 4, height: 4, borderRadius: 2, marginTop: 4 },
-  todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 }, // Damit die Flammen alle auf einer Höhe bleiben
+  todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 },
   streakProgressContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
   progressBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
   progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 3 },
-  
-  // Lernpfad
   pathContainer: { paddingTop: 20, paddingBottom: 100 },
   unitContainer: { marginBottom: 40 },
   unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
@@ -272,8 +253,6 @@ const styles = StyleSheet.create({
   examWrapper: { alignItems: 'center', marginTop: 30 },
   connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
   examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
-  
-  // Modal
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
   modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },
   modalTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
