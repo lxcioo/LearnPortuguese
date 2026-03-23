@@ -30,12 +30,7 @@ export default function SettingsModal() {
     if (!feedback.trim()) return;
     try {
         // Hier kommt später dein Webhook Link rein!
-        const webhookUrl = "DEIN_DISCORD_WEBHOOK_URL_HIER"; 
-        
-        if (webhookUrl === "DEIN_DISCORD_WEBHOOK_URL_HIER") {
-            Alert.alert("Bereit!", "Feedback System ist vorbereitet. Füge später einfach die Discord-Webhook-URL in den Code ein!");
-            return;
-        }
+        const webhookUrl = "https://discord.com/api/webhooks/1485684433297346781/4EDBqfF4uwY4PA0A6Ah2oqgLMK3_Z-Z9UZ07OcF5FQD7tWxLdJu2_N5dqybM1AJg--SW";
 
         await fetch(webhookUrl, {
             method: 'POST',
