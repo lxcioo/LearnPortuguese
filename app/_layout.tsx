@@ -35,7 +35,7 @@ function RootLayoutNav() {
   const { isDarkMode, isLoading: isThemeLoading } = useTheme();
   const [isUpdateChecking, setIsUpdateChecking] = useState(true);
 
-  // --- NEU: Das native Basis-Fenster von Android/iOS einfärben ---
+  // --- NEU: Das native Basis-Fenster von Android/iOS einfärben ----
   useEffect(() => {
     SystemUI.setBackgroundColorAsync(
       isDarkMode ? Colors.dark.background : Colors.light.background
