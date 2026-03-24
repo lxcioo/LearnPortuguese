@@ -130,6 +130,26 @@ export default function PathScreen() {
                     <View style={[styles.unitHeader, {backgroundColor: isUnitUnlocked ? unit.color : theme.cardBorder }]}>
                         <Text style={styles.unitTitle}>{unit.title}</Text>
                         <Text style={styles.unitSubtitle}>{unit.levels.length} Lektionen + Prüfung</Text>
+
+                        {/* NEU: Der Grammatik-Button (wird nur angezeigt, wenn grammarGuide existiert) */}
+                        {unit.grammarGuide && unit.grammarGuide.length > 0 && (
+                            <TouchableOpacity 
+                                style={{
+                                    flexDirection: 'row', 
+                                    alignItems: 'center', 
+                                    backgroundColor: 'rgba(255,255,255,0.25)', 
+                                    alignSelf: 'flex-start',
+                                    paddingHorizontal: 15,
+                                    paddingVertical: 8,
+                                    borderRadius: 20,
+                                    marginTop: 15
+                                }}
+                                onPress={() => router.push({ pathname: '/grammar_modal', params: { unitId: unit.id } })}
+                            >
+                                <Ionicons name="book" size={16} color="#fff" style={{marginRight: 6}} />
+                                <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 14}}>Tipps & Grammatik</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
                     
                     <View style={styles.levelsContainer}>

@@ -447,5 +447,26 @@
                 }
             ]
         }
+    ],
+
+    "grammarGuide": [
+        {
+            "heading": "Begrüßungen",
+            "explanation": "Im Portugiesischen gibt es verschiedene Begrüßungen, je nach Tageszeit. Achte darauf, dass 'Bom dia' wirklich nur bis zum Mittag gesagt wird.",
+            "examples": [
+                "Bom dia - Guten Morgen (bis ca. 12 Uhr)",
+                "Boa tarde - Guten Tag (bis Sonnenuntergang)",
+                "Boa noite - Guten Abend / Gute Nacht"
+            ]
+            },
+            {
+            "heading": "Das Geschlecht (O vs. A)",
+            "explanation": "Fast alle Substantive im Portugiesischen sind entweder männlich (enden oft auf -o) oder weiblich (enden oft auf -a). Die Artikel passen sich an:",
+            "examples": [
+                "o menino - der Junge",
+                "a menina - das Mädchen"
+            ]
+            }
+
     ]
 }

@@ -17,11 +17,18 @@ export interface Level {
   exercises: Exercise[];
 }
 
+export interface GrammarSection {
+  heading: string;
+  explanation: string;
+  examples?: string[]; // Optional: Eine Liste von Beispielen
+}
+
 export interface Unit {
   id: string;
   title: string;
   color: string;
   levels: Level[];
+  grammarGuide?: GrammarSection[]; // NEU: Optionaler Grammatik-Teil
 }
 
 export interface Course {
