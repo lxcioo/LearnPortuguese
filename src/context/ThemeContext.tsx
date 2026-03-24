@@ -4,44 +4,43 @@ import { useColorScheme as useSystemColorScheme } from 'react-native';
 
 // Wir erweitern den Typ um 'divers' ('d'), 'male' ('m'), 'female' ('f')
 type Gender = 'm' | 'f' | 'd' | null;
-type Theme = 'light' | 'dark';
+type ThemeSetting = 'light' | 'dark' | 'system';
+type ActiveTheme = 'light' | 'dark';
 
 type ThemeContextType = {
-  theme: Theme;
-  toggleTheme: () => void;
+  theme: ActiveTheme; // Das berechnete, aktive Theme (für die Farben)
+  themeSetting: ThemeSetting; // Die gewählte Einstellung des Nutzers
+  setThemeSetting: (setting: ThemeSetting) => void;
   isDarkMode: boolean;
   gender: Gender;
   setGender: (g: Gender) => void;
-  isLoading: boolean; // Um zu wissen, ob wir noch Daten laden
+  isLoading: boolean;
 };
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
-  toggleTheme: () => {},
+  themeSetting: 'system',
+  setThemeSetting: () => { },
   isDarkMode: false,
   gender: null,
-  setGender: () => {},
+  setGender: () => { },
   isLoading: true,
 });
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const systemScheme = useSystemColorScheme();
-  const [theme, setTheme] = useState<Theme>('light');
+  const [themeSetting, setThemeSettingState] = useState<ThemeSetting>('system');
   const [gender, setGenderState] = useState<Gender>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadSettings = async () => {
       try {
-        // 1. Theme laden
         const savedTheme = await AsyncStorage.getItem('userTheme');
         if (savedTheme) {
-          setTheme(savedTheme as Theme);
-        } else {
-          setTheme(systemScheme === 'dark' ? 'dark' : 'light');
+          setThemeSettingState(savedTheme as ThemeSetting);
         }
 
-        // 2. Gender laden
         const savedGender = await AsyncStorage.getItem('userGender');
         if (savedGender) {
           setGenderState(savedGender as Gender);
@@ -55,11 +54,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     loadSettings();
   }, []);
 
-  const toggleTheme = async () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
+  const setThemeSetting = async (setting: ThemeSetting) => {
+    setThemeSettingState(setting);
     try {
-      await AsyncStorage.setItem('userTheme', newTheme);
+      await AsyncStorage.setItem('userTheme', setting);
     } catch (e) {
       console.error("Theme saving error", e);
     }
@@ -78,8 +76,19 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Logik: Wenn auf System, nutze das OS-Theme, ansonsten die feste Wahl
+  const activeTheme: ActiveTheme = themeSetting === 'system' ? (systemScheme || 'light') : themeSetting;
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDarkMode: theme === 'dark', gender, setGender, isLoading }}>
+    <ThemeContext.Provider value={{
+      theme: activeTheme,
+      themeSetting,
+      setThemeSetting,
+      isDarkMode: activeTheme === 'dark',
+      gender,
+      setGender,
+      isLoading
+    }}>
       {children}
     </ThemeContext.Provider>
   );
