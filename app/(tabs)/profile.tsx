@@ -120,7 +120,7 @@ export default function ProfileScreen() {
         <View style={[styles.card, { backgroundColor: theme === 'dark' ? '#222' : '#f9f9f9', flexDirection: 'row', alignItems: 'flex-end', height: 120, justifyContent: 'space-around', paddingBottom: 20 }]}>
           <View style={{ alignItems: 'center' }}>
             <View style={{ width: 40, height: (dailyStats.wordsLearned / getMaxDaily()) * 100, backgroundColor: '#58cc02', minHeight: 10, borderRadius: 5 }} />
-            <Text style={{ color: currentColors.icon, marginTop: 5 }}>Aktivität</Text>
+            <Text style={{ color: currentColors.icon, marginTop: 5 }}>Erfolge</Text>
             <Text style={{ fontWeight: 'bold', color: currentColors.text }}>{dailyStats.wordsLearned}</Text>
           </View>
           <View style={{ alignItems: 'center' }}>

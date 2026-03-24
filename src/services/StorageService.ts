@@ -53,6 +53,9 @@ export const StorageService = {
       let entry = db[exercise.id];
       const isNewEntry = !entry;
 
+      // NEU & WICHTIG: War die Vokabel laut Leitner-System überhaupt fällig?
+      const wasDue = entry ? now >= new Date(entry.nextReviewDate) : true;
+
       if (!entry) {
         entry = {
           exerciseId: exercise.id,
@@ -76,6 +79,7 @@ export const StorageService = {
       if (isCorrect) {
         entry.successCount++;
         entry.solvedToday++;
+        entry.mistakesToday = 0;
       } else {
         entry.mistakeCount++;
         entry.mistakesToday++;
@@ -83,21 +87,27 @@ export const StorageService = {
 
       let targetBox = entry.box || 1;
 
-      // REGEL 2: Falsche Antworten -> Gnadenlos zurück in "Schwer" (Box 1)
       if (!isCorrect) {
         targetBox = 1;
       } else {
-        // REGEL 1: Lernpfad -> Direkt in "Schwer", keine Bewertung nötig
         if (source === 'lesson') {
           if (entry.box === 0) targetBox = 1;
         }
-        // REGEL 3: Übungsbereich & Richtig -> Nutzerbewertung verarbeiten
         else {
           if (userRating) {
-            // Wenn schon "Leicht" (3) und wieder "Leicht" (3) bewertet -> Ab in den Stern! (4)
             if (entry.box === 3 && userRating === 3) {
+              // LOGIK-FIX 1: Nur ins Sternchen aufsteigen, wenn die 10-14 Tage auch um waren!
+              if (wasDue) {
+                targetBox = 4;
+              } else {
+                // Ansonsten bleibt sie in Box 3, aber der Timer (10-14 Tage) wird neu gestartet
+                targetBox = 3;
+              }
+            } else if (entry.box === 4 && userRating === 3) {
+              // LOGIK-FIX 2: Ein Sternchen verliert seinen Status nicht, wenn man "Leicht" drückt
               targetBox = 4;
             } else {
+              // In allen anderen Fällen (Schwer oder Mittel) wird die Box ganz normal angepasst
               targetBox = userRating;
             }
           }
@@ -105,7 +115,6 @@ export const StorageService = {
       }
 
       entry.box = targetBox;
-      // Fuzzing anwenden: Die nächste Fälligkeit berechnen
       entry.nextReviewDate = getRandomNextDate(targetBox);
 
       db[exercise.id] = entry;
