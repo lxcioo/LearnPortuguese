@@ -15,29 +15,29 @@ import { useLessonLogic } from '../src/hooks/useLessonLogic';
 export default function LessonScreen() {
   const router = useRouter();
   const navigation = useNavigation();
-  const { id: lessonId, type: lessonType, mode: lessonMode } = useLocalSearchParams<{ id: string, type: string, mode: string }>();
-  
+  const { id: lessonId, type: lessonType, source } = useLocalSearchParams<{ id: string, type: string, source: string }>();
+
   const { gender, isDarkMode } = useTheme();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? 'light'];
 
   const { playAudio } = useAudioPlayer();
-  
+
   const {
     loading, currentExercise, progressPercent,
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
     getSolutionDisplay
-  } = useLessonLogic(lessonId, lessonType, gender, lessonMode);
+  } = useLessonLogic(lessonId, lessonType, gender);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
       if (isLessonFinished || isPractice) return;
       e.preventDefault();
       Alert.alert('Lektion abbrechen?', 'Fortschritt geht verloren.', [
-          { text: 'Bleiben', style: 'cancel', onPress: () => {} },
-          { text: 'Verlassen', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
+        { text: 'Bleiben', style: 'cancel', onPress: () => { } },
+        { text: 'Verlassen', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
       ]);
     });
     return unsubscribe;
@@ -50,19 +50,19 @@ export default function LessonScreen() {
   );
 
   const renderFinishScreen = () => {
-      return (
-        <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
-          <Text style={styles.finishTitle}>{isPractice ? "Training beendet!" : "Lektion beendet!"}</Text>
-          <View style={styles.starsContainer}>
-            {[1, 2, 3].map((star) => (
-              <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
-            ))}
-          </View>
-          <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
-            <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
-      );
+    return (
+      <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
+        <Text style={styles.finishTitle}>{isPractice ? "Training beendet!" : "Lektion beendet!"}</Text>
+        <View style={styles.starsContainer}>
+          {[1, 2, 3].map((star) => (
+            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
+          ))}
+        </View>
+        <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
+          <Text style={styles.checkButtonText}>ZUR ÜBERSICHT</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
   };
 
   if (loading || !currentExercise) return renderLoading();
@@ -70,22 +70,21 @@ export default function LessonScreen() {
 
   const isTranslate = currentExercise.type.includes('translate');
   const isTranslateToPt = currentExercise.type === 'translate_to_pt';
-  const instructionText = isTranslate 
+  const instructionText = isTranslate
     ? (isTranslateToPt ? 'Übersetze ins Portugiesische' : 'Übersetze ins Deutsche')
     : 'Wähle die richtige Lösung';
   const placeholderText = isTranslateToPt ? 'Auf Portugiesisch...' : 'Auf Deutsch...';
   const isButtonDisabled = !userInput && selectedOption === null;
 
-  // NEU: Zeiten angepasst
+  // NEU: Nur noch 3 Buttons mit den passenden Schätzwerten für die Zeitfenster
   const ratingButtons = [
-      { box: 1, label: 'Nochmal', sub: '1h', color: '#ff7675' },
-      { box: 2, label: 'Schwer', sub: '6h', color: '#fdcb6e' },
-      { box: 3, label: 'Mittel', sub: '1 Tag', color: '#ffeaa7' },
-      { box: 4, label: 'Gut', sub: '3 Tage', color: '#55efc4' },
-      { box: 5, label: 'Einfach', sub: '1 Wo', color: '#00b894' },
+    { box: 1, label: 'Schwer', sub: '≤ 1 Tag', color: '#ff4757' },
+    { box: 2, label: 'Mittel', sub: '3-5 Tage', color: '#ffa502' },
+    { box: 3, label: 'Leicht', sub: '10-14 Tage', color: '#1cb0f6' },
   ];
 
-  const showRating = isPractice && isCorrect && lessonMode !== 'random';
+  // NEU: Zeige das Rating IMMER an, wenn es der Übungsbereich ist und die Antwort richtig war!
+  const showRating = isPractice && isCorrect;
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'bottom', 'left', 'right']}>
@@ -103,16 +102,16 @@ export default function LessonScreen() {
           <Text style={[styles.instruction, { color: theme.subText }]}>{instructionText}</Text>
           <View style={styles.questionContainer}>
             <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
-               <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
+              <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
             </TouchableOpacity>
             <Text style={[styles.question, { color: theme.text }]}>{currentExercise.question}</Text>
           </View>
 
           {isTranslate && (
-            <TextInput 
-              style={[styles.input, { backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.text }]} 
-              placeholder={placeholderText} placeholderTextColor="#ccc" 
-              value={userInput} onChangeText={setUserInput} autoCapitalize="sentences" autoCorrect={false} 
+            <TextInput
+              style={[styles.input, { backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.text }]}
+              placeholder={placeholderText} placeholderTextColor="#ccc"
+              value={userInput} onChangeText={setUserInput} autoCapitalize="sentences" autoCorrect={false}
             />
           )}
 
@@ -121,8 +120,8 @@ export default function LessonScreen() {
               {currentExercise.options?.map((option, index) => {
                 const isSelected = selectedOption === index;
                 return (
-                  <TouchableOpacity key={index} 
-                    style={[styles.optionButton, { borderColor: isSelected ? '#1cb0f6' : theme.border }, isSelected && { backgroundColor: theme.optionSelectedBg }]} 
+                  <TouchableOpacity key={index}
+                    style={[styles.optionButton, { borderColor: isSelected ? '#1cb0f6' : theme.border }, isSelected && { backgroundColor: theme.optionSelectedBg }]}
                     onPress={() => { setSelectedOption(index); playAudio(`${currentExercise.id}_opt_${index}`); }}
                   >
                     <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>{option}</Text>
@@ -147,30 +146,30 @@ export default function LessonScreen() {
             <View style={styles.marginBottom20}>
               <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
               <View style={styles.solutionRow}>
-                 <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{getSolutionDisplay()}</Text>
+                <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{getSolutionDisplay()}</Text>
               </View>
             </View>
 
             {showRating ? (
-                <View>
-                    <Text style={{color: theme.subText, marginBottom: 10, fontWeight: 'bold'}}>Wie gut wusstest du es?</Text>
-                    <View style={{flexDirection: 'row', gap: 5}}>
-                         {ratingButtons.map((btn) => (
-                             <TouchableOpacity 
-                                key={btn.box}
-                                style={[styles.boxBtn, {backgroundColor: btn.color}]} 
-                                onPress={() => ratePractice(btn.box)}
-                             >
-                                <Text style={styles.boxBtnLabel}>{btn.label}</Text>
-                                <Text style={styles.boxBtnSub}>{btn.sub}</Text>
-                             </TouchableOpacity>
-                         ))}
-                    </View>
+              <View>
+                <Text style={{ color: theme.subText, marginBottom: 10, fontWeight: 'bold' }}>Wie gut wusstest du es?</Text>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
+                  {ratingButtons.map((btn) => (
+                    <TouchableOpacity
+                      key={btn.box}
+                      style={[styles.boxBtn, { backgroundColor: btn.color }]}
+                      onPress={() => ratePractice(btn.box)}
+                    >
+                      <Text style={styles.boxBtnLabel}>{btn.label}</Text>
+                      <Text style={styles.boxBtnSub}>{btn.sub}</Text>
+                    </TouchableOpacity>
+                  ))}
                 </View>
+              </View>
             ) : (
-                <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={nextExercise}>
-                  <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
-                </TouchableOpacity>
+              <TouchableOpacity style={[styles.continueButton, isDarkMode && { backgroundColor: '#333' }]} onPress={nextExercise}>
+                <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
+              </TouchableOpacity>
             )}
           </View>
         </View>
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
   instruction: { fontSize: 18, marginBottom: 10, fontWeight: '600' },
   questionContainer: { flexDirection: 'row', alignItems: 'center', marginBottom: 30 },
   speakerButton: { marginRight: 15, padding: 10, borderRadius: 50 },
-  question: { fontSize: 26, fontWeight: 'bold', flex: 1 }, 
+  question: { fontSize: 26, fontWeight: 'bold', flex: 1 },
   input: { borderWidth: 2, borderRadius: 16, padding: 16, fontSize: 20 },
   optionsContainer: { gap: 12 },
   optionButton: { padding: 16, borderWidth: 2, borderRadius: 16, alignItems: 'center' },
@@ -210,12 +209,12 @@ const styles = StyleSheet.create({
   solutionRow: { flexDirection: 'row', alignItems: 'center' },
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
-  textSuccess: { color: '#58cc02' }, 
+  textSuccess: { color: '#58cc02' },
   textError: { color: '#ea2b2b' },
   finishTitle: { fontSize: 32, fontWeight: 'bold', color: '#58cc02', marginBottom: 20, textAlign: 'center' },
   starsContainer: { flexDirection: 'row', marginBottom: 30, gap: 10, justifyContent: 'center' },
   marginBottom20: { marginBottom: 20 },
-  boxBtn: { flex: 1, paddingVertical: 10, paddingHorizontal: 2, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
-  boxBtnLabel: { color: '#333', fontWeight: 'bold', fontSize: 11, marginBottom: 2 },
-  boxBtnSub: { color: '#555', fontSize: 9 }
+  boxBtn: { flex: 1, paddingVertical: 14, paddingHorizontal: 4, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  boxBtnLabel: { color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 2 },
+  boxBtnSub: { color: '#fff', fontSize: 11, opacity: 0.9 }
 });

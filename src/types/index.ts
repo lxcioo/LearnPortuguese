@@ -43,13 +43,11 @@ export interface VocabEntry {
   exerciseId: string;
   exerciseRef: Exercise;
   
-  // Leitner Status
-  box: number; // 1-6 (Box 6 ist der "Monats-Status")
-  nextReviewDate: string; // ISO Date String (jetzt mit Uhrzeit wichtig!)
+  // Leitner Status NEU: 
+  // 1 = Schwer, 2 = Mittel, 3 = Leicht, 4 = Stern (Mastery)
+  box: number; 
+  nextReviewDate: string; // ISO Date String
   
-  // Logic für Box 6 Aufstieg
-  box5Streak: number; // Wie oft hintereinander Box 5 gewählt?
-
   // Stats
   mistakeCount: number;
   successCount: number;

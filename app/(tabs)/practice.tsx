@@ -5,302 +5,280 @@ import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../src/context/ThemeContext';
 import content from '../../src/data/content';
 
 const courseData = content.courses[0];
-const BOX_LABELS = ["neu", "1h", "6h", "1d", "3d", "1w", "✨"]; // Labels unter dem Chart
+const BOX_LABELS = ["", "Schwer", "Mittel", "Leicht", "⭐"];
+const BOX_COLORS = ["", "#ff4757", "#ffa502", "#1cb0f6", "#FFD700"];
 
 export default function PracticeScreen() {
-  const router = useRouter();
-  const { isDarkMode } = useTheme(); 
-  const colorScheme = useColorScheme();
-  const theme = Colors[colorScheme ?? 'light'];
-  
-  const { scores, examScores } = useUserProgress();
-  
-  const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
-  const [leitnerCounts, setLeitnerCounts] = useState([0,0,0,0,0,0,0]);
-  const [dueCount, setDueCount] = useState(0);
-  const [todayMistakeCount, setTodayMistakeCount] = useState(0);
-  
-  const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
-  const [selectedBoxes, setSelectedBoxes] = useState<Record<number, boolean>>({}); // NEU: Box Filter
+    const router = useRouter();
+    const { isDarkMode } = useTheme();
+    const colorScheme = useColorScheme();
+    const theme = Colors[colorScheme ?? 'light'];
 
-  const [questionCount, setQuestionCount] = useState<number | 'all'>(10);
-  const [trainingMode, setTrainingMode] = useState<'random' | 'leitner'>('random');
+    const { scores, examScores } = useUserProgress();
 
-  useFocusEffect(
-    useCallback(() => {
-      loadData();
-    }, [])
-  );
+    const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
+    const [leitnerCounts, setLeitnerCounts] = useState([0, 0, 0, 0, 0]);
+    const [dueCount, setDueCount] = useState(0);
+    const [todayMistakeCount, setTodayMistakeCount] = useState(0);
 
-  const loadData = async () => {
-    const daily = await StorageService.getDailyStats();
-    setDailyStats({ wordsLearned: daily.wordsLearned, mistakesMade: daily.mistakesMade });
-    const leitner = await StorageService.getLeitnerStats();
-    setLeitnerCounts(leitner);
-    const dueExercises = await StorageService.getLeitnerDue();
-    setDueCount(dueExercises.length);
-    const todayMistakes = await StorageService.getTodayMistakes();
-    setTodayMistakeCount(todayMistakes.length);
-  };
+    // Für das Freie Training Modal
+    const [isFreeTrainingModalVisible, setFreeTrainingModalVisible] = useState(false);
+    const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
+    const [questionCount, setQuestionCount] = useState<number | 'all'>(15);
 
-  const toggleLesson = (id: string) => {
-    setSelectedLessons(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-  
-  const toggleBox = (box: number) => {
-      setSelectedBoxes(prev => ({ ...prev, [box]: !prev[box] }));
-  };
+    useFocusEffect(
+        useCallback(() => {
+            loadData();
+        }, [])
+    );
 
-  const startTodayMistakes = async () => {
-      const exercises = await StorageService.getTodayMistakes();
-      if (exercises.length === 0) {
-          Alert.alert("Super!", "Keine offenen Fehler von heute.");
-          return;
-      }
-      await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
-  };
+    const loadData = async () => {
+        const daily = await StorageService.getDailyStats();
+        setDailyStats({ wordsLearned: daily.wordsLearned, mistakesMade: daily.mistakesMade });
+        const leitner = await StorageService.getLeitnerStats();
+        setLeitnerCounts(leitner);
+        const dueExercises = await StorageService.getLeitnerDue();
+        setDueCount(dueExercises.length);
+        const todayMistakes = await StorageService.getTodayMistakes();
+        setTodayMistakeCount(todayMistakes.length);
+    };
 
-  const startLeitnerReview = async () => {
-      const exercises = await StorageService.getLeitnerDue();
-      if (exercises.length === 0) {
-          Alert.alert("Alles erledigt!", "Für jetzt keine fälligen Wiederholungen.");
-          return;
-      }
-      await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
-  };
+    const toggleLesson = (id: string) => {
+        setSelectedLessons(prev => ({ ...prev, [id]: !prev[id] }));
+    };
 
-  const startArchEnemies = async () => {
-      const exercises = await StorageService.getArchEnemies();
-      if (exercises.length === 0) {
-          Alert.alert("Zu wenig Daten", "Noch keine 'Erzfeinde' gesammelt.");
-          return;
-      }
-      await StorageService.savePracticeSession(exercises);
-      router.push({ pathname: "/lesson", params: { id: 'practice', mode: 'leitner' } });
-  };
+    const startTodayMistakes = async () => {
+        const exercises = await StorageService.getTodayMistakes();
+        if (exercises.length === 0) {
+            Alert.alert("Super!", "Keine offenen Fehler von heute.");
+            return;
+        }
+        await StorageService.savePracticeSession(exercises);
+        router.push({ pathname: "/lesson", params: { id: 'practice', source: 'practice' } });
+    };
 
-  const startFreeTraining = async () => {
-      let pool: any[] = [];
-      
-      // 1. Sammle alle Übungen aus den gewählten Kapiteln
-      courseData.units.forEach(unit => {
-          unit.levels.forEach(level => {
-              if (selectedLessons[level.id]) pool = [...pool, ...level.exercises];
-          });
-      });
+    const startLeitnerReview = async () => {
+        const exercises = await StorageService.getLeitnerDue();
+        if (exercises.length === 0) {
+            Alert.alert("Alles erledigt!", "Für jetzt keine fälligen Wiederholungen.");
+            return;
+        }
+        await StorageService.savePracticeSession(exercises);
+        router.push({ pathname: "/lesson", params: { id: 'practice', source: 'practice' } });
+    };
 
-      if (pool.length === 0) {
-        Alert.alert("Keine Lektion gewählt", "Bitte wähle unten mindestens eine Lektion aus.");
-        return;
-      }
+    const startArchEnemies = async () => {
+        const exercises = await StorageService.getArchEnemies();
+        if (exercises.length === 0) {
+            Alert.alert("Zu wenig Daten", "Noch keine 'Erzfeinde' gesammelt.");
+            return;
+        }
+        await StorageService.savePracticeSession(exercises);
+        router.push({ pathname: "/lesson", params: { id: 'practice', source: 'practice' } });
+    };
 
-      // 2. Ermittle gewählte Boxen
-      const activeBoxes = Object.keys(selectedBoxes).filter(k => selectedBoxes[parseInt(k)]).map(Number);
+    const startFreeTraining = async () => {
+        let pool: any[] = [];
+        courseData.units.forEach(unit => {
+            unit.levels.forEach(level => {
+                if (selectedLessons[level.id]) pool = [...pool, ...level.exercises];
+            });
+        });
 
-      // 3. Smart Selection mit Box-Filter
-      const session = await StorageService.getSmartSelection(pool, trainingMode, questionCount, activeBoxes);
-      
-      if (session.length === 0) {
-          Alert.alert("Keine Vokabeln gefunden", "Deine Auswahl enthält keine Vokabeln (vielleicht sind in den gewählten Boxen keine Wörter aus diesen Lektionen?).");
-          return;
-      }
+        if (pool.length === 0) {
+            Alert.alert("Keine Lektion gewählt", "Bitte wähle mindestens eine Lektion aus.");
+            return;
+        }
 
-      await StorageService.savePracticeSession(session);
-      router.push({ pathname: "/lesson", params: { id: 'practice', mode: trainingMode } });
-  };
+        setFreeTrainingModalVisible(false);
+        const session = await StorageService.getFreeTrainingSelection(pool, questionCount);
+        await StorageService.savePracticeSession(session);
 
-  const getMaxLeitner = () => Math.max(1, ...leitnerCounts);
-  const getMaxDaily = () => Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
+        // Die Abfrage wird jetzt immer als "practice" gekennzeichnet, damit das Bewerten am Ende greift
+        router.push({ pathname: "/lesson", params: { id: 'practice', source: 'practice' } });
+    };
 
-  return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.border }]}>
-        <Text style={[styles.headerTitle, { color: theme.text }]}>Übungsbereich 🧠</Text>
-      </View>
+    const getMaxLeitner = () => Math.max(1, ...leitnerCounts.slice(1));
+    const getMaxDaily = () => Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
 
-      <ScrollView contentContainerStyle={styles.content}>
-        
-        <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Statistik Heute:</Text>
-        <View style={[styles.card, { backgroundColor: theme.card, flexDirection: 'row', alignItems: 'flex-end', height: 150, justifyContent: 'space-around', paddingBottom: 20 }]}>
-            <View style={{alignItems: 'center'}}>
-                <View style={{width: 40, height: (dailyStats.wordsLearned / getMaxDaily()) * 100, backgroundColor: '#58cc02', minHeight: 10, borderRadius: 5}}/>
-                <Text style={{color: theme.subText, marginTop: 5}}>Aktivität</Text>
-                <Text style={{fontWeight: 'bold', color: theme.text}}>{dailyStats.wordsLearned}</Text>
+    return (
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
+            <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.border }]}>
+                <Text style={[styles.headerTitle, { color: theme.text }]}>Übungsbereich 🧠</Text>
             </View>
-            <View style={{alignItems: 'center'}}>
-                <View style={{width: 40, height: (dailyStats.mistakesMade / getMaxDaily()) * 100, backgroundColor: '#ff4757', minHeight: 10, borderRadius: 5}}/>
-                <Text style={{color: theme.subText, marginTop: 5}}>Fehler</Text>
-                <Text style={{fontWeight: 'bold', color: theme.text}}>{dailyStats.mistakesMade}</Text>
-            </View>
-        </View>
 
-        <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Leitner System (Lernstand):</Text>
-        <View style={[styles.card, { backgroundColor: theme.card, height: 200, justifyContent: 'flex-end', paddingBottom: 10 }]}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 130}}>
-                {[0, 1, 2, 3, 4, 5, 6].map(box => {
-                    if (box === 0) return null; // Box 0 (Neu) zeigen wir hier vllt nicht, oder doch? Der User wollte Box 1-6 sehen.
-                    return (
-                    <View key={box} style={{alignItems: 'center', flex: 1}}>
-                        <Text style={{fontSize: 9, color: theme.subText, marginBottom: 2}}>{leitnerCounts[box] || 0}</Text>
-                        <View style={{
-                            width: 12, 
-                            height: (leitnerCounts[box] / getMaxLeitner()) * 100, 
-                            backgroundColor: box === 6 ? '#FFD700' : '#1cb0f6',
-                            minHeight: 5, 
-                            borderRadius: 3
-                        }}/>
-                        <Text style={{color: theme.text, fontSize: 10, marginTop: 5}}>{box===6 ? '★' : box}</Text>
-                        <Text style={{color: theme.subText, fontSize: 8, marginTop: 2}}>{BOX_LABELS[box]}</Text>
+            <ScrollView contentContainerStyle={styles.content}>
+
+                {/* 1. STATISTIK */}
+                <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Statistik Heute</Text>
+                <View style={[styles.card, { backgroundColor: theme.card, flexDirection: 'row', alignItems: 'flex-end', height: 120, justifyContent: 'space-around', paddingBottom: 20 }]}>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={{ width: 40, height: (dailyStats.wordsLearned / getMaxDaily()) * 100, backgroundColor: '#58cc02', minHeight: 10, borderRadius: 5 }} />
+                        <Text style={{ color: theme.subText, marginTop: 5 }}>Aktivität</Text>
+                        <Text style={{ fontWeight: 'bold', color: theme.text }}>{dailyStats.wordsLearned}</Text>
                     </View>
-                )})}
-            </View>
-            <Text style={{textAlign: 'center', fontSize: 10, color: theme.subText, marginTop: 15}}>Box 1 (1h) → Box 6 (Ruhe)</Text>
-        </View>
-
-        <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Was möchtest du üben?</Text>
-
-        <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startTodayMistakes}>
-            <View>
-                 <View style={styles.optionContent}>
-                    <Ionicons name="bandage" size={24} color="#ff4757" style={{marginRight: 10}}/>
-                    <Text style={[styles.optionText, {color: theme.text}]}>Heutige Fehler</Text>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={{ width: 40, height: (dailyStats.mistakesMade / getMaxDaily()) * 100, backgroundColor: '#ff4757', minHeight: 10, borderRadius: 5 }} />
+                        <Text style={{ color: theme.subText, marginTop: 5 }}>Fehler</Text>
+                        <Text style={{ fontWeight: 'bold', color: theme.text }}>{dailyStats.mistakesMade}</Text>
+                    </View>
                 </View>
-                <Text style={styles.optionDesc}>Korrigiere alles, was heute schief ging.</Text>
-            </View>
-            {todayMistakeCount > 0 && <View style={styles.badge}><Text style={styles.badgeText}>{todayMistakeCount}</Text></View>}
-        </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startLeitnerReview}>
-             <View>
-                <View style={styles.optionContent}>
-                    <Ionicons name="infinite" size={24} color="#1cb0f6" style={{marginRight: 10}}/>
-                    <Text style={[styles.optionText, {color: theme.text}]}>Leitner System</Text>
-                </View>
-                <Text style={styles.optionDesc}>Deine fälligen Wiederholungen für jetzt.</Text>
-            </View>
-            {dueCount > 0 && <View style={[styles.badge, {backgroundColor: '#1cb0f6'}]}><Text style={styles.badgeText}>{dueCount}</Text></View>}
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.optionBtn, {backgroundColor: theme.card, borderColor: theme.cardBorder}]} onPress={startArchEnemies}>
-             <View>
-                <View style={styles.optionContent}>
-                    <Ionicons name="flame" size={24} color="#ffa502" style={{marginRight: 10}}/>
-                    <Text style={[styles.optionText, {color: theme.text}]}>Erzfeinde</Text>
-                </View>
-                <Text style={styles.optionDesc}>Deine Top 20 Fehler aller Zeiten.</Text>
-            </View>
-        </TouchableOpacity>
-
-        <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Freies Training:</Text>
-        <View style={[styles.card, { backgroundColor: theme.card }]}>
-            
-            <Text style={{fontWeight: 'bold', marginBottom: 5, color: theme.text}}>1. Lektionen wählen:</Text>
-            <View style={{maxHeight: 200}}>
-                <ScrollView nestedScrollEnabled style={{maxHeight: 200}}>
-                    {courseData.units.map((unit, uIndex) => {
-                        const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
-                        if (!isUnitUnlocked) return null;
-                        return (
-                            <View key={unit.id}>
-                                <Text style={{color: theme.subText, fontSize: 12, marginTop: 5}}>{unit.title}</Text>
-                                {unit.levels.map((level, lIndex) => {
-                                    const isLevelUnlocked = lIndex === 0 || (scores[unit.levels[lIndex - 1].id] || 0) > 0;
-                                    if (!isLevelUnlocked) return null;
-                                    return (
-                                        <View key={level.id} style={[styles.row, { borderBottomColor: theme.cardBorder }]}>
-                                            <Text style={[styles.label, { color: theme.text }]}>{level.title}</Text>
-                                            <Switch value={!!selectedLessons[level.id]} onValueChange={() => toggleLesson(level.id)}
-                                            trackColor={{ false: theme.border, true: "#58cc02" }} thumbColor={"#fff"} />
-                                        </View>
-                                    );
-                                })}
+                {/* 2. LEITNER CHART VISUALISIERUNG */}
+                <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Dein Langzeit-Gedächtnis</Text>
+                <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 15 }]}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 }}>
+                        {[1, 2, 3, 4].map(box => (
+                            <View key={box} style={{ alignItems: 'center', flex: 1 }}>
+                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: theme.subText, marginBottom: 4 }}>{leitnerCounts[box] || 0}</Text>
+                                <View style={{
+                                    width: 24,
+                                    height: (leitnerCounts[box] / getMaxLeitner()) * 100,
+                                    backgroundColor: BOX_COLORS[box],
+                                    minHeight: 10,
+                                    borderRadius: 6
+                                }} />
+                                <Text style={{ color: theme.text, fontSize: 12, fontWeight: 'bold', marginTop: 8 }}>{BOX_LABELS[box]}</Text>
                             </View>
-                        );
-                    })}
-                </ScrollView>
-            </View>
+                        ))}
+                    </View>
+                </View>
 
-            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 5, color: theme.text}}>2. (Optional) Boxen filtern:</Text>
-            <Text style={{color: theme.subText, fontSize: 12, marginBottom: 10}}>Wenn leer, werden alle gewählt.</Text>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10}}>
-                {[1, 2, 3, 4, 5, 6].map(box => (
-                    <TouchableOpacity 
-                        key={box} 
-                        style={[styles.filterBoxBtn, selectedBoxes[box] && {backgroundColor: '#1cb0f6', borderColor: '#1cb0f6'}]}
-                        onPress={() => toggleBox(box)}
-                    >
-                        <Text style={[styles.filterBoxText, selectedBoxes[box] && {color: 'white'}]}>Box {box}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
+                {/* 3. TRAININGSAKTIONEN */}
+                <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Jetzt trainieren</Text>
 
-            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 5, color: theme.text}}>3. Modus wählen:</Text>
-            <View style={styles.modeContainer}>
-                <TouchableOpacity style={[styles.modeBtn, trainingMode === 'random' && styles.modeBtnActive]} onPress={() => setTrainingMode('random')}>
-                    <Text style={[styles.modeText, trainingMode === 'random' && styles.modeTextActive]}>Zufall 🎲</Text>
+                <TouchableOpacity style={[styles.optionBtn, { backgroundColor: theme.card, borderColor: theme.cardBorder }]} onPress={startLeitnerReview}>
+                    <View>
+                        <View style={styles.optionContent}>
+                            <Ionicons name="fitness" size={24} color="#58cc02" style={{ marginRight: 10 }} />
+                            <Text style={[styles.optionText, { color: theme.text }]}>Tägliches Workout</Text>
+                        </View>
+                        <Text style={styles.optionDesc}>Dein intelligentes Leitner-System.</Text>
+                    </View>
+                    {dueCount > 0 && <View style={[styles.badge, { backgroundColor: '#58cc02' }]}><Text style={styles.badgeText}>{dueCount} fällig</Text></View>}
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.modeBtn, trainingMode === 'leitner' && styles.modeBtnActive]} onPress={() => setTrainingMode('leitner')}>
-                    <Text style={[styles.modeText, trainingMode === 'leitner' && styles.modeTextActive]}>Leitner 🧠</Text>
+
+                <TouchableOpacity style={[styles.optionBtn, { backgroundColor: theme.card, borderColor: theme.cardBorder }]} onPress={startTodayMistakes}>
+                    <View>
+                        <View style={styles.optionContent}>
+                            <Ionicons name="bandage" size={24} color="#ff4757" style={{ marginRight: 10 }} />
+                            <Text style={[styles.optionText, { color: theme.text }]}>Heutige Fehler</Text>
+                        </View>
+                        <Text style={styles.optionDesc}>Korrigiere alles, was heute schief ging.</Text>
+                    </View>
+                    {todayMistakeCount > 0 && <View style={styles.badge}><Text style={styles.badgeText}>{todayMistakeCount}</Text></View>}
                 </TouchableOpacity>
-            </View>
 
-            <Text style={{fontWeight: 'bold', marginTop: 20, marginBottom: 10, color: theme.text}}>4. Anzahl Vokabeln:</Text>
-            <View style={styles.countContainer}>
-                <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
-                    <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
+                <TouchableOpacity style={[styles.optionBtn, { backgroundColor: theme.card, borderColor: theme.cardBorder }]} onPress={startArchEnemies}>
+                    <View>
+                        <View style={styles.optionContent}>
+                            <Ionicons name="flame" size={24} color="#ffa502" style={{ marginRight: 10 }} />
+                            <Text style={[styles.optionText, { color: theme.text }]}>Erzfeinde</Text>
+                        </View>
+                        <Text style={styles.optionDesc}>Deine Top 20 Fehler aller Zeiten.</Text>
+                    </View>
                 </TouchableOpacity>
-                {[5, 10, 20].map(num => (
-                    <TouchableOpacity key={num} style={[styles.countBtn, questionCount === num && styles.countBtnActive]} onPress={() => setQuestionCount(num)}>
-                        <Text style={[styles.countText, questionCount === num && styles.countTextActive]}>{num}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
 
-            <TouchableOpacity style={styles.startBtn} onPress={startFreeTraining}>
-                <Text style={styles.startBtnText}>STARTEN</Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity style={[styles.optionBtn, { backgroundColor: theme.card, borderColor: theme.cardBorder }]} onPress={() => setFreeTrainingModalVisible(true)}>
+                    <View>
+                        <View style={styles.optionContent}>
+                            <Ionicons name="options" size={24} color="#1cb0f6" style={{ marginRight: 10 }} />
+                            <Text style={[styles.optionText, { color: theme.text }]}>Gezielt üben</Text>
+                        </View>
+                        <Text style={styles.optionDesc}>Lektionen und Menge selbst wählen.</Text>
+                    </View>
+                </TouchableOpacity>
 
-      </ScrollView>
-    </SafeAreaView>
-  );
+            </ScrollView>
+
+            {/* --- MODAL FÜR FREIES TRAINING --- */}
+            <Modal visible={isFreeTrainingModalVisible} animationType="slide" transparent={true}>
+                <View style={styles.modalOverlay}>
+                    <View style={[styles.modalContent, { backgroundColor: theme.background }]}>
+                        <View style={styles.modalHeader}>
+                            <Text style={[styles.headerTitle, { color: theme.text }]}>Gezielt üben</Text>
+                            <TouchableOpacity onPress={() => setFreeTrainingModalVisible(false)}>
+                                <Ionicons name="close" size={28} color={theme.text} />
+                            </TouchableOpacity>
+                        </View>
+
+                        <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>1. Lektionen wählen:</Text>
+                        <ScrollView style={{ maxHeight: 250, marginBottom: 20 }}>
+                            {courseData.units.map((unit, uIndex) => {
+                                const isUnitUnlocked = uIndex === 0 || examScores[courseData.units[uIndex - 1].id];
+                                if (!isUnitUnlocked) return null;
+                                return (
+                                    <View key={unit.id}>
+                                        <Text style={{ color: theme.subText, fontSize: 12, marginTop: 10 }}>{unit.title}</Text>
+                                        {unit.levels.map((level, lIndex) => {
+                                            const isLevelUnlocked = lIndex === 0 || (scores[unit.levels[lIndex - 1].id] || 0) > 0;
+                                            if (!isLevelUnlocked) return null;
+                                            return (
+                                                <View key={level.id} style={[styles.row, { borderBottomColor: theme.cardBorder }]}>
+                                                    <Text style={[styles.label, { color: theme.text }]}>{level.title}</Text>
+                                                    <Switch value={!!selectedLessons[level.id]} onValueChange={() => toggleLesson(level.id)}
+                                                        trackColor={{ false: theme.border, true: "#58cc02" }} thumbColor={"#fff"} />
+                                                </View>
+                                            );
+                                        })}
+                                    </View>
+                                );
+                            })}
+                        </ScrollView>
+
+                        <Text style={[styles.sectionTitle, { color: theme.sectionTitle, marginTop: 0 }]}>2. Anzahl Vokabeln:</Text>
+                        <View style={styles.countContainer}>
+                            <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
+                                <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
+                            </TouchableOpacity>
+                            {[10, 20, 30].map(num => (
+                                <TouchableOpacity key={num} style={[styles.countBtn, questionCount === num && styles.countBtnActive]} onPress={() => setQuestionCount(num)}>
+                                    <Text style={[styles.countText, questionCount === num && styles.countTextActive]}>{num}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        <TouchableOpacity style={styles.startBtn} onPress={startFreeTraining}>
+                            <Text style={styles.startBtnText}>STARTEN</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, borderBottomWidth: 1 },
-  headerTitle: { fontSize: 24, fontWeight: 'bold' },
-  content: { padding: 20, paddingBottom: 50 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
-  card: { borderRadius: 16, padding: 15, elevation: 2, marginBottom: 10 },
-  optionBtn: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 },
-  optionContent: { flexDirection: 'row', alignItems: 'center' },
-  optionText: { fontSize: 16, fontWeight: '600' },
-  optionDesc: { fontSize: 12, color: '#888', marginTop: 2, maxWidth: 220 },
-  badge: { backgroundColor: '#ff4757', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, minWidth: 24, alignItems: 'center' },
-  badgeText: { color: 'white', fontWeight: 'bold', fontSize: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1 },
-  label: { fontSize: 14 },
-  modeContainer: { flexDirection: 'row', gap: 10 },
-  modeBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
-  modeBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
-  modeText: { color: '#555' },
-  modeTextActive: { color: '#fff', fontWeight: 'bold' },
-  countContainer: { flexDirection: 'row', gap: 10 },
-  countBtn: { flex: 1, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
-  countBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
-  countText: { color: '#555' },
-  countTextActive: { color: '#fff', fontWeight: 'bold' },
-  startBtn: { backgroundColor: '#58cc02', padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 20 },
-  startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  filterBoxBtn: { paddingVertical: 8, paddingHorizontal: 12, borderRadius: 20, borderWidth: 1, borderColor: '#ccc' },
-  filterBoxText: { fontSize: 12, fontWeight: '600', color: '#555' }
+    container: { flex: 1 },
+    header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, borderBottomWidth: 1 },
+    headerTitle: { fontSize: 24, fontWeight: 'bold' },
+    content: { padding: 20, paddingBottom: 50 },
+    sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
+    card: { borderRadius: 16, padding: 15, elevation: 2, marginBottom: 10 },
+    optionBtn: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 15, borderRadius: 12, borderWidth: 1, marginBottom: 10 },
+    optionContent: { flexDirection: 'row', alignItems: 'center' },
+    optionText: { fontSize: 16, fontWeight: '600' },
+    optionDesc: { fontSize: 12, color: '#888', marginTop: 2, maxWidth: 220 },
+    badge: { backgroundColor: '#ff4757', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, minWidth: 24, alignItems: 'center' },
+    badgeText: { color: 'white', fontWeight: 'bold', fontSize: 12 },
+
+    // Modal Styles
+    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+    modalContent: { height: '80%', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 20 },
+    modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+    row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1 },
+    label: { fontSize: 14 },
+    countContainer: { flexDirection: 'row', gap: 10 },
+    countBtn: { flex: 1, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
+    countBtnActive: { backgroundColor: '#1cb0f6', borderColor: '#1cb0f6' },
+    countText: { color: '#555', fontWeight: '600' },
+    countTextActive: { color: '#fff', fontWeight: 'bold' },
+    startBtn: { backgroundColor: '#1cb0f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 30, marginBottom: 20 },
+    startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
 });

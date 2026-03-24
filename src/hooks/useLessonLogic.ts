@@ -1,6 +1,4 @@
 import * as Haptics from 'expo-haptics';
-// Speech wird nicht mehr benötigt, da wir die Audiodateien nutzen
-// import * as Speech from 'expo-speech'; 
 import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import content from '../data/content';
@@ -11,46 +9,36 @@ const courseData = content.courses[0] as Course;
 
 const normalizeText = (str: string, removeArticle: boolean = false) => {
   if (!str) return "";
-  
-  // Erstmal in Kleinbuchstaben umwandeln und Leerzeichen am Rand entfernen
   let lowerStr = str.toLowerCase().trim();
 
-  // Wenn gewünscht, Artikel am Anfang des Strings abschneiden
   if (removeArticle) {
-    const articles = [
-      // Portugiesische Artikel
-      "o ", "a ", "os ", "as ", "um ", "uma ", "uns ", "umas ",
-      // Deutsche Artikel
-      "der ", "die ", "das ", "ein ", "eine ", "einen ", "einem ", "einer "
-    ];
-    
+    const articles = ["o ", "a ", "os ", "as ", "um ", "uma ", "uns ", "umas ", "der ", "die ", "das ", "ein ", "eine ", "einen ", "einem ", "einer "];
     for (const article of articles) {
       if (lowerStr.startsWith(article)) {
-        // Schneidet den Artikel ab und entfernt übrige Leerzeichen
         lowerStr = lowerStr.substring(article.length).trim();
-        break; // Sobald ein Artikel gefunden und entfernt wurde, Schleife beenden
+        break;
       }
     }
   }
 
-  // Danach der normale "Aufräum"-Prozess (Akzente, Satzzeichen und Leerzeichen entfernen)
   return lowerStr.normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g, "")
     .replace(/\s+/g, "");
 };
 
-export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null, practiceMode?: string) => {
+// HIER GEÄNDERT: Wir brauchen practiceMode nicht mehr, da wir jetzt ALLES im Practice bewerten
+export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  
+
   const [userInput, setUserInput] = useState('');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  
+
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
@@ -77,7 +65,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         }
       }
 
-      let filtered = rawExercises.filter(ex => 
+      let filtered = rawExercises.filter(ex =>
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
@@ -100,29 +88,22 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
-  // HIER GEÄNDERT: playAudioSuccess umbenannt zu playAudio, um Klarheit zu schaffen
   const checkAnswer = (playAudio: (id: string) => void) => {
     if (!currentExercise) return;
 
     let correct = false;
-    
+
     if (currentExercise.type.includes('translate')) {
-      // 1. Versuch: Strikter Check (inklusive Artikel)
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
       const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
-      
-      if (inputNorm === answerNorm || isAlt) {
-        correct = true;
-      } else {
-        // 2. Versuch: Weicher Check (Artikel ignorieren)
+
+      if (inputNorm === answerNorm || isAlt) correct = true;
+      else {
         const inputSoft = normalizeText(userInput, true);
         const answerSoft = normalizeText(currentExercise.correctAnswer, true);
         const isAltSoft = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt, true) === inputSoft);
-        
-        if (inputSoft === answerSoft || isAltSoft) {
-          correct = true;
-        }
+        if (inputSoft === answerSoft || isAltSoft) correct = true;
       }
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
@@ -131,53 +112,50 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setIsCorrect(correct);
     setShowFeedback(true);
 
+    // 1. Audio & visuelles Feedback abspielen
     if (correct) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        
-        // Spielt die hochwertige Audiodatei ab
-        playAudio(currentExercise.id);
-        
-        if (isPractice) {
-          StorageService.updateStreak();
-        }
-
-        if (isPractice && practiceMode === 'random') {
-             StorageService.trackResult(currentExercise, true, 'practice_random');
-        }
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      playAudio(currentExercise.id);
+      if (isPractice) StorageService.updateStreak();
     } else {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-        setMistakes(prev => prev + 1);
-        
-        // HIER GEÄNDERT: Statt speakCorrection() nutzen wir jetzt AUCH hier die Audiodatei.
-        // Das garantiert, dass die Stimme konsistent zur "richtigen" Antwort ist (europäisch).
-        playAudio(currentExercise.id);
-
-        StorageService.trackResult(currentExercise, false, 'practice_random'); 
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setMistakes(prev => prev + 1);
+      playAudio(currentExercise.id);
     }
 
+    // 2. Tracking Logik nach den "Goldenen Regeln"
     if (!isPractice) {
-        StorageService.trackResult(currentExercise, correct, 'lesson');
-        
-        if (!correct) {
-            setLessonQueue(prevQueue => {
-                const newQueue = [...prevQueue];
-                const remaining = newQueue.length - (currentExerciseIndex + 1);
-                if (remaining > 0) {
-                    const offset = Math.floor(Math.random() * remaining) + 1;
-                    newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
-                } else {
-                    newQueue.push(currentExercise);
-                }
-                return newQueue;
-            });
-        }
+      // REGEL 1 & 2 für den Lernpfad (wird sofort unsichtbar in Schwer eingeordnet)
+      StorageService.trackResult(currentExercise, correct, 'lesson');
+
+      if (!correct) {
+        // Bei falscher Antwort wandert die Karte weiter nach hinten in die Queue
+        setLessonQueue(prevQueue => {
+          const newQueue = [...prevQueue];
+          const remaining = newQueue.length - (currentExerciseIndex + 1);
+          if (remaining > 0) {
+            const offset = Math.floor(Math.random() * remaining) + 1;
+            newQueue.splice(currentExerciseIndex + 1 + offset, 0, currentExercise);
+          } else {
+            newQueue.push(currentExercise);
+          }
+          return newQueue;
+        });
+      }
+    } else {
+      // REGEL 2 für den Übungsbereich: Falsche Antworten werden sofort getrackt
+      // (Richtige Antworten warten hier, bis der Nutzer einen der 3 Buttons drückt)
+      if (!correct) {
+        StorageService.trackResult(currentExercise, false, 'practice');
+      }
     }
   };
 
-  const ratePractice = (box: number) => {
-      if (!currentExercise) return;
-      StorageService.trackResult(currentExercise, true, 'practice_leitner', box);
-      nextExercise();
+  // REGEL 3: Wird aufgerufen, wenn der Nutzer im Übungsbereich "Schwer/Mittel/Leicht" drückt
+  const ratePractice = (boxRating: number) => {
+    if (!currentExercise) return;
+    StorageService.trackResult(currentExercise, true, 'practice', boxRating);
+    nextExercise();
   };
 
   const nextExercise = () => {
@@ -195,7 +173,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     const correctFirstTries = Math.max(0, totalQuestions - mistakes);
     const score = totalQuestions > 0 ? (correctFirstTries / totalQuestions) * 100 : 100;
-    
+
     let stars = 0;
     if (score === 100) stars = 3;
     else if (score >= 75) stars = 2;
