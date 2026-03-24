@@ -386,5 +386,33 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Das Verb 'gostar' (mögen)",
+            "explanation": "Die wichtigste Regel: Auf 'gostar' folgt IMMER die Präposition 'de' (bzw. do/da, wenn ein Artikel folgt)!",
+            "examples": [
+                "Eu gosto de ler. (Ich lese gerne.)",
+                "Tu gostas do livro? (Magst du das Buch?)",
+                "Nós gostamos de café. (Wir mögen Kaffee.)"
+            ]
+        },
+        {
+            "heading": "Modalverben (Können, Wollen, Müssen)",
+            "explanation": "Diese Verben werden zusammen mit dem Infinitiv (der Grundform) eines zweiten Verbs genutzt.",
+            "examples": [
+                "querer (wollen): Eu quero comer. (Ich will essen.)",
+                "poder (können/dürfen): Tu podes ajudar? (Kannst du helfen?)",
+                "precisar de (brauchen/müssen): Eu preciso de dormir. (Ich muss schlafen.)"
+            ]
+        },
+        {
+            "heading": "Die Verlaufsform (Gerade etwas tun)",
+            "explanation": "Ganz wichtig in Portugal: Um auszudrücken, dass du GERADE JETZT etwas tust, nutzt man 'estar a + Infinitiv' (nicht die Form auf -ndo wie in Brasilien!).",
+            "examples": [
+                "Eu estou a comer. (Ich esse gerade.)",
+                "Ele está a trabalhar. (Er arbeitet gerade.)"
+            ]
+        }
     ]
 }

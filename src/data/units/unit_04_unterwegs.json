@@ -389,5 +389,25 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Das Verb 'ir' (gehen/fahren)",
+            "explanation": "Ein unregelmäßiges Verb für Bewegungen von A nach B. Es wird meist mit der Präposition 'a' (kurzer Aufenthalt) oder 'para' (längerer Aufenthalt/Ziel) verwendet.",
+            "examples": [
+                "eu vou (ich gehe), tu vais (du gehst), ele vai (er geht)",
+                "nós vamos (wir gehen), eles vão (sie gehen)",
+                "Eu vou a Lisboa. (Ich fahre nach Lissabon.)"
+            ]
+        },
+        {
+            "heading": "Verschmelzung von Präpositionen",
+            "explanation": "Präpositionen wie 'de' (von/aus) oder 'em' (in/an/auf) verschmelzen im Portugiesischen fest mit dem bestimmten Artikel (o/a).",
+            "examples": [
+                "de + o = do / de + a = da (Ich komme 'do' supermercado)",
+                "em + o = no / em + a = na (Ich bin 'na' escola)",
+                "a + o = ao / a + a = à (Ich gehe 'ao' cinema)"
+            ]
+        }
     ]
 }

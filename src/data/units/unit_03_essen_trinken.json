@@ -419,5 +419,35 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Regelmäßige Verben auf '-ar'",
+            "explanation": "Die meisten Verben enden auf '-ar' (z.B. falar = sprechen). Der Wortstamm bleibt gleich, nur die Endung ändert sich.",
+            "examples": [
+                "eu falo (ich spreche)",
+                "tu falas (du sprichst)",
+                "ele/ela fala (er/sie spricht)",
+                "nós falamos (wir sprechen)",
+                "eles/elas falam (sie sprechen)"
+            ]
+        },
+        {
+            "heading": "Das Verb 'ter' (haben)",
+            "explanation": "Ein extrem wichtiges unregelmäßiges Verb. Wichtig: Im Portugiesischen 'hat' man auch ein Alter, man 'ist' es nicht!",
+            "examples": [
+                "eu tenho (ich habe), tu tens (du hast), ele tem (er hat)",
+                "nós temos (wir haben), eles têm (sie haben - mit Zirkumflex!)",
+                "Eu tenho vinte anos. (Ich bin zwanzig Jahre alt.)"
+            ]
+        },
+        {
+            "heading": "Plural bilden (Grundregel)",
+            "explanation": "Wenn ein Wort auf einen Vokal (a, e, i, o, u) endet, hängst du für die Mehrzahl einfach ein '-s' an.",
+            "examples": [
+                "o prato -> os pratos (der Teller -> die Teller)",
+                "a maçã -> as maçãs (der Apfel -> die Äpfel)"
+            ]
+        }
     ]
 }

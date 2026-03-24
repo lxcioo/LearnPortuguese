@@ -381,5 +381,25 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Es gibt... (Haver)",
+            "explanation": "Um auszudrücken, dass etwas an einem Ort existiert ('there is/are'), nutzt man in Portugal das Verb 'haver' in der Form 'há'. (In Brasilien sagt man oft 'tem').",
+            "examples": [
+                "Há uma cama no quarto. (Es gibt ein Bett im Zimmer.)",
+                "Há muitas casas aqui. (Es gibt hier viele Häuser.)",
+                "Não há pão. (Es gibt kein Brot.)"
+            ]
+        },
+        {
+            "heading": "Demonstrativpronomen (Dieser, Jener)",
+            "explanation": "Man unterscheidet präzise, wie weit ein Gegenstand entfernt ist.",
+            "examples": [
+                "este/esta (dieser hier - nah bei mir)",
+                "esse/essa (der da - nah bei dir)",
+                "aquele/aquela (jener dort drüben - weit weg von uns beiden)"
+            ]
+        }
     ]
 }

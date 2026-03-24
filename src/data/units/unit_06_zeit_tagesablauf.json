@@ -401,5 +401,32 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Verben auf '-er' und '-ir'",
+            "explanation": "Neben '-ar' gibt es zwei weitere regelmäßige Verbgruppen. Sie funktionieren ähnlich, nur mit 'e' oder 'i' in der Endung.",
+            "examples": [
+                "comer (essen): eu como, tu comes, ele come, nós comemos, eles comem",
+                "abrir (öffnen): eu abro, tu abres, ele abre, nós abrimos, eles abrem"
+            ]
+        },
+        {
+            "heading": "Reflexive Verben (Typisch PT-PT)",
+            "explanation": "Verben, die man 'mit sich selbst' tut (sich waschen, sich aufstehen). In Portugal wird das Pronomen meistens MIT BINDESTRICH an das Ende des Verbs gehängt!",
+            "examples": [
+                "chamar-se (heißen): Eu chamo-me... (Ich heiße...)",
+                "levantar-se (aufstehen): Tu levantas-te cedo. (Du stehst früh auf.)"
+            ]
+        },
+        {
+            "heading": "Uhrzeiten (Que horas são?)",
+            "explanation": "Um nach der Uhrzeit zu fragen oder sie zu nennen, nutzt man den Plural des Verbs 'ser' (außer bei 1 Uhr).",
+            "examples": [
+                "É uma hora. (Es ist ein Uhr. - Singular!)",
+                "São duas horas. (Es ist zwei Uhr. - Plural)",
+                "São dez e meia. (Es ist halb elf. / wörtl: 10 und eine halbe)"
+            ]
+        }
     ]
 }

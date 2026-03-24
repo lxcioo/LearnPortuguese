@@ -432,5 +432,25 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Das Verb 'estar' (sein)",
+            "explanation": "Anders als 'ser' nutzt du 'estar' für vorübergehende Zustände: Gefühle, Orte oder das Wetter.",
+            "examples": [
+                "eu estou (ich bin), tu estás (du bist), ele está (er ist)",
+                "nós estamos (wir sind), eles estão (sie sind)",
+                "Eu estou bem. (Mir geht es gut.) - Onde estás? (Wo bist du?)"
+            ]
+        },
+        {
+            "heading": "Fragen und Verneinung",
+            "explanation": "Fragen bildet man ganz einfach: Die Wortstellung bleibt oft wie im Aussagesatz, nur die Betonung am Ende geht nach oben. Für die Verneinung setzt man ein 'não' direkt vor das Verb.",
+            "examples": [
+                "Tu falas português? (Sprichst du Portugiesisch?)",
+                "Eu não falo português. (Ich spreche kein Portugiesisch.)",
+                "Onde (Wo), Como (Wie), Quem (Wer), O que (Was)"
+            ]
+        }
     ]
 }

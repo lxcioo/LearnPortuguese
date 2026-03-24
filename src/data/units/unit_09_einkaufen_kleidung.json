@@ -381,5 +381,25 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Vergleiche ziehen",
+            "explanation": "Vergleiche baut man mit 'mais... do que' (mehr als) oder 'menos... do que' (weniger als).",
+            "examples": [
+                "A blusa é mais cara do que a calça. (Die Bluse ist teurer als die Hose.)",
+                "O sapato é menos confortável. (Der Schuh ist weniger bequem.)",
+                "tão ... como (genauso ... wie) - tão grande como (genauso groß wie)"
+            ]
+        },
+        {
+            "heading": "Direkte Objektpronomen (ihn, sie, es)",
+            "explanation": "Um Nomen nicht ständig zu wiederholen, ersetzt man sie. In Portugal werden diese winzigen Wörter mit Bindestrich ans Verb gehängt.",
+            "examples": [
+                "o (ihn/es), a (sie/es), os/as (sie - Plural)",
+                "Eu compro o carro -> Eu compro-o. (Ich kaufe ihn.)",
+                "Eu bebo a água -> Eu bebo-a. (Ich trinke sie.)"
+            ]
+        }
     ]
 }

@@ -375,5 +375,34 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Das Verb 'fazer' (machen/tun)",
+            "explanation": "Ein sehr unregelmäßiges und wichtiges Verb für Handlungen und auch das Wetter.",
+            "examples": [
+                "eu faço (ich mache), tu fazes (du machst), ele faz (er macht)",
+                "nós fazemos (wir machen), eles fazem (sie machen)",
+                "Faz sol. (Es ist sonnig / wörtl: Es macht Sonne.)"
+            ]
+        },
+        {
+            "heading": "Zustände ausdrücken (Estar com)",
+            "explanation": "Im Deutschen 'hat' man Hunger oder einem 'ist' kalt. Im Portugiesischen ist man *mit* dem Zustand (estar com).",
+            "examples": [
+                "estar com fome (Hunger haben / wörtl. mit Hunger sein)",
+                "estar com sede (Durst haben)",
+                "estar com frio (frieren / kalt sein)",
+                "estar com dor de cabeça (Kopfschmerzen haben)"
+            ]
+        },
+        {
+            "heading": "Das Verb 'doer' (wehtun)",
+            "explanation": "Dieses Verb funktioniert wie im Deutschen: Es passt sich dem Körperteil an, das wehtut.",
+            "examples": [
+                "Dói-me a cabeça. (Mir tut der Kopf weh. - Singular)",
+                "Doem-me os pés. (Mir tun die Füße weh. - Plural)"
+            ]
+        }
     ]
 }

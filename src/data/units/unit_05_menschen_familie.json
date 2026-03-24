@@ -364,5 +364,25 @@
                 }
             ]
         }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Besitzanzeigende Fürwörter (mein, dein)",
+            "explanation": "Besitzwörter passen sich an das Geschlecht und die Anzahl des Objekts an (nicht an den Besitzer!). In Portugal setzt man zudem fast immer den bestimmten Artikel (o/a) davor!",
+            "examples": [
+                "o meu pai (mein Vater), a minha mãe (meine Mutter)",
+                "os meus pais (meine Eltern)",
+                "o teu irmão (dein Bruder), a tua irmã (deine Schwester)"
+            ]
+        },
+        {
+            "heading": "Adjektive (Eigenschaftswörter)",
+            "explanation": "Adjektive stehen fast immer HINTER dem Nomen. Auch sie müssen in Geschlecht (m/w) und Zahl (Singular/Plural) an das Nomen angepasst werden.",
+            "examples": [
+                "um homem alto (ein großer Mann)",
+                "uma mulher alta (eine große Frau)",
+                "dois gatos pretos (zwei schwarze Katzen)"
+            ]
+        }
     ]
 }

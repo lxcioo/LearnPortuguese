@@ -448,25 +448,32 @@
             ]
         }
     ],
-
     "grammarGuide": [
         {
-            "heading": "Begrüßungen",
-            "explanation": "Im Portugiesischen gibt es verschiedene Begrüßungen, je nach Tageszeit. Achte darauf, dass 'Bom dia' wirklich nur bis zum Mittag gesagt wird.",
+            "heading": "Die Artikel (Der, Die, Das)",
+            "explanation": "Im Portugiesischen gibt es nur männlich und weiblich. Ein neutrales 'das' existiert nicht. Männliche Wörter enden meist auf '-o', weibliche auf '-a'.",
             "examples": [
-                "Bom dia - Guten Morgen (bis ca. 12 Uhr)",
-                "Boa tarde - Guten Tag (bis Sonnenuntergang)",
-                "Boa noite - Guten Abend / Gute Nacht"
+                "o menino (der Junge) - a menina (das Mädchen)",
+                "um carro (ein Auto) - uma casa (ein Haus)"
             ]
-            },
-            {
-            "heading": "Das Geschlecht (O vs. A)",
-            "explanation": "Fast alle Substantive im Portugiesischen sind entweder männlich (enden oft auf -o) oder weiblich (enden oft auf -a). Die Artikel passen sich an:",
+        },
+        {
+            "heading": "Personalpronomen (Eu, Tu, Ele...)",
+            "explanation": "In Portugal nutzt man für 'du' fast immer 'tu'. 'Você' wird in Portugal eher vermieden oder nur für formellere Distanz genutzt. Höflich spricht man mit 'o senhor / a senhora'.",
             "examples": [
-                "o menino - der Junge",
-                "a menina - das Mädchen"
+                "eu (ich), tu (du)",
+                "ele (er), ela (sie)",
+                "nós (wir), eles/elas (sie - Plural)"
             ]
-            }
-
+        },
+        {
+            "heading": "Das Verb 'ser' (sein)",
+            "explanation": "Dieses Verb nutzt du für dauerhafte Eigenschaften: Herkunft, Beruf, Charakter oder feste Tatsachen.",
+            "examples": [
+                "eu sou (ich bin), tu és (du bist), ele/ela é (er/sie ist)",
+                "nós somos (wir sind), eles/elas são (sie sind)",
+                "Eu sou de Berlim. (Ich bin aus Berlin.)"
+            ]
+        }
     ]
 }
