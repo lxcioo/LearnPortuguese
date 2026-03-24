@@ -3,13 +3,15 @@ import { NotificationService } from '@/src/services/NotificationService';
 import { StorageService } from '@/src/services/StorageService';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
-import { Stack } from 'expo-router';
+import { ErrorBoundaryProps, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ErrorFallbackScreen } from '../src/components/ui/ErrorFallbackScreen';
+import { DiscordService } from '../src/services/DiscordService';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,7 +20,7 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-    shouldShowBanner: true, 
+    shouldShowBanner: true,
     shouldShowList: true,
   }),
 });
@@ -44,7 +46,7 @@ function RootLayoutNav() {
       try {
         // 2. Timeout hinzufügen (5 Sekunden), damit die App nicht hängt
         const updateCheck = Updates.checkForUpdateAsync();
-        const timeout = new Promise((_, reject) => 
+        const timeout = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Timeout')), 5000)
         );
 
@@ -67,15 +69,15 @@ function RootLayoutNav() {
   }, []);
 
   useEffect(() => {
-      if (!isThemeLoading && !isUpdateChecking) {
-        SplashScreen.hideAsync();
+    if (!isThemeLoading && !isUpdateChecking) {
+      SplashScreen.hideAsync();
 
-        // Prüfen, ob heute schon gelernt wurde und Benachrichtigungen entsprechend planen
-        StorageService.hasCompletedDailyGoal().then(hasCompleted => {
-          NotificationService.setupNotifications(hasCompleted);
-        });
-      }
-    }, [isThemeLoading, isUpdateChecking]);
+      // Prüfen, ob heute schon gelernt wurde und Benachrichtigungen entsprechend planen
+      StorageService.hasCompletedDailyGoal().then(hasCompleted => {
+        NotificationService.setupNotifications(hasCompleted);
+      });
+    }
+  }, [isThemeLoading, isUpdateChecking]);
 
   // Solange geladen wird, nichts rendern (Splash Screen ist noch sichtbar)
   if (isThemeLoading || isUpdateChecking) {
@@ -105,4 +107,13 @@ export default function RootLayout() {
       </ThemeProvider>
     </SafeAreaProvider>
   );
+}
+
+// NEU: Expo Router Error Boundary
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  useEffect(() => {
+    DiscordService.sendCrashReport(error);
+  }, [error]);
+
+  return <ErrorFallbackScreen retry={retry} />;
 }
