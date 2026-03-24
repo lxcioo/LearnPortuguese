@@ -53,7 +53,6 @@ export const StorageService = {
       let entry = db[exercise.id];
       const isNewEntry = !entry;
 
-      // NEU & WICHTIG: War die Vokabel laut Leitner-System überhaupt fällig?
       const wasDue = entry ? now >= new Date(entry.nextReviewDate) : true;
 
       if (!entry) {
@@ -79,7 +78,12 @@ export const StorageService = {
       if (isCorrect) {
         entry.successCount++;
         entry.solvedToday++;
-        entry.mistakesToday = 0;
+
+        // FIX FÜR "HEUTIGE FEHLER": Wird nur genullt, wenn man es aktiv im Übungsbereich trainiert!
+        // Korrigiert man es nur am Ende einer Lektion, bleibt es für heute als Fehler gespeichert.
+        if (source === 'practice') {
+          entry.mistakesToday = 0;
+        }
       } else {
         entry.mistakeCount++;
         entry.mistakesToday++;
@@ -96,18 +100,14 @@ export const StorageService = {
         else {
           if (userRating) {
             if (entry.box === 3 && userRating === 3) {
-              // LOGIK-FIX 1: Nur ins Sternchen aufsteigen, wenn die 10-14 Tage auch um waren!
               if (wasDue) {
                 targetBox = 4;
               } else {
-                // Ansonsten bleibt sie in Box 3, aber der Timer (10-14 Tage) wird neu gestartet
                 targetBox = 3;
               }
             } else if (entry.box === 4 && userRating === 3) {
-              // LOGIK-FIX 2: Ein Sternchen verliert seinen Status nicht, wenn man "Leicht" drückt
               targetBox = 4;
             } else {
-              // In allen anderen Fällen (Schwer oder Mittel) wird die Box ganz normal angepasst
               targetBox = userRating;
             }
           }
@@ -285,7 +285,7 @@ export const StorageService = {
     }
   },
 
-  async updateStreak() {
+  async updateStreak(forceComplete: boolean = false) {
     try {
       const todayObj = new Date();
       const todayStr = todayObj.toISOString().split('T')[0];
@@ -295,7 +295,8 @@ export const StorageService = {
       let dailyData = dailyProgressStr ? JSON.parse(dailyProgressStr) : { count: 0, date: todayDateString };
       if (dailyData.date !== todayDateString) dailyData = { count: 0, date: todayDateString };
 
-      dailyData.count += 1;
+      // Wenn 'forceComplete' true ist (Lektion abgeschlossen), direkt 15 Punkte geben!
+      dailyData.count += forceComplete ? 15 : 1;
       await AsyncStorage.setItem(KEYS.DAILY_PROGRESS, JSON.stringify(dailyData));
 
       if (dailyData.count >= 15) {
@@ -327,7 +328,6 @@ export const StorageService = {
           }
           await AsyncStorage.setItem(KEYS.STREAK_DATA, JSON.stringify(streakData));
 
-          // NEU: Tagesziel erreicht! Wir stornieren die heutigen Benachrichtigungen
           NotificationService.rescheduleReminders(true);
         }
       }

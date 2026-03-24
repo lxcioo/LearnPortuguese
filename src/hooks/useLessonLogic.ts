@@ -112,10 +112,11 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setIsCorrect(correct);
     setShowFeedback(true);
 
-    // 1. Audio & visuelles Feedback abspielen
     if (correct) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       playAudio(currentExercise.id);
+
+      // Im Übungsbereich gibt es pro richtiger Antwort +1 auf den Streak-Zähler
       if (isPractice) StorageService.updateStreak();
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -123,13 +124,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
       playAudio(currentExercise.id);
     }
 
-    // 2. Tracking Logik nach den "Goldenen Regeln"
     if (!isPractice) {
-      // REGEL 1 & 2 für den Lernpfad (wird sofort unsichtbar in Schwer eingeordnet)
       StorageService.trackResult(currentExercise, correct, 'lesson');
 
       if (!correct) {
-        // Bei falscher Antwort wandert die Karte weiter nach hinten in die Queue
         setLessonQueue(prevQueue => {
           const newQueue = [...prevQueue];
           const remaining = newQueue.length - (currentExerciseIndex + 1);
@@ -143,8 +141,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         });
       }
     } else {
-      // REGEL 2 für den Übungsbereich: Falsche Antworten werden sofort getrackt
-      // (Richtige Antworten warten hier, bis der Nutzer einen der 3 Buttons drückt)
       if (!correct) {
         StorageService.trackResult(currentExercise, false, 'practice');
       }
@@ -182,8 +178,9 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setEarnedStars(stars);
     setIsLessonFinished(true);
 
+    // FIX: Wenn der Lernpfad abgeschlossen wird, bekommt man GARANTIERT sofort den Streak (+15)
     if (!isPractice) {
-      StorageService.updateStreak();
+      StorageService.updateStreak(true);
     }
 
     if (lessonType === 'exam') {
