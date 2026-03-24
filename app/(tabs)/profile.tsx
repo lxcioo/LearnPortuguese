@@ -23,10 +23,18 @@ export default function ProfileScreen() {
   const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
   const [showAllAchievements, setShowAllAchievements] = useState(false);
 
+  // NEU: States für die neuen Errungenschaften
+  const [box4Count, setBox4Count] = useState(0);
+  const [todayMistakesCount, setTodayMistakesCount] = useState(-1);
+
   useFocusEffect(
     useCallback(() => {
       StorageService.getUserProfile().then(setProfile);
       StorageService.getDailyStats().then(setDailyStats);
+
+      // NEU: Leitner-Stats (Box 4) und heutige Fehler abrufen
+      StorageService.getLeitnerStats().then(stats => setBox4Count(stats[4] || 0));
+      StorageService.getTodayMistakes().then(mistakes => setTodayMistakesCount(mistakes.length));
     }, [])
   );
 
@@ -51,28 +59,45 @@ export default function ProfileScreen() {
   const passedExamsCount = Object.keys(safeExamScores).length;
   const usedIce = streakData ? Object.values(streakData.history || {}).includes('frozen') : false;
 
+  // NEU: Logik für die "Weiße Weste"
+  const hasCleanSlate = todayMistakesCount === 0 && dailyStats.wordsLearned > 30;
+
+  // ANGEPASST: Die Limits basieren nun exakt auf 30 Lektionen, 90 Sternen und 10 Prüfungen
   const achievements: Achievement[] = [
+    // Lektionen
     { id: 'les_1', title: 'Erste Schritte', description: '1 Lektion abgeschlossen.', icon: 'footsteps', isUnlocked: completedLessonsCount >= 1 },
-    { id: 'les_5', title: 'Aufwärmphase', description: '5 Lektionen abgeschlossen.', icon: 'walk', isUnlocked: completedLessonsCount >= 5 },
-    { id: 'les_10', title: 'Fleißig', description: '10 Lektionen abgeschlossen.', icon: 'bicycle', isUnlocked: completedLessonsCount >= 10 },
-    { id: 'les_25', title: 'Halbzeit', description: '25 Lektionen abgeschlossen.', icon: 'car', isUnlocked: completedLessonsCount >= 25 },
-    { id: 'les_50', title: 'Lernmaschine', description: '50 Lektionen abgeschlossen.', icon: 'airplane', isUnlocked: completedLessonsCount >= 50 },
+    { id: 'les_10', title: 'Dranbleiber', description: '10 Lektionen abgeschlossen.', icon: 'bicycle', isUnlocked: completedLessonsCount >= 10 },
+    { id: 'les_20', title: 'Halbzeit', description: '20 Lektionen abgeschlossen.', icon: 'car', isUnlocked: completedLessonsCount >= 20 },
+    { id: 'les_30', title: 'Meister des Pfads', description: 'Alle 30 Lektionen abgeschlossen.', icon: 'airplane', isUnlocked: completedLessonsCount >= 30 },
+
+    // Streaks
     { id: 'streak_7', title: 'Feuer & Flamme', description: '7-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 7 },
-    { id: 'streak_14', title: 'Dranbleiber', description: '14-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 14 },
     { id: 'streak_30', title: 'Gewohnheitstier', description: '30-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 30 },
-    { id: 'streak_50', title: 'Eiserner Wille', description: '50-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 50 },
     { id: 'streak_100', title: 'Hundert-Tage-Club', description: '100-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 100 },
+    { id: 'streak_180', title: 'Halbes Jahr!', description: '180-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 180 },
     { id: 'streak_365', title: 'Ein ganzes Jahr!', description: '365-Tage-Lernserie.', icon: 'flame', isUnlocked: safeStreak >= 365 },
-    { id: 'perf_1', title: 'Perfektionist', description: '1 Lektion mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 1 },
-    { id: 'perf_5', title: 'Streber', description: '5 Lektionen mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 5 },
-    { id: 'perf_10', title: 'Meisterhaft', description: '10 Lektionen mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 10 },
-    { id: 'perf_25', title: 'Makellos', description: '25 Lektionen mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 25 },
-    { id: 'stars_10', title: 'Sternensammler', description: 'Sammle insgesamt 10 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 10 },
-    { id: 'stars_50', title: 'Sternenflotte', description: 'Sammle insgesamt 50 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 50 },
-    { id: 'stars_100', title: 'Galaxie', description: 'Sammle insgesamt 100 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 100 },
+
+    // Sterne
+    { id: 'stars_30', title: 'Sternensammler', description: 'Sammle insgesamt 30 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 30 },
+    { id: 'stars_60', title: 'Sternenflotte', description: 'Sammle insgesamt 60 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 60 },
+    { id: 'stars_90', title: 'Galaxie', description: 'Sammle alle 90 Sterne.', icon: 'sparkles', isUnlocked: totalStars >= 90 },
+
+    // Prüfungen
     { id: 'exam_1', title: 'Prüfling', description: 'Bestehe 1 Prüfung.', icon: 'trophy', isUnlocked: passedExamsCount >= 1 },
-    { id: 'exam_3', title: 'Experte', description: 'Bestehe 3 Prüfungen.', icon: 'trophy', isUnlocked: passedExamsCount >= 3 },
-    { id: 'exam_5', title: 'Champion', description: 'Bestehe 5 Prüfungen.', icon: 'trophy', isUnlocked: passedExamsCount >= 5 },
+    { id: 'exam_5', title: 'Experte', description: 'Bestehe 5 Prüfungen.', icon: 'trophy', isUnlocked: passedExamsCount >= 5 },
+    { id: 'exam_10', title: 'Meisterabschluss', description: 'Bestehe alle 10 Prüfungen.', icon: 'trophy', isUnlocked: passedExamsCount >= 10 },
+
+    // Perfektion
+    { id: 'perf_1', title: 'Perfektionist', description: '1 Lektion mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 1 },
+    { id: 'perf_10', title: 'Streber', description: '10 Lektionen mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 10 },
+    { id: 'perf_30', title: 'Makellos', description: 'Alle 30 Lektionen mit 3 Sternen.', icon: 'star', isUnlocked: threeStarLessonsCount >= 30 },
+
+    // Langzeit & Übung (NEU)
+    { id: 'mem_10', title: 'Merkfähig', description: 'Bringe 10 Wörter ins Langzeitgedächtnis (Stern-Box).', icon: 'brain', isUnlocked: box4Count >= 10 },
+    { id: 'mem_50', title: 'Elefantengedächtnis', description: 'Bringe 50 Wörter ins Langzeitgedächtnis.', icon: 'brain', isUnlocked: box4Count >= 50 },
+    { id: 'clean_slate', title: 'Weiße Weste', description: 'Lerne heute (min 30 Wörter) und korrigiere alle deine heutigen Fehler.', icon: 'checkmark-done-circle', isUnlocked: hasCleanSlate },
+
+    // Eisflamme
     { id: 'ice', title: 'Gerettet!', description: 'Nutze eine Eisflamme um deinen Streak zu retten.', icon: 'snow', isUnlocked: usedIce }
   ];
 
@@ -115,7 +140,7 @@ export default function ProfileScreen() {
           <Text style={styles.progressHint}>Noch {xpForNextLevel - currentLevelXP} XP bis Level {currentLevel + 1}!</Text>
         </View>
 
-        {/* NEU HIER: STATISTIK HEUTE */}
+        {/* STATISTIK HEUTE */}
         <Text style={[styles.sectionTitle, { color: currentColors.icon, marginTop: 10 }]}>STATISTIK HEUTE</Text>
         <View style={[styles.card, { backgroundColor: theme === 'dark' ? '#222' : '#f9f9f9', flexDirection: 'row', alignItems: 'flex-end', height: 120, justifyContent: 'space-around', paddingBottom: 20 }]}>
           <View style={{ alignItems: 'center' }}>
