@@ -33,6 +33,11 @@ export default function PracticeScreen() {
     const [questionCount, setQuestionCount] = useState<number | 'all'>(15);
     const [customCountText, setCustomCountText] = useState('');
 
+    // States für das Box-Detail-Modal
+    const [isBoxModalVisible, setBoxModalVisible] = useState(false);
+    const [selectedBoxLabel, setSelectedBoxLabel] = useState("");
+    const [boxVocabList, setBoxVocabList] = useState<any[]>([]);
+
     useFocusEffect(
         useCallback(() => {
             loadData();
@@ -46,6 +51,18 @@ export default function PracticeScreen() {
         setDueCount(dueExercises.length);
         const todayMistakes = await StorageService.getTodayMistakes();
         setTodayMistakeCount(todayMistakes.length);
+    };
+
+    const openBoxDetails = async (boxIndex: number) => {
+        if (leitnerCounts[boxIndex] === 0) {
+            Alert.alert("Leer", `Du hast aktuell keine Vokabeln im Bereich "${BOX_LABELS[boxIndex]}".`);
+            return;
+        }
+
+        const exercises = await StorageService.getVocabForBox(boxIndex);
+        setBoxVocabList(exercises);
+        setSelectedBoxLabel(BOX_LABELS[boxIndex]);
+        setBoxModalVisible(true);
     };
 
     const toggleLesson = (id: string) => {
@@ -120,7 +137,12 @@ export default function PracticeScreen() {
                 <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 15 }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 }}>
                         {[1, 2, 3, 4].map(box => (
-                            <View key={box} style={{ alignItems: 'center', flex: 1 }}>
+                            <TouchableOpacity
+                                key={box}
+                                style={{ alignItems: 'center', flex: 1 }}
+                                onPress={() => openBoxDetails(box)}
+                                activeOpacity={0.7}
+                            >
                                 <Text style={{ fontSize: 12, fontWeight: 'bold', color: theme.subText, marginBottom: 4 }}>{leitnerCounts[box] || 0}</Text>
                                 <View style={{
                                     width: 24,
@@ -130,7 +152,7 @@ export default function PracticeScreen() {
                                     borderRadius: 6
                                 }} />
                                 <Text style={{ color: theme.text, fontSize: 12, fontWeight: 'bold', marginTop: 8 }}>{BOX_LABELS[box]}</Text>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 </View>
@@ -257,6 +279,40 @@ export default function PracticeScreen() {
                     </View>
                 </View>
             </Modal>
+            {/* --- MODAL FÜR BOX-DETAILS (VOKABEL-LISTE) --- */}
+            <Modal visible={isBoxModalVisible} animationType="slide" transparent={true}>
+                <View style={styles.modalOverlay}>
+                    <View style={[styles.modalContent, { backgroundColor: theme.background, height: '85%' }]}>
+                        <View style={styles.modalHeader}>
+                            <View>
+                                <Text style={[styles.headerTitle, { color: theme.text }]}>{selectedBoxLabel}</Text>
+                                <Text style={{ color: theme.subText, fontSize: 13 }}>{boxVocabList.length} Vokabeln in diesem Fach</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => setBoxModalVisible(false)} style={styles.closeBtn}>
+                                <Ionicons name="close" size={24} color={theme.text} />
+                            </TouchableOpacity>
+                        </View>
+
+                        <ScrollView style={{ marginTop: 15 }} showsVerticalScrollIndicator={false}>
+                            {boxVocabList.map((ex, index) => (
+                                <View key={`${ex.id}-${index}`} style={[styles.vocabCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+                                    <View style={styles.vocabContent}>
+                                        <Text style={[styles.vocabQuestion, { color: theme.text }]}>{ex.question}</Text>
+                                        <Text style={[styles.vocabAnswer, { color: theme.subText }]}>{ex.correctAnswer}</Text>
+                                    </View>
+                                    {/* Optional: Anzeige des Aufgabentyps als kleines Icon */}
+                                    <Ionicons
+                                        name={ex.type === 'listen' ? 'headset' : 'language'}
+                                        size={20}
+                                        color={theme.border}
+                                    />
+                                </View>
+                            ))}
+                            <View style={{ height: 30 }} />
+                        </ScrollView>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 }
@@ -289,4 +345,38 @@ const styles = StyleSheet.create({
     customInput: { flex: 1.2, padding: 12, borderRadius: 8, borderWidth: 1, textAlign: 'center', fontWeight: 'bold' },
     startBtn: { backgroundColor: '#1cb0f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 30, marginBottom: 20 },
     startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
+
+    // Styles für das Vokabel-Detail Modal
+    vocabCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+        marginBottom: 10,
+        elevation: 1, // Leichter Schatten auf Android
+        shadowColor: '#000', // Leichter Schatten auf iOS
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.05,
+        shadowRadius: 2,
+    },
+    vocabContent: {
+        flex: 1,
+        paddingRight: 10,
+    },
+    vocabQuestion: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 6,
+    },
+    vocabAnswer: {
+        fontSize: 15,
+        fontStyle: 'italic',
+    },
+    closeBtn: {
+        padding: 8,
+        backgroundColor: 'rgba(0,0,0,0.05)',
+        borderRadius: 20,
+    },
 });

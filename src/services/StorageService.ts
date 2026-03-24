@@ -373,5 +373,21 @@ export const StorageService = {
       const todayStr = new Date().toISOString().split('T')[0];
       return streakData.history?.[todayStr] === 'learned';
     } catch (e) { return false; }
-  }
+  },
+
+  // Neue Methode: Holt alle Vokabeln einer spezifischen Box
+  async getVocabForBox(boxIndex: number): Promise<Exercise[]> {
+    try {
+      const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
+      if (!json) return [];
+      const db: VocabDatabase = JSON.parse(json);
+
+      return Object.values(db)
+        .filter(entry => entry.box === boxIndex)
+        .map(entry => entry.exerciseRef);
+    } catch (e) {
+      console.error("Fehler beim Laden der Box-Vokabeln", e);
+      return [];
+    }
+  },
 };
