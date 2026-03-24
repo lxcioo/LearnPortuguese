@@ -1,3 +1,4 @@
+import { Colors } from '@/src/constants/theme';
 import { ThemeProvider, useTheme } from '@/src/context/ThemeContext';
 import { NotificationService } from '@/src/services/NotificationService';
 import { StorageService } from '@/src/services/StorageService';
@@ -6,6 +7,7 @@ import * as Notifications from 'expo-notifications';
 import { ErrorBoundaryProps, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import * as SystemUI from 'expo-system-ui';
 import * as Updates from 'expo-updates';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
@@ -31,12 +33,34 @@ export const unstable_settings = {
 
 function RootLayoutNav() {
   const { isDarkMode, isLoading: isThemeLoading } = useTheme();
-  // Neuer State für den Update-Check
   const [isUpdateChecking, setIsUpdateChecking] = useState(true);
+
+  // --- NEU: Das native Basis-Fenster von Android/iOS einfärben ---
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(
+      isDarkMode ? Colors.dark.background : Colors.light.background
+    );
+  }, [isDarkMode]);
+
+  // NEU: Wir passen das Standard-Theme von React Navigation an deine Farben an
+  const MyLightTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: Colors.light.background,
+    },
+  };
+
+  const MyDarkTheme = {
+    ...DarkTheme,
+    colors: {
+      ...DarkTheme.colors,
+      background: Colors.dark.background,
+    },
+  };
 
   useEffect(() => {
     async function checkUpdates() {
-      // 1. Im Development-Modus (lokal) Updates überspringen
       if (__DEV__) {
         console.log('Dev mode: Skipping update check');
         setIsUpdateChecking(false);
@@ -44,13 +68,11 @@ function RootLayoutNav() {
       }
 
       try {
-        // 2. Timeout hinzufügen (5 Sekunden), damit die App nicht hängt
         const updateCheck = Updates.checkForUpdateAsync();
         const timeout = new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Timeout')), 5000)
         );
 
-        // Renne gegen die Zeit: Entweder Update-Check fertig ODER Timeout
         const result: any = await Promise.race([updateCheck, timeout]);
 
         if (result?.isAvailable) {
@@ -58,7 +80,6 @@ function RootLayoutNav() {
           await Updates.reloadAsync();
         }
       } catch (e) {
-        // Fehler ignorieren (z.B. kein Internet oder Timeout), damit die App trotzdem startet
         console.log('Update check failed or timed out:', e);
       } finally {
         setIsUpdateChecking(false);
@@ -72,21 +93,27 @@ function RootLayoutNav() {
     if (!isThemeLoading && !isUpdateChecking) {
       SplashScreen.hideAsync();
 
-      // Prüfen, ob heute schon gelernt wurde und Benachrichtigungen entsprechend planen
       StorageService.hasCompletedDailyGoal().then(hasCompleted => {
         NotificationService.setupNotifications(hasCompleted);
       });
     }
   }, [isThemeLoading, isUpdateChecking]);
 
-  // Solange geladen wird, nichts rendern (Splash Screen ist noch sichtbar)
   if (isThemeLoading || isUpdateChecking) {
     return null;
   }
 
   return (
-    <NavigationThemeProvider value={isDarkMode ? DarkTheme : DefaultTheme}>
-      <Stack>
+    // NEU: Hier übergeben wir unsere angepassten Themes
+    <NavigationThemeProvider value={isDarkMode ? MyDarkTheme : MyLightTheme}>
+      <Stack
+        // NEU: Verhindert den weißen Balken bei Slide-Animationen
+        screenOptions={{
+          contentStyle: {
+            backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background
+          }
+        }}
+      >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         <Stack.Screen name="lesson" options={{ headerShown: false }} />
