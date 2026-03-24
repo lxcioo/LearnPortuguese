@@ -7,10 +7,22 @@ import {
   ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform,
   ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View
 } from 'react-native';
+import Animated, {
+  FadeInRight,
+  FadeOutLeft,
+  ZoomIn,
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../src/context/ThemeContext';
 import { useAudioPlayer } from '../src/hooks/useAudioPlayer';
 import { useLessonLogic } from '../src/hooks/useLessonLogic';
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 export default function LessonScreen() {
   const router = useRouter();
@@ -30,6 +42,38 @@ export default function LessonScreen() {
     checkAnswer, nextExercise, ratePractice, isPractice,
     getSolutionDisplay
   } = useLessonLogic(lessonId, lessonType, gender);
+
+  // --- ANIMATIONS LOGIK ---
+  const progressWidth = useSharedValue(0);
+  const shakeTranslateX = useSharedValue(0);
+
+  // 1. Fließender Fortschrittsbalken
+  useEffect(() => {
+    progressWidth.value = withSpring(progressPercent, { damping: 15, stiffness: 90 });
+  }, [progressPercent]);
+
+  const animatedProgressStyle = useAnimatedStyle(() => ({
+    width: `${progressWidth.value}%`
+  }));
+
+// 2. Fehler-Wackeln (ohne das Einfliegen)
+  useEffect(() => {
+    if (showFeedback && !isCorrect) {
+      shakeTranslateX.value = withSequence(
+        withTiming(-10, { duration: 50 }),
+        withTiming(10, { duration: 50 }),
+        withTiming(-10, { duration: 50 }),
+        withTiming(10, { duration: 50 }),
+        withTiming(0, { duration: 50 })
+      );
+    }
+  }, [showFeedback, isCorrect]);
+
+  const animatedModalStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: shakeTranslateX.value }
+    ]
+  }));
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -54,8 +98,10 @@ export default function LessonScreen() {
       <SafeAreaView style={[styles.container, styles.centerContent, { backgroundColor: theme.background }]}>
         <Text style={styles.finishTitle}>{isPractice ? "Training beendet!" : "Lektion beendet!"}</Text>
         <View style={styles.starsContainer}>
-          {[1, 2, 3].map((star) => (
-            <Ionicons key={star} name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
+          {[1, 2, 3].map((star, index) => (
+            <Animated.View key={star} entering={ZoomIn.delay(index * 200).springify()}>
+              <Ionicons name={star <= earnedStars ? "star" : "star-outline"} size={60} color="#FFD700" />
+            </Animated.View>
           ))}
         </View>
         <TouchableOpacity style={styles.checkButton} onPress={() => router.back()}>
@@ -94,42 +140,44 @@ export default function LessonScreen() {
             <Ionicons name="arrow-back" size={28} color={theme.subText} />
           </TouchableOpacity>
           <View style={[styles.progressBarBackground, { backgroundColor: theme.progressBarBg }]}>
-            <View style={[styles.progressBarFill, { width: `${progressPercent}%` }]} />
+            <Animated.View style={[styles.progressBarFill, animatedProgressStyle]} />
           </View>
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={[styles.instruction, { color: theme.subText }]}>{instructionText}</Text>
-          <View style={styles.questionContainer}>
-            <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
-              <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
-            </TouchableOpacity>
-            <Text style={[styles.question, { color: theme.text }]}>{currentExercise.question}</Text>
-          </View>
-
-          {isTranslate && (
-            <TextInput
-              style={[styles.input, { backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.text }]}
-              placeholder={placeholderText} placeholderTextColor="#ccc"
-              value={userInput} onChangeText={setUserInput} autoCapitalize="sentences" autoCorrect={false}
-            />
-          )}
-
-          {currentExercise.type === 'multiple_choice' && (
-            <View style={styles.optionsContainer}>
-              {currentExercise.options?.map((option, index) => {
-                const isSelected = selectedOption === index;
-                return (
-                  <TouchableOpacity key={index}
-                    style={[styles.optionButton, { borderColor: isSelected ? '#1cb0f6' : theme.border }, isSelected && { backgroundColor: theme.optionSelectedBg }]}
-                    onPress={() => { setSelectedOption(index); playAudio(`${currentExercise.id}_opt_${index}`); }}
-                  >
-                    <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>{option}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+          <Animated.View key={currentExercise.id} entering={FadeInRight} exiting={FadeOutLeft}>
+            <Text style={[styles.instruction, { color: theme.subText }]}>{instructionText}</Text>
+            <View style={styles.questionContainer}>
+              <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => playAudio(currentExercise.id)}>
+                <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
+              </TouchableOpacity>
+              <Text style={[styles.question, { color: theme.text }]}>{currentExercise.question}</Text>
             </View>
-          )}
+
+            {isTranslate && (
+              <TextInput
+                style={[styles.input, { backgroundColor: theme.inputBg, borderColor: theme.border, color: theme.text }]}
+                placeholder={placeholderText} placeholderTextColor="#ccc"
+                value={userInput} onChangeText={setUserInput} autoCapitalize="sentences" autoCorrect={false}
+              />
+            )}
+
+            {currentExercise.type === 'multiple_choice' && (
+              <View style={styles.optionsContainer}>
+                {currentExercise.options?.map((option, index) => {
+                  const isSelected = selectedOption === index;
+                  return (
+                    <TouchableOpacity key={index}
+                      style={[styles.optionButton, { borderColor: isSelected ? '#1cb0f6' : theme.border }, isSelected && { backgroundColor: theme.optionSelectedBg }]}
+                      onPress={() => { setSelectedOption(index); playAudio(`${currentExercise.id}_opt_${index}`); }}
+                    >
+                      <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>{option}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            )}
+          </Animated.View>
         </ScrollView>
 
         <View style={[styles.footer, { borderColor: theme.cardBorder }]}>
@@ -139,9 +187,9 @@ export default function LessonScreen() {
         </View>
       </KeyboardAvoidingView>
 
-      <Modal animationType="slide" transparent={true} visible={showFeedback}>
+      <Modal animationType="fade" transparent={true} visible={showFeedback}>
         <View style={styles.modalOverlay}>
-          <View style={[styles.feedbackContainer, { backgroundColor: isCorrect ? theme.feedbackSuccessBg : theme.feedbackErrorBg }]}>
+          <Animated.View style={[styles.feedbackContainer, { backgroundColor: isCorrect ? theme.feedbackSuccessBg : theme.feedbackErrorBg }, animatedModalStyle]}>
             <Text style={[styles.feedbackTitle, { color: theme.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
             <View style={styles.marginBottom20}>
               <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
@@ -171,7 +219,7 @@ export default function LessonScreen() {
                 <Text style={[styles.continueButtonText, isCorrect ? styles.textSuccess : styles.textError]}>WEITER</Text>
               </TouchableOpacity>
             )}
-          </View>
+          </Animated.View>
         </View>
       </Modal>
     </SafeAreaView>
