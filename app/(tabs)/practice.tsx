@@ -5,7 +5,7 @@ import { StorageService } from '@/src/services/StorageService';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, useRouter } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Alert, Modal, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, Platform, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../src/context/ThemeContext';
 import content from '../../src/data/content';
@@ -22,15 +22,16 @@ export default function PracticeScreen() {
 
     const { scores, examScores } = useUserProgress();
 
-    const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
     const [leitnerCounts, setLeitnerCounts] = useState([0, 0, 0, 0, 0]);
     const [dueCount, setDueCount] = useState(0);
     const [todayMistakeCount, setTodayMistakeCount] = useState(0);
 
-    // Für das Freie Training Modal
     const [isFreeTrainingModalVisible, setFreeTrainingModalVisible] = useState(false);
     const [selectedLessons, setSelectedLessons] = useState<Record<string, boolean>>({});
+
+    // NEU: Frageanzahl Logik
     const [questionCount, setQuestionCount] = useState<number | 'all'>(15);
+    const [customCountText, setCustomCountText] = useState('');
 
     useFocusEffect(
         useCallback(() => {
@@ -39,8 +40,6 @@ export default function PracticeScreen() {
     );
 
     const loadData = async () => {
-        const daily = await StorageService.getDailyStats();
-        setDailyStats({ wordsLearned: daily.wordsLearned, mistakesMade: daily.mistakesMade });
         const leitner = await StorageService.getLeitnerStats();
         setLeitnerCounts(leitner);
         const dueExercises = await StorageService.getLeitnerDue();
@@ -100,12 +99,13 @@ export default function PracticeScreen() {
         const session = await StorageService.getFreeTrainingSelection(pool, questionCount);
         await StorageService.savePracticeSession(session);
 
-        // Die Abfrage wird jetzt immer als "practice" gekennzeichnet, damit das Bewerten am Ende greift
         router.push({ pathname: "/lesson", params: { id: 'practice', source: 'practice' } });
     };
 
     const getMaxLeitner = () => Math.max(1, ...leitnerCounts.slice(1));
-    const getMaxDaily = () => Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
+
+    // Helfer für das Custom-Input Feld
+    const isCustomActive = typeof questionCount === 'number' && questionCount !== 15 && questionCount !== 20;
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
@@ -115,23 +115,8 @@ export default function PracticeScreen() {
 
             <ScrollView contentContainerStyle={styles.content}>
 
-                {/* 1. STATISTIK */}
-                <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Statistik Heute</Text>
-                <View style={[styles.card, { backgroundColor: theme.card, flexDirection: 'row', alignItems: 'flex-end', height: 120, justifyContent: 'space-around', paddingBottom: 20 }]}>
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={{ width: 40, height: (dailyStats.wordsLearned / getMaxDaily()) * 100, backgroundColor: '#58cc02', minHeight: 10, borderRadius: 5 }} />
-                        <Text style={{ color: theme.subText, marginTop: 5 }}>Aktivität</Text>
-                        <Text style={{ fontWeight: 'bold', color: theme.text }}>{dailyStats.wordsLearned}</Text>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={{ width: 40, height: (dailyStats.mistakesMade / getMaxDaily()) * 100, backgroundColor: '#ff4757', minHeight: 10, borderRadius: 5 }} />
-                        <Text style={{ color: theme.subText, marginTop: 5 }}>Fehler</Text>
-                        <Text style={{ fontWeight: 'bold', color: theme.text }}>{dailyStats.mistakesMade}</Text>
-                    </View>
-                </View>
-
-                {/* 2. LEITNER CHART VISUALISIERUNG */}
-                <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Dein Langzeit-Gedächtnis</Text>
+                {/* LEITNER CHART VISUALISIERUNG */}
+                <Text style={[styles.sectionTitle, { color: theme.sectionTitle, marginTop: 0 }]}>Dein Langzeit-Gedächtnis</Text>
                 <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 15 }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 }}>
                         {[1, 2, 3, 4].map(box => (
@@ -150,7 +135,6 @@ export default function PracticeScreen() {
                     </View>
                 </View>
 
-                {/* 3. TRAININGSAKTIONEN */}
                 <Text style={[styles.sectionTitle, { color: theme.sectionTitle }]}>Jetzt trainieren</Text>
 
                 <TouchableOpacity style={[styles.optionBtn, { backgroundColor: theme.card, borderColor: theme.cardBorder }]} onPress={startLeitnerReview}>
@@ -234,14 +218,37 @@ export default function PracticeScreen() {
 
                         <Text style={[styles.sectionTitle, { color: theme.sectionTitle, marginTop: 0 }]}>2. Anzahl Vokabeln:</Text>
                         <View style={styles.countContainer}>
-                            <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => setQuestionCount('all')}>
+                            <TouchableOpacity style={[styles.countBtn, questionCount === 'all' && styles.countBtnActive]} onPress={() => { setQuestionCount('all'); setCustomCountText(''); }}>
                                 <Text style={[styles.countText, questionCount === 'all' && styles.countTextActive]}>Alle</Text>
                             </TouchableOpacity>
-                            {[10, 20, 30].map(num => (
-                                <TouchableOpacity key={num} style={[styles.countBtn, questionCount === num && styles.countBtnActive]} onPress={() => setQuestionCount(num)}>
+
+                            {[15, 20].map(num => (
+                                <TouchableOpacity key={num} style={[styles.countBtn, questionCount === num && styles.countBtnActive]} onPress={() => { setQuestionCount(num); setCustomCountText(''); }}>
                                     <Text style={[styles.countText, questionCount === num && styles.countTextActive]}>{num}</Text>
                                 </TouchableOpacity>
                             ))}
+
+                            {/* Eigene Anzahl Input */}
+                            <TextInput
+                                style={[
+                                    styles.customInput,
+                                    { color: theme.text, borderColor: theme.border },
+                                    isCustomActive && styles.countBtnActive
+                                ]}
+                                placeholder="Eigene..."
+                                placeholderTextColor="#999"
+                                keyboardType="numeric"
+                                value={customCountText}
+                                onChangeText={(text) => {
+                                    setCustomCountText(text);
+                                    const parsed = parseInt(text);
+                                    if (!isNaN(parsed) && parsed > 0) {
+                                        setQuestionCount(parsed);
+                                    } else {
+                                        setQuestionCount(15); // Fallback
+                                    }
+                                }}
+                            />
                         </View>
 
                         <TouchableOpacity style={styles.startBtn} onPress={startFreeTraining}>
@@ -275,10 +282,11 @@ const styles = StyleSheet.create({
     row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1 },
     label: { fontSize: 14 },
     countContainer: { flexDirection: 'row', gap: 10 },
-    countBtn: { flex: 1, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center' },
+    countBtn: { flex: 1, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center', justifyContent: 'center' },
     countBtnActive: { backgroundColor: '#1cb0f6', borderColor: '#1cb0f6' },
     countText: { color: '#555', fontWeight: '600' },
     countTextActive: { color: '#fff', fontWeight: 'bold' },
+    customInput: { flex: 1.2, padding: 12, borderRadius: 8, borderWidth: 1, textAlign: 'center', fontWeight: 'bold' },
     startBtn: { backgroundColor: '#1cb0f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 30, marginBottom: 20 },
     startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
 });
