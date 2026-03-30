@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const unitsDir = path.join(__dirname, '../src/data/units');
+const unitsDir = path.join(__dirname, '../src/model/data/units');
 const AUDIO_DIR = path.join(__dirname, '../assets/audio');
 const MANIFEST_PATH = path.join(AUDIO_DIR, 'audio_manifest.json');
 

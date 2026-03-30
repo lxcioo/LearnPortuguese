@@ -4,7 +4,7 @@ import { ProgressService } from '@/src/model/services/ProgressService';
 import { UserProfileService } from '@/src/model/services/UserProfileService';
 import { UserProfile } from '@/src/model/types';
 import { useTheme } from '@/src/view/context/ThemeContext';
-import { useUserProgress } from '@/src/viewmodel/hooks/useUserProgress';
+import { useUserProgress } from '@/src/viewmodel/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 

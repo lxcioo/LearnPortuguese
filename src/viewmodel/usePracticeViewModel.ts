@@ -1,6 +1,6 @@
 import content from '@/src/model/data/content';
 import { LeitnerService } from '@/src/model/services/LeitnerService';
-import { useUserProgress } from '@/src/viewmodel/hooks/useUserProgress';
+import { useUserProgress } from '@/src/viewmodel/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Alert } from 'react-native';

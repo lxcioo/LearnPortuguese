@@ -53,7 +53,7 @@ jobs:
           node -e "
           const fs = require('fs');
           const path = require('path');
-          const unitsDir = 'src/data/units';
+          const unitsDir = 'src/model/data/units';
 
           // Lese alle JSON Dateien im Ordner
           const files = fs.readdirSync(unitsDir).filter(f => f.endsWith('.json'));

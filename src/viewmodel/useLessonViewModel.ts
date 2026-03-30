@@ -2,7 +2,7 @@ import { Colors } from '@/src/view/constants/theme';
 import { useTheme } from '@/src/view/context/ThemeContext';
 import { useAudioPlayer } from '@/src/view/hooks/useAudioPlayer';
 import { useColorScheme } from '@/src/view/hooks/useColorScheme';
-import { useLessonLogic } from '@/src/viewmodel/hooks/useLessonLogic';
+import { useLessonLogic } from '@/src/viewmodel/useLessonLogic';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 // This ViewModel encapsulates all presentation logic for the LessonScreen.
