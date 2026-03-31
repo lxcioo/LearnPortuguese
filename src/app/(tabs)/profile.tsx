@@ -22,7 +22,7 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: currentColors.background }]} edges={['top', 'left', 'right']}>
-      <View style={styles.header}>
+      <View style={[styles.header, { borderBottomColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}>
         <Text style={[styles.headerTitle, { color: currentColors.text }]}>Profil</Text>
         <Ionicons name="settings-outline" size={28} color={currentColors.text} onPress={actions.navigateToSettings} />
       </View>
@@ -77,7 +77,14 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.05)' },
+  header: {
+    height: 70, // Erzwingt überall auf den Millimeter genau die gleiche Höhe
+    paddingHorizontal: 20, // Nur noch Abstand nach links und rechts
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1
+  },
   headerTitle: { fontSize: 24, fontWeight: 'bold' },
   content: { padding: 20 },
   userInfoContainer: { alignItems: 'center', marginBottom: 30 },

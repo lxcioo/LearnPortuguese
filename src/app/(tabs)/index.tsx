@@ -6,7 +6,7 @@ import { usePathViewModel } from '@/src/viewmodel/usePathViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useRef } from 'react';
-import { Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function PathScreen() {
@@ -25,41 +25,39 @@ export default function PathScreen() {
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-            
+
             {/* --- HEADER --- */}
-            <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder, backgroundColor: theme.background }]}>
-                <View style={styles.header}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[styles.headerTitle, { color: theme.text }]}>LearnPortuguese</Text>
-                        <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage} />
-                    </View>
-                    
-                    <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
-                        {data.streakData && data.streakData.streakOnIceCount > 0 && (
-                            <View style={styles.badgeContainer}>
-                                <Ionicons name="snow" size={20} color="#4DA8DA" />
-                                <Text style={[styles.badgeText, { color: "#4DA8DA" }]}>{data.streakData.streakOnIceCount}</Text>
-                            </View>
-                        )}
-                        
-                        <TouchableOpacity 
-                            onPress={handleToggleTimeline} 
-                            activeOpacity={0.7} 
-                            style={styles.badgeContainer}
-                        >
-                            <Ionicons 
-                                name="flame" 
-                                size={26} 
-                                color={data.streak > 0 ? "#ff9600" : theme.icon} 
-                            />
-                            <Text style={[
-                                styles.badgeText, 
-                                { color: data.streak > 0 ? "#ff9600" : theme.icon }
-                            ]}>
-                                {data.streak}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+            <View style={[styles.header, { borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[styles.headerTitle, { color: theme.text }]}>LearnPortuguese</Text>
+                    <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage} />
+                </View>
+
+                <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
+                    {data.streakData && data.streakData.streakOnIceCount > 0 && (
+                        <View style={styles.badgeContainer}>
+                            <Ionicons name="snow" size={20} color="#4DA8DA" />
+                            <Text style={[styles.badgeText, { color: "#4DA8DA" }]}>{data.streakData.streakOnIceCount}</Text>
+                        </View>
+                    )}
+
+                    <TouchableOpacity
+                        onPress={handleToggleTimeline}
+                        activeOpacity={0.7}
+                        style={styles.badgeContainer}
+                    >
+                        <Ionicons
+                            name="flame"
+                            size={26}
+                            color={data.streak > 0 ? "#ff9600" : theme.icon}
+                        />
+                        <Text style={[
+                            styles.badgeText,
+                            { color: data.streak > 0 ? "#ff9600" : theme.icon }
+                        ]}>
+                            {data.streak}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -162,13 +160,13 @@ export default function PathScreen() {
                     </TouchableWithoutFeedback>
 
                     <View style={[
-                        styles.bottomSheet, 
-                        { 
+                        styles.bottomSheet,
+                        {
                             backgroundColor: theme.card,
-                            paddingBottom: Math.max(insets.bottom + 20, 30) 
+                            paddingBottom: Math.max(insets.bottom + 20, 30)
                         }
                     ]}>
-                        
+
                         {/* NEU: Der Füller-Block für die Handynavigation */}
                         <View style={[styles.bottomFiller, { backgroundColor: theme.card }]} />
 
@@ -186,15 +184,15 @@ export default function PathScreen() {
                         </Text>
 
                         <View style={styles.scrollWrapper}>
-                            <ScrollView 
-                                horizontal 
+                            <ScrollView
+                                horizontal
                                 showsHorizontalScrollIndicator={false}
                                 ref={scrollViewRef}
                                 onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}
                                 contentContainerStyle={styles.scrollableDaysRow}
                             >
                                 <View style={[styles.connectingLineHorizontal, { backgroundColor: theme.border }]} />
-                                
+
                                 {state.pastDays.map((date) => {
                                     const dateStr = date.toISOString().split('T')[0];
                                     const isToday = dateStr === new Date().toISOString().split('T')[0];
@@ -214,10 +212,10 @@ export default function PathScreen() {
                                     return (
                                         <View key={dateStr} style={styles.dayItem}>
                                             <View style={[
-                                                styles.dayNode, 
-                                                { 
+                                                styles.dayNode,
+                                                {
                                                     backgroundColor: isDone ? flameColor : theme.background,
-                                                    borderColor: isDone ? flameColor : theme.border 
+                                                    borderColor: isDone ? flameColor : theme.border
                                                 }
                                             ]}>
                                                 {isDone ? (
@@ -227,7 +225,7 @@ export default function PathScreen() {
                                                 )}
                                             </View>
                                             <Text style={[
-                                                styles.dayName, 
+                                                styles.dayName,
                                                 { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }
                                             ]}>
                                                 {state.daysOfWeek[date.getDay()]}
@@ -261,7 +259,7 @@ export default function PathScreen() {
                     </View>
                 </View>
             </Modal>
-            
+
             <CustomAlert
                 visible={state.alertConfig.visible}
                 title={state.alertConfig.title}
@@ -275,38 +273,36 @@ export default function PathScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    headerContainer: { 
-        borderBottomWidth: 1,
-        elevation: 2,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.05,
-        shadowRadius: 3,
-        zIndex: 10
+    header: {
+        height: 70, // Erzwingt überall auf den Millimeter genau die gleiche Höhe
+        paddingHorizontal: 20, // Nur noch Abstand nach links und rechts
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomWidth: 1
     },
-    header: { 
-        paddingHorizontal: 20, 
-        paddingTop: Platform.OS === 'android' ? 50 : 20, 
-        paddingBottom: 15, 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        alignItems: 'center' 
+    headerTitle: {
+        fontSize: 24,
+        fontWeight: 'bold'
     },
-    headerTitle: { fontSize: 20, fontWeight: 'bold' },
-    flagImage: { width: 28, height: 20, borderRadius: 4, marginLeft: 8 },
-    
+    flagImage: {
+        width: 28,
+        height: 20,
+        borderRadius: 4,
+        marginLeft: 8
+    },
     badgeContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 8,
         paddingVertical: 4,
     },
-    badgeText: { 
-        fontSize: 18, 
-        fontWeight: 'bold', 
-        marginLeft: 6 
+    badgeText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginLeft: 6
     },
-    
+
     // Bottom Sheet
     sheetOverlay: {
         flex: 1,
@@ -317,7 +313,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 24,
         borderTopRightRadius: 24,
         paddingHorizontal: 24,
-        paddingTop: 12, 
+        paddingTop: 12,
         minHeight: 250,
         zIndex: 2,
         shadowColor: '#000',
@@ -330,10 +326,10 @@ const styles = StyleSheet.create({
     // Verhindert, dass der Lernpfad unterhalb des Modals (z.B. hinter der System-Navigation) zu sehen ist
     bottomFiller: {
         position: 'absolute',
-        bottom: -200, 
-        left: 0, 
-        right: 0, 
-        height: 200, 
+        bottom: -200,
+        left: 0,
+        right: 0,
+        height: 200,
     },
     sheetHandle: {
         width: 40,
@@ -357,31 +353,31 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.05)',
         borderRadius: 20,
     },
-    
+
     scrollWrapper: {
-        height: 80, 
+        height: 80,
         marginTop: 10,
-        width: '100%', 
+        width: '100%',
     },
     scrollableDaysRow: {
         alignItems: 'center',
         position: 'relative',
         paddingHorizontal: 10,
-        flexGrow: 1, 
+        flexGrow: 1,
     },
     connectingLineHorizontal: {
         position: 'absolute',
-        top: 18, 
-        left: 20, 
-        right: 20, 
+        top: 18,
+        left: 20,
+        right: 20,
         height: 3,
         borderRadius: 2,
         zIndex: 0,
     },
-    dayItem: { 
+    dayItem: {
         alignItems: 'center',
-        zIndex: 1, 
-        width: 50, 
+        zIndex: 1,
+        width: 50,
     },
     dayNode: {
         width: 38,
@@ -409,7 +405,7 @@ const styles = StyleSheet.create({
     examWrapper: { alignItems: 'center', marginTop: 30 },
     connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
     examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
-    
+
     // Prüfungs-Modal
     modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
     modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },

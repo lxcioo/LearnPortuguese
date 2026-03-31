@@ -5,7 +5,7 @@ import { useColorScheme } from '@/src/view/hooks/useColorScheme';
 import { usePracticeViewModel } from '@/src/viewmodel/usePracticeViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Modal, Platform, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BOX_COLORS = ["", "#ff4757", "#ffa502", "#1cb0f6", "#FFD700"];
@@ -18,9 +18,9 @@ export default function PracticeScreen() {
     // MVVM: Die gesamte Logik kommt aus dem ViewModel
     const { state, actions, data } = usePracticeViewModel();
 
-return (
+    return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-            <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.border }]}>
+            <View style={[styles.header, { borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]}>
                 <Text style={[styles.headerTitle, { color: theme.text }]}>Übungsbereich 🧠</Text>
             </View>
 
@@ -191,12 +191,12 @@ return (
                     </View>
                 </View>
             </Modal>
-            <CustomAlert 
-                visible={state.alertConfig.visible} 
-                title={state.alertConfig.title} 
-                message={state.alertConfig.message} 
-                onClose={actions.hideAlert} 
-                isDarkMode={isDarkMode} 
+            <CustomAlert
+                visible={state.alertConfig.visible}
+                title={state.alertConfig.title}
+                message={state.alertConfig.message}
+                onClose={actions.hideAlert}
+                isDarkMode={isDarkMode}
             />
         </SafeAreaView>
     );
@@ -205,8 +205,18 @@ return (
 // [StyleSheet bleibt 1:1 gleich, behalte das alte StyleSheet aus practice.tsx]
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    header: { padding: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, borderBottomWidth: 1 },
-    headerTitle: { fontSize: 24, fontWeight: 'bold' },
+    header: {
+        height: 70, // Erzwingt überall auf den Millimeter genau die gleiche Höhe
+        paddingHorizontal: 20, // Nur noch Abstand nach links und rechts
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomWidth: 1
+    },
+    headerTitle: {
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
     content: { padding: 20, paddingBottom: 50 },
     sectionTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 20 },
     card: { borderRadius: 16, padding: 15, elevation: 2, marginBottom: 10 },
