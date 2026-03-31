@@ -13,7 +13,6 @@ export function usePathViewModel() {
     const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
     const [isTimelineExpanded, setIsTimelineExpanded] = useState(false);
 
-    // NEU: Custom Alert State
     const [alertConfig, setAlertConfig] = useState({ visible: false, title: '', message: '' });
     const showAlert = (title: string, message: string) => setAlertConfig({ visible: true, title, message });
     const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
@@ -35,19 +34,21 @@ export function usePathViewModel() {
         }
     };
 
-    const last7Days = Array.from({ length: 7 }).map((_, i) => {
+    // NEU: Die letzten 4 Wochen (28 Tage) chronologisch sortiert (heute ist ganz rechts)
+    const pastDaysCount = 28;
+    const pastDays = Array.from({ length: pastDaysCount }).map((_, i) => {
         const d = new Date();
-        d.setDate(d.getDate() - (6 - i));
+        d.setDate(d.getDate() - (pastDaysCount - 1 - i));
         return d;
     });
     const daysOfWeek = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
     return {
         state: {
-            showExamModal, isTimelineExpanded, last7Days, daysOfWeek, alertConfig // NEU
+            showExamModal, isTimelineExpanded, pastDays, daysOfWeek, alertConfig
         },
         actions: {
-            setShowExamModal, setSelectedUnitId, setIsTimelineExpanded, startExam, showAlert, hideAlert // NEU
+            setShowExamModal, setSelectedUnitId, setIsTimelineExpanded, startExam, showAlert, hideAlert
         },
         data: {
             courseData, scores, examScores, streak, streakData

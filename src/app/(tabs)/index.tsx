@@ -5,13 +5,9 @@ import { useColorScheme } from '@/src/view/hooks/useColorScheme';
 import { usePathViewModel } from '@/src/viewmodel/usePathViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+import React, { useRef } from 'react';
+import { Image, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function PathScreen() {
     const router = useRouter();
@@ -19,74 +15,55 @@ export default function PathScreen() {
     const theme = Colors[colorScheme ?? 'light'];
     const { isDarkMode } = useTheme();
 
-    // MVVM Integration
     const { state, actions, data } = usePathViewModel();
+    const scrollViewRef = useRef<ScrollView>(null);
+    const insets = useSafeAreaInsets();
 
-    // UI-spezifische Animation bleibt in der View
     const handleToggleTimeline = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         actions.setIsTimelineExpanded(!state.isTimelineExpanded);
     };
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-            <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder }]}>
-                <TouchableOpacity style={styles.header} onPress={handleToggleTimeline} activeOpacity={0.7}>
+            
+            {/* --- HEADER --- */}
+            <View style={[styles.headerContainer, { borderBottomColor: theme.cardBorder, backgroundColor: theme.background }]}>
+                <View style={styles.header}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[styles.headerTitle, { color: theme.text }]}>Lernpfad</Text>
-                        <Ionicons name={state.isTimelineExpanded ? "chevron-up" : "chevron-down"} size={20} color={theme.icon} style={{ marginRight: 10 }} />
+                        <Text style={[styles.headerTitle, { color: theme.text }]}>LearnPortuguese</Text>
                         <Image source={{ uri: 'https://flagcdn.com/w80/pt.png' }} style={styles.flagImage} />
                     </View>
+                    
                     <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
                         {data.streakData && data.streakData.streakOnIceCount > 0 && (
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Ionicons name="flame" size={16} color="#4DA8DA" />
-                                <Text style={[styles.iceText, { color: "#4DA8DA" }]}>{data.streakData.streakOnIceCount}</Text>
+                            <View style={styles.badgeContainer}>
+                                <Ionicons name="snow" size={20} color="#4DA8DA" />
+                                <Text style={[styles.badgeText, { color: "#4DA8DA" }]}>{data.streakData.streakOnIceCount}</Text>
                             </View>
                         )}
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name="flame" size={24} color={data.streak > 0 ? "#ff9600" : theme.icon} />
-                            <Text style={[styles.streakText, { color: data.streak > 0 ? "#ff9600" : "#bbb" }]}>{data.streak}</Text>
-                        </View>
+                        
+                        <TouchableOpacity 
+                            onPress={handleToggleTimeline} 
+                            activeOpacity={0.7} 
+                            style={styles.badgeContainer}
+                        >
+                            <Ionicons 
+                                name="flame" 
+                                size={26} 
+                                color={data.streak > 0 ? "#ff9600" : theme.icon} 
+                            />
+                            <Text style={[
+                                styles.badgeText, 
+                                { color: data.streak > 0 ? "#ff9600" : theme.icon }
+                            ]}>
+                                {data.streak}
+                            </Text>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-
-                {state.isTimelineExpanded && (
-                    <View style={styles.timelineContainer}>
-                        <View style={styles.daysRow}>
-                            {state.last7Days.map((date) => {
-                                const dateStr = date.toISOString().split('T')[0];
-                                const isToday = dateStr === new Date().toISOString().split('T')[0];
-                                const status = data.streakData?.history[dateStr];
-
-                                let flameColor = theme.border;
-                                if (status === 'learned') flameColor = "#ff9600";
-                                else if (status === 'frozen') flameColor = "#4DA8DA";
-
-                                return (
-                                    <View key={dateStr} style={styles.dayItem}>
-                                        <Text style={[styles.dayName, { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }]}>
-                                            {state.daysOfWeek[date.getDay()]}
-                                        </Text>
-                                        <View style={[styles.flameCircle, { backgroundColor: status ? flameColor + '20' : theme.background, borderColor: status ? flameColor : theme.border }]}>
-                                            <Ionicons name="flame" size={14} color={flameColor} />
-                                        </View>
-                                        {isToday ? <View style={[styles.todayDot, { backgroundColor: theme.text }]} /> : <View style={styles.todayDotPlaceholder} />}
-                                    </View>
-                                );
-                            })}
-                        </View>
-                        <View style={styles.streakProgressContainer}>
-                            <View style={[styles.progressBarBg, { backgroundColor: theme.border }]}>
-                                <View style={[styles.progressBarFill, { width: `${(((data.streakData?.currentStreak || 0) % 7) / 7) * 100}%` }]} />
-                            </View>
-                            <Ionicons name="flame" size={18} color="#4DA8DA" style={{ marginLeft: 8 }} />
-                        </View>
-                    </View>
-                )}
+                </View>
             </View>
 
-            {/* HIER IST DIE ÄNDERUNG: paddingBottom: 120 hinzugefügt */}
+            {/* --- LERNPFAD SCROLLVIEW --- */}
             <ScrollView contentContainerStyle={[styles.pathContainer, { paddingBottom: 120 }]}>
                 {data.courseData.units.map((unit, unitIndex) => {
                     const isUnitUnlocked = unitIndex === 0 || data.examScores[data.courseData.units[unitIndex - 1].id];
@@ -176,7 +153,96 @@ export default function PathScreen() {
                 })}
             </ScrollView>
 
-            <Modal visible={state.showExamModal} transparent animationType="slide">
+            {/* --- BOTTOM SHEET KALENDER MODAL --- */}
+            {/* statusBarTranslucent stellt sicher, dass das Modal den gesamten Bildschirm füllt */}
+            <Modal visible={state.isTimelineExpanded} transparent animationType="slide" onRequestClose={handleToggleTimeline} statusBarTranslucent>
+                <View style={styles.sheetOverlay}>
+                    <TouchableWithoutFeedback onPress={handleToggleTimeline}>
+                        <View style={StyleSheet.absoluteFill} />
+                    </TouchableWithoutFeedback>
+
+                    <View style={[
+                        styles.bottomSheet, 
+                        { 
+                            backgroundColor: theme.card,
+                            paddingBottom: Math.max(insets.bottom + 20, 30) 
+                        }
+                    ]}>
+                        
+                        {/* NEU: Der Füller-Block für die Handynavigation */}
+                        <View style={[styles.bottomFiller, { backgroundColor: theme.card }]} />
+
+                        <View style={[styles.sheetHandle, { backgroundColor: theme.border }]} />
+
+                        <View style={styles.sheetHeader}>
+                            <Text style={[styles.sheetTitle, { color: theme.text }]}>Dein Lern-Kalender</Text>
+                            <TouchableOpacity onPress={handleToggleTimeline} style={styles.closeBtn}>
+                                <Ionicons name="close" size={24} color={theme.icon} />
+                            </TouchableOpacity>
+                        </View>
+
+                        <Text style={{ color: theme.icon, fontSize: 14, marginBottom: 20, textAlign: 'center' }}>
+                            Noch {7 - ((data.streakData?.currentStreak || 0) % 7)} Tage in Folge lernen für eine rettende Eisflamme!
+                        </Text>
+
+                        <View style={styles.scrollWrapper}>
+                            <ScrollView 
+                                horizontal 
+                                showsHorizontalScrollIndicator={false}
+                                ref={scrollViewRef}
+                                onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: false })}
+                                contentContainerStyle={styles.scrollableDaysRow}
+                            >
+                                <View style={[styles.connectingLineHorizontal, { backgroundColor: theme.border }]} />
+                                
+                                {state.pastDays.map((date) => {
+                                    const dateStr = date.toISOString().split('T')[0];
+                                    const isToday = dateStr === new Date().toISOString().split('T')[0];
+                                    const status = data.streakData?.history[dateStr];
+
+                                    let flameColor = theme.border;
+                                    let isDone = false;
+
+                                    if (status === 'learned') {
+                                        flameColor = "#ff9600";
+                                        isDone = true;
+                                    } else if (status === 'frozen') {
+                                        flameColor = "#4DA8DA";
+                                        isDone = true;
+                                    }
+
+                                    return (
+                                        <View key={dateStr} style={styles.dayItem}>
+                                            <View style={[
+                                                styles.dayNode, 
+                                                { 
+                                                    backgroundColor: isDone ? flameColor : theme.background,
+                                                    borderColor: isDone ? flameColor : theme.border 
+                                                }
+                                            ]}>
+                                                {isDone ? (
+                                                    <Ionicons name={status === 'frozen' ? "snow" : "checkmark"} size={16} color="#fff" />
+                                                ) : (
+                                                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: isToday ? theme.text : 'transparent' }} />
+                                                )}
+                                            </View>
+                                            <Text style={[
+                                                styles.dayName, 
+                                                { color: isToday ? theme.text : theme.icon, fontWeight: isToday ? 'bold' : 'normal' }
+                                            ]}>
+                                                {state.daysOfWeek[date.getDay()]}
+                                            </Text>
+                                        </View>
+                                    );
+                                })}
+                            </ScrollView>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            {/* --- PRÜFUNGS MODAL --- */}
+            <Modal visible={state.showExamModal} transparent animationType="slide" statusBarTranslucent>
                 <View style={styles.modalOverlay}>
                     <View style={[styles.modalContent, { backgroundColor: theme.card }]}>
                         <Ionicons name="trophy" size={60} color="#FFD700" style={{ marginBottom: 20 }} />
@@ -195,6 +261,7 @@ export default function PathScreen() {
                     </View>
                 </View>
             </Modal>
+            
             <CustomAlert
                 visible={state.alertConfig.visible}
                 title={state.alertConfig.title}
@@ -206,25 +273,128 @@ export default function PathScreen() {
     );
 }
 
-// [Das StyleSheet bleibt genau wie in deiner index.tsx]
 const styles = StyleSheet.create({
     container: { flex: 1 },
-    headerContainer: { borderBottomWidth: 1 },
-    header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    headerTitle: { fontSize: 22, fontWeight: 'bold' },
-    flagImage: { width: 30, height: 20, borderRadius: 3 },
-    streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
-    iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 },
-    timelineContainer: { paddingHorizontal: 20, paddingBottom: 15, overflow: 'hidden' },
-    daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    dayItem: { alignItems: 'center' },
-    dayName: { fontSize: 10, marginBottom: 4 },
-    flameCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-    todayDot: { width: 4, height: 4, borderRadius: 2, marginTop: 4 },
-    todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 },
-    streakProgressContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
-    progressBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
-    progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 3 },
+    headerContainer: { 
+        borderBottomWidth: 1,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.05,
+        shadowRadius: 3,
+        zIndex: 10
+    },
+    header: { 
+        paddingHorizontal: 20, 
+        paddingTop: Platform.OS === 'android' ? 50 : 20, 
+        paddingBottom: 15, 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center' 
+    },
+    headerTitle: { fontSize: 20, fontWeight: 'bold' },
+    flagImage: { width: 28, height: 20, borderRadius: 4, marginLeft: 8 },
+    
+    badgeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+    },
+    badgeText: { 
+        fontSize: 18, 
+        fontWeight: 'bold', 
+        marginLeft: 6 
+    },
+    
+    // Bottom Sheet
+    sheetOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end',
+    },
+    bottomSheet: {
+        borderTopLeftRadius: 24,
+        borderTopRightRadius: 24,
+        paddingHorizontal: 24,
+        paddingTop: 12, 
+        minHeight: 250,
+        zIndex: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 20,
+        position: 'relative', // Nötig, damit der absolute Füller-Block sich daran orientiert
+    },
+    // Verhindert, dass der Lernpfad unterhalb des Modals (z.B. hinter der System-Navigation) zu sehen ist
+    bottomFiller: {
+        position: 'absolute',
+        bottom: -200, 
+        left: 0, 
+        right: 0, 
+        height: 200, 
+    },
+    sheetHandle: {
+        width: 40,
+        height: 5,
+        borderRadius: 3,
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
+    sheetHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    sheetTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+    },
+    closeBtn: {
+        padding: 4,
+        backgroundColor: 'rgba(0,0,0,0.05)',
+        borderRadius: 20,
+    },
+    
+    scrollWrapper: {
+        height: 80, 
+        marginTop: 10,
+        width: '100%', 
+    },
+    scrollableDaysRow: {
+        alignItems: 'center',
+        position: 'relative',
+        paddingHorizontal: 10,
+        flexGrow: 1, 
+    },
+    connectingLineHorizontal: {
+        position: 'absolute',
+        top: 18, 
+        left: 20, 
+        right: 20, 
+        height: 3,
+        borderRadius: 2,
+        zIndex: 0,
+    },
+    dayItem: { 
+        alignItems: 'center',
+        zIndex: 1, 
+        width: 50, 
+    },
+    dayNode: {
+        width: 38,
+        height: 38,
+        borderRadius: 19,
+        borderWidth: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    dayName: { fontSize: 12 },
+
+    // Lernpfad 
     pathContainer: { paddingTop: 20, paddingBottom: 100 },
     unitContainer: { marginBottom: 40 },
     unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
@@ -239,6 +409,8 @@ const styles = StyleSheet.create({
     examWrapper: { alignItems: 'center', marginTop: 30 },
     connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
     examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
+    
+    // Prüfungs-Modal
     modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
     modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },
     modalTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
