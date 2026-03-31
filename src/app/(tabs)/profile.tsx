@@ -27,7 +27,8 @@ export default function ProfileScreen() {
         <Ionicons name="settings-outline" size={28} color={currentColors.text} onPress={actions.navigateToSettings} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      {/* HIER IST DIE ÄNDERUNG: paddingBottom: 120 hinzugefügt */}
+      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 120 }]}>
         <View style={styles.userInfoContainer}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>

@@ -18,13 +18,14 @@ export default function PracticeScreen() {
     // MVVM: Die gesamte Logik kommt aus dem ViewModel
     const { state, actions, data } = usePracticeViewModel();
 
-    return (
+return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
             <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.border }]}>
                 <Text style={[styles.headerTitle, { color: theme.text }]}>Übungsbereich 🧠</Text>
             </View>
 
-            <ScrollView contentContainerStyle={styles.content}>
+            {/* HIER IST DIE ÄNDERUNG: paddingBottom: 120 hinzugefügt */}
+            <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 120 }]}>
                 <Text style={[styles.sectionTitle, { color: theme.sectionTitle, marginTop: 0 }]}>Dein Langzeit-Gedächtnis</Text>
                 <View style={[styles.card, { backgroundColor: theme.card, height: 180, justifyContent: 'flex-end', paddingBottom: 15 }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'flex-end', height: 120 }}>

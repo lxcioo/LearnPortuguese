@@ -86,7 +86,8 @@ export default function PathScreen() {
                 )}
             </View>
 
-            <ScrollView contentContainerStyle={styles.pathContainer}>
+            {/* HIER IST DIE ÄNDERUNG: paddingBottom: 120 hinzugefügt */}
+            <ScrollView contentContainerStyle={[styles.pathContainer, { paddingBottom: 120 }]}>
                 {data.courseData.units.map((unit, unitIndex) => {
                     const isUnitUnlocked = unitIndex === 0 || data.examScores[data.courseData.units[unitIndex - 1].id];
                     const allLevelsDone = unit.levels.every(l => (data.scores[l.id] || 0) > 0);
