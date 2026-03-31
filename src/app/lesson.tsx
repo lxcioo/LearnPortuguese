@@ -1,12 +1,12 @@
+import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { FeedbackModal } from '@/src/view/components/lesson/FeedbackModal';
 import { FinishScreen } from '@/src/view/components/lesson/FinishScreen';
 import { useLessonViewModel } from '@/src/viewmodel/useLessonViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View
@@ -29,6 +29,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function LessonScreen() {
   const { state, viewProps, feedback, finishScreenData, rating, actions, theme, isDarkMode } = useLessonViewModel();
   const navigation = useNavigation();
+  const [confirmExit, setConfirmExit] = useState<{ visible: boolean; action: any }>({ visible: false, action: null });
 
   const currentExercise = state.currentExercise;
 
@@ -65,14 +66,12 @@ export default function LessonScreen() {
   }));
 
   // --- NAVIGATION GUARD (View-spezifisch) ---
-  useEffect(() => {
+useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
       if (finishScreenData.isFinished || finishScreenData.isPractice) return;
       e.preventDefault();
-      Alert.alert('Lektion abbrechen?', 'Fortschritt geht verloren.', [
-        { text: 'Bleiben', style: 'cancel', onPress: () => { } },
-        { text: 'Verlassen', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
-      ]);
+      // Anstatt Alert.alert zeigen wir unseren Custom Dialog:
+      setConfirmExit({ visible: true, action: e.data.action });
     });
     return unsubscribe;
   }, [navigation, finishScreenData.isFinished, finishScreenData.isPractice]);
@@ -158,6 +157,21 @@ export default function LessonScreen() {
         theme={theme}
         isDarkMode={isDarkMode}
         animatedStyle={animatedModalStyle}
+      />
+      <CustomAlert 
+        visible={confirmExit.visible}
+        title="Lektion abbrechen?"
+        message="Dein bisheriger Fortschritt in dieser Lektion geht verloren."
+        primaryText="Verlassen"
+        primaryColor="#ea2b2b" // Rot für destruktive Aktion
+        showCancel={true}
+        cancelText="Bleiben"
+        onCancel={() => setConfirmExit({ visible: false, action: null })}
+        onClose={() => {
+          setConfirmExit({ visible: false, action: null });
+          navigation.dispatch(confirmExit.action);
+        }}
+        isDarkMode={isDarkMode}
       />
     </SafeAreaView>
   );

@@ -5,7 +5,6 @@ import { StreakService } from '@/src/model/services/StreakService';
 import { Course, Exercise, Unit } from '@/src/model/types/index';
 import * as Haptics from 'expo-haptics';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 
 const courseData = content.courses[0] as Course;
 
@@ -44,6 +43,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
   const [mistakes, setMistakes] = useState(0);
   const [isLessonFinished, setIsLessonFinished] = useState(false);
   const [earnedStars, setEarnedStars] = useState(0);
+  const [lessonError, setLessonError] = useState<string | null>(null);
 
   const isPractice = lessonId === 'practice';
 
@@ -77,7 +77,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
         }
         filtered = filtered.slice(0, 30);
-        if (filtered.length === 0) Alert.alert("Ups", "Keine Übungen gefunden!");
+      if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
       }
 
       setLessonQueue(filtered);
@@ -206,6 +206,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
-    getSolutionDisplay
+    getSolutionDisplay, lessonError, setLessonError
   };
 };

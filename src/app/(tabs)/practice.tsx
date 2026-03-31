@@ -1,3 +1,4 @@
+import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { Colors } from '@/src/view/constants/theme';
 import { useTheme } from '@/src/view/context/ThemeContext';
 import { useColorScheme } from '@/src/view/hooks/useColorScheme';
@@ -189,6 +190,13 @@ export default function PracticeScreen() {
                     </View>
                 </View>
             </Modal>
+            <CustomAlert 
+                visible={state.alertConfig.visible} 
+                title={state.alertConfig.title} 
+                message={state.alertConfig.message} 
+                onClose={actions.hideAlert} 
+                isDarkMode={isDarkMode} 
+            />
         </SafeAreaView>
     );
 }
@@ -214,11 +222,11 @@ const styles = StyleSheet.create({
     label: { fontSize: 14 },
     countContainer: { flexDirection: 'row', gap: 10 },
     countBtn: { flex: 1, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: '#ccc', alignItems: 'center', justifyContent: 'center' },
-    countBtnActive: { backgroundColor: '#1cb0f6', borderColor: '#1cb0f6' },
+    countBtnActive: { backgroundColor: '#58cc02', borderColor: '#58cc02' },
     countText: { color: '#555', fontWeight: '600' },
     countTextActive: { color: '#fff', fontWeight: 'bold' },
     customInput: { flex: 1.2, padding: 12, borderRadius: 8, borderWidth: 1, textAlign: 'center', fontWeight: 'bold' },
-    startBtn: { backgroundColor: '#1cb0f6', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 30, marginBottom: 20 },
+    startBtn: { backgroundColor: '#58cc02', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 30, marginBottom: 20 },
     startBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
     vocabCard: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderRadius: 12, borderWidth: 1, marginBottom: 10, elevation: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2 },
     vocabContent: { flex: 1, paddingRight: 10 },

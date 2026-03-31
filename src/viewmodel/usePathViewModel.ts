@@ -13,7 +13,11 @@ export function usePathViewModel() {
     const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
     const [isTimelineExpanded, setIsTimelineExpanded] = useState(false);
 
-    // Onboarding Überprüfung repariert
+    // NEU: Custom Alert State
+    const [alertConfig, setAlertConfig] = useState({ visible: false, title: '', message: '' });
+    const showAlert = (title: string, message: string) => setAlertConfig({ visible: true, title, message });
+    const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
+
     useFocusEffect(
         useCallback(() => {
             UserProfileService.getUserProfile().then(profile => {
@@ -40,23 +44,13 @@ export function usePathViewModel() {
 
     return {
         state: {
-            showExamModal,
-            isTimelineExpanded,
-            last7Days,
-            daysOfWeek
+            showExamModal, isTimelineExpanded, last7Days, daysOfWeek, alertConfig // NEU
         },
         actions: {
-            setShowExamModal,
-            setSelectedUnitId,
-            setIsTimelineExpanded,
-            startExam
+            setShowExamModal, setSelectedUnitId, setIsTimelineExpanded, startExam, showAlert, hideAlert // NEU
         },
         data: {
-            courseData,
-            scores,
-            examScores,
-            streak,
-            streakData
+            courseData, scores, examScores, streak, streakData
         }
     };
 }

@@ -1,8 +1,10 @@
 import { Colors } from '@/src/view/constants/theme';
 import { useColorScheme } from '@/src/view/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs';
 import { withLayoutContext } from 'expo-router';
+import React from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Erstellt den Navigator, der Wischgesten unterstützt
@@ -18,25 +20,36 @@ export default function TabLayout() {
 
   return (
     <MaterialTopTabs
-      tabBarPosition="bottom" // Leiste unten positionieren
+      tabBarPosition="bottom"
+      tabBar={(props: any) => {
+        const isDark = colorScheme === 'dark';
+        return (
+          <View
+            style={[
+              styles.floatingTabBarContainer,
+              {
+                bottom: Platform.OS === 'ios' ? Math.max(insets.bottom, 16) : 16,
+                borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                // ÄNDERUNG: Stabile, semi-transparente Farbe (92% Deckkraft) statt Buggy BlurView
+                backgroundColor: isDark ? 'rgba(28, 28, 30, 0.92)' : 'rgba(255, 255, 255, 0.92)', 
+              },
+            ]}
+          >
+            <MaterialTopTabBar
+              {...props}
+              style={{ backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0 }}
+            />
+          </View>
+        );
+      }}
       screenOptions={{
-        tabBarActiveTintColor: '#58cc02',
+        tabBarActiveTintColor: '#58cc02', // Zurück zum frischen Grün
         tabBarInactiveTintColor: 'gray',
         tabBarShowLabel: true,
         tabBarShowIcon: true, // Wichtig: Icons explizit aktivieren
         swipeEnabled: true,   // Aktiviert das Wischen zwischen den Tabs
         animationEnabled: true,
         
-        // Styling, um wie eine normale Bottom-Bar auszusehen
-        tabBarStyle: {
-          backgroundColor: themeColors.background,
-          borderTopWidth: 1,
-          borderTopColor: colorScheme === 'dark' ? '#333' : '#e0e0e0',
-          paddingBottom: insets.bottom, // Abstand für iPhone Home-Bar
-          height: 60 + insets.bottom,   // Höhe anpassen
-          elevation: 0, // Schatten bei Android entfernen
-          shadowOpacity: 0, // Schatten bei iOS entfernen
-        },
         // Den typischen "Strich" unter dem aktiven Tab entfernen wir für den klassischen Look
         tabBarIndicatorStyle: {
           backgroundColor: 'transparent',
@@ -45,7 +58,11 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           textTransform: 'none', // Verhindert GROSSBUCHSTABEN
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: '500',
+          marginTop: 2,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 8,
         },
       }}
     >
@@ -77,3 +94,14 @@ export default function TabLayout() {
     </MaterialTopTabs>
   );
 }
+
+const styles = StyleSheet.create({
+  floatingTabBarContainer: {
+    position: 'absolute',
+    left: 20,
+    right: 20,
+    borderRadius: 32,
+    overflow: 'hidden',
+    borderWidth: 1,
+  },
+});

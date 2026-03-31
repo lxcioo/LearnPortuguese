@@ -3,7 +3,6 @@ import { LeitnerService } from '@/src/model/services/LeitnerService';
 import { useUserProgress } from '@/src/viewmodel/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
 
 const BOX_LABELS = ["", "Schwer", "Mittel", "Leicht", "⭐"];
 
@@ -26,6 +25,11 @@ export function usePracticeViewModel() {
     const [selectedBoxLabel, setSelectedBoxLabel] = useState("");
     const [boxVocabList, setBoxVocabList] = useState<any[]>([]);
 
+    // NEU: Custom Alert State
+    const [alertConfig, setAlertConfig] = useState({ visible: false, title: '', message: '' });
+    const showAlert = (title: string, message: string) => setAlertConfig({ visible: true, title, message });
+    const hideAlert = () => setAlertConfig(prev => ({ ...prev, visible: false }));
+
     useFocusEffect(
         useCallback(() => {
             const loadData = async () => {
@@ -42,7 +46,7 @@ export function usePracticeViewModel() {
 
     const openBoxDetails = async (boxIndex: number) => {
         if (leitnerCounts[boxIndex] === 0) {
-            Alert.alert("Leer", `Du hast aktuell keine Vokabeln im Bereich "${BOX_LABELS[boxIndex]}".`);
+            showAlert("Leer", `Du hast aktuell keine Vokabeln im Bereich "${BOX_LABELS[boxIndex]}".`);
             return;
         }
         const exercises = await LeitnerService.getVocabForBox(boxIndex);
@@ -58,7 +62,7 @@ export function usePracticeViewModel() {
     const startTodayMistakes = async () => {
         const exercises = await LeitnerService.getTodayMistakes();
         if (exercises.length === 0) {
-            Alert.alert("Super!", "Keine offenen Fehler von heute.");
+            showAlert("Super!", "Keine offenen Fehler von heute.");
             return;
         }
         await LeitnerService.savePracticeSession(exercises);
@@ -68,7 +72,7 @@ export function usePracticeViewModel() {
     const startLeitnerReview = async () => {
         const exercises = await LeitnerService.getLeitnerDue();
         if (exercises.length === 0) {
-            Alert.alert("Alles erledigt!", "Für jetzt keine fälligen Wiederholungen.");
+            showAlert("Alles erledigt!", "Für jetzt keine fälligen Wiederholungen.");
             return;
         }
         await LeitnerService.savePracticeSession(exercises);
@@ -78,7 +82,7 @@ export function usePracticeViewModel() {
     const startArchEnemies = async () => {
         const exercises = await LeitnerService.getArchEnemies();
         if (exercises.length === 0) {
-            Alert.alert("Zu wenig Daten", "Noch keine 'Erzfeinde' gesammelt.");
+            showAlert("Zu wenig Daten", "Noch keine 'Erzfeinde' gesammelt.");
             return;
         }
         await LeitnerService.savePracticeSession(exercises);
@@ -94,7 +98,7 @@ export function usePracticeViewModel() {
         });
 
         if (pool.length === 0) {
-            Alert.alert("Keine Lektion gewählt", "Bitte wähle mindestens eine Lektion aus.");
+            showAlert("Keine Lektion gewählt", "Bitte wähle mindestens eine Lektion aus.");
             return;
         }
 
@@ -115,19 +119,14 @@ export function usePracticeViewModel() {
             questionCount, customCountText, isCustomActive,
             isBoxModalVisible, selectedBoxLabel, boxVocabList,
             boxLabels: BOX_LABELS,
-            maxLeitner: getMaxLeitner()
+            maxLeitner: getMaxLeitner(),
+            alertConfig // NEU
         },
         actions: {
-            setFreeTrainingModalVisible,
-            setQuestionCount,
-            setCustomCountText,
-            setBoxModalVisible,
-            openBoxDetails,
-            toggleLesson,
-            startTodayMistakes,
-            startLeitnerReview,
-            startArchEnemies,
-            startFreeTraining
+            setFreeTrainingModalVisible, setQuestionCount, setCustomCountText,
+            setBoxModalVisible, openBoxDetails, toggleLesson,
+            startTodayMistakes, startLeitnerReview, startArchEnemies, startFreeTraining,
+            hideAlert // NEU
         },
         data: { courseData, scores, examScores }
     };

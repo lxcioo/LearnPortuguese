@@ -1,26 +1,29 @@
 import { UserProfileService } from '@/src/model/services/UserProfileService';
+import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { Colors } from '@/src/view/constants/theme';
 import { useTheme } from '@/src/view/context/ThemeContext';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OnboardingScreen() {
   const router = useRouter();
   const { setGender, theme } = useTheme();
   const currentColors = Colors[theme];
-  
+
   const [name, setName] = useState('');
   const [selectedGender, setSelectedGender] = useState<'m' | 'f' | 'd'>('m');
 
+  const [alertVisible, setAlertVisible] = useState(false);
+
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert("Halt!", "Bitte gib einen Namen ein.");
+      // Anstatt Alert.alert("Halt!", "Bitte gib einen Namen ein.");
+      setAlertVisible(true);
       return;
     }
-    
-    // Daten speichern und zur App weiterleiten
+
     await UserProfileService.saveUserProfile(name);
     setGender(selectedGender);
     router.replace('/(tabs)/');
@@ -31,8 +34,8 @@ export default function OnboardingScreen() {
       <View style={styles.content}>
         <Text style={[styles.title, { color: currentColors.text }]}>Willkommen!</Text>
         <Text style={[styles.subtitle, { color: currentColors.icon }]}>Wie dürfen wir dich nennen?</Text>
-        
-        <TextInput 
+
+        <TextInput
           style={[styles.input, { color: currentColors.text, borderColor: currentColors.border }]}
           placeholder="Dein Name"
           placeholderTextColor={currentColors.icon}
@@ -42,16 +45,16 @@ export default function OnboardingScreen() {
         />
 
         <Text style={[styles.subtitle, { color: currentColors.icon, marginTop: 30 }]}>Wähle deine Anredeform für passende Vokabeln (z.B. Obrigado vs. Obrigada):</Text>
-        
+
         <View style={styles.genderRow}>
           <TouchableOpacity style={[styles.genderBtn, selectedGender === 'm' && styles.genderBtnActive]} onPress={() => setSelectedGender('m')}>
-             <Text style={[styles.genderLabel, selectedGender === 'm' ? {color:'#fff'} : {color: currentColors.text}]}>Männlich</Text>
+            <Text style={[styles.genderLabel, selectedGender === 'm' ? { color: '#fff' } : { color: currentColors.text }]}>Männlich</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.genderBtn, selectedGender === 'f' && styles.genderBtnActive]} onPress={() => setSelectedGender('f')}>
-             <Text style={[styles.genderLabel, selectedGender === 'f' ? {color:'#fff'} : {color: currentColors.text}]}>Weiblich</Text>
+            <Text style={[styles.genderLabel, selectedGender === 'f' ? { color: '#fff' } : { color: currentColors.text }]}>Weiblich</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.genderBtn, selectedGender === 'd' && styles.genderBtnActive]} onPress={() => setSelectedGender('d')}>
-             <Text style={[styles.genderLabel, selectedGender === 'd' ? {color:'#fff'} : {color: currentColors.text}]}>Divers</Text>
+            <Text style={[styles.genderLabel, selectedGender === 'd' ? { color: '#fff' } : { color: currentColors.text }]}>Divers</Text>
           </TouchableOpacity>
         </View>
 
@@ -61,6 +64,13 @@ export default function OnboardingScreen() {
           <Text style={styles.saveBtnText}>Loslegen</Text>
         </TouchableOpacity>
       </View>
+      <CustomAlert
+        visible={alertVisible}
+        title="Halt!"
+        message="Bitte gib einen Namen ein, bevor du loslegst."
+        onClose={() => setAlertVisible(false)}
+        isDarkMode={theme === 'dark'}
+      />
     </SafeAreaView>
   );
 }

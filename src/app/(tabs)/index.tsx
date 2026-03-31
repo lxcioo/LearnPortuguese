@@ -1,20 +1,23 @@
+import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { Colors } from '@/src/view/constants/theme';
+import { useTheme } from '@/src/view/context/ThemeContext';
 import { useColorScheme } from '@/src/view/hooks/useColorScheme';
 import { usePathViewModel } from '@/src/viewmodel/usePathViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Alert, Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
+import { Image, LayoutAnimation, Modal, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, UIManager, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
+    UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 export default function PathScreen() {
     const router = useRouter();
     const colorScheme = useColorScheme();
     const theme = Colors[colorScheme ?? 'light'];
+    const { isDarkMode } = useTheme();
 
     // MVVM Integration
     const { state, actions, data } = usePathViewModel();
@@ -125,7 +128,7 @@ export default function PathScreen() {
                                                 style={[styles.levelButton, { borderColor: isLevelUnlocked ? unit.color : lockedBorder, backgroundColor: bgColor }]}
                                                 onPress={() => {
                                                     if (isLevelUnlocked) router.push({ pathname: "/lesson", params: { id: level.id, type: 'normal' } });
-                                                    else Alert.alert("Gesperrt", "Schließe erst die vorherige Lektion ab.");
+                                                    else actions.showAlert("Gesperrt", "Schließe erst die vorherige Lektion ab.");
                                                 }}
                                                 activeOpacity={0.7}
                                             >
@@ -159,7 +162,7 @@ export default function PathScreen() {
                                             actions.setSelectedUnitId(unit.id);
                                             actions.setShowExamModal(true);
                                         } else {
-                                            Alert.alert("Prüfung gesperrt", "Du musst erst alle Lektionen oben mit mindestens 1 Stern abschließen.");
+                                            actions.showAlert("Prüfung gesperrt", "Du musst erst alle Lektionen oben mit mindestens 1 Stern abschließen.");
                                         }
                                     }}
                                 >
@@ -191,47 +194,54 @@ export default function PathScreen() {
                     </View>
                 </View>
             </Modal>
+            <CustomAlert
+                visible={state.alertConfig.visible}
+                title={state.alertConfig.title}
+                message={state.alertConfig.message}
+                onClose={actions.hideAlert}
+                isDarkMode={isDarkMode}
+            />
         </SafeAreaView>
     );
 }
 
 // [Das StyleSheet bleibt genau wie in deiner index.tsx]
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  headerContainer: { borderBottomWidth: 1 },
-  header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  headerTitle: { fontSize: 22, fontWeight: 'bold' },
-  flagImage: { width: 30, height: 20, borderRadius: 3 },
-  streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
-  iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 },
-  timelineContainer: { paddingHorizontal: 20, paddingBottom: 15, overflow: 'hidden' },
-  daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  dayItem: { alignItems: 'center' },
-  dayName: { fontSize: 10, marginBottom: 4 },
-  flameCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
-  todayDot: { width: 4, height: 4, borderRadius: 2, marginTop: 4 },
-  todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 },
-  streakProgressContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
-  progressBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
-  progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 3 },
-  pathContainer: { paddingTop: 20, paddingBottom: 100 },
-  unitContainer: { marginBottom: 40 },
-  unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
-  unitTitle: { fontSize: 24, fontWeight: 'bold', color: '#fff' },
-  unitSubtitle: { color: 'rgba(255,255,255,0.8)', fontSize: 14, marginTop: 5 },
-  grammarButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.25)', alignSelf: 'flex-start', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 20, marginTop: 15 },
-  levelsContainer: { alignItems: 'center', gap: 30 },
-  levelWrapper: { alignItems: 'center', position: 'relative', zIndex: 1 },
-  connectorLine: { position: 'absolute', top: 30, height: 40, width: 6, zIndex: -1 },
-  levelButton: { width: 70, height: 70, borderRadius: 35, borderWidth: 4, justifyContent: 'center', alignItems: 'center', marginBottom: 5 },
-  levelTitle: { fontSize: 14, fontWeight: '600', marginBottom: 2 },
-  examWrapper: { alignItems: 'center', marginTop: 30 },
-  connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
-  examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
-  modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },
-  modalTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  modalText: { fontSize: 16, textAlign: 'center', marginBottom: 20, lineHeight: 22 },
-  modalStartBtn: { backgroundColor: '#58cc02', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 30, width: '100%', alignItems: 'center' },
-  modalStartText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+    container: { flex: 1 },
+    headerContainer: { borderBottomWidth: 1 },
+    header: { paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 50 : 20, paddingBottom: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    headerTitle: { fontSize: 22, fontWeight: 'bold' },
+    flagImage: { width: 30, height: 20, borderRadius: 3 },
+    streakText: { fontSize: 18, fontWeight: 'bold', marginLeft: 4 },
+    iceText: { fontSize: 14, fontWeight: 'bold', marginLeft: 2 },
+    timelineContainer: { paddingHorizontal: 20, paddingBottom: 15, overflow: 'hidden' },
+    daysRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    dayItem: { alignItems: 'center' },
+    dayName: { fontSize: 10, marginBottom: 4 },
+    flameCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 1.5, justifyContent: 'center', alignItems: 'center' },
+    todayDot: { width: 4, height: 4, borderRadius: 2, marginTop: 4 },
+    todayDotPlaceholder: { width: 4, height: 4, marginTop: 4 },
+    streakProgressContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 10 },
+    progressBarBg: { flex: 1, height: 6, borderRadius: 3, overflow: 'hidden' },
+    progressBarFill: { height: '100%', backgroundColor: '#4DA8DA', borderRadius: 3 },
+    pathContainer: { paddingTop: 20, paddingBottom: 100 },
+    unitContainer: { marginBottom: 40 },
+    unitHeader: { padding: 20, paddingTop: 30, borderBottomRightRadius: 30, borderBottomLeftRadius: 30, marginBottom: 30 },
+    unitTitle: { fontSize: 24, fontWeight: 'bold', color: '#fff' },
+    unitSubtitle: { color: 'rgba(255,255,255,0.8)', fontSize: 14, marginTop: 5 },
+    grammarButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.25)', alignSelf: 'flex-start', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 20, marginTop: 15 },
+    levelsContainer: { alignItems: 'center', gap: 30 },
+    levelWrapper: { alignItems: 'center', position: 'relative', zIndex: 1 },
+    connectorLine: { position: 'absolute', top: 30, height: 40, width: 6, zIndex: -1 },
+    levelButton: { width: 70, height: 70, borderRadius: 35, borderWidth: 4, justifyContent: 'center', alignItems: 'center', marginBottom: 5 },
+    levelTitle: { fontSize: 14, fontWeight: '600', marginBottom: 2 },
+    examWrapper: { alignItems: 'center', marginTop: 30 },
+    connectorLineVertical: { height: 40, width: 6, marginBottom: -5 },
+    examButton: { width: 90, height: 90, borderRadius: 45, borderWidth: 6, justifyContent: 'center', alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.3, shadowRadius: 5 },
+    modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+    modalContent: { width: '85%', padding: 30, borderRadius: 20, alignItems: 'center', elevation: 5 },
+    modalTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
+    modalText: { fontSize: 16, textAlign: 'center', marginBottom: 20, lineHeight: 22 },
+    modalStartBtn: { backgroundColor: '#58cc02', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 30, width: '100%', alignItems: 'center' },
+    modalStartText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
 });
