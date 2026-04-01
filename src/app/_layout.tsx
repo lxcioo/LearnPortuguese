@@ -104,14 +104,18 @@ function RootLayoutNav() {
   }
 
   return (
-    // NEU: Hier übergeben wir unsere angepassten Themes
     <NavigationThemeProvider value={isDarkMode ? MyDarkTheme : MyLightTheme}>
       <Stack
-        // NEU: Verhindert den weißen Balken bei Slide-Animationen
         screenOptions={{
           contentStyle: {
             backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background
-          }
+          },
+          // FIX 1: Eine saubere Slide-Animation erzwingen. 
+          // Das deaktiviert den nativen iOS/Android Parallax-Schatten, der das Verschmieren verursacht.
+          animation: 'slide_from_right',
+
+          // FIX 2 (Optional aber empfohlen): Entfernt den Header-Schatten bei Übergängen
+          headerShadowVisible: false,
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

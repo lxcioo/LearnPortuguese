@@ -19,11 +19,13 @@ export default function TabLayout() {
   return (
     <MaterialTopTabs
       tabBarPosition="bottom"
-      // @ts-expect-error: Expo Router vergisst diese Eigenschaft in den Typen, sie funktioniert aber!
-      sceneContainerStyle={{ backgroundColor: 'transparent' }} 
+      // FIX 3: Niemals 'transparent' hier nutzen! Das führt dazu, dass die Engine 
+      // beim Navigieren ins Leere greift und die alte Ansicht verschmiert.
+      // @ts-expect-error: Expo Router vergisst diese Eigenschaft in den Typen
+      sceneContainerStyle={{ backgroundColor: themeColors.background }}
       tabBar={(props: any) => {
         const isDark = colorScheme === 'dark';
-        
+
         return (
           // 1. Der äußere Wrapper: Kümmert sich NUR noch um die Position und Schatten
           <View
@@ -47,10 +49,10 @@ export default function TabLayout() {
                 }
               ]}
             />
-            
+
             {/* 3. Die eigentlichen Icons */}
-            <MaterialTopTabBar 
-              {...props} 
+            <MaterialTopTabBar
+              {...props}
               style={{ backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0 }}
             />
           </View>
@@ -63,13 +65,13 @@ export default function TabLayout() {
         tabBarShowIcon: true,
         swipeEnabled: true,
         animationEnabled: true,
-        
+
         tabBarStyle: {
           backgroundColor: 'transparent',
           elevation: 0,
           shadowOpacity: 0,
         },
-        
+
         tabBarIndicatorStyle: {
           backgroundColor: 'transparent',
           height: 0,
@@ -116,9 +118,9 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     // HIER KEIN 'overflow: hidden' MEHR! Das hat den Filter zerstört.
-    borderRadius: 32, 
+    borderRadius: 32,
     zIndex: 100,
-    
+
     // Optional: Ein leichter Schlagschatten lässt das Milchglas besser schweben
     elevation: 10,
     shadowColor: '#000',
