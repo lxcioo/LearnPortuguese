@@ -67,17 +67,49 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         }
       }
 
+      // 1. Nach Geschlecht filtern
       let filtered = rawExercises.filter(ex =>
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
+      // --- NEU: Vokabeln im Übungsbereich zufällig umdrehen ---
+      if (isPractice) {
+        filtered = filtered.map(ex => {
+          // Nur Übersetzungsaufgaben mit einer Chance von 50% umdrehen
+          if (ex.type.includes('translate') && Math.random() > 0.5) {
+            const isOriginalToPt = ex.type === 'translate_to_pt';
+
+            // Wenn wir von PT nach DE umdrehen, müssen wir die Klammern 
+            // aus der neuen deutschen Musterlösung entfernen.
+            let newCorrectAnswer = ex.question;
+            if (isOriginalToPt) {
+              // Entfernt alles, was in Klammern steht inkl. Leerzeichen davor
+              // Aus "Danke (als Mann)" wird "Danke"
+              newCorrectAnswer = newCorrectAnswer.replace(/\s*\(.*?\)\s*/g, '').trim();
+            }
+
+            return {
+              ...ex,
+              type: isOriginalToPt ? 'translate_to_de' : 'translate_to_pt',
+              question: ex.correctAnswer,
+              correctAnswer: newCorrectAnswer,
+              // HIER DIE ÄNDERUNG: Die alte Frage mit Klammern als Alternative erlauben!
+              alternativeAnswers: isOriginalToPt ? [ex.question] : []
+            };
+          }
+          return ex;
+        });
+      }
+      // --- ENDE NEU ---
+
+      // 2. Prüfungslogik (Mischen & Limitieren)
       if (lessonType === 'exam') {
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
         }
         filtered = filtered.slice(0, 30);
-      if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
+        if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
       }
 
       setLessonQueue(filtered);
