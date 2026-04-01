@@ -85,4 +85,5 @@ export interface Achievement {
   description: string;
   icon: any; // Ionicons Name
   isUnlocked: boolean;
+  unlockedAt?: string;
 }

@@ -2,13 +2,12 @@ import { AchievementService } from '@/src/model/services/AchievementService';
 import { LeitnerService } from '@/src/model/services/LeitnerService';
 import { ProgressService } from '@/src/model/services/ProgressService';
 import { UserProfileService } from '@/src/model/services/UserProfileService';
-import { UserProfile } from '@/src/model/types';
+import { Achievement, UserProfile } from '@/src/model/types';
 import { useTheme } from '@/src/view/context/ThemeContext';
 import { useUserProgress } from '@/src/viewmodel/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-// This ViewModel encapsulates all presentation logic for the ProfileScreen.
 export function useProfileViewModel() {
   const { gender } = useTheme();
   const router = useRouter();
@@ -19,7 +18,10 @@ export function useProfileViewModel() {
   const [box4Count, setBox4Count] = useState(0);
   const [todayMistakesCount, setTodayMistakesCount] = useState(-1);
 
-  // 1. Fetch all necessary data on screen focus
+  // NEU: Achievements als State, da sie jetzt asynchron geladen werden
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+
+  // 1. Daten laden (wird ausgeführt, sobald der Tab geöffnet wird)
   useFocusEffect(
     useCallback(() => {
       async function fetchData() {
@@ -39,7 +41,7 @@ export function useProfileViewModel() {
     }, [])
   );
 
-  // 2. Derive state and compute values for the View
+  // 2. Ableitungen und Berechnungen
   const safeScores = scores || {};
   const safeExamScores = examScores || {};
 
@@ -61,18 +63,27 @@ export function useProfileViewModel() {
   const passedExamsCount = Object.keys(safeExamScores).length;
   const hasCleanSlate = todayMistakesCount === 0 && dailyStats.wordsLearned > 30;
 
-  const achievements = AchievementService.getAchievements({
-    completedLessonsCount,
-    threeStarLessonsCount,
-    passedExamsCount,
-    streak: safeStreak,
-    totalStars,
-    longTermMemoryCount: box4Count,
-    hasCleanSlate,
-    streakData,
-  });
+  // NEU: Sobald alle abhängigen Daten geladen sind, prüfen wir die Errungenschaften
+  useEffect(() => {
+    if (todayMistakesCount === -1) return; // Warten, bis Daten da sind
 
-  // STRIKTES MVVM: Berechnungen für UI-Eigenschaften (wie Balkenhöhen) gehören ins ViewModel!
+    const loadAchievementsAsync = async () => {
+      const achs = await AchievementService.loadAchievements({
+        completedLessonsCount,
+        threeStarLessonsCount,
+        passedExamsCount,
+        streak: safeStreak,
+        totalStars,
+        longTermMemoryCount: box4Count,
+        hasCleanSlate,
+        streakData,
+      });
+      setAchievements(achs);
+    };
+
+    loadAchievementsAsync();
+  }, [completedLessonsCount, threeStarLessonsCount, passedExamsCount, safeStreak, totalStars, box4Count, hasCleanSlate, streakData, todayMistakesCount]);
+
   const maxDaily = Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
   const dailyStatsFormatted = {
     wordsLearned: dailyStats.wordsLearned,
@@ -81,11 +92,12 @@ export function useProfileViewModel() {
     mistakesMadeHeight: (dailyStats.mistakesMade / maxDaily) * 100,
   };
 
-  // 3. Return a clean, structured interface for the View
+  // 3. Übergabe an den Screen
   return {
     profile, studentTitle,
     levelInfo: { currentLevel, currentLevelXP, xpForNextLevel, progressPercent },
-    dailyStats: dailyStatsFormatted, achievements,
+    dailyStats: dailyStatsFormatted,
+    achievements, // Jetzt der geladene State
     actions: { navigateToSettings: () => router.push('/settings_modal') },
   };
 }
