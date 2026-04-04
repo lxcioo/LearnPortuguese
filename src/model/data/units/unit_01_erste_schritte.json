@@ -29,12 +29,14 @@
                     "correctAnswer": "Bom dia",
                     "vocabulary": [
                         {
-                            "text": "Bom",
-                            "translation": "Guten / Gut"
+                            "text": "Guten",
+                            "translation": "Bom",
+                            "audio": "Bom"
                         },
                         {
-                            "text": "dia",
-                            "translation": "Tag / Morgen"
+                            "text": "Morgen",
+                            "translation": "dia",
+                            "audio": "dia"
                         }
                     ]
                 },
@@ -45,12 +47,9 @@
                     "correctAnswer": "Boa tarde",
                     "vocabulary": [
                         {
-                            "text": "Boa",
-                            "translation": "Gute (weiblich)"
-                        },
-                        {
-                            "text": "tarde",
-                            "translation": "Nachmittag"
+                            "text": "Guten Tag",
+                            "translation": "Boa tarde",
+                            "audio": "Boa tarde"
                         }
                     ]
                 },
@@ -61,12 +60,14 @@
                     "correctAnswer": "Boa noite",
                     "vocabulary": [
                         {
-                            "text": "Boa",
-                            "translation": "Gute (weiblich)"
+                            "text": "Gute",
+                            "translation": "Boa",
+                            "audio": "Boa"
                         },
                         {
-                            "text": "noite",
-                            "translation": "Nacht"
+                            "text": "Nacht",
+                            "translation": "noite",
+                            "audio": "noite"
                         }
                     ]
                 },
@@ -84,8 +85,9 @@
                     "audioText": "Adeus",
                     "vocabulary": [
                         {
-                            "text": "Adeus",
-                            "translation": "Tschüss / Auf Wiedersehen"
+                            "text": "Tschüss",
+                            "translation": "Adeus",
+                            "audio": "Adeus"
                         }
                     ]
                 },
@@ -96,16 +98,14 @@
                     "correctAnswer": "Até logo",
                     "vocabulary": [
                         {
-                            "text": "Até logo",
-                            "translation": "Bis bald"
+                            "text": "Bis",
+                            "translation": "Até",
+                            "audio": "Até"
                         },
                         {
-                            "text": "Até",
-                            "translation": "Bis"
-                        },
-                        {
-                            "text": "logo",
-                            "translation": "bald / später"
+                            "text": "bald",
+                            "translation": "logo",
+                            "audio": "logo"
                         }
                     ]
                 },
@@ -116,12 +116,14 @@
                     "correctAnswer": "Até amanhã",
                     "vocabulary": [
                         {
-                            "text": "Até",
-                            "translation": "Bis"
+                            "text": "Bis",
+                            "translation": "Até",
+                            "audio": "Até"
                         },
                         {
-                            "text": "amanhã",
-                            "translation": "morgen"
+                            "text": "morgen",
+                            "translation": "amanhã",
+                            "audio": "amanhã"
                         }
                     ]
                 },
@@ -169,8 +171,9 @@
                     "gender": "m",
                     "vocabulary": [
                         {
-                            "text": "Obrigado",
-                            "translation": "Danke (sagt ein Mann)"
+                            "text": "Danke (als Mann)",
+                            "translation": "Obrigado",
+                            "audio": "Obrigado"
                         }
                     ]
                 },
@@ -182,8 +185,9 @@
                     "gender": "f",
                     "vocabulary": [
                         {
-                            "text": "Obrigada",
-                            "translation": "Danke (sagt eine Frau)"
+                            "text": "Danke (als Frau)",
+                            "translation": "Obrigada",
+                            "audio": "Obrigada"
                         }
                     ]
                 },
@@ -201,8 +205,9 @@
                     "audioText": "Por favor",
                     "vocabulary": [
                         {
-                            "text": "Por favor",
-                            "translation": "Bitte"
+                            "text": "Bitte",
+                            "translation": "Por favor",
+                            "audio": "Por favor"
                         }
                     ]
                 },
@@ -230,8 +235,9 @@
                     "correctAnswer": "Sim",
                     "vocabulary": [
                         {
-                            "text": "Sim",
-                            "translation": "Ja"
+                            "text": "Ja",
+                            "translation": "Sim",
+                            "audio": "Sim"
                         }
                     ]
                 },
@@ -242,8 +248,9 @@
                     "correctAnswer": "Não",
                     "vocabulary": [
                         {
-                            "text": "Não",
-                            "translation": "Nein"
+                            "text": "Nein",
+                            "translation": "Não",
+                            "audio": "Não"
                         }
                     ]
                 }
@@ -279,8 +286,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Chamo-me",
-                            "translation": "Ich heiße"
+                            "text": "Ich heiße",
+                            "translation": "Chamo-me",
+                            "audio": "Chamo-me"
                         }
                     ]
                 },
@@ -298,12 +306,9 @@
                     "audioText": "Como te chamas",
                     "vocabulary": [
                         {
-                            "text": "Como",
-                            "translation": "Wie"
-                        },
-                        {
-                            "text": "te chamas",
-                            "translation": "heißt du (nennst du dich)"
+                            "text": "Wie heißt du?",
+                            "translation": "Como te chamas?",
+                            "audio": "Como te chamas"
                         }
                     ]
                 },
@@ -318,8 +323,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "se chama",
-                            "translation": "heißen Sie (nennt er/sie sich)"
+                            "text": "Wie heißen Sie?",
+                            "translation": "Como se chama?",
+                            "audio": "Como se chama"
                         }
                     ]
                 },
@@ -354,16 +360,19 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Sou",
-                            "translation": "Ich bin"
+                            "text": "Ich bin",
+                            "translation": "Sou",
+                            "audio": "Sou"
                         },
                         {
-                            "text": "da",
-                            "translation": "aus der (de + a)"
+                            "text": "aus",
+                            "translation": "da",
+                            "audio": "da"
                         },
                         {
-                            "text": "Alemanha",
-                            "translation": "Deutschland"
+                            "text": "Deutschland",
+                            "translation": "Alemanha",
+                            "audio": "Alemanha"
                         }
                     ]
                 },
@@ -377,8 +386,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Suíça",
-                            "translation": "Schweiz"
+                            "text": "Schweiz",
+                            "translation": "Suíça",
+                            "audio": "Suíça"
                         }
                     ]
                 },
@@ -392,8 +402,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Áustria",
-                            "translation": "Österreich"
+                            "text": "Österreich",
+                            "translation": "Áustria",
+                            "audio": "Áustria"
                         }
                     ]
                 },
@@ -427,8 +438,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "alemão",
-                            "translation": "Deutscher (männlich)"
+                            "text": "Deutscher",
+                            "translation": "alemão",
+                            "audio": "alemão"
                         }
                     ]
                 },
@@ -443,8 +455,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "alemã",
-                            "translation": "Deutsche (weiblich)"
+                            "text": "Deutsche",
+                            "translation": "alemã",
+                            "audio": "alemã"
                         }
                     ]
                 },
@@ -497,12 +510,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Não",
-                            "translation": "Nicht / Kein"
-                        },
-                        {
-                            "text": "falo",
-                            "translation": "ich spreche"
+                            "text": "spreche kein",
+                            "translation": "Não falo",
+                            "audio": "Não falo"
                         }
                     ]
                 },
@@ -516,12 +526,14 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Falas",
-                            "translation": "Sprichst du"
+                            "text": "Sprichst du",
+                            "translation": "Falas",
+                            "audio": "Falas"
                         },
                         {
-                            "text": "inglês",
-                            "translation": "Englisch"
+                            "text": "Englisch?",
+                            "translation": "inglês?",
+                            "audio": "inglês"
                         }
                     ]
                 }
@@ -567,16 +579,19 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Quatro",
-                            "translation": "Vier"
+                            "text": "Vier",
+                            "translation": "Quatro",
+                            "audio": "Quatro"
                         },
                         {
-                            "text": "cinco",
-                            "translation": "fünf"
+                            "text": "fünf",
+                            "translation": "cinco",
+                            "audio": "cinco"
                         },
                         {
-                            "text": "seis",
-                            "translation": "sechs"
+                            "text": "sechs",
+                            "translation": "seis",
+                            "audio": "seis"
                         }
                     ]
                 },
@@ -595,8 +610,9 @@
                     "optionsLanguage": "pt",
                     "vocabulary": [
                         {
-                            "text": "Sete",
-                            "translation": "Sieben"
+                            "text": "Sieben",
+                            "translation": "Sete",
+                            "audio": "Sete"
                         }
                     ]
                 },
@@ -635,12 +651,14 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Onze",
-                            "translation": "Elf"
+                            "text": "Elf",
+                            "translation": "Onze",
+                            "audio": "Onze"
                         },
                         {
-                            "text": "doze",
-                            "translation": "zwölf"
+                            "text": "zwölf",
+                            "translation": "doze",
+                            "audio": "doze"
                         }
                     ]
                 },
@@ -674,8 +692,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Vinte",
-                            "translation": "Zwanzig"
+                            "text": "Zwanzig",
+                            "translation": "Vinte",
+                            "audio": "Vinte"
                         }
                     ]
                 },
@@ -704,8 +723,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Quarenta",
-                            "translation": "Vierzig"
+                            "text": "Vierzig",
+                            "translation": "Quarenta",
+                            "audio": "Quarenta"
                         }
                     ]
                 },
@@ -734,8 +754,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Cem",
-                            "translation": "Hundert"
+                            "text": "Hundert",
+                            "translation": "Cem",
+                            "audio": "Cem"
                         }
                     ]
                 },
@@ -776,8 +797,9 @@
                     "audioText": "Quantos anos tem",
                     "vocabulary": [
                         {
-                            "text": "tem",
-                            "translation": "haben Sie / hat"
+                            "text": "Wie alt sind Sie?",
+                            "translation": "Quantos anos tem?",
+                            "audio": "Quantos anos tem"
                         }
                     ]
                 },
@@ -793,8 +815,9 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Tenho",
-                            "translation": "Ich habe (wird für Alter benutzt)"
+                            "text": "Ich bin",
+                            "translation": "Tenho",
+                            "audio": "Tenho"
                         }
                     ]
                 },

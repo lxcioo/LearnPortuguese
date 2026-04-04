@@ -113,11 +113,12 @@ const run = async () => {
                             if (exercise.vocabulary) {
                                 for (let v = 0; v < exercise.vocabulary.length; v++) {
                                     const vocab = exercise.vocabulary[v];
-                                    // Die Zielsprache ist Portugiesisch, es sei denn, die Übung ist translate_to_de (dann ist die Frage auf PT)
-                                    const lang = exercise.type === 'translate_to_de' ? 'pt-PT' : 'pt-PT';
 
-                                    // Wir speichern die Audio-Datei unter der Übungs-ID + _vocab_ + Index
-                                    await downloadAudio(vocab.text, `${exercise.id}_vocab_${v}`, lang);
+                                    // Entweder das explizite 'audio'-Feld (für PT-Übersetzungen von DE-Wörtern) 
+                                    // oder das normale 'text'-Feld (für reguläre PT-Sätze)
+                                    const textToSpeak = vocab.audio || vocab.text;
+
+                                    await downloadAudio(textToSpeak, `${exercise.id}_vocab_${v}`, 'pt-PT');
                                 }
                             }
                         }

@@ -129,7 +129,7 @@ export default function LessonScreen() {
               </TouchableOpacity>
 
               <InteractiveText
-                sentence={currentExercise.type === 'translate_to_pt' ? currentExercise.correctAnswer : currentExercise.question}
+                sentence={currentExercise.question}
                 // @ts-ignore (Damit TS nicht meckert, falls vocabulary noch nicht im globalen Type definiert wurde)
                 vocabulary={currentExercise.vocabulary}
                 exerciseId={currentExercise.id}
