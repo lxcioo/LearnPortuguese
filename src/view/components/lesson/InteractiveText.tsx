@@ -23,7 +23,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // Tokenizer Schritt 1: Zerlegt den Text in Vokabeln und Nicht-Vokabeln
+    // Tokenizer Schritt 1: Zerlegt den Text grob in Vokabeln und Nicht-Vokabeln
     let chunks = [{ text: sentence, isVocab: false, vocabItem: null as VocabWord | null, vocabIndex: -1 }];
 
     vocabulary.forEach((vocab, index) => {
@@ -46,20 +46,18 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         chunks = newChunks;
     });
 
-    // Tokenizer Schritt 2: Bewahrt exakt jedes Leer- und Sonderzeichen, erlaubt aber natürliche Zeilenumbrüche
+    // Tokenizer Schritt 2: Kugelsichere Trennung. 
+    // Trennt alles sauber in entweder [Nur-Wort] oder [Nur-Leerzeichen]. So geht NICHTS mehr verloren!
     const finalTokens: any[] = [];
     chunks.forEach(chunk => {
-        const parts = chunk.text.split(/(\s+)/);
+        const parts = chunk.text.match(/(\s+|\S+)/g) || [];
         parts.forEach(part => {
-            if (part && part.length > 0) {
-                const isSpace = /^\s+$/.test(part);
-                // Leerzeichen innerhalb von Vokabeln (wie bei "Auf Wiedersehen") werden als normaler Text gerendert.
-                // Das erlaubt React Native, "Auf" und "Wiedersehen" getrennt voneinander perfekt umzubrechen!
-                if (isSpace || !chunk.isVocab) {
-                    finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
-                } else {
-                    finalTokens.push({ text: part, isVocab: true, vocabItem: chunk.vocabItem, vocabIndex: chunk.vocabIndex });
-                }
+            const isSpace = /^\s+$/.test(part);
+            // Wenn es ein Leerzeichen ist, wird es als normaler, inaktiver Text gerendert, damit der Zeilenumbruch klappt.
+            if (isSpace || !chunk.isVocab) {
+                finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
+            } else {
+                finalTokens.push({ text: part, isVocab: true, vocabItem: chunk.vocabItem, vocabIndex: chunk.vocabIndex });
             }
         });
     });
@@ -88,7 +86,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Tooltip Pop-up */}
+                        {/* Pop-up */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
@@ -107,9 +105,9 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                     {token.text}
                                 </Text>
 
-                                {/* Das neue Design: Sehr feine, perfekt runde Punkte (Dots) statt klobiger Striche */}
+                                {/* Ultra feine, zarte Punkte für den Premium Look */}
                                 <View style={styles.customDashesContainer}>
-                                    {[...Array(25)].map((_, idx) => (
+                                    {[...Array(30)].map((_, idx) => (
                                         <View key={idx} style={[styles.dash, { backgroundColor: highlightColor }]} />
                                     ))}
                                 </View>
@@ -127,9 +125,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
-        // DAS IST DER FIX FÜR DIE LÜCKE: flex-start verhindert, dass einzelne Wörter in neuen Zeilen zentriert werden
         justifyContent: 'flex-start',
         rowGap: 8,
+        paddingTop: 35, // <-- LÖST DAS PROBLEM 1: Schafft Platz nach oben, damit das Pop-up NICHTS mehr verdeckt!
     },
     text: {
         fontSize: 26,
@@ -147,28 +145,25 @@ const styles = StyleSheet.create({
     },
     customDashesContainer: {
         position: 'absolute',
-        bottom: -1, // Zieht die Punkte noch etwas eleganter ans Wort heran
+        bottom: -1,
         left: 0,
         right: 0,
         flexDirection: 'row',
         overflow: 'hidden',
     },
-    // Neue elegante gepunktete Linie
     dash: {
-        width: 2.5,
-        height: 2.5,
-        borderRadius: 1.5, // Macht aus den klobigen Rechtecken perfekte kleine Kreise!
-        marginRight: 2.5,
+        width: 2, // <-- Noch kleiner und eleganter
+        height: 2,
+        borderRadius: 1,
+        marginRight: 4, // <-- Mehr Abstand lässt es nicht wie eine durchgehende Linie wirken
     },
     // Pop-up Styles
     tooltipAbsoluteWrapper: {
         position: 'absolute',
         bottom: '100%',
-        left: '50%',
-        // FIX FÜR ABGESCHNITTENEN TEXT: Dynamische Zentrierung anstelle fester Breite, sprengt nicht das Layout
-        transform: [{ translateX: '-50%' }],
+        alignSelf: 'center', // <-- LÖST DAS PROBLEM 2: Zentriert sich perfekt über dem Wort, egal wie lang es ist!
         alignItems: 'center',
-        marginBottom: -4, // Zieht das Pop-up deutlich enger ans Wort
+        marginBottom: -4,
         zIndex: 100,
         elevation: 10,
     },
