@@ -23,7 +23,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // Tokenizer: Zerlegt den Text in normale Wörter und interaktive Vokabeln
+    // Tokenizer: Zerlegt den Text in seine Bestandteile
     let chunks = [{ text: sentence, isVocab: false, vocabItem: null as VocabWord | null, vocabIndex: -1 }];
 
     vocabulary.forEach((vocab, index) => {
@@ -46,13 +46,26 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         chunks = newChunks;
     });
 
+    // Bereinigt den Text: Entfernt echte Leerzeichen, damit wir perfekte Abstände kontrollieren können
+    const finalTokens: any[] = [];
+    chunks.forEach(chunk => {
+        if (chunk.isVocab) {
+            finalTokens.push(chunk);
+        } else {
+            // Teilt normale Textblöcke an Leerzeichen auf und löscht leere Reste
+            const words = chunk.text.split(/\s+/).filter(w => w.trim().length > 0);
+            words.forEach(w => {
+                finalTokens.push({ text: w, isVocab: false, vocabItem: null, vocabIndex: -1 });
+            });
+        }
+    });
+
     const handlePress = (vocab: VocabWord | null, vocabIndex: number, chunkIndex: number) => {
         if (!vocab) return;
         const id = `${vocabIndex}-${chunkIndex}`;
         setActiveVocabId(id);
         playAudio(`${exerciseId}_vocab_${vocabIndex}`);
 
-        // Blendet das Pop-up nach 3 Sekunden wieder aus
         setTimeout(() => {
             setActiveVocabId(current => current === id ? null : current);
         }, 3000);
@@ -60,25 +73,22 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     return (
         <View style={styles.container}>
-            {chunks.map((chunk, i) => {
-                // Normale Wörter (werden nach Leerzeichen getrennt, damit sie am Zeilenende normal umbrechen)
-                if (!chunk.isVocab) {
-                    const words = chunk.text.split(/(\s+)/);
-                    return words.map((w, j) => (
-                        w ? <Text key={`text-${i}-${j}`} style={[styles.text, { color: textColor }]}>{w}</Text> : null
-                    ));
+            {finalTokens.map((token, i) => {
+                // Normale Wörter
+                if (!token.isVocab) {
+                    return <Text key={`text-${i}`} style={[styles.text, { color: textColor }]}>{token.text}</Text>;
                 }
 
-                // Interaktive Vokabel
-                const isActive = activeVocabId === `${chunk.vocabIndex}-${i}`;
+                // Interaktive Vokabeln
+                const isActive = activeVocabId === `${token.vocabIndex}-${i}`;
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Pop-up (erscheint exakt über diesem Container!) */}
+                        {/* Tooltip Pop-up */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                    <Text style={styles.tooltipText}>{chunk.vocabItem?.translation}</Text>
+                                    <Text style={styles.tooltipText}>{token.vocabItem?.translation}</Text>
                                 </View>
                                 <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
                             </Animated.View>
@@ -86,21 +96,15 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                         <TouchableOpacity
                             activeOpacity={0.6}
-                            onPress={() => handlePress(chunk.vocabItem, chunk.vocabIndex, i)}
-                        // margin/padding wurden hier komplett entfernt, damit es natürlich aussieht
+                            onPress={() => handlePress(token.vocabItem, token.vocabIndex, i)}
                         >
-                            <Text style={[
-                                styles.text,
-                                styles.interactiveWordText,
-                                {
-                                    color: highlightColor,
-                                    textDecorationLine: 'underline',
-                                    textDecorationStyle: 'dotted', // Jetzt standardmäßig gepunktet!
-                                    textDecorationColor: highlightColor
-                                }
-                            ]}>
-                                {chunk.text}
-                            </Text>
+                            <View style={styles.wordWithDashes}>
+                                <Text style={[styles.text, styles.interactiveWordText, { color: highlightColor }]}>
+                                    {token.text}
+                                </Text>
+                                {/* Echte gestrichelte Linie (Android-sicher) */}
+                                <View style={[styles.dashedLine, { borderColor: highlightColor }]} />
+                            </View>
                         </TouchableOpacity>
                     </View>
                 );
@@ -115,6 +119,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
+        rowGap: 10,   // Zeilenabstand beim Umbruch
+        columnGap: 8, // Perfekter, einheitlicher Wortabstand
     },
     text: {
         fontSize: 26,
@@ -122,10 +128,19 @@ const styles = StyleSheet.create({
     },
     vocabWrapper: {
         position: 'relative',
-        // marginHorizontal: 2 -> Wurde restlos entfernt für natürlichen Textfluss
+    },
+    wordWithDashes: {
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     interactiveWordText: {
         fontWeight: 'bold',
+    },
+    dashedLine: {
+        width: '100%',
+        borderBottomWidth: 2.5,  // Dicke der Striche
+        borderStyle: 'dashed',   // Sorgt für die kleinen Striche
+        marginTop: 2,            // Abstand zwischen Wort und Strichen
     },
     tooltipAbsoluteWrapper: {
         position: 'absolute',
