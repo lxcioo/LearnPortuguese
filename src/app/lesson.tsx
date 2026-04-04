@@ -1,6 +1,8 @@
+import { DiscordService } from '@/src/model/services/DiscordService';
 import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { FeedbackModal } from '@/src/view/components/lesson/FeedbackModal';
 import { FinishScreen } from '@/src/view/components/lesson/FinishScreen';
+import { ReportModal } from '@/src/view/components/lesson/ReportModal';
 import { useLessonViewModel } from '@/src/viewmodel/useLessonViewModel';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
@@ -21,6 +23,7 @@ import Animated, {
   withTiming
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 // ==========================================
 // 2. VIEW
@@ -30,8 +33,20 @@ export default function LessonScreen() {
   const { state, viewProps, feedback, finishScreenData, rating, actions, theme, isDarkMode } = useLessonViewModel();
   const navigation = useNavigation();
   const [confirmExit, setConfirmExit] = useState<{ visible: boolean; action: any }>({ visible: false, action: null });
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const currentExercise = state.currentExercise;
+
+  const handleReportSubmit = async (message: string) => {
+    if (!currentExercise) return;
+    try {
+      const fullMessage = `**Übung ID:** ${currentExercise.id}\n**Frage:** ${currentExercise.question}\n**Antwort:** ${currentExercise.correctAnswer}\n\n**Nachricht:**\n${message}`;
+      await DiscordService.sendFeedback("App User (Übung)", fullMessage);
+      Toast.show({ type: 'success', text1: 'Gesendet', text2: 'Vielen Dank für dein Feedback!' });
+    } catch (e) {
+      Toast.show({ type: 'error', text1: 'Fehler', text2: 'Nachricht konnte nicht gesendet werden.' });
+    }
+  };
 
   // --- ANIMATIONS LOGIK ---
   const progressWidth = useSharedValue(0);
@@ -106,7 +121,12 @@ useEffect(() => {
 
         <ScrollView contentContainerStyle={styles.content}>
           <Animated.View key={currentExercise.id} entering={FadeInRight} exiting={FadeOutLeft}>
-            <Text style={[styles.instruction, { color: theme.subText }]}>{viewProps.instructionText}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+              <Text style={[styles.instruction, { color: theme.subText, marginBottom: 0, flex: 1 }]}>{viewProps.instructionText}</Text>
+              <TouchableOpacity onPress={() => setShowReportModal(true)} style={{ padding: 4 }}>
+                <Ionicons name="flag-outline" size={24} color={theme.subText} />
+              </TouchableOpacity>
+            </View>
             <View style={styles.questionContainer}>
               <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => actions.playAudio(currentExercise.id)}>
                 <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
@@ -174,6 +194,14 @@ useEffect(() => {
         }}
         isDarkMode={isDarkMode}
       />
+      <ReportModal
+        visible={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        onSubmit={handleReportSubmit}
+        theme={theme}
+        isDarkMode={isDarkMode}
+      />
+      <Toast />
     </SafeAreaView>
   );
 }
