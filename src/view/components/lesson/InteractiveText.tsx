@@ -46,15 +46,18 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         chunks = newChunks;
     });
 
-    // Bereinigt den Text: Entfernt echte Leerzeichen, damit wir perfekte Abstände kontrollieren können
+    // Bereinigt den Text: Bewahrt die natürlichen Leerzeichen für perfekte Abstände (Satzzeichen bleiben kleben!)
     const finalTokens: any[] = [];
     chunks.forEach(chunk => {
         if (chunk.isVocab) {
             finalTokens.push(chunk);
         } else {
-            const words = chunk.text.split(/\s+/).filter(w => w.trim().length > 0);
-            words.forEach(w => {
-                finalTokens.push({ text: w, isVocab: false, vocabItem: null, vocabIndex: -1 });
+            // Teilt den String in Wörter, BEHÄLT aber die Leerzeichen bei
+            const parts = chunk.text.match(/\S+\s*|\s+/g) || [];
+            parts.forEach(part => {
+                if (part !== '') {
+                    finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
+                }
             });
         }
     });
@@ -73,7 +76,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     return (
         <View style={styles.container}>
             {finalTokens.map((token, i) => {
-                // Normale Wörter
+                // Normale Wörter und Leerzeichen
                 if (!token.isVocab) {
                     return <Text key={`text-${i}`} style={[styles.text, { color: textColor }]}>{token.text}</Text>;
                 }
@@ -83,7 +86,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Tooltip Pop-up */}
+                        {/* Tooltip Pop-up (Tiefer gesetzt durch paddingBottom: 2) */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
@@ -101,8 +104,13 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 <Text style={[styles.text, styles.interactiveWordText, { color: highlightColor }]}>
                                     {token.text}
                                 </Text>
-                                {/* Absolut positionierter Strich für Millimeter-genaue Platzierung */}
-                                <View style={[styles.dashedLine, { borderColor: highlightColor }]} />
+
+                                {/* Custom Line: Garantiert kleine Striche & enge Abstände auf JEDEM Gerät! */}
+                                <View style={styles.customDashesContainer}>
+                                    {[...Array(30)].map((_, idx) => (
+                                        <View key={idx} style={[styles.dash, { backgroundColor: highlightColor }]} />
+                                    ))}
+                                </View>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -118,8 +126,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        rowGap: 10,
-        columnGap: 8,
+        rowGap: 8,
+        // columnGap KOMPLETT entfernt, damit Text natürlich fließt
     },
     text: {
         fontSize: 26,
@@ -129,27 +137,34 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     wordWithDashes: {
-        position: 'relative', // Erlaubt absolute Positionierung des Strichs innerhalb des Wortes
-        paddingBottom: 2, // Minimaler Puffer, damit der Strich Platz hat
+        position: 'relative',
+        paddingBottom: 2, // Schafft exakt 2 Pixel Platz unter dem Wort für die Linie
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    dashedLine: {
+    // Die neue Custom-Linie
+    customDashesContainer: {
         position: 'absolute',
-        bottom: 4,      // Zieht den Strich nach oben in den Text hinein (näher ans Wort). Erhöhe die Zahl, um den Strich noch höher zu ziehen!
-        left: 2,        // Schiebt den Strich 2 Pixel nach rechts für die optische Mitte
-        right: -2,      // Gleicht die 2 Pixel rechts wieder aus, damit der Strich nicht kürzer wird
-        borderBottomWidth: 2.5,
-        borderStyle: 'dashed',
+        bottom: 0, // Sitzt haargenau in den 2 Pixeln Platz, die wir oben freigemacht haben
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
+        overflow: 'hidden', // Schneidet überschüssige Striche sauber ab
     },
+    dash: {
+        width: 3, // Die Länge eines einzelnen Strichs (sehr fein)
+        height: 2.5, // Die Dicke
+        marginRight: 2, // Der kleine Abstand zwischen den Strichen
+    },
+    // Pop-up Styles
     tooltipAbsoluteWrapper: {
         position: 'absolute',
         bottom: '100%',
         left: -80,
         right: -80,
         alignItems: 'center',
-        paddingBottom: 6,
+        paddingBottom: 2, // <-- Wurde von 6 auf 2 reduziert, Pop-up ist jetzt näher dran!
         zIndex: 100,
         elevation: 10,
     },
