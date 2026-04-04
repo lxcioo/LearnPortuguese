@@ -74,7 +74,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Pop-up (erscheint jetzt exakt über diesem Container!) */}
+                        {/* Pop-up (erscheint exakt über diesem Container!) */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
@@ -84,13 +84,22 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                             </Animated.View>
                         )}
 
-                        {/* Neues, modernes "Soft-Highlight" Design */}
+                        {/* Neues Design: Grüner Text + grüne gestrichelte Unterstreichung */}
                         <TouchableOpacity
                             activeOpacity={0.6}
                             onPress={() => handlePress(chunk.vocabItem, chunk.vocabIndex, i)}
-                            style={[styles.interactiveWordBg, { backgroundColor: 'rgba(88, 204, 2, 0.15)' }]}
+                            style={styles.interactiveWordWrapper}
                         >
-                            <Text style={[styles.text, styles.interactiveWordText, { color: '#46a302' }]}>
+                            <Text style={[
+                                styles.text,
+                                styles.interactiveWordText,
+                                {
+                                    color: highlightColor, // Macht das Wort grün
+                                    textDecorationLine: 'underline',
+                                    textDecorationStyle: 'dashed', // Sorgt für die vielen kleinen Striche
+                                    textDecorationColor: highlightColor // Macht die Striche grün
+                                }
+                            ]}>
                                 {chunk.text}
                             </Text>
                         </TouchableOpacity>
@@ -114,24 +123,22 @@ const styles = StyleSheet.create({
     },
     vocabWrapper: {
         position: 'relative',
-        // Ein kleines bisschen Margin, damit die Vokabeln nicht kleben
         marginHorizontal: 2,
     },
-    interactiveWordBg: {
-        borderRadius: 8,
-        paddingHorizontal: 4,
+    interactiveWordWrapper: {
+        paddingHorizontal: 2,
         paddingVertical: 2,
     },
     interactiveWordText: {
-        fontWeight: '800', // Etwas dicker als der normale Text
+        fontWeight: 'bold',
     },
     tooltipAbsoluteWrapper: {
         position: 'absolute',
         bottom: '100%',
-        left: -80, // Trick, um den Container über die Ränder hinauszuziehen...
+        left: -80,
         right: -80,
-        alignItems: 'center', // ...und das Tooltip dann exakt in der Mitte zu zentrieren
-        paddingBottom: 6, // Abstand zur Vokabel
+        alignItems: 'center',
+        paddingBottom: 6,
         zIndex: 100,
         elevation: 10,
     },
