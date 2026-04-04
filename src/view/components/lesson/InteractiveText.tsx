@@ -23,7 +23,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // Tokenizer: Zerlegt den Text in seine Bestandteile
+    // Tokenizer Schritt 1: Zerlegt den Text in Vokabeln und Nicht-Vokabeln
     let chunks = [{ text: sentence, isVocab: false, vocabItem: null as VocabWord | null, vocabIndex: -1 }];
 
     vocabulary.forEach((vocab, index) => {
@@ -46,23 +46,18 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         chunks = newChunks;
     });
 
-    // Bereinigt den Text: Das ist der Game-Changer für lange Phrasen wie "Auf Wiedersehen"!
+    // Tokenizer Schritt 2: Bewahrt exakt jedes Leer- und Sonderzeichen, erlaubt aber natürliche Zeilenumbrüche
     const finalTokens: any[] = [];
     chunks.forEach(chunk => {
-        // Wir trennen ALLES (auch Vokabeln) nach Leerzeichen auf
         const parts = chunk.text.split(/(\s+)/);
-
         parts.forEach(part => {
             if (part && part.length > 0) {
-                // Prüfen, ob der Teil nur ein Leerzeichen ist
                 const isSpace = /^\s+$/.test(part);
-
+                // Leerzeichen innerhalb von Vokabeln (wie bei "Auf Wiedersehen") werden als normaler Text gerendert.
+                // Das erlaubt React Native, "Auf" und "Wiedersehen" getrennt voneinander perfekt umzubrechen!
                 if (isSpace || !chunk.isVocab) {
-                    // Leerzeichen und normaler Text werden als Standard-Text gerendert
                     finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
                 } else {
-                    // Die einzelnen Wörter einer Vokabel werden interaktiv. 
-                    // So kann "Auf" in Zeile 1 stehen und "Wiedersehen" in Zeile 2 umbrechen!
                     finalTokens.push({ text: part, isVocab: true, vocabItem: chunk.vocabItem, vocabIndex: chunk.vocabIndex });
                 }
             }
@@ -83,7 +78,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     return (
         <View style={styles.container}>
             {finalTokens.map((token, i) => {
-                // Normale Wörter und Leerzeichen
+                // Normale Wörter, Satzzeichen und Leerzeichen
                 if (!token.isVocab) {
                     return <Text key={`text-${i}`} style={[styles.text, { color: textColor }]}>{token.text}</Text>;
                 }
@@ -93,7 +88,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Pop-up (sitzt jetzt viel tiefer am Wort) */}
+                        {/* Tooltip Pop-up */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
@@ -112,9 +107,9 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                     {token.text}
                                 </Text>
 
-                                {/* Noch feinere Unterstreichung */}
+                                {/* Das neue Design: Sehr feine, perfekt runde Punkte (Dots) statt klobiger Striche */}
                                 <View style={styles.customDashesContainer}>
-                                    {[...Array(30)].map((_, idx) => (
+                                    {[...Array(25)].map((_, idx) => (
                                         <View key={idx} style={[styles.dash, { backgroundColor: highlightColor }]} />
                                     ))}
                                 </View>
@@ -132,8 +127,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
-        justifyContent: 'center',
-        rowGap: 6,
+        // DAS IST DER FIX FÜR DIE LÜCKE: flex-start verhindert, dass einzelne Wörter in neuen Zeilen zentriert werden
+        justifyContent: 'flex-start',
+        rowGap: 8,
     },
     text: {
         fontSize: 26,
@@ -144,22 +140,24 @@ const styles = StyleSheet.create({
     },
     wordWithDashes: {
         position: 'relative',
+        paddingBottom: 2,
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
     customDashesContainer: {
         position: 'absolute',
-        bottom: -3,
+        bottom: -1, // Zieht die Punkte noch etwas eleganter ans Wort heran
         left: 0,
         right: 0,
         flexDirection: 'row',
         overflow: 'hidden',
     },
+    // Neue elegante gepunktete Linie
     dash: {
-        width: 3,        // Kürzer
-        height: 1.2,     // Noch dünner & eleganter
-        borderRadius: 1,
+        width: 2.5,
+        height: 2.5,
+        borderRadius: 1.5, // Macht aus den klobigen Rechtecken perfekte kleine Kreise!
         marginRight: 2.5,
     },
     // Pop-up Styles
@@ -167,10 +165,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: '100%',
         left: '50%',
-        width: 160,
-        marginLeft: -80,
+        // FIX FÜR ABGESCHNITTENEN TEXT: Dynamische Zentrierung anstelle fester Breite, sprengt nicht das Layout
+        transform: [{ translateX: '-50%' }],
         alignItems: 'center',
-        marginBottom: -8, // Zieht das Pop-up noch spürbar weiter an das Wort heran
+        marginBottom: -4, // Zieht das Pop-up deutlich enger ans Wort
         zIndex: 100,
         elevation: 10,
     },
