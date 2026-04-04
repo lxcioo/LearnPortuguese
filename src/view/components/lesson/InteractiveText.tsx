@@ -1,5 +1,5 @@
-import React, { JSX, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 interface VocabWord {
@@ -17,104 +17,123 @@ interface InteractiveTextProps {
 }
 
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor }: InteractiveTextProps) {
-    const [activeVocab, setActiveVocab] = useState<{ word: string, translation: string } | null>(null);
+    const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
     if (!vocabulary || vocabulary.length === 0) {
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    const handlePress = (vocab: VocabWord, index: number) => {
-        setActiveVocab({ word: vocab.text, translation: vocab.translation });
-        playAudio(`${exerciseId}_vocab_${index}`);
+    // Tokenizer: Zerlegt den Text in normale Wörter und interaktive Vokabeln
+    let chunks = [{ text: sentence, isVocab: false, vocabItem: null as VocabWord | null, vocabIndex: -1 }];
 
-        // Tooltip nach 3 Sekunden automatisch ausblenden
-        setTimeout(() => setActiveVocab(null), 3000);
-    };
-
-    // Zerlegt den Satz so, dass Teilsätze und Wörter erkannt werden
-    const renderInteractiveSentence = () => {
-        let remainingText = sentence;
-        const elements: JSX.Element[] = [];
-        let keyIndex = 0;
-
-        vocabulary.forEach((vocab, index) => {
-            const parts = remainingText.split(vocab.text);
-            if (parts.length > 1) {
-                // Text VOR der Vokabel (falls vorhanden)
-                if (parts[0]) {
-                    elements.push(<Text key={`text-${keyIndex++}`} style={{ color: textColor }}>{parts[0]}</Text>);
-                }
-
-                // Die interaktive Vokabel selbst
-                elements.push(
-                    <Text
-                        key={`vocab-${keyIndex++}`}
-                        style={[
-                            styles.interactiveWord,
-                            {
-                                textDecorationColor: highlightColor,
-                                color: textColor // <--- Geändert: Behält die normale Textfarbe!
-                            }
-                        ]}
-                        onPress={() => handlePress(vocab, index)}
-                    >
-                        {vocab.text}
-                    </Text>
-                );
-
-                // Der Rest des Satzes für die nächste Iteration
-                remainingText = parts.slice(1).join(vocab.text);
+    vocabulary.forEach((vocab, index) => {
+        const newChunks: any[] = [];
+        chunks.forEach(chunk => {
+            if (chunk.isVocab) {
+                newChunks.push(chunk);
+            } else {
+                const parts = chunk.text.split(vocab.text);
+                parts.forEach((part, i) => {
+                    if (part !== '') {
+                        newChunks.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
+                    }
+                    if (i < parts.length - 1) {
+                        newChunks.push({ text: vocab.text, isVocab: true, vocabItem: vocab, vocabIndex: index });
+                    }
+                });
             }
         });
+        chunks = newChunks;
+    });
 
-        // Den übrig gebliebenen Text anhängen
-        if (remainingText) {
-            elements.push(<Text key={`text-${keyIndex++}`} style={{ color: textColor }}>{remainingText}</Text>);
-        }
+    const handlePress = (vocab: VocabWord | null, vocabIndex: number, chunkIndex: number) => {
+        if (!vocab) return;
+        const id = `${vocabIndex}-${chunkIndex}`;
+        setActiveVocabId(id);
+        playAudio(`${exerciseId}_vocab_${vocabIndex}`);
 
-        return <Text style={[styles.text, { color: textColor }]}>{elements}</Text>;
+        // Blendet das Pop-up nach 3 Sekunden wieder aus
+        setTimeout(() => {
+            setActiveVocabId(current => current === id ? null : current);
+        }, 3000);
     };
 
     return (
         <View style={styles.container}>
-            {/* Tooltip Pop-up */}
-            {activeVocab && (
-                <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContainer}>
-                    <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                        {/* Lautsprecher-Icon wurde hier entfernt */}
-                        <Text style={styles.tooltipText}>{activeVocab.translation}</Text>
-                    </View>
-                    <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
-                </Animated.View>
-            )}
+            {chunks.map((chunk, i) => {
+                // Normale Wörter (werden nach Leerzeichen getrennt, damit sie am Zeilenende normal umbrechen)
+                if (!chunk.isVocab) {
+                    const words = chunk.text.split(/(\s+)/);
+                    return words.map((w, j) => (
+                        w ? <Text key={`text-${i}-${j}`} style={[styles.text, { color: textColor }]}>{w}</Text> : null
+                    ));
+                }
 
-            {/* Der eigentliche Satz */}
-            {renderInteractiveSentence()}
+                // Interaktive Vokabel
+                const isActive = activeVocabId === `${chunk.vocabIndex}-${i}`;
+
+                return (
+                    <View key={`vocab-${i}`} style={styles.vocabWrapper}>
+                        {/* Pop-up (erscheint jetzt exakt über diesem Container!) */}
+                        {isActive && (
+                            <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
+                                <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                    <Text style={styles.tooltipText}>{chunk.vocabItem?.translation}</Text>
+                                </View>
+                                <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                            </Animated.View>
+                        )}
+
+                        {/* Neues, modernes "Soft-Highlight" Design */}
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => handlePress(chunk.vocabItem, chunk.vocabIndex, i)}
+                            style={[styles.interactiveWordBg, { backgroundColor: 'rgba(88, 204, 2, 0.15)' }]}
+                        >
+                            <Text style={[styles.text, styles.interactiveWordText, { color: '#46a302' }]}>
+                                {chunk.text}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                );
+            })}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
-        alignItems: 'flex-start',
-        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
         fontSize: 26,
         fontWeight: 'bold',
-        flexWrap: 'wrap',
     },
-    interactiveWord: {
-        textDecorationLine: 'underline',
-        textDecorationStyle: 'dashed', // <--- Geändert: Gestrichelte Linie statt gepunktet
+    vocabWrapper: {
+        position: 'relative',
+        // Ein kleines bisschen Margin, damit die Vokabeln nicht kleben
+        marginHorizontal: 2,
     },
-    tooltipContainer: {
+    interactiveWordBg: {
+        borderRadius: 8,
+        paddingHorizontal: 4,
+        paddingVertical: 2,
+    },
+    interactiveWordText: {
+        fontWeight: '800', // Etwas dicker als der normale Text
+    },
+    tooltipAbsoluteWrapper: {
         position: 'absolute',
-        top: -45,
-        left: 0,
-        alignItems: 'center',
-        zIndex: 10,
+        bottom: '100%',
+        left: -80, // Trick, um den Container über die Ränder hinauszuziehen...
+        right: -80,
+        alignItems: 'center', // ...und das Tooltip dann exakt in der Mitte zu zentrieren
+        paddingBottom: 6, // Abstand zur Vokabel
+        zIndex: 100,
+        elevation: 10,
     },
     tooltip: {
         paddingHorizontal: 12,
@@ -129,7 +148,8 @@ const styles = StyleSheet.create({
     tooltipText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: 15,
+        textAlign: 'center',
     },
     tooltipArrow: {
         width: 0,
