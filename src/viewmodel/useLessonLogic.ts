@@ -224,11 +224,32 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     }
   };
 
-  const getSolutionDisplay = useCallback(() => {
-    if (!currentExercise) return "";
-    if (currentExercise.type === 'translate_to_de') return `${currentExercise.correctAnswer} = ${currentExercise.question}`;
-    if (currentExercise.type === 'multiple_choice' && currentExercise.optionsLanguage === 'de-DE') return `${currentExercise.correctAnswer} = ${currentExercise.audioText}`;
-    return currentExercise.correctAnswer;
+  const getSolutionData = useCallback(() => {
+    if (!currentExercise) return { pt: "", de: "" };
+    
+    let pt = "";
+    let de = "";
+
+    if (currentExercise.type === 'translate_to_de') {
+      pt = currentExercise.question;
+      de = currentExercise.correctAnswer;
+    } else if (currentExercise.type === 'translate_to_pt') {
+      pt = currentExercise.correctAnswer;
+      de = currentExercise.question;
+    } else if (currentExercise.type === 'multiple_choice') {
+      if (currentExercise.optionsLanguage === 'de-DE') {
+        pt = currentExercise.audioText || currentExercise.question;
+        de = currentExercise.correctAnswer;
+      } else {
+        pt = currentExercise.audioText || currentExercise.correctAnswer;
+        de = currentExercise.question;
+      }
+    } else {
+       pt = currentExercise.correctAnswer;
+       de = currentExercise.question;
+    }
+
+    return { pt, de };
   }, [currentExercise]);
 
   const progressPercent = lessonQueue.length > 0 ? (currentExerciseIndex / lessonQueue.length) * 100 : 0;
@@ -238,6 +259,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
-    getSolutionDisplay, lessonError, setLessonError
+    getSolutionData, lessonError, setLessonError
   };
 };

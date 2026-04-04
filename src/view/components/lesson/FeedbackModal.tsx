@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -17,9 +18,10 @@ type RatingProps = {
 type FeedbackModalProps = {
   isVisible: boolean;
   isCorrect: boolean;
-  solutionText: string;
+  solutionData: { pt: string; de: string };
   onContinue: () => void;
   onRate: (box: number) => void;
+  onPlayAudio?: () => void;
   rating: RatingProps;
   theme: {
     feedbackSuccessBg: string;
@@ -32,7 +34,7 @@ type FeedbackModalProps = {
 };
 
 export function FeedbackModal({
-  isVisible, isCorrect, solutionText, onContinue, onRate, rating, theme, isDarkMode, animatedStyle
+  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, rating, theme, isDarkMode, animatedStyle
 }: FeedbackModalProps) {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -46,7 +48,15 @@ export function FeedbackModal({
           <View style={styles.marginBottom20}>
             <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
             <View style={styles.solutionRow}>
-              <Text style={[styles.feedbackSolution, { color: theme.feedbackText }]}>{solutionText}</Text>
+              {onPlayAudio && (
+                <TouchableOpacity style={[styles.speakerButton, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]} onPress={onPlayAudio}>
+                  <Ionicons name="volume-medium" size={26} color="#1cb0f6" />
+                </TouchableOpacity>
+              )}
+              <View style={styles.solutionTextCol}>
+                <Text style={[styles.feedbackSolutionPt, { color: theme.feedbackText }]}>{solutionData.pt}</Text>
+                <Text style={[styles.feedbackSolutionDe, { color: theme.subText }]}>{solutionData.de}</Text>
+              </View>
             </View>
           </View>
 
@@ -78,8 +88,11 @@ const styles = StyleSheet.create({
   feedbackContainer: { padding: 24, paddingBottom: 40, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
   feedbackSubtitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
-  feedbackSolution: { fontSize: 19, fontWeight: '600', flexShrink: 1 },
   solutionRow: { flexDirection: 'row', alignItems: 'center' },
+  speakerButton: { padding: 10, borderRadius: 14, marginRight: 12, justifyContent: 'center', alignItems: 'center' },
+  solutionTextCol: { flexShrink: 1, justifyContent: 'center' },
+  feedbackSolutionPt: { fontSize: 20, fontWeight: '700', marginBottom: 2 },
+  feedbackSolutionDe: { fontSize: 15, fontWeight: '500' },
   continueButton: { backgroundColor: '#fff', padding: 16, borderRadius: 16, alignItems: 'center', marginTop: 15 },
   continueButtonText: { fontSize: 18, fontWeight: 'bold' },
   textSuccess: { color: '#58cc02' },

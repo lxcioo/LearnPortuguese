@@ -150,9 +150,10 @@ useEffect(() => {
       <FeedbackModal
         isVisible={feedback.show}
         isCorrect={feedback.isCorrect}
-        solutionText={feedback.solutionText}
+        solutionData={feedback.solutionData}
         onContinue={actions.nextExercise}
         onRate={actions.ratePractice}
+        onPlayAudio={state.currentExercise ? () => actions.playAudio(state.currentExercise.id) : undefined}
         rating={rating}
         theme={theme}
         isDarkMode={isDarkMode}

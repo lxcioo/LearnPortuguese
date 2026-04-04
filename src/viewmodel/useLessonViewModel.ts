@@ -59,7 +59,7 @@ export function useLessonViewModel() {
     feedback: {
       show: logic.showFeedback,
       isCorrect: logic.isCorrect,
-      solutionText: logic.getSolutionDisplay ? logic.getSolutionDisplay() : '',
+      solutionData: logic.getSolutionData ? logic.getSolutionData() : { pt: '', de: '' },
     },
     // Data for the finish screen (View will use this to determine routing/alerts)
     finishScreenData: {
