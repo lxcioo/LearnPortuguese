@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { JSX, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -50,7 +49,13 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                 elements.push(
                     <Text
                         key={`vocab-${keyIndex++}`}
-                        style={[styles.interactiveWord, { textDecorationColor: highlightColor, color: highlightColor }]}
+                        style={[
+                            styles.interactiveWord,
+                            {
+                                textDecorationColor: highlightColor,
+                                color: textColor // <--- Geändert: Behält die normale Textfarbe!
+                            }
+                        ]}
                         onPress={() => handlePress(vocab, index)}
                     >
                         {vocab.text}
@@ -76,7 +81,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
             {activeVocab && (
                 <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContainer}>
                     <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                        <Ionicons name="volume-medium" size={16} color="#fff" style={{ marginRight: 6 }} />
+                        {/* Lautsprecher-Icon wurde hier entfernt */}
                         <Text style={styles.tooltipText}>{activeVocab.translation}</Text>
                     </View>
                     <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
@@ -102,19 +107,16 @@ const styles = StyleSheet.create({
     },
     interactiveWord: {
         textDecorationLine: 'underline',
-        textDecorationStyle: 'dotted', // Moderner gepunkteter Unterstrich
+        textDecorationStyle: 'dashed', // <--- Geändert: Gestrichelte Linie statt gepunktet
     },
-    // Tooltip Styles
     tooltipContainer: {
         position: 'absolute',
-        top: -45, // Schwebt über dem Text
+        top: -45,
         left: 0,
         alignItems: 'center',
         zIndex: 10,
     },
     tooltip: {
-        flexDirection: 'row',
-        alignItems: 'center',
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 8,
@@ -139,6 +141,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 6,
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
-        marginTop: -1, // Schließt nahtlos an die Bubble an
+        marginTop: -1,
     }
 });

@@ -125,7 +125,7 @@ export default function LessonScreen() {
             <Text style={[styles.instruction, { color: theme.subText }]}>{viewProps.instructionText}</Text>
             <View style={styles.questionContainer}>
               <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => actions.playAudio(currentExercise.id)}>
-                <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
+                <Ionicons name="volume-medium" size={30} color="#58cc02" />
               </TouchableOpacity>
 
               <InteractiveText
@@ -135,7 +135,7 @@ export default function LessonScreen() {
                 exerciseId={currentExercise.id}
                 playAudio={actions.playAudio}
                 textColor={theme.text}
-                highlightColor="#1cb0f6" // Das blaue Theme passend zum Speaker-Button
+                highlightColor="#58cc02" // Das blaue Theme passend zum Speaker-Button
               />
             </View>
 
