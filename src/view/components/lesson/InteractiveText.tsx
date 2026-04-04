@@ -52,7 +52,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         if (chunk.isVocab) {
             finalTokens.push(chunk);
         } else {
-            // Teilt normale Textblöcke an Leerzeichen auf und löscht leere Reste
             const words = chunk.text.split(/\s+/).filter(w => w.trim().length > 0);
             words.forEach(w => {
                 finalTokens.push({ text: w, isVocab: false, vocabItem: null, vocabIndex: -1 });
@@ -102,7 +101,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 <Text style={[styles.text, styles.interactiveWordText, { color: highlightColor }]}>
                                     {token.text}
                                 </Text>
-                                {/* Echte gestrichelte Linie (Android-sicher) */}
+                                {/* Absolut positionierter Strich für Millimeter-genaue Platzierung */}
                                 <View style={[styles.dashedLine, { borderColor: highlightColor }]} />
                             </View>
                         </TouchableOpacity>
@@ -119,8 +118,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        rowGap: 10,   // Zeilenabstand beim Umbruch
-        columnGap: 8, // Perfekter, einheitlicher Wortabstand
+        rowGap: 10,
+        columnGap: 8,
     },
     text: {
         fontSize: 26,
@@ -130,17 +129,19 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     wordWithDashes: {
-        flexDirection: 'column',
-        alignItems: 'center',
+        position: 'relative', // Erlaubt absolute Positionierung des Strichs innerhalb des Wortes
+        paddingBottom: 2, // Minimaler Puffer, damit der Strich Platz hat
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
     dashedLine: {
-        width: '100%',
-        borderBottomWidth: 2.5,  // Dicke der Striche
-        borderStyle: 'dashed',   // Sorgt für die kleinen Striche
-        marginTop: 2,            // Abstand zwischen Wort und Strichen
+        position: 'absolute',
+        bottom: 4,      // Zieht den Strich nach oben in den Text hinein (näher ans Wort). Erhöhe die Zahl, um den Strich noch höher zu ziehen!
+        left: 2,        // Schiebt den Strich 2 Pixel nach rechts für die optische Mitte
+        right: -2,      // Gleicht die 2 Pixel rechts wieder aus, damit der Strich nicht kürzer wird
+        borderBottomWidth: 2.5,
+        borderStyle: 'dashed',
     },
     tooltipAbsoluteWrapper: {
         position: 'absolute',
