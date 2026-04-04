@@ -84,20 +84,19 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                             </Animated.View>
                         )}
 
-                        {/* Neues Design: Grüner Text + grüne gestrichelte Unterstreichung */}
                         <TouchableOpacity
                             activeOpacity={0.6}
                             onPress={() => handlePress(chunk.vocabItem, chunk.vocabIndex, i)}
-                            style={styles.interactiveWordWrapper}
+                        // margin/padding wurden hier komplett entfernt, damit es natürlich aussieht
                         >
                             <Text style={[
                                 styles.text,
                                 styles.interactiveWordText,
                                 {
-                                    color: highlightColor, // Macht das Wort grün
+                                    color: highlightColor,
                                     textDecorationLine: 'underline',
-                                    textDecorationStyle: 'dotted', // Sorgt für die vielen kleinen Striche
-                                    textDecorationColor: highlightColor // Macht die Striche grün
+                                    textDecorationStyle: 'dotted', // Jetzt standardmäßig gepunktet!
+                                    textDecorationColor: highlightColor
                                 }
                             ]}>
                                 {chunk.text}
@@ -123,11 +122,7 @@ const styles = StyleSheet.create({
     },
     vocabWrapper: {
         position: 'relative',
-        marginHorizontal: 2,
-    },
-    interactiveWordWrapper: {
-        paddingHorizontal: 2,
-        paddingVertical: 2,
+        // marginHorizontal: 2 -> Wurde restlos entfernt für natürlichen Textfluss
     },
     interactiveWordText: {
         fontWeight: 'bold',
