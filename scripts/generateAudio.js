@@ -42,7 +42,7 @@ const downloadAudio = (text, filename, lang = 'pt-PT') => {
     return new Promise((resolve, reject) => {
         const fileNameWithExt = `${filename}.mp3`;
         const filePath = path.join(AUDIO_DIR, fileNameWithExt);
-        
+
         // Diese Datei wird benötigt, also zur Liste hinzufügen
         requiredFiles.add(fileNameWithExt);
 
@@ -53,13 +53,13 @@ const downloadAudio = (text, filename, lang = 'pt-PT') => {
         }
 
         console.log(`Generiere (${lang}): ${filename} -> "${text}"`);
-        
+
         const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${lang}&client=tw-ob`;
 
         https.get(url, (res) => {
             if (res.statusCode !== 200) {
                 console.error(`Fehler ${res.statusCode} bei: ${text}`);
-                resolve(); 
+                resolve();
                 return;
             }
             const fileStream = fs.createWriteStream(filePath);
@@ -87,7 +87,7 @@ const run = async () => {
                 for (const level of unit.levels) {
                     if (level.exercises) {
                         for (const exercise of level.exercises) {
-                            
+
                             if (exercise.type === 'translate_to_pt') {
                                 await downloadAudio(exercise.correctAnswer, exercise.id, 'pt-PT');
                             }
@@ -98,15 +98,26 @@ const run = async () => {
                                 if (exercise.audioText) {
                                     await downloadAudio(exercise.audioText, exercise.id, 'pt-PT');
                                 }
-                                
+
                                 const optionsLang = exercise.optionsLanguage === 'de' ? 'de' : 'pt-PT';
-                                
+
                                 await downloadAudio(exercise.correctAnswer, `${exercise.id}_answer`, optionsLang);
-                                
+
                                 if (exercise.options) {
                                     for (let i = 0; i < exercise.options.length; i++) {
                                         await downloadAudio(exercise.options[i], `${exercise.id}_opt_${i}`, optionsLang);
                                     }
+                                }
+                            }
+                            // NEU: Audio für einzelne Vokabeln / Teilsätze generieren
+                            if (exercise.vocabulary) {
+                                for (let v = 0; v < exercise.vocabulary.length; v++) {
+                                    const vocab = exercise.vocabulary[v];
+                                    // Die Zielsprache ist Portugiesisch, es sei denn, die Übung ist translate_to_de (dann ist die Frage auf PT)
+                                    const lang = exercise.type === 'translate_to_de' ? 'pt-PT' : 'pt-PT';
+
+                                    // Wir speichern die Audio-Datei unter der Übungs-ID + _vocab_ + Index
+                                    await downloadAudio(vocab.text, `${exercise.id}_vocab_${v}`, lang);
                                 }
                             }
                         }
@@ -120,7 +131,7 @@ const run = async () => {
     console.log("--- 🧹 Räume alte Dateien auf ---");
     const existingFiles = fs.readdirSync(AUDIO_DIR).filter(f => f.endsWith('.mp3'));
     let deletedCount = 0;
-    
+
     for (const file of existingFiles) {
         if (!requiredFiles.has(file)) {
             fs.unlinkSync(path.join(AUDIO_DIR, file));

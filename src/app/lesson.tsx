@@ -2,6 +2,7 @@ import { DiscordService } from '@/src/model/services/DiscordService';
 import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { FeedbackModal } from '@/src/view/components/lesson/FeedbackModal';
 import { FinishScreen } from '@/src/view/components/lesson/FinishScreen';
+import { InteractiveText } from '@/src/view/components/lesson/InteractiveText';
 import { ReportModal } from '@/src/view/components/lesson/ReportModal';
 import { useLessonViewModel } from '@/src/viewmodel/useLessonViewModel';
 import { Ionicons } from '@expo/vector-icons';
@@ -61,7 +62,7 @@ export default function LessonScreen() {
     width: `${progressWidth.value}%`
   }));
 
-// 2. Fehler-Wackeln (ohne das Einfliegen)
+  // 2. Fehler-Wackeln (ohne das Einfliegen)
   useEffect(() => {
     if (feedback.show && !feedback.isCorrect) {
       shakeTranslateX.value = withSequence(
@@ -81,7 +82,7 @@ export default function LessonScreen() {
   }));
 
   // --- NAVIGATION GUARD (View-spezifisch) ---
-useEffect(() => {
+  useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
       if (finishScreenData.isFinished || finishScreenData.isPractice) return;
       e.preventDefault();
@@ -126,7 +127,16 @@ useEffect(() => {
               <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => actions.playAudio(currentExercise.id)}>
                 <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
               </TouchableOpacity>
-              <Text style={[styles.question, { color: theme.text }]}>{currentExercise.question}</Text>
+
+              <InteractiveText
+                sentence={currentExercise.type === 'translate_to_pt' ? currentExercise.correctAnswer : currentExercise.question}
+                // @ts-ignore (Damit TS nicht meckert, falls vocabulary noch nicht im globalen Type definiert wurde)
+                vocabulary={currentExercise.vocabulary}
+                exerciseId={currentExercise.id}
+                playAudio={actions.playAudio}
+                textColor={theme.text}
+                highlightColor="#1cb0f6" // Das blaue Theme passend zum Speaker-Button
+              />
             </View>
 
             {viewProps.isTranslateExercise && (
@@ -175,7 +185,7 @@ useEffect(() => {
         isDarkMode={isDarkMode}
         animatedStyle={animatedModalStyle}
       />
-      <CustomAlert 
+      <CustomAlert
         visible={confirmExit.visible}
         title="Lektion abbrechen?"
         message="Dein bisheriger Fortschritt in dieser Lektion geht verloren."
