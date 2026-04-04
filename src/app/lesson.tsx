@@ -121,12 +121,7 @@ useEffect(() => {
 
         <ScrollView contentContainerStyle={styles.content}>
           <Animated.View key={currentExercise.id} entering={FadeInRight} exiting={FadeOutLeft}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-              <Text style={[styles.instruction, { color: theme.subText, marginBottom: 0, flex: 1 }]}>{viewProps.instructionText}</Text>
-              <TouchableOpacity onPress={() => setShowReportModal(true)} style={{ padding: 4 }}>
-                <Ionicons name="flag-outline" size={24} color={theme.subText} />
-              </TouchableOpacity>
-            </View>
+            <Text style={[styles.instruction, { color: theme.subText }]}>{viewProps.instructionText}</Text>
             <View style={styles.questionContainer}>
               <TouchableOpacity style={[styles.speakerButton, { backgroundColor: theme.speakerBg }]} onPress={() => actions.playAudio(currentExercise.id)}>
                 <Ionicons name="volume-medium" size={30} color="#1cb0f6" />
@@ -174,6 +169,7 @@ useEffect(() => {
         onContinue={actions.nextExercise}
         onRate={actions.ratePractice}
         onPlayAudio={state.currentExercise ? () => actions.playAudio(state.currentExercise.id) : undefined}
+        onReportClick={() => setShowReportModal(true)}
         rating={rating}
         theme={theme}
         isDarkMode={isDarkMode}

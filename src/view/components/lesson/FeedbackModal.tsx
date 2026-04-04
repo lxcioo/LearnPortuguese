@@ -22,6 +22,7 @@ type FeedbackModalProps = {
   onContinue: () => void;
   onRate: (box: number) => void;
   onPlayAudio?: () => void;
+  onReportClick?: () => void;
   rating: RatingProps;
   theme: {
     feedbackSuccessBg: string;
@@ -34,7 +35,7 @@ type FeedbackModalProps = {
 };
 
 export function FeedbackModal({
-  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, rating, theme, isDarkMode, animatedStyle
+  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, onReportClick, rating, theme, isDarkMode, animatedStyle
 }: FeedbackModalProps) {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -44,7 +45,14 @@ export function FeedbackModal({
           { backgroundColor: isCorrect ? theme.feedbackSuccessBg : theme.feedbackErrorBg },
           animatedStyle
         ]}>
-          <Text style={[styles.feedbackTitle, { color: theme.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
+          <View style={styles.titleRow}>
+            <Text style={[styles.feedbackTitle, { color: theme.feedbackText }]}>{isCorrect ? 'Richtig!' : 'Falsch'}</Text>
+            {onReportClick && (
+              <TouchableOpacity onPress={onReportClick} style={{ padding: 4 }}>
+                <Ionicons name="flag-outline" size={24} color={theme.feedbackText} />
+              </TouchableOpacity>
+            )}
+          </View>
           <View style={styles.marginBottom20}>
             <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
             <View style={styles.solutionRow}>
@@ -86,7 +94,8 @@ export function FeedbackModal({
 const styles = StyleSheet.create({
   modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)' },
   feedbackContainer: { padding: 24, paddingBottom: 40, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
-  feedbackTitle: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
+  titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  feedbackTitle: { fontSize: 24, fontWeight: 'bold' },
   feedbackSubtitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
   solutionRow: { flexDirection: 'row', alignItems: 'center' },
   speakerButton: { padding: 10, borderRadius: 14, marginRight: 12, justifyContent: 'center', alignItems: 'center' },
