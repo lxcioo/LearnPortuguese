@@ -96,7 +96,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 {
                                     color: highlightColor, // Macht das Wort grün
                                     textDecorationLine: 'underline',
-                                    textDecorationStyle: 'dashed', // Sorgt für die vielen kleinen Striche
+                                    textDecorationStyle: 'dotted', // Sorgt für die vielen kleinen Striche
                                     textDecorationColor: highlightColor // Macht die Striche grün
                                 }
                             ]}>
