@@ -7,7 +7,7 @@ const KEYS = {
     GLOBAL_VOCAB: 'globalVocabDB',
 };
 
-// --- Dynamische Zeitfenster (Fuzzing) ---
+// --- Dynamische Zeitfenster (Fuzzing) ----
 function getRandomNextDate(box: number): string {
     const now = new Date();
     let minHours = 0;
