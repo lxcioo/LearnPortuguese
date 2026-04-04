@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   input: { borderWidth: 2, borderRadius: 16, padding: 16, fontSize: 16, marginBottom: 20, minHeight: 100, textAlignVertical: 'top' },
   alertButtons: { flexDirection: 'row', gap: 12 },
   alertButton: { flex: 1, paddingVertical: 14, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
-  alertPrimaryButton: { backgroundColor: '#1cb0f6' },
+  alertPrimaryButton: { backgroundColor: '#58cc02' },
   alertButtonText: { fontSize: 16, fontWeight: 'bold' },
   alertPrimaryButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' }
 });
