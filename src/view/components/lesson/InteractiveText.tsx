@@ -46,20 +46,27 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         chunks = newChunks;
     });
 
-    // Bereinigt den Text: Trennt nach Leerzeichen, BEHÄLT aber alle Sonderzeichen und Leerzeichen lückenlos!
+    // Bereinigt den Text: Das ist der Game-Changer für lange Phrasen wie "Auf Wiedersehen"!
     const finalTokens: any[] = [];
     chunks.forEach(chunk => {
-        if (chunk.isVocab) {
-            finalTokens.push(chunk);
-        } else {
-            // Teilt exakt an Leerzeichen auf, ohne sie zu löschen. So bleibt z.B. " / " perfekt erhalten.
-            const parts = chunk.text.split(/(\s+)/);
-            parts.forEach(part => {
-                if (part && part.length > 0) {
+        // Wir trennen ALLES (auch Vokabeln) nach Leerzeichen auf
+        const parts = chunk.text.split(/(\s+)/);
+
+        parts.forEach(part => {
+            if (part && part.length > 0) {
+                // Prüfen, ob der Teil nur ein Leerzeichen ist
+                const isSpace = /^\s+$/.test(part);
+
+                if (isSpace || !chunk.isVocab) {
+                    // Leerzeichen und normaler Text werden als Standard-Text gerendert
                     finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
+                } else {
+                    // Die einzelnen Wörter einer Vokabel werden interaktiv. 
+                    // So kann "Auf" in Zeile 1 stehen und "Wiedersehen" in Zeile 2 umbrechen!
+                    finalTokens.push({ text: part, isVocab: true, vocabItem: chunk.vocabItem, vocabIndex: chunk.vocabIndex });
                 }
-            });
-        }
+            }
+        });
     });
 
     const handlePress = (vocab: VocabWord | null, vocabIndex: number, chunkIndex: number) => {
@@ -76,7 +83,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     return (
         <View style={styles.container}>
             {finalTokens.map((token, i) => {
-                // Normale Wörter, Satzzeichen und Leerzeichen
+                // Normale Wörter und Leerzeichen
                 if (!token.isVocab) {
                     return <Text key={`text-${i}`} style={[styles.text, { color: textColor }]}>{token.text}</Text>;
                 }
@@ -86,7 +93,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                 return (
                     <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Perfekt zentriertes Tooltip Pop-up */}
+                        {/* Pop-up (sitzt jetzt viel tiefer am Wort) */}
                         {isActive && (
                             <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
                                 <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
@@ -105,7 +112,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                     {token.text}
                                 </Text>
 
-                                {/* Feine, abgerundete Striche für einen Premium-Look */}
+                                {/* Noch feinere Unterstreichung */}
                                 <View style={styles.customDashesContainer}>
                                     {[...Array(30)].map((_, idx) => (
                                         <View key={idx} style={[styles.dash, { backgroundColor: highlightColor }]} />
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        rowGap: 6, // Sorgt für einen angenehmen Zeilenabstand beim Umbruch
+        rowGap: 6,
     },
     text: {
         fontSize: 26,
@@ -141,37 +148,36 @@ const styles = StyleSheet.create({
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    // Die Premium-Linie
     customDashesContainer: {
         position: 'absolute',
-        bottom: -3, // Sitzt schön eng, direkt unter den Buchstaben
+        bottom: -3,
         left: 0,
         right: 0,
         flexDirection: 'row',
         overflow: 'hidden',
     },
     dash: {
-        width: 3.5, // Länge eines Strichs
-        height: 1.5, // Hauchdünn
-        borderRadius: 1, // Leicht abgerundet sieht viel professioneller aus
-        marginRight: 2.5, // Angenehmer Abstand zwischen den Strichen
+        width: 3,        // Kürzer
+        height: 1.2,     // Noch dünner & eleganter
+        borderRadius: 1,
+        marginRight: 2.5,
     },
     // Pop-up Styles
     tooltipAbsoluteWrapper: {
         position: 'absolute',
         bottom: '100%',
-        left: '50%', // Startet in der Mitte des Wortes...
+        left: '50%',
         width: 160,
-        marginLeft: -80, // ...und zieht sich um exakt die Hälfte zurück (absolut perfektes Zentrieren)
+        marginLeft: -80,
         alignItems: 'center',
-        marginBottom: -4, // Zieht das Pop-up ein gutes Stück nach unten ans Wort ran
+        marginBottom: -8, // Zieht das Pop-up noch spürbar weiter an das Wort heran
         zIndex: 100,
         elevation: 10,
     },
     tooltip: {
         paddingHorizontal: 12,
         paddingVertical: 6,
-        borderRadius: 10, // Leicht abgerundetes Bubble-Design
+        borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -194,6 +200,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 7,
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
-        marginTop: -1, // Lässt den Pfeil mit der Box verschmelzen
+        marginTop: -1,
     }
 });
