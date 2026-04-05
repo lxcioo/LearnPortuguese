@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 interface VocabWord {
     text: string;
@@ -15,7 +16,7 @@ interface InteractiveTextProps {
     highlightColor: string;
 }
 
-// Hilfsfunktion: Verhindert Fehler beim Suchen von Satzzeichen
+// Hilfsfunktion: Verhindert Fehler beim Suchen von Wörtern mit Satzzeichen
 function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -23,11 +24,14 @@ function escapeRegExp(string: string) {
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
+    // Speichert die exakten X/Y Koordinaten jedes Wortes auf dem Bildschirm
+    const [wordLayouts, setWordLayouts] = useState<Record<string, { x: number, y: number, width: number, height: number }>>({});
+
     if (!vocabulary || vocabulary.length === 0) {
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // SCHRITT 1: Text intelligent aufteilen, ohne dass Satzzeichen oder Leerzeichen verloren gehen
+    // SCHRITT 1: Text intelligent aufteilen (Behält alle Leerzeichen und Satzzeichen als reinen Text)
     let elements: any[] = [sentence];
 
     const sortedVocab = [...vocabulary]
@@ -69,66 +73,98 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         }, 3000);
     };
 
+    // Speichert die Koordinaten des Wortes, sobald es auf dem Bildschirm gerendert wird
+    const handleLayout = (id: string, event: any) => {
+        const { x, y, width, height } = event.nativeEvent.layout;
+        setWordLayouts(prev => ({ ...prev, [id]: { x, y, width, height } }));
+    };
+
+    // Finde die Übersetzung für das aktuell aktive Wort
+    const activeElement = elements.find((el, i) => `vocab-${i}` === activeVocabId);
+    const activeTranslation = activeElement ? activeElement.vocabItem.translation : '';
+
     return (
         <View style={styles.container}>
-            <Text style={[styles.text, { color: textColor }]}>
-                {elements.map((el, i) => {
 
-                    if (typeof el === 'string') {
-                        return <Text key={`string-${i}`}>{el}</Text>;
-                    }
+            {/* DER TEXT-BLOCK:
+        Hier ist absolut KEIN View-Container oder Pop-up mehr drin. Es ist 100% reiner Text.
+        Dadurch kann sich nichts verziehen, nichts zucken und die Zeilenhöhe bleibt perfekt!
+      */}
+            <View style={styles.textWrapper}>
+                <Text style={[styles.text, { color: textColor }]}>
+                    {elements.map((el, i) => {
 
-                    const vocab = el.vocabItem;
-                    const isActive = activeVocabId === `vocab-${i}`;
+                        if (typeof el === 'string') {
+                            return <Text key={`string-${i}`}>{el}</Text>;
+                        }
 
-                    return (
-                        <Text
-                            key={`vocab-${i}`}
-                            onPress={() => handlePress(vocab, `vocab-${i}`)}
-                            style={[
-                                styles.interactiveWordText,
-                                {
-                                    color: highlightColor,
-                                    textDecorationLine: 'underline',
-                                    textDecorationStyle: 'dotted',
-                                    textDecorationColor: highlightColor
-                                }
-                            ]}
-                        >
-                            {/* DER FIX FÜR DAS ZUCKEN: 
-                Das Pop-up wird IMMER gerendert, aber unsichtbar gemacht (opacity). 
-                Dadurch verändert sich die Zeilenhöhe beim Drauftippen niemals!
-              */}
-                            <View
+                        const vocab = el.vocabItem;
+                        const id = `vocab-${i}`;
+
+                        return (
+                            <Text
+                                key={id}
+                                onLayout={(e) => handleLayout(id, e)}
+                                onPress={() => handlePress(vocab, id)}
                                 style={[
-                                    styles.tooltipAbsoluteWrapper,
-                                    { opacity: isActive ? 1 : 0 }
+                                    styles.interactiveWordText,
+                                    {
+                                        color: highlightColor,
+                                        // Die echte, unverfälschte System-Unterstreichung
+                                        textDecorationLine: 'underline',
+                                        textDecorationStyle: 'dotted',
+                                        textDecorationColor: highlightColor
+                                    }
                                 ]}
-                                pointerEvents={isActive ? 'auto' : 'none'}
                             >
-                                <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                    <Text style={styles.tooltipText} numberOfLines={1}>
-                                        {vocab.translation}
-                                    </Text>
-                                </View>
-                                <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                                {el.text}
+                            </Text>
+                        );
+                    })}
+                </Text>
+
+                {/* DAS ENTKOPPELTE POP-UP:
+          Schwebt als Overlay VÖLLIG unabhängig über dem Text. 
+          Es nutzt die zuvor gemessenen Koordinaten, um sich millimetergenau zu platzieren.
+        */}
+                {activeVocabId && wordLayouts[activeVocabId] && (
+                    <View
+                        style={[
+                            styles.popupAnchor,
+                            {
+                                // Setzt den Ankerpunkt EXAKT in die horizontale Mitte des Wortes
+                                left: wordLayouts[activeVocabId].x + (wordLayouts[activeVocabId].width / 2),
+                                // Setzt den Ankerpunkt EXAKT auf die Oberkante des Wortes
+                                top: wordLayouts[activeVocabId].y,
+                            }
+                        ]}
+                        pointerEvents="none"
+                    >
+                        <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.popupAbsoluteWrapper}>
+
+                            {/* Die Bubble passt sich automatisch dynamisch an den Inhalt an */}
+                            <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                <Text style={styles.tooltipText}>{activeTranslation}</Text>
                             </View>
-                            {/* Das angezeigte Wort */}
-                            {el.text}
-                        </Text>
-                    );
-                })}
-            </Text>
+
+                            <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                        </Animated.View>
+                    </View>
+                )}
+
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        // DER FIX FÜR DIE HÖHE ZUM LAUTSPRECHER: 
-        // paddingTop wurde komplett gelöscht. flex: 1 lässt den Text perfekt neben dem Lautsprecher fließen.
         flex: 1,
         justifyContent: 'center',
+        paddingTop: 10, // Leichtes Padding, damit Pop-ups oben am Rand Platz haben
+    },
+    textWrapper: {
+        position: 'relative', // Zwingt das Pop-up, sich relativ zu diesem Textfeld auszurichten
     },
     text: {
         fontSize: 26,
@@ -138,22 +174,26 @@ const styles = StyleSheet.create({
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    tooltipAbsoluteWrapper: {
+    // --- Das neue, entkoppelte Pop-up System ---
+    popupAnchor: {
         position: 'absolute',
-        bottom: '100%',
-        width: 200,
-        left: '50%',
-        marginLeft: -100,
-        alignItems: 'center',
-        marginBottom: 4,
+        width: 0,
+        height: 0,
         zIndex: 1000,
         elevation: 10,
     },
+    popupAbsoluteWrapper: {
+        position: 'absolute',
+        bottom: 2, // Abstand: Schwebt exakt 2 Pixel ÜBER dem Wort
+        width: 300, // Ein unsichtbarer, breiter Kasten verhindert den Android "Säulen-Bug"...
+        marginLeft: -150, // ...und zieht den Kasten exakt in die Mitte über dem Anker!
+        alignItems: 'center', // Sorgt dafür, dass die eigentliche Bubble (tooltip) nur so breit wird wie der Text!
+    },
     tooltip: {
-        paddingHorizontal: 12,
+        paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 8,
-        minWidth: 50,
+        minWidth: 40,
     },
     tooltipText: {
         color: '#fff',
