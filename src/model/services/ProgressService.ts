@@ -5,7 +5,7 @@ const KEYS = {
     LESSON_SCORES: 'lessonScores',
     EXAM_SCORES: 'examScores',
     DAILY_STATS: 'dailyStats_v2',
-    SEEN_VOCABULARY: 'seenVocabulary_v1',
+    SEEN_VOCABULARY: 'seenVocabulary_v2',
 };
 
 export const ProgressService = {
@@ -63,31 +63,20 @@ export const ProgressService = {
         return { date: today, wordsLearned: 0, mistakesMade: 0 };
     },
 
-    // NEU: Lädt alle jemals gesehenen Wörter
-    async getSeenVocabulary(): Promise<Record<string, boolean>> {
+    // NEU: Lädt das globale Vokabel-Wissen (welches Wort gehört zu welcher Übungs-ID)
+    async getSeenVocabulary(): Promise<Record<string, string>> {
         try {
             const json = await AsyncStorage.getItem(KEYS.SEEN_VOCABULARY);
             return json ? JSON.parse(json) : {};
         } catch (e) { return {}; }
     },
 
-    // NEU: Speichert neue Wörter als "gesehen"
-    async markVocabularyAsSeen(vocabKeys: string[]): Promise<void> {
-        if (!vocabKeys || vocabKeys.length === 0) return;
+    // NEU: Speichert neue Wörter mit ihrer exerciseId
+    async saveNewVocabulary(newWords: Record<string, string>): Promise<void> {
         try {
-            const seen = await this.getSeenVocabulary();
-            let hasChanges = false;
-
-            vocabKeys.forEach(key => {
-                if (!seen[key]) {
-                    seen[key] = true;
-                    hasChanges = true;
-                }
-            });
-
-            if (hasChanges) {
-                await AsyncStorage.setItem(KEYS.SEEN_VOCABULARY, JSON.stringify(seen));
-            }
+            const existing = await this.getSeenVocabulary();
+            const updated = { ...existing, ...newWords };
+            await AsyncStorage.setItem(KEYS.SEEN_VOCABULARY, JSON.stringify(updated));
         } catch (e) { console.error("Error saving seen vocabulary", e); }
     },
 };

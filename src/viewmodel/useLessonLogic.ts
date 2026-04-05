@@ -28,7 +28,6 @@ const normalizeText = (str: string, removeArticle: boolean = false) => {
     .replace(/\s+/g, "");
 };
 
-// HIER GEÄNDERT: Wir brauchen practiceMode nicht mehr, da wir jetzt ALLES im Practice bewerten
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
   const [loading, setLoading] = useState(true);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
@@ -47,7 +46,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const isPractice = lessonId === 'practice';
 
-  const [seenVocab, setSeenVocab] = useState<Record<string, boolean>>({});
+  // --- NEUE STATES FÜR VOKABELN ---
+  const [seenVocabGlobal, setSeenVocabGlobal] = useState<Record<string, string>>({});
   const [activeVocabulary, setActiveVocabulary] = useState<any[]>([]);
 
   useEffect(() => {
@@ -75,37 +75,28 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
-      // --- NEU: Vokabeln im Übungsbereich zufällig umdrehen ---
+      // Übungsbereich zufällig umdrehen
       if (isPractice) {
         filtered = filtered.map(ex => {
-          // Nur Übersetzungsaufgaben mit einer Chance von 50% umdrehen
           if (ex.type.includes('translate') && Math.random() > 0.5) {
             const isOriginalToPt = ex.type === 'translate_to_pt';
-
-            // Wenn wir von PT nach DE umdrehen, müssen wir die Klammern 
-            // aus der neuen deutschen Musterlösung entfernen.
             let newCorrectAnswer = ex.question;
             if (isOriginalToPt) {
-              // Entfernt alles, was in Klammern steht inkl. Leerzeichen davor
-              // Aus "Danke (als Mann)" wird "Danke"
               newCorrectAnswer = newCorrectAnswer.replace(/\s*\(.*?\)\s*/g, '').trim();
             }
-
             return {
               ...ex,
               type: isOriginalToPt ? 'translate_to_de' : 'translate_to_pt',
               question: ex.correctAnswer,
               correctAnswer: newCorrectAnswer,
-              // HIER DIE ÄNDERUNG: Die alte Frage mit Klammern als Alternative erlauben!
               alternativeAnswers: isOriginalToPt ? [ex.question] : []
             };
           }
           return ex;
         });
       }
-      // --- ENDE NEU ---
 
-      // 2. Prüfungslogik (Mischen & Limitieren)
+      // Prüfungslogik (Mischen & Limitieren)
       if (lessonType === 'exam') {
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -115,8 +106,9 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
       }
 
+      // Vokabeln laden
       const seen = await ProgressService.getSeenVocabulary();
-      setSeenVocab(seen);
+      setSeenVocabGlobal(seen);
 
       setLessonQueue(filtered);
       setTotalQuestions(filtered.length);
@@ -126,38 +118,45 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     fetchExercises();
   }, [lessonId, lessonType, gender]);
 
+  // NEUER VOKABEL-FILTER
   useEffect(() => {
-    if (loading || !currentExercise) return;
+    if (loading || !lessonQueue[currentExerciseIndex]) return;
 
-    if (!currentExercise.vocabulary || currentExercise.vocabulary.length === 0) {
+    const currentEx = lessonQueue[currentExerciseIndex];
+
+    if (!currentEx.vocabulary || currentEx.vocabulary.length === 0) {
       setActiveVocabulary([]);
       return;
     }
 
     const newActiveVocab: any[] = [];
-    const keysToMark: string[] = [];
+    const newWordsToSave: Record<string, string> = {};
 
-    currentExercise.vocabulary.forEach(v => {
-      // Eindeutiger Key (z.B. "Boa_Gute" vs "Boa_Guten")
-      const key = `${v.text}_${v.translation}`;
-      if (!seenVocab[key]) {
+    currentEx.vocabulary.forEach(v => {
+      let ptWord = v.text;
+      if (currentEx.question && !currentEx.question.includes(v.text) && currentEx.question.includes(v.translation)) {
+        ptWord = v.translation;
+      }
+
+      const key = ptWord.toLowerCase().trim();
+
+      if (!seenVocabGlobal[key]) {
+        // Fall 1: Das Wort ist KOMPLETT NEU
         newActiveVocab.push(v);
-        keysToMark.push(key);
+        newWordsToSave[key] = currentEx.id;
+      } else if (seenVocabGlobal[key] === currentEx.id) {
+        // Fall 2: Wort ist bekannt, und wir befinden uns exakt in der URSPRUNGS-ÜBUNG
+        newActiveVocab.push(v);
       }
     });
 
     setActiveVocabulary(newActiveVocab);
 
-    // Wenn es neue Wörter gab, markieren wir sie SOFORT für die Zukunft als gesehen
-    if (keysToMark.length > 0) {
-      setSeenVocab(prev => {
-        const next = { ...prev };
-        keysToMark.forEach(k => next[k] = true);
-        return next;
-      });
-      ProgressService.markVocabularyAsSeen(keysToMark);
+    if (Object.keys(newWordsToSave).length > 0) {
+      setSeenVocabGlobal(prev => ({ ...prev, ...newWordsToSave }));
+      ProgressService.saveNewVocabulary(newWordsToSave);
     }
-  }, [currentExerciseIndex, loading]);
+  }, [currentExerciseIndex, loading, lessonQueue]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
@@ -188,8 +187,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     if (correct) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       playAudio(currentExercise.id);
-
-      // Im Übungsbereich gibt es pro richtiger Antwort +1 auf den Streak-Zähler
       if (isPractice) StreakService.updateStreak();
     } else {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -199,7 +196,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
     if (!isPractice) {
       LeitnerService.trackResult(currentExercise, correct, 'lesson');
-
       if (!correct) {
         setLessonQueue(prevQueue => {
           const newQueue = [...prevQueue];
@@ -220,7 +216,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     }
   };
 
-  // REGEL 3: Wird aufgerufen, wenn der Nutzer im Übungsbereich "Schwer/Mittel/Leicht" drückt
   const ratePractice = (boxRating: number) => {
     if (!currentExercise) return;
     LeitnerService.trackResult(currentExercise, true, 'practice', boxRating);
@@ -251,7 +246,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setEarnedStars(stars);
     setIsLessonFinished(true);
 
-    // FIX: Wenn der Lernpfad abgeschlossen wird, bekommt man GARANTIERT sofort den Streak (+15)
     if (!isPractice) {
       StreakService.updateStreak(true);
     }
@@ -299,6 +293,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
     getSolutionData, lessonError, setLessonError,
-    activeVocabulary,
+    activeVocabulary // Gefiltertes Array wird zurückgegeben
   };
 };

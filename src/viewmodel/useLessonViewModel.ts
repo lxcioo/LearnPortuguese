@@ -47,7 +47,7 @@ export function useLessonViewModel() {
       progressPercent: logic.progressPercent,
       userInput: logic.userInput,
       selectedOption: logic.selectedOption,
-      activeVocabulary: logic.activeVocabulary, // <--- GEFILTERT (Neu)
+      activeVocabulary: logic.activeVocabulary, // <--- GEFILTERT FÜR DEN SATZ
       fullVocabulary: currentExercise?.vocabulary || [], // <--- KOMPLETT (Neu)
     },
     // Pre-computed props for UI elements
