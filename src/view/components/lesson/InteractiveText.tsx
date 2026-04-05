@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+// NEU: Wir nutzen ZoomIn und ZoomOut für eine flüssigere, fehlerfreie Animation!
+import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
 
 interface VocabWord {
     text: string;
@@ -96,8 +97,9 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                     <View key={`vocab-${pIdx}`} style={styles.interactiveAnchor}>
                                         <View style={styles.tooltipAnchor}>
                                             {isActive && (
-                                                <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
-                                                    {/* NEUES DESIGN: Hochwertiges dunkles Pop-up (unabhängig von der Textfarbe) */}
+                                                // Die Animation wurde auf ZoomIn / ZoomOut geändert. Das wirkt wie ein 
+                                                // sanftes "Aufploppen" aus dem Wort heraus und versteckt den Rendering-Bug.
+                                                <Animated.View entering={ZoomIn.duration(200)} exiting={ZoomOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
                                                     <View style={styles.tooltip}>
                                                         <Text style={styles.tooltipText}>{vocabItem.displayPopup}</Text>
                                                     </View>
@@ -173,21 +175,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
-    // --- Das neue Pop-up Styling ---
     tooltip: {
-        backgroundColor: '#333333', // Edles, dunkles Anthrazit
+        backgroundColor: '#333333',
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 8,
         minWidth: 40,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.3, // Etwas stärkerer Schatten für mehr Tiefe
+        shadowOpacity: 0.3,
         shadowRadius: 5,
         elevation: 6,
     },
     tooltipText: {
-        color: '#FFFFFF', // Klares Weiß
+        color: '#FFFFFF',
         fontWeight: 'bold',
         fontSize: 15,
         textAlign: 'center',
@@ -200,9 +201,10 @@ const styles = StyleSheet.create({
         borderLeftWidth: 6,
         borderRightWidth: 6,
         borderTopWidth: 6,
-        borderLeftColor: 'transparent',
-        borderRightColor: 'transparent',
-        borderTopColor: '#333333', // Muss exakt der backgroundColor der tooltip-Box entsprechen!
+        // FIX: Explizites Nutzen der Null-Opacity rgba Werte verhindert das "Rechteck" auf Android!
+        borderLeftColor: 'rgba(0, 0, 0, 0)',
+        borderRightColor: 'rgba(0, 0, 0, 0)',
+        borderTopColor: '#333333',
         marginTop: -1,
     }
 });
