@@ -17,7 +17,6 @@ interface InteractiveTextProps {
     fontSize?: number;
 }
 
-// Hilfsfunktion: Schützt vor Abstürzen bei Sonderzeichen
 function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -25,25 +24,43 @@ function escapeRegExp(string: string) {
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor, fontSize }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
+    // Dynamische Schriftgrößen & Zeilenhöhe für Lesson (groß) und Feedback-Modal (kleiner)
+    const currentFontSize = fontSize || 26;
+    const currentLineHeight = currentFontSize * 1.4;
+
     if (!vocabulary || vocabulary.length === 0) {
-        return <Text style={[styles.text, { color: textColor, fontSize: fontSize || 26 }]}>{sentence}</Text>;
+        return (
+            <Text style={{ color: textColor, fontSize: currentFontSize, lineHeight: currentLineHeight, fontWeight: 'bold' }}>
+                {sentence}
+            </Text>
+        );
     }
 
-    // SCHRITT 1: Vokabeln als GANZE Phrasen im Text markieren
     let markedText = sentence;
 
-    // Sortieren nach Länge: WICHTIG! So wird "Auf Wiedersehen" vor "Auf" gefunden.
-    const sortedVocab = [...vocabulary]
-        .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
-        .sort((a, b) => b.text.length - a.text.length);
+    // --- SMART VOCAB FLIP (Für das Feedback Modal) ---
+    // Prüft, ob der Satz Portugiesisch oder Deutsch ist und passt das Suchwort und das Pop-up automatisch an.
+    const mappedVocab = vocabulary.map((vocab, originalIndex) => {
+        let searchStr = vocab.text;
+        let displayPopup = vocab.translation;
+
+        // Wenn das gesuchte Wort nicht im Satz steht, aber die Übersetzung (z.B. Feedback-Screen PT), tausche sie!
+        if (!sentence.includes(vocab.text) && sentence.includes(vocab.translation)) {
+            searchStr = vocab.translation;
+            displayPopup = vocab.text;
+        }
+
+        return { ...vocab, originalIndex, searchStr, displayPopup };
+    });
+
+    // Sortiert nach Länge, damit zusammenhängende Sätze (Boa tarde) vor Einzelwörtern (Boa) gefunden werden
+    const sortedVocab = mappedVocab.sort((a, b) => b.searchStr.length - a.searchStr.length);
 
     sortedVocab.forEach((vocab, vIndex) => {
-        // Wir ersetzen jetzt die KOMPLETTE Phrase durch EINEN einzigen Platzhalter!
-        const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
+        const regex = new RegExp(`(${escapeRegExp(vocab.searchStr)})`, 'g');
         markedText = markedText.replace(regex, `___V${vIndex}___`);
     });
 
-    // SCHRITT 2: Den Satz in natürliche Blöcke zerteilen
     const rawWords = markedText.split(/\s+/).filter(w => w.trim().length > 0);
 
     const handlePress = (vocabItem: any, exactId: string) => {
@@ -51,7 +68,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
             setActiveVocabId(null);
             return;
         }
-
         setActiveVocabId(exactId);
         playAudio(`${exerciseId}_vocab_${vocabItem.originalIndex}`);
 
@@ -63,11 +79,8 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     return (
         <View style={styles.container}>
             {rawWords.map((rawWord, index) => {
-
-                // Trennt den String nach unserem neuen, simplen Platzhalter
                 const parts = rawWord.split(/(___V\d+___)/).filter(p => p !== '');
 
-                // Z-Index: Das aktive Wort liegt immer oben
                 const isBlockActive = parts.some(p => {
                     const match = p.match(/^___V(\d+)___$/);
                     return match && activeVocabId === `v_${match[1]}`;
@@ -79,50 +92,51 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                             const match = part.match(/^___V(\d+)___$/);
 
                             if (match) {
-                                // Es ist eine interaktive Vokabel (kann aus 1 oder mehreren Wörtern bestehen)
                                 const vIndex = parseInt(match[1]);
                                 const vocabItem = sortedVocab[vIndex];
-
                                 const exactId = `v_${vIndex}`;
                                 const isActive = activeVocabId === exactId;
 
                                 return (
                                     <View key={`vocab-${pIdx}`} style={styles.interactiveAnchor}>
-
-                                        {/* DER ABSOLUTE NULL-ANKER: Zentriert sich nun über der GANZEN Phrase! */}
                                         <View style={styles.tooltipAnchor}>
                                             {isActive && (
                                                 <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
                                                     <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                                        <Text style={styles.tooltipText}>{vocabItem.translation}</Text>
+                                                        {/* Zeigt dynamisch entweder die Übersetzung oder das Originalwort */}
+                                                        <Text style={styles.tooltipText}>{vocabItem.displayPopup}</Text>
                                                     </View>
                                                     <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
                                                 </Animated.View>
                                             )}
                                         </View>
 
-                                        {/* Das anklickbare Wort (oder die ganze Phrase) */}
                                         <TouchableOpacity activeOpacity={0.6} onPress={() => handlePress(vocabItem, exactId)}>
-                                            <Text style={[
-                                                styles.text,
-                                                styles.interactiveWordText,
-                                                {
-                                                    color: highlightColor,
-                                                    fontSize: fontSize || 26,
-                                                    textDecorationLine: 'underline',
-                                                    textDecorationStyle: 'dotted',
-                                                    textDecorationColor: highlightColor
-                                                }
-                                            ]}>
-                                                {/* Wir rendern hier den kompletten String (z.B. "Auf Wiedersehen") */}
-                                                {vocabItem.text}
+                                            {/* FIX: Die Schriftgröße & Linienhöhe wird nun auch hier erzwungen */}
+                                            <Text style={{
+                                                color: highlightColor,
+                                                fontSize: currentFontSize,
+                                                lineHeight: currentLineHeight,
+                                                fontWeight: 'bold',
+                                                textDecorationLine: 'underline',
+                                                textDecorationStyle: 'dotted',
+                                                textDecorationColor: highlightColor
+                                            }}>
+                                                {vocabItem.searchStr}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
                                 );
                             } else {
-                                // Es ist ein normales Wort oder Satzzeichen (z.B. "?")
-                                return <Text key={`text-${pIdx}`} style={[styles.text, { color: textColor }]}>{part}</Text>;
+                                return (
+                                    <Text
+                                        key={`text-${pIdx}`}
+                                        // FIX: Die normale Textgröße wird nun auch auf nicht-anklickbare Wörter angewendet!
+                                        style={{ color: textColor, fontSize: currentFontSize, lineHeight: currentLineHeight, fontWeight: 'bold' }}
+                                    >
+                                        {part}
+                                    </Text>
+                                );
                             }
                         })}
                     </View>
@@ -134,12 +148,12 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexShrink: 1, // FIX: Lässt das Element im Feedback-Modal nicht mehr unsichtbar werden!
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        rowGap: 10,
+        rowGap: 8,
         columnGap: 8,
     },
     wordBlock: {
@@ -149,17 +163,9 @@ const styles = StyleSheet.create({
     interactiveAnchor: {
         position: 'relative',
     },
-    text: {
-        fontWeight: 'bold',
-    },
-    interactiveWordText: {
-        fontWeight: 'bold',
-    },
-    // --- Das völlig isolierte Pop-up System ---
     tooltipAnchor: {
         position: 'absolute',
         top: 0,
-        // "left: 50%" berechnet jetzt automatisch die Mitte der GESAMTEN Phrase!
         left: '50%',
         width: 0,
         height: 0,
