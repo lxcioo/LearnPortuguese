@@ -28,19 +28,18 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // SCHRITT 1: Vokabeln im Text markieren
+    // SCHRITT 1: Vokabeln als GANZE Phrasen im Text markieren
     let markedText = sentence;
+
+    // Sortieren nach Länge: WICHTIG! So wird "Auf Wiedersehen" vor "Auf" gefunden.
     const sortedVocab = [...vocabulary]
         .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
         .sort((a, b) => b.text.length - a.text.length);
 
     sortedVocab.forEach((vocab, vIndex) => {
-        // "Auf Wiedersehen" wird aufgeteilt: Jedes Einzelwort bekommt seine eigene ID!
-        const parts = vocab.text.split(/\s+/);
-        const replacement = parts.map((_, pIndex) => `___V${vIndex}_P${pIndex}___`).join(' ');
-
+        // Wir ersetzen jetzt die KOMPLETTE Phrase durch EINEN einzigen Platzhalter!
         const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
-        markedText = markedText.replace(regex, replacement);
+        markedText = markedText.replace(regex, `___V${vIndex}___`);
     });
 
     // SCHRITT 2: Den Satz in natürliche Blöcke zerteilen
@@ -64,35 +63,32 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         <View style={styles.container}>
             {rawWords.map((rawWord, index) => {
 
-                // Trennt den String in Vokabel-Teile und Satzzeichen
-                const parts = rawWord.split(/(___V\d+_P\d+___)/).filter(p => p !== '');
+                // Trennt den String nach unserem neuen, simplen Platzhalter
+                const parts = rawWord.split(/(___V\d+___)/).filter(p => p !== '');
 
                 // Z-Index: Das aktive Wort liegt immer oben
                 const isBlockActive = parts.some(p => {
-                    const match = p.match(/^___V(\d+)_P(\d+)___$/);
-                    return match && activeVocabId === `v_${match[1]}_p_${match[2]}`;
+                    const match = p.match(/^___V(\d+)___$/);
+                    return match && activeVocabId === `v_${match[1]}`;
                 });
 
                 return (
                     <View key={`word-${index}`} style={[styles.wordBlock, { zIndex: isBlockActive ? 100 : 1 }]}>
                         {parts.map((part, pIdx) => {
-                            const match = part.match(/^___V(\d+)_P(\d+)___$/);
+                            const match = part.match(/^___V(\d+)___$/);
 
                             if (match) {
-                                // Es ist ein interaktives Vokabel-Wort
+                                // Es ist eine interaktive Vokabel (kann aus 1 oder mehreren Wörtern bestehen)
                                 const vIndex = parseInt(match[1]);
-                                const pIndex = parseInt(match[2]); // <- Teil 0 (Auf), Teil 1 (Wiedersehen)
                                 const vocabItem = sortedVocab[vIndex];
 
-                                const wordText = vocabItem.text.split(/\s+/)[pIndex];
-                                const exactId = `v_${vIndex}_p_${pIndex}`;
+                                const exactId = `v_${vIndex}`;
                                 const isActive = activeVocabId === exactId;
 
                                 return (
                                     <View key={`vocab-${pIdx}`} style={styles.interactiveAnchor}>
 
-                                        {/* DER ABSOLUTE NULL-ANKER: 
-                        Nimmt 0x0 Pixel Platz ein. Verhindert jedes Layout-Zucken! */}
+                                        {/* DER ABSOLUTE NULL-ANKER: Zentriert sich nun über der GANZEN Phrase! */}
                                         <View style={styles.tooltipAnchor}>
                                             {isActive && (
                                                 <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
@@ -104,7 +100,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                             )}
                                         </View>
 
-                                        {/* Das anklickbare Wort */}
+                                        {/* Das anklickbare Wort (oder die ganze Phrase) */}
                                         <TouchableOpacity activeOpacity={0.6} onPress={() => handlePress(vocabItem, exactId)}>
                                             <Text style={[
                                                 styles.text,
@@ -116,7 +112,8 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                                     textDecorationColor: highlightColor
                                                 }
                                             ]}>
-                                                {wordText}
+                                                {/* Wir rendern hier den kompletten String (z.B. "Auf Wiedersehen") */}
+                                                {vocabItem.text}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -135,14 +132,13 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, // Nimmt den restlichen Platz neben dem Lautsprecher ein (gleiche Höhe!)
+        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'center', // Zentriert den Text vertikal zum Lautsprecher
+        alignItems: 'center',
         justifyContent: 'flex-start',
         rowGap: 10,
         columnGap: 8,
-        // paddingTop komplett entfernt -> Keine Verschiebung nach unten mehr!
     },
     wordBlock: {
         flexDirection: 'row',
@@ -158,29 +154,25 @@ const styles = StyleSheet.create({
     interactiveWordText: {
         fontWeight: 'bold',
     },
-
     // --- Das völlig isolierte Pop-up System ---
-
-    // 1. Der Ankerpunkt: Liegt genau in der oberen Mitte des Wortes, ist aber 0x0 Pixel groß
     tooltipAnchor: {
         position: 'absolute',
         top: 0,
+        // "left: 50%" berechnet jetzt automatisch die Mitte der GESAMTEN Phrase!
         left: '50%',
         width: 0,
         height: 0,
         zIndex: 1000,
         overflow: 'visible',
     },
-    // 2. Der Container: Wächst aus dem 0x0 Punkt nach oben heraus
     tooltipContent: {
         position: 'absolute',
-        bottom: 2, // Abstand zwischen Wort und Bubble
-        width: 200, // Zwingt Android, den Text in einer Zeile zu lassen
-        left: -100, // Zentriert den 200px Kasten perfekt über der Mitte
-        alignItems: 'center', // Die Blase schmiegt sich an die Textlänge an
+        bottom: 2,
+        width: 200,
+        left: -100,
+        alignItems: 'center',
         justifyContent: 'flex-end',
     },
-    // 3. Die Bubble an sich
     tooltip: {
         paddingHorizontal: 14,
         paddingVertical: 8,
