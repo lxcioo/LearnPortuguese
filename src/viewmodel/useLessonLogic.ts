@@ -133,21 +133,23 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     const newWordsToSave: Record<string, string> = {};
 
     currentEx.vocabulary.forEach(v => {
-      let ptWord = v.text;
-      if (currentEx.question && !currentEx.question.includes(v.text) && currentEx.question.includes(v.translation)) {
-        ptWord = v.translation;
-      }
+      // 1. Wir machen beide Wörter klein und entfernen Leerzeichen
+      const w1 = v.text.toLowerCase().trim();
+      const w2 = v.translation.toLowerCase().trim();
 
-      const key = ptWord.toLowerCase().trim();
+      // 2. Wir sortieren sie alphabetisch und verbinden sie.
+      // So wird aus "Até" + "Bis" IMMER "até_bis", egal in welcher Reihenfolge!
+      const key = [w1, w2].sort().join('_');
 
       if (!seenVocabGlobal[key]) {
-        // Fall 1: Das Wort ist KOMPLETT NEU
+        // Fall 1: Diese Wortkombination ist KOMPLETT NEU
         newActiveVocab.push(v);
         newWordsToSave[key] = currentEx.id;
       } else if (seenVocabGlobal[key] === currentEx.id) {
-        // Fall 2: Wort ist bekannt, und wir befinden uns exakt in der URSPRUNGS-ÜBUNG
+        // Fall 2: Kombination ist bekannt, und wir sind in der URSPRUNGS-ÜBUNG
         newActiveVocab.push(v);
       }
+      // Fall 3: Kombination ist bekannt und aus einer anderen Übung -> ignorieren!
     });
 
     setActiveVocabulary(newActiveVocab);
