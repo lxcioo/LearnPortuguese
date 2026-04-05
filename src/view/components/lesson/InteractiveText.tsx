@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 interface VocabWord {
@@ -16,6 +16,11 @@ interface InteractiveTextProps {
     highlightColor: string;
 }
 
+// Hilfsfunktion: Schützt vor Regex-Fehlern bei Sonderzeichen
+function escapeRegExp(string: string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
@@ -23,51 +28,43 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // Tokenizer Schritt 1: Zerlegt den Text grob in Vokabeln und Nicht-Vokabeln
-    let chunks = [{ text: sentence, isVocab: false, vocabItem: null as VocabWord | null, vocabIndex: -1 }];
+    // SCHRITT 1: Intelligentes Suchen & Ersetzen
+    // Wir iterieren über den originalen Text und ersetzen die Vokabeln durch Objekte,
+    // ohne den restlichen Text oder Satzzeichen auch nur anzurühren.
+    let elements: any[] = [sentence];
 
-    vocabulary.forEach((vocab, index) => {
-        const newChunks: any[] = [];
-        chunks.forEach(chunk => {
-            if (chunk.isVocab) {
-                newChunks.push(chunk);
-            } else {
-                const parts = chunk.text.split(vocab.text);
-                parts.forEach((part, i) => {
-                    if (part !== '') {
-                        newChunks.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
-                    }
-                    if (i < parts.length - 1) {
-                        newChunks.push({ text: vocab.text, isVocab: true, vocabItem: vocab, vocabIndex: index });
+    // Wir sortieren nach Länge, damit lange Phrasen ("Auf Wiedersehen") vor kurzen Wörtern gefunden werden
+    const sortedVocab = [...vocabulary]
+        .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
+        .sort((a, b) => b.text.length - a.text.length);
+
+    sortedVocab.forEach((vocab) => {
+        const newElements: any[] = [];
+        elements.forEach((el) => {
+            if (typeof el === 'string') {
+                // Trennt den String exakt am Vokabel-Wort auf
+                const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
+                const parts = el.split(regex);
+
+                parts.forEach(part => {
+                    if (part === vocab.text) {
+                        newElements.push({ type: 'vocab', vocabItem: vocab, text: part });
+                    } else if (part.length > 0) {
+                        newElements.push(part);
                     }
                 });
-            }
-        });
-        chunks = newChunks;
-    });
-
-    // Tokenizer Schritt 2: Kugelsichere Trennung. 
-    // Trennt alles sauber in entweder [Nur-Wort] oder [Nur-Leerzeichen]. So geht NICHTS mehr verloren!
-    const finalTokens: any[] = [];
-    chunks.forEach(chunk => {
-        const parts = chunk.text.match(/(\s+|\S+)/g) || [];
-        parts.forEach(part => {
-            const isSpace = /^\s+$/.test(part);
-            // Wenn es ein Leerzeichen ist, wird es als normaler, inaktiver Text gerendert, damit der Zeilenumbruch klappt.
-            if (isSpace || !chunk.isVocab) {
-                finalTokens.push({ text: part, isVocab: false, vocabItem: null, vocabIndex: -1 });
             } else {
-                finalTokens.push({ text: part, isVocab: true, vocabItem: chunk.vocabItem, vocabIndex: chunk.vocabIndex });
+                newElements.push(el);
             }
         });
+        elements = newElements;
     });
 
-    const handlePress = (vocab: VocabWord | null, vocabIndex: number, chunkIndex: number) => {
-        if (!vocab) return;
-        const id = `${vocabIndex}-${chunkIndex}`;
+    const handlePress = (vocabItem: any, id: string) => {
         setActiveVocabId(id);
-        playAudio(`${exerciseId}_vocab_${vocabIndex}`);
+        playAudio(`${exerciseId}_vocab_${vocabItem.originalIndex}`);
 
+        // Automatisches Schließen nach 3 Sekunden
         setTimeout(() => {
             setActiveVocabId(current => current === id ? null : current);
         }, 3000);
@@ -75,101 +72,92 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     return (
         <View style={styles.container}>
-            {finalTokens.map((token, i) => {
-                // Normale Wörter, Satzzeichen und Leerzeichen
-                if (!token.isVocab) {
-                    return <Text key={`text-${i}`} style={[styles.text, { color: textColor }]}>{token.text}</Text>;
-                }
+            {/* HIER IST DIE MAGIE: 
+        Wir nutzen EINEN EINZIGEN Text-Container. Dadurch verhält sich alles 
+        wie ein völlig normaler Satz aus einem Buch. Zeilenumbrüche passieren 
+        absolut natürlich, Leerzeichen stimmen zu 100%.
+      */}
+            <Text style={[styles.text, { color: textColor }]}>
+                {elements.map((el, i) => {
+                    // Normaler Text (inklusive aller Satzzeichen, Schrägstriche, Leerzeichen)
+                    if (typeof el === 'string') {
+                        return <Text key={`string-${i}`}>{el}</Text>;
+                    }
 
-                // Interaktive Vokabeln
-                const isActive = activeVocabId === `${token.vocabIndex}-${i}`;
+                    // Interaktive Vokabel
+                    const vocab = el.vocabItem;
+                    const isActive = activeVocabId === `vocab-${i}`;
 
-                return (
-                    <View key={`vocab-${i}`} style={styles.vocabWrapper}>
-                        {/* Pop-up */}
-                        {isActive && (
-                            <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
-                                <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                    <Text style={styles.tooltipText}>{token.vocabItem?.translation}</Text>
-                                </View>
-                                <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
-                            </Animated.View>
-                        )}
-
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            onPress={() => handlePress(token.vocabItem, token.vocabIndex, i)}
+                    return (
+                        <Text
+                            key={`vocab-${i}`}
+                            onPress={() => handlePress(vocab, `vocab-${i}`)}
+                            style={[
+                                styles.interactiveWordText,
+                                {
+                                    color: highlightColor,
+                                    // 100% Native System-Unterstreichung – Keine künstlichen Linien mehr!
+                                    textDecorationLine: 'underline',
+                                    textDecorationStyle: 'dotted',
+                                    textDecorationColor: highlightColor
+                                }
+                            ]}
                         >
-                            <View style={styles.wordWithDashes}>
-                                <Text style={[styles.text, styles.interactiveWordText, { color: highlightColor }]}>
-                                    {token.text}
-                                </Text>
-
-                                {/* Ultra feine, zarte Punkte für den Premium Look */}
-                                <View style={styles.customDashesContainer}>
-                                    {[...Array(30)].map((_, idx) => (
-                                        <View key={idx} style={[styles.dash, { backgroundColor: highlightColor }]} />
-                                    ))}
+                            {/* Das Pop-up: Wird absolut über dem angetippten Wort verankert */}
+                            {isActive && (
+                                <View style={styles.tooltipAnchor}>
+                                    <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
+                                        <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                            {/* Der Text bestimmt nun automatisch die Breite des Pop-ups! */}
+                                            <Text style={styles.tooltipText}>{vocab.translation}</Text>
+                                        </View>
+                                        <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                                    </Animated.View>
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                );
-            })}
+                            )}
+                            {/* Das eigentliche Wort */}
+                            {el.text}
+                        </Text>
+                    );
+                })}
+            </Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        rowGap: 8,
-        paddingTop: 35, // <-- LÖST DAS PROBLEM 1: Schafft Platz nach oben, damit das Pop-up NICHTS mehr verdeckt!
+        width: '100%',
+        paddingTop: 45, // Ausreichend Puffer nach oben, damit das Pop-up nie den Text drüber verdeckt
+        paddingHorizontal: 5,
     },
     text: {
         fontSize: 26,
         fontWeight: 'bold',
-    },
-    vocabWrapper: {
-        position: 'relative',
-    },
-    wordWithDashes: {
-        position: 'relative',
-        paddingBottom: 2,
+        lineHeight: 40, // Etwas mehr Zeilenabstand, damit sich Pop-ups und Text bei mehrzeiligen Sätzen nicht in die Quere kommen
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    customDashesContainer: {
-        position: 'absolute',
-        bottom: -1,
-        left: 0,
-        right: 0,
-        flexDirection: 'row',
-        overflow: 'hidden',
-    },
-    dash: {
-        width: 2, // <-- Noch kleiner und eleganter
-        height: 2,
-        borderRadius: 1,
-        marginRight: 4, // <-- Mehr Abstand lässt es nicht wie eine durchgehende Linie wirken
-    },
     // Pop-up Styles
+    tooltipAnchor: {
+        width: 0,
+        height: 0,
+        position: 'relative',
+    },
     tooltipAbsoluteWrapper: {
         position: 'absolute',
-        bottom: '100%',
-        alignSelf: 'center', // <-- LÖST DAS PROBLEM 2: Zentriert sich perfekt über dem Wort, egal wie lang es ist!
+        bottom: 30, // Schwebt direkt und zentriert über dem Wort
+        left: 0,
+        transform: [{ translateX: '-50%' }], // Garantiert, dass das Pop-up IMMER in der exakten Mitte des Wortes sitzt
         alignItems: 'center',
-        marginBottom: -4,
         zIndex: 100,
         elevation: 10,
     },
     tooltip: {
-        paddingHorizontal: 12,
-        paddingVertical: 6,
+        // Die Breite ist ab jetzt dynamisch. Sie wird nur noch vom Inhalt (Padding + Text) bestimmt!
+        paddingHorizontal: 16,
+        paddingVertical: 8,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -180,7 +168,7 @@ const styles = StyleSheet.create({
     tooltipText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 16,
         textAlign: 'center',
     },
     tooltipArrow: {
@@ -188,9 +176,9 @@ const styles = StyleSheet.create({
         height: 0,
         backgroundColor: 'transparent',
         borderStyle: 'solid',
-        borderLeftWidth: 7,
-        borderRightWidth: 7,
-        borderTopWidth: 7,
+        borderLeftWidth: 8,
+        borderRightWidth: 8,
+        borderTopWidth: 8,
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
         marginTop: -1,
