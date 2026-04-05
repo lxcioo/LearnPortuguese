@@ -47,6 +47,9 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const isPractice = lessonId === 'practice';
 
+  const [seenVocab, setSeenVocab] = useState<Record<string, boolean>>({});
+  const [activeVocabulary, setActiveVocabulary] = useState<any[]>([]);
+
   useEffect(() => {
     const fetchExercises = async () => {
       let rawExercises: Exercise[] = [];
@@ -112,6 +115,9 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
       }
 
+      const seen = await ProgressService.getSeenVocabulary();
+      setSeenVocab(seen);
+
       setLessonQueue(filtered);
       setTotalQuestions(filtered.length);
       setLoading(false);
@@ -119,6 +125,39 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
     fetchExercises();
   }, [lessonId, lessonType, gender]);
+
+  useEffect(() => {
+    if (loading || !currentExercise) return;
+
+    if (!currentExercise.vocabulary || currentExercise.vocabulary.length === 0) {
+      setActiveVocabulary([]);
+      return;
+    }
+
+    const newActiveVocab: any[] = [];
+    const keysToMark: string[] = [];
+
+    currentExercise.vocabulary.forEach(v => {
+      // Eindeutiger Key (z.B. "Boa_Gute" vs "Boa_Guten")
+      const key = `${v.text}_${v.translation}`;
+      if (!seenVocab[key]) {
+        newActiveVocab.push(v);
+        keysToMark.push(key);
+      }
+    });
+
+    setActiveVocabulary(newActiveVocab);
+
+    // Wenn es neue Wörter gab, markieren wir sie SOFORT für die Zukunft als gesehen
+    if (keysToMark.length > 0) {
+      setSeenVocab(prev => {
+        const next = { ...prev };
+        keysToMark.forEach(k => next[k] = true);
+        return next;
+      });
+      ProgressService.markVocabularyAsSeen(keysToMark);
+    }
+  }, [currentExerciseIndex, loading]);
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
@@ -226,7 +265,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
 
   const getSolutionData = useCallback(() => {
     if (!currentExercise) return { pt: "", de: "" };
-    
+
     let pt = "";
     let de = "";
 
@@ -245,8 +284,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         de = currentExercise.question;
       }
     } else {
-       pt = currentExercise.correctAnswer;
-       de = currentExercise.question;
+      pt = currentExercise.correctAnswer;
+      de = currentExercise.question;
     }
 
     return { pt, de };
@@ -259,6 +298,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     userInput, setUserInput, selectedOption, setSelectedOption,
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
-    getSolutionData, lessonError, setLessonError
+    getSolutionData, lessonError, setLessonError,
+    activeVocabulary,
   };
 };

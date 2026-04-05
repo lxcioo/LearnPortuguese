@@ -24,7 +24,7 @@ export function useLessonViewModel() {
   const currentExercise = logic.currentExercise;
   const isTranslate = currentExercise?.type.includes('translate') ?? false;
   const isTranslateToPt = currentExercise?.type === 'translate_to_pt';
-  
+
   const instructionText = isTranslate
     ? (isTranslateToPt ? 'Übersetze ins Portugiesische' : 'Übersetze ins Deutsche')
     : 'Wähle die richtige Lösung';
@@ -47,6 +47,8 @@ export function useLessonViewModel() {
       progressPercent: logic.progressPercent,
       userInput: logic.userInput,
       selectedOption: logic.selectedOption,
+      activeVocabulary: logic.activeVocabulary, // <--- GEFILTERT (Neu)
+      fullVocabulary: currentExercise?.vocabulary || [], // <--- KOMPLETT (Neu)
     },
     // Pre-computed props for UI elements
     viewProps: {

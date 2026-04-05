@@ -9,6 +9,13 @@ export interface Exercise {
   correctAnswerIndex?: number;
   optionsLanguage?: string;
   gender?: 'm' | 'f';
+  vocabulary?: VocabWord[];
+}
+
+export interface VocabWord {
+  text: string;
+  translation: string;
+  audio?: string;
 }
 
 export interface Level {
@@ -42,19 +49,19 @@ export interface Course {
 export interface VocabEntry {
   exerciseId: string;
   exerciseRef: Exercise;
-  
+
   // Leitner Status NEU: 
   // 1 = Schwer, 2 = Mittel, 3 = Leicht, 4 = Stern (Mastery)
-  box: number; 
+  box: number;
   nextReviewDate: string; // ISO Date String
-  
+
   // Stats
   mistakeCount: number;
   successCount: number;
   lastPracticed: string; // YYYY-MM-DD
-  
+
   // Für "Heutige Fehler" Logik
-  mistakesToday: number; 
+  mistakesToday: number;
   solvedToday: number;
 }
 

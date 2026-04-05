@@ -5,6 +5,7 @@ const KEYS = {
     LESSON_SCORES: 'lessonScores',
     EXAM_SCORES: 'examScores',
     DAILY_STATS: 'dailyStats_v2',
+    SEEN_VOCABULARY: 'seenVocabulary_v1',
 };
 
 export const ProgressService = {
@@ -60,5 +61,33 @@ export const ProgressService = {
             }
         } catch (e) { console.error("Error getting daily stats", e); }
         return { date: today, wordsLearned: 0, mistakesMade: 0 };
+    },
+
+    // NEU: Lädt alle jemals gesehenen Wörter
+    async getSeenVocabulary(): Promise<Record<string, boolean>> {
+        try {
+            const json = await AsyncStorage.getItem(KEYS.SEEN_VOCABULARY);
+            return json ? JSON.parse(json) : {};
+        } catch (e) { return {}; }
+    },
+
+    // NEU: Speichert neue Wörter als "gesehen"
+    async markVocabularyAsSeen(vocabKeys: string[]): Promise<void> {
+        if (!vocabKeys || vocabKeys.length === 0) return;
+        try {
+            const seen = await this.getSeenVocabulary();
+            let hasChanges = false;
+
+            vocabKeys.forEach(key => {
+                if (!seen[key]) {
+                    seen[key] = true;
+                    hasChanges = true;
+                }
+            });
+
+            if (hasChanges) {
+                await AsyncStorage.setItem(KEYS.SEEN_VOCABULARY, JSON.stringify(seen));
+            }
+        } catch (e) { console.error("Error saving seen vocabulary", e); }
     },
 };

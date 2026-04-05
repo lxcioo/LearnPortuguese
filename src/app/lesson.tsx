@@ -131,7 +131,7 @@ export default function LessonScreen() {
               <InteractiveText
                 sentence={currentExercise.question}
                 // @ts-ignore (Damit TS nicht meckert, falls vocabulary noch nicht im globalen Type definiert wurde)
-                vocabulary={currentExercise.vocabulary}
+                vocabulary={state.activeVocabulary}
                 exerciseId={currentExercise.id}
                 playAudio={actions.playAudio}
                 textColor={theme.text}
@@ -186,7 +186,7 @@ export default function LessonScreen() {
         animatedStyle={animatedModalStyle}
 
         // @ts-ignore
-        vocabulary={currentExercise.vocabulary}
+        vocabulary={state.fullVocabulary}
         exerciseId={currentExercise.id}
         playAudioById={actions.playAudio}
       />
