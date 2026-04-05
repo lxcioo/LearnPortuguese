@@ -30,7 +30,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     // SCHRITT 1: Text intelligent aufteilen, ohne dass Satzzeichen oder Leerzeichen verloren gehen
     let elements: any[] = [sentence];
 
-    // Nach Länge sortieren, damit lange Phrasen wie "Auf Wiedersehen" zuerst gefunden werden
     const sortedVocab = [...vocabulary]
         .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
         .sort((a, b) => b.text.length - a.text.length);
@@ -57,7 +56,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     });
 
     const handlePress = (vocabItem: any, id: string) => {
-        // Wenn das Wort schon aktiv ist und nochmal getippt wird, schließe es
         if (activeVocabId === id) {
             setActiveVocabId(null);
             return;
@@ -66,7 +64,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         setActiveVocabId(id);
         playAudio(`${exerciseId}_vocab_${vocabItem.originalIndex}`);
 
-        // Automatisches Schließen nach 3 Sekunden
         setTimeout(() => {
             setActiveVocabId(current => current === id ? null : current);
         }, 3000);
@@ -74,18 +71,13 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     return (
         <View style={styles.container}>
-            {/* Ein einziger nativer Text-Block!
-        Das garantiert perfekten Zeilenumbruch und lückenlose Satzzeichen.
-      */}
             <Text style={[styles.text, { color: textColor }]}>
                 {elements.map((el, i) => {
 
-                    // Normaler Text & Satzzeichen
                     if (typeof el === 'string') {
                         return <Text key={`string-${i}`}>{el}</Text>;
                     }
 
-                    // Interaktives Wort
                     const vocab = el.vocabItem;
                     const isActive = activeVocabId === `vocab-${i}`;
 
@@ -97,26 +89,30 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 styles.interactiveWordText,
                                 {
                                     color: highlightColor,
-                                    // Garantiert perfekte, echte Unterstreichung direkt am Wort
                                     textDecorationLine: 'underline',
                                     textDecorationStyle: 'dotted',
                                     textDecorationColor: highlightColor
                                 }
                             ]}
                         >
-                            {/* Das Pop-up */}
-                            {isActive && (
-                                <View style={styles.tooltipAbsoluteWrapper}>
-                                    {/* Die grüne Blase, die sich dynamisch an die Textlänge anpasst */}
-                                    <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                        <Text style={styles.tooltipText} numberOfLines={1}>
-                                            {vocab.translation}
-                                        </Text>
-                                    </View>
-                                    {/* Der kleine Pfeil darunter */}
-                                    <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                            {/* DER FIX FÜR DAS ZUCKEN: 
+                Das Pop-up wird IMMER gerendert, aber unsichtbar gemacht (opacity). 
+                Dadurch verändert sich die Zeilenhöhe beim Drauftippen niemals!
+              */}
+                            <View
+                                style={[
+                                    styles.tooltipAbsoluteWrapper,
+                                    { opacity: isActive ? 1 : 0 }
+                                ]}
+                                pointerEvents={isActive ? 'auto' : 'none'}
+                            >
+                                <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                    <Text style={styles.tooltipText} numberOfLines={1}>
+                                        {vocab.translation}
+                                    </Text>
                                 </View>
-                            )}
+                                <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                            </View>
                             {/* Das angezeigte Wort */}
                             {el.text}
                         </Text>
@@ -129,27 +125,24 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        paddingTop: 45, // Puffer, damit das Pop-up nie den Aufgabentext verdeckt
-        paddingHorizontal: 2,
+        // DER FIX FÜR DIE HÖHE ZUM LAUTSPRECHER: 
+        // paddingTop wurde komplett gelöscht. flex: 1 lässt den Text perfekt neben dem Lautsprecher fließen.
+        flex: 1,
+        justifyContent: 'center',
     },
     text: {
         fontSize: 26,
         fontWeight: 'bold',
-        lineHeight: 40, // Sorgt für genug Platz zwischen den Zeilen, falls Wörter umbrechen
+        lineHeight: 40,
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    // --- DER FIX FÜR DIE SÄULE UND DIE ZENTRIERUNG ---
     tooltipAbsoluteWrapper: {
         position: 'absolute',
         bottom: '100%',
-        // 1. Eine große, feste Breite verhindert den "Säulen-Bug" (Text-Wrap)
         width: 200,
-        // 2. 'left: 50%' schiebt den Kasten an die Mitte des Wortes
         left: '50%',
-        // 3. 'marginLeft' zieht ihn um genau die Hälfte (100px) zurück -> 100% perfekte Zentrierung!
         marginLeft: -100,
         alignItems: 'center',
         marginBottom: 4,
@@ -157,12 +150,10 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     tooltip: {
-        // Da der Parent 'alignItems: center' hat, schmiegt sich die Breite hier 
-        // jetzt absolut perfekt und dynamisch an den Inhalt (die Übersetzung) an.
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderRadius: 8,
-        minWidth: 50, // Sieht bei sehr kurzen Wörtern wie "Ja" schöner aus
+        minWidth: 50,
     },
     tooltipText: {
         color: '#fff',
