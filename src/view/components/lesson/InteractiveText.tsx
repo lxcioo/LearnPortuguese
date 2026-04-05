@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 interface VocabWord {
@@ -16,7 +16,7 @@ interface InteractiveTextProps {
     highlightColor: string;
 }
 
-// Hilfsfunktion: Verhindert Fehler beim Suchen von Wörtern mit Satzzeichen
+// Hilfsfunktion für Satzzeichen-sicheres Suchen
 function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -24,40 +24,28 @@ function escapeRegExp(string: string) {
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
-    // Speichert die exakten X/Y Koordinaten jedes Wortes auf dem Bildschirm
-    const [wordLayouts, setWordLayouts] = useState<Record<string, { x: number, y: number, width: number, height: number }>>({});
-
     if (!vocabulary || vocabulary.length === 0) {
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // SCHRITT 1: Text intelligent aufteilen (Behält alle Leerzeichen und Satzzeichen als reinen Text)
-    let elements: any[] = [sentence];
-
+    // SCHRITT 1: Vokabeln markieren
+    let markedText = sentence;
     const sortedVocab = [...vocabulary]
         .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
         .sort((a, b) => b.text.length - a.text.length);
 
-    sortedVocab.forEach((vocab) => {
-        const newElements: any[] = [];
-        elements.forEach((el) => {
-            if (typeof el === 'string') {
-                const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
-                const parts = el.split(regex);
+    sortedVocab.forEach((vocab, vIndex) => {
+        // "Auf Wiedersehen" wird aufgeteilt in einzelne Platzhalter: "___V1_P0___ ___V1_P1___"
+        const parts = vocab.text.split(/\s+/);
+        const replacement = parts.map((_, pIndex) => `___V${vIndex}_P${pIndex}___`).join(' ');
 
-                parts.forEach(part => {
-                    if (part === vocab.text) {
-                        newElements.push({ type: 'vocab', vocabItem: vocab, text: part });
-                    } else if (part.length > 0) {
-                        newElements.push(part);
-                    }
-                });
-            } else {
-                newElements.push(el);
-            }
-        });
-        elements = newElements;
+        const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
+        markedText = markedText.replace(regex, replacement);
     });
+
+    // SCHRITT 2: Den Satz in natürliche Wort-Blöcke zerschneiden
+    // Hier trennen wir an echten Leerzeichen. So bleibt z. B. "'Tschüss'?" ein zusammenhängender Block!
+    const rawWords = markedText.split(/\s+/).filter(w => w.trim().length > 0);
 
     const handlePress = (vocabItem: any, id: string) => {
         if (activeVocabId === id) {
@@ -73,127 +61,123 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         }, 3000);
     };
 
-    // Speichert die Koordinaten des Wortes, sobald es auf dem Bildschirm gerendert wird
-    const handleLayout = (id: string, event: any) => {
-        const { x, y, width, height } = event.nativeEvent.layout;
-        setWordLayouts(prev => ({ ...prev, [id]: { x, y, width, height } }));
-    };
-
-    // Finde die Übersetzung für das aktuell aktive Wort
-    const activeElement = elements.find((el, i) => `vocab-${i}` === activeVocabId);
-    const activeTranslation = activeElement ? activeElement.vocabItem.translation : '';
-
     return (
         <View style={styles.container}>
+            {rawWords.map((rawWord, index) => {
 
-            {/* DER TEXT-BLOCK:
-        Hier ist absolut KEIN View-Container oder Pop-up mehr drin. Es ist 100% reiner Text.
-        Dadurch kann sich nichts verziehen, nichts zucken und die Zeilenhöhe bleibt perfekt!
-      */}
-            <View style={styles.textWrapper}>
-                <Text style={[styles.text, { color: textColor }]}>
-                    {elements.map((el, i) => {
+                // Innerhalb eines Wort-Blocks schauen wir, ob ein Vokabel-Platzhalter steckt
+                const parts = rawWord.split(/(___V\d+_P\d+___)/).filter(p => p !== '');
 
-                        if (typeof el === 'string') {
-                            return <Text key={`string-${i}`}>{el}</Text>;
-                        }
+                // Z-Index Logik: Das aktive Wort muss ganz vorne liegen, damit sein Pop-up nicht überlagert wird
+                const isBlockActive = parts.some(p => {
+                    const match = p.match(/^___V(\d+)_P(\d+)___$/);
+                    return match && activeVocabId === `v_${match[1]}`;
+                });
 
-                        const vocab = el.vocabItem;
-                        const id = `vocab-${i}`;
-
-                        return (
-                            <Text
-                                key={id}
-                                onLayout={(e) => handleLayout(id, e)}
-                                onPress={() => handlePress(vocab, id)}
-                                style={[
-                                    styles.interactiveWordText,
-                                    {
-                                        color: highlightColor,
-                                        // Die echte, unverfälschte System-Unterstreichung
-                                        textDecorationLine: 'underline',
-                                        textDecorationStyle: 'dotted',
-                                        textDecorationColor: highlightColor
-                                    }
-                                ]}
-                            >
-                                {el.text}
-                            </Text>
-                        );
-                    })}
-                </Text>
-
-                {/* DAS ENTKOPPELTE POP-UP:
-          Schwebt als Overlay VÖLLIG unabhängig über dem Text. 
-          Es nutzt die zuvor gemessenen Koordinaten, um sich millimetergenau zu platzieren.
-        */}
-                {activeVocabId && wordLayouts[activeVocabId] && (
+                return (
                     <View
-                        style={[
-                            styles.popupAnchor,
-                            {
-                                // Setzt den Ankerpunkt EXAKT in die horizontale Mitte des Wortes
-                                left: wordLayouts[activeVocabId].x + (wordLayouts[activeVocabId].width / 2),
-                                // Setzt den Ankerpunkt EXAKT auf die Oberkante des Wortes
-                                top: wordLayouts[activeVocabId].y,
-                            }
-                        ]}
-                        pointerEvents="none"
+                        key={`word-${index}`}
+                        style={[styles.wordBlock, { zIndex: isBlockActive ? 100 : 1 }]}
                     >
-                        <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.popupAbsoluteWrapper}>
+                        {parts.map((part, pIdx) => {
+                            const match = part.match(/^___V(\d+)_P(\d+)___$/);
 
-                            {/* Die Bubble passt sich automatisch dynamisch an den Inhalt an */}
-                            <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                <Text style={styles.tooltipText}>{activeTranslation}</Text>
-                            </View>
+                            if (match) {
+                                // Es ist eine interaktive Vokabel
+                                const vIndex = parseInt(match[1]);
+                                const pIndex = parseInt(match[2]);
+                                const vocabItem = sortedVocab[vIndex];
 
-                            <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
-                        </Animated.View>
+                                // Wir holen uns exakt das Wort aus der Vokabel zurück
+                                const wordText = vocabItem.text.split(/\s+/)[pIndex];
+                                const isActive = activeVocabId === `v_${vIndex}`;
+
+                                return (
+                                    <View key={`vocab-${pIdx}`} style={styles.interactiveAnchor}>
+
+                                        {/* DAS POP-UP: 100% zentriert, passt sich dem Text an, verschiebt das Layout nicht! */}
+                                        {isActive && (
+                                            <View style={styles.tooltipAbsoluteWrapper} pointerEvents="none">
+                                                <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContent}>
+                                                    <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                                        <Text style={styles.tooltipText}>{vocabItem.translation}</Text>
+                                                    </View>
+                                                    <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                                                </Animated.View>
+                                            </View>
+                                        )}
+
+                                        {/* Das klickbare Wort */}
+                                        <TouchableOpacity activeOpacity={0.6} onPress={() => handlePress(vocabItem, `v_${vIndex}`)}>
+                                            <Text style={[
+                                                styles.text,
+                                                styles.interactiveWordText,
+                                                {
+                                                    color: highlightColor,
+                                                    textDecorationLine: 'underline',
+                                                    textDecorationStyle: 'dotted',
+                                                    textDecorationColor: highlightColor
+                                                }
+                                            ]}>
+                                                {wordText}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                );
+                            } else {
+                                // Es ist ein normales Satzzeichen oder Wort (z. B. "Wie" oder "?")
+                                return <Text key={`text-${pIdx}`} style={[styles.text, { color: textColor }]}>{part}</Text>;
+                            }
+                        })}
                     </View>
-                )}
-
-            </View>
+                );
+            })}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingTop: 10, // Leichtes Padding, damit Pop-ups oben am Rand Platz haben
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        rowGap: 10,     // Zeilenabstand beim Umbruch
+        columnGap: 8,   // Perfekter Wortabstand (ersetzt die Leerzeichen)
+        paddingTop: 45, // Puffer für das Pop-up nach oben
     },
-    textWrapper: {
-        position: 'relative', // Zwingt das Pop-up, sich relativ zu diesem Textfeld auszurichten
+    wordBlock: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    interactiveAnchor: {
+        position: 'relative',
     },
     text: {
         fontSize: 26,
         fontWeight: 'bold',
-        lineHeight: 40,
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    // --- Das neue, entkoppelte Pop-up System ---
-    popupAnchor: {
+    // Pop-up Styles
+    tooltipAbsoluteWrapper: {
         position: 'absolute',
-        width: 0,
-        height: 0,
-        zIndex: 1000,
-        elevation: 10,
+        bottom: '100%',
+        width: 200,          // Große feste Breite verhindert den Android "Säulen-Bug"
+        left: '50%',         // Startet exakt in der Mitte des Wortes
+        marginLeft: -100,    // Zieht den Container um genau die Hälfte zurück -> 100% zentriert
+        alignItems: 'center',// Zwingt die grüne Box, nur so breit zu werden wie der Text darin!
+        marginBottom: 4,
     },
-    popupAbsoluteWrapper: {
-        position: 'absolute',
-        bottom: 2, // Abstand: Schwebt exakt 2 Pixel ÜBER dem Wort
-        width: 300, // Ein unsichtbarer, breiter Kasten verhindert den Android "Säulen-Bug"...
-        marginLeft: -150, // ...und zieht den Kasten exakt in die Mitte über dem Anker!
-        alignItems: 'center', // Sorgt dafür, dass die eigentliche Bubble (tooltip) nur so breit wird wie der Text!
+    tooltipContent: {
+        alignItems: 'center',
     },
     tooltip: {
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 8,
-        minWidth: 40,
+        minWidth: 50,
     },
     tooltipText: {
         color: '#fff',
