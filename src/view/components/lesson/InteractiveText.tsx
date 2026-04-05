@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 interface VocabWord {
     text: string;
@@ -16,7 +15,7 @@ interface InteractiveTextProps {
     highlightColor: string;
 }
 
-// Hilfsfunktion: Schützt vor Regex-Fehlern bei Sonderzeichen
+// Hilfsfunktion: Verhindert Fehler beim Suchen von Satzzeichen
 function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -28,12 +27,10 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
     }
 
-    // SCHRITT 1: Intelligentes Suchen & Ersetzen
-    // Wir iterieren über den originalen Text und ersetzen die Vokabeln durch Objekte,
-    // ohne den restlichen Text oder Satzzeichen auch nur anzurühren.
+    // SCHRITT 1: Text intelligent aufteilen, ohne dass Satzzeichen oder Leerzeichen verloren gehen
     let elements: any[] = [sentence];
 
-    // Wir sortieren nach Länge, damit lange Phrasen ("Auf Wiedersehen") vor kurzen Wörtern gefunden werden
+    // Nach Länge sortieren, damit lange Phrasen wie "Auf Wiedersehen" zuerst gefunden werden
     const sortedVocab = [...vocabulary]
         .map((vocab, originalIndex) => ({ ...vocab, originalIndex }))
         .sort((a, b) => b.text.length - a.text.length);
@@ -42,7 +39,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         const newElements: any[] = [];
         elements.forEach((el) => {
             if (typeof el === 'string') {
-                // Trennt den String exakt am Vokabel-Wort auf
                 const regex = new RegExp(`(${escapeRegExp(vocab.text)})`, 'g');
                 const parts = el.split(regex);
 
@@ -61,6 +57,12 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     });
 
     const handlePress = (vocabItem: any, id: string) => {
+        // Wenn das Wort schon aktiv ist und nochmal getippt wird, schließe es
+        if (activeVocabId === id) {
+            setActiveVocabId(null);
+            return;
+        }
+
         setActiveVocabId(id);
         playAudio(`${exerciseId}_vocab_${vocabItem.originalIndex}`);
 
@@ -72,19 +74,18 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     return (
         <View style={styles.container}>
-            {/* HIER IST DIE MAGIE: 
-        Wir nutzen EINEN EINZIGEN Text-Container. Dadurch verhält sich alles 
-        wie ein völlig normaler Satz aus einem Buch. Zeilenumbrüche passieren 
-        absolut natürlich, Leerzeichen stimmen zu 100%.
+            {/* Ein einziger nativer Text-Block!
+        Das garantiert perfekten Zeilenumbruch und lückenlose Satzzeichen.
       */}
             <Text style={[styles.text, { color: textColor }]}>
                 {elements.map((el, i) => {
-                    // Normaler Text (inklusive aller Satzzeichen, Schrägstriche, Leerzeichen)
+
+                    // Normaler Text & Satzzeichen
                     if (typeof el === 'string') {
                         return <Text key={`string-${i}`}>{el}</Text>;
                     }
 
-                    // Interaktive Vokabel
+                    // Interaktives Wort
                     const vocab = el.vocabItem;
                     const isActive = activeVocabId === `vocab-${i}`;
 
@@ -96,26 +97,27 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 styles.interactiveWordText,
                                 {
                                     color: highlightColor,
-                                    // 100% Native System-Unterstreichung – Keine künstlichen Linien mehr!
+                                    // Garantiert perfekte, echte Unterstreichung direkt am Wort
                                     textDecorationLine: 'underline',
                                     textDecorationStyle: 'dotted',
                                     textDecorationColor: highlightColor
                                 }
                             ]}
                         >
-                            {/* Das Pop-up: Wird absolut über dem angetippten Wort verankert */}
+                            {/* Das Pop-up */}
                             {isActive && (
-                                <View style={styles.tooltipAnchor}>
-                                    <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipAbsoluteWrapper}>
-                                        <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                            {/* Der Text bestimmt nun automatisch die Breite des Pop-ups! */}
-                                            <Text style={styles.tooltipText}>{vocab.translation}</Text>
-                                        </View>
-                                        <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
-                                    </Animated.View>
+                                <View style={styles.tooltipAbsoluteWrapper}>
+                                    {/* Die grüne Blase, die sich dynamisch an die Textlänge anpasst */}
+                                    <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
+                                        <Text style={styles.tooltipText} numberOfLines={1}>
+                                            {vocab.translation}
+                                        </Text>
+                                    </View>
+                                    {/* Der kleine Pfeil darunter */}
+                                    <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
                                 </View>
                             )}
-                            {/* Das eigentliche Wort */}
+                            {/* Das angezeigte Wort */}
                             {el.text}
                         </Text>
                     );
@@ -128,47 +130,44 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        paddingTop: 45, // Ausreichend Puffer nach oben, damit das Pop-up nie den Text drüber verdeckt
-        paddingHorizontal: 5,
+        paddingTop: 45, // Puffer, damit das Pop-up nie den Aufgabentext verdeckt
+        paddingHorizontal: 2,
     },
     text: {
         fontSize: 26,
         fontWeight: 'bold',
-        lineHeight: 40, // Etwas mehr Zeilenabstand, damit sich Pop-ups und Text bei mehrzeiligen Sätzen nicht in die Quere kommen
+        lineHeight: 40, // Sorgt für genug Platz zwischen den Zeilen, falls Wörter umbrechen
     },
     interactiveWordText: {
         fontWeight: 'bold',
     },
-    // Pop-up Styles
-    tooltipAnchor: {
-        width: 0,
-        height: 0,
-        position: 'relative',
-    },
+    // --- DER FIX FÜR DIE SÄULE UND DIE ZENTRIERUNG ---
     tooltipAbsoluteWrapper: {
         position: 'absolute',
-        bottom: 30, // Schwebt direkt und zentriert über dem Wort
-        left: 0,
-        transform: [{ translateX: '-50%' }], // Garantiert, dass das Pop-up IMMER in der exakten Mitte des Wortes sitzt
+        bottom: '100%',
+        // 1. Eine große, feste Breite verhindert den "Säulen-Bug" (Text-Wrap)
+        width: 200,
+        // 2. 'left: 50%' schiebt den Kasten an die Mitte des Wortes
+        left: '50%',
+        // 3. 'marginLeft' zieht ihn um genau die Hälfte (100px) zurück -> 100% perfekte Zentrierung!
+        marginLeft: -100,
         alignItems: 'center',
-        zIndex: 100,
+        marginBottom: 4,
+        zIndex: 1000,
         elevation: 10,
     },
     tooltip: {
-        // Die Breite ist ab jetzt dynamisch. Sie wird nur noch vom Inhalt (Padding + Text) bestimmt!
-        paddingHorizontal: 16,
+        // Da der Parent 'alignItems: center' hat, schmiegt sich die Breite hier 
+        // jetzt absolut perfekt und dynamisch an den Inhalt (die Übersetzung) an.
+        paddingHorizontal: 12,
         paddingVertical: 8,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 4,
+        borderRadius: 8,
+        minWidth: 50, // Sieht bei sehr kurzen Wörtern wie "Ja" schöner aus
     },
     tooltipText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 15,
         textAlign: 'center',
     },
     tooltipArrow: {
@@ -176,9 +175,9 @@ const styles = StyleSheet.create({
         height: 0,
         backgroundColor: 'transparent',
         borderStyle: 'solid',
-        borderLeftWidth: 8,
-        borderRightWidth: 8,
-        borderTopWidth: 8,
+        borderLeftWidth: 6,
+        borderRightWidth: 6,
+        borderTopWidth: 6,
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
         marginTop: -1,
