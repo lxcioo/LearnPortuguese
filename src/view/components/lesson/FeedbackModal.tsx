@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { InteractiveText } from './InteractiveText'; // <--- IMPORT hinzugefügt
 
 type RatingButton = {
   box: number;
@@ -32,10 +33,15 @@ type FeedbackModalProps = {
   };
   isDarkMode: boolean;
   animatedStyle: any;
+
+  // --- NEUE PROPS FÜR INTERACTIVE TEXT ---
+  vocabulary?: any[];
+  exerciseId?: string;
+  playAudioById?: (id: string) => void;
 };
 
 export function FeedbackModal({
-  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, onReportClick, rating, theme, isDarkMode, animatedStyle
+  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, onReportClick, rating, theme, isDarkMode, animatedStyle, vocabulary, exerciseId, playAudioById
 }: FeedbackModalProps) {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -62,7 +68,25 @@ export function FeedbackModal({
                 </TouchableOpacity>
               )}
               <View style={styles.solutionTextCol}>
-                <Text style={[styles.feedbackSolutionPt, { color: theme.feedbackText }]}>{solutionData.pt}</Text>
+
+                {/* --- INTERACTIVE TEXT EINGEBAUT --- */}
+                {vocabulary && vocabulary.length > 0 && exerciseId && playAudioById ? (
+                  <View style={{ marginBottom: 2 }}>
+                    <InteractiveText
+                      sentence={solutionData.pt}
+                      vocabulary={vocabulary}
+                      exerciseId={exerciseId}
+                      playAudio={playAudioById}
+                      textColor={theme.feedbackText}
+                      highlightColor={theme.feedbackText} // Die Farbe des Pop-ups passt sich dem Erfolg/Fehler an
+                      fontSize={20} // Die kleinere Schriftgröße für das Modal
+                    />
+                  </View>
+                ) : (
+                  <Text style={[styles.feedbackSolutionPt, { color: theme.feedbackText }]}>{solutionData.pt}</Text>
+                )}
+                {/* ---------------------------------- */}
+
                 <Text style={[styles.feedbackSolutionDe, { color: theme.subText }]}>{solutionData.de}</Text>
               </View>
             </View>

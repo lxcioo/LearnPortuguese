@@ -184,6 +184,11 @@ export default function LessonScreen() {
         theme={theme}
         isDarkMode={isDarkMode}
         animatedStyle={animatedModalStyle}
+
+        // @ts-ignore
+        vocabulary={currentExercise.vocabulary}
+        exerciseId={currentExercise.id}
+        playAudioById={actions.playAudio}
       />
       <CustomAlert
         visible={confirmExit.visible}

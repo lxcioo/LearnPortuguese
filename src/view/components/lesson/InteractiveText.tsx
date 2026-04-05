@@ -14,6 +14,7 @@ interface InteractiveTextProps {
     playAudio: (id: string) => void;
     textColor: string;
     highlightColor: string;
+    fontSize?: number;
 }
 
 // Hilfsfunktion: Schützt vor Abstürzen bei Sonderzeichen
@@ -21,11 +22,11 @@ function escapeRegExp(string: string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor }: InteractiveTextProps) {
+export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor, fontSize }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
     if (!vocabulary || vocabulary.length === 0) {
-        return <Text style={[styles.text, { color: textColor }]}>{sentence}</Text>;
+        return <Text style={[styles.text, { color: textColor, fontSize: fontSize || 26 }]}>{sentence}</Text>;
     }
 
     // SCHRITT 1: Vokabeln als GANZE Phrasen im Text markieren
@@ -107,6 +108,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                                 styles.interactiveWordText,
                                                 {
                                                     color: highlightColor,
+                                                    fontSize: fontSize || 26,
                                                     textDecorationLine: 'underline',
                                                     textDecorationStyle: 'dotted',
                                                     textDecorationColor: highlightColor
@@ -148,7 +150,6 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     text: {
-        fontSize: 26,
         fontWeight: 'bold',
     },
     interactiveWordText: {
