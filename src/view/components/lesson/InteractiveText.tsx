@@ -24,7 +24,6 @@ function escapeRegExp(string: string) {
 export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, textColor, highlightColor, fontSize }: InteractiveTextProps) {
     const [activeVocabId, setActiveVocabId] = useState<string | null>(null);
 
-    // Dynamische Schriftgrößen & Zeilenhöhe für Lesson (groß) und Feedback-Modal (kleiner)
     const currentFontSize = fontSize || 26;
     const currentLineHeight = currentFontSize * 1.4;
 
@@ -38,13 +37,10 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     let markedText = sentence;
 
-    // --- SMART VOCAB FLIP (Für das Feedback Modal) ---
-    // Prüft, ob der Satz Portugiesisch oder Deutsch ist und passt das Suchwort und das Pop-up automatisch an.
     const mappedVocab = vocabulary.map((vocab, originalIndex) => {
         let searchStr = vocab.text;
         let displayPopup = vocab.translation;
 
-        // Wenn das gesuchte Wort nicht im Satz steht, aber die Übersetzung (z.B. Feedback-Screen PT), tausche sie!
         if (!sentence.includes(vocab.text) && sentence.includes(vocab.translation)) {
             searchStr = vocab.translation;
             displayPopup = vocab.text;
@@ -53,7 +49,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         return { ...vocab, originalIndex, searchStr, displayPopup };
     });
 
-    // Sortiert nach Länge, damit zusammenhängende Sätze (Boa tarde) vor Einzelwörtern (Boa) gefunden werden
     const sortedVocab = mappedVocab.sort((a, b) => b.searchStr.length - a.searchStr.length);
 
     sortedVocab.forEach((vocab, vIndex) => {
@@ -102,17 +97,16 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                         <View style={styles.tooltipAnchor}>
                                             {isActive && (
                                                 <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
-                                                    <View style={[styles.tooltip, { backgroundColor: highlightColor }]}>
-                                                        {/* Zeigt dynamisch entweder die Übersetzung oder das Originalwort */}
+                                                    {/* NEUES DESIGN: Hochwertiges dunkles Pop-up (unabhängig von der Textfarbe) */}
+                                                    <View style={styles.tooltip}>
                                                         <Text style={styles.tooltipText}>{vocabItem.displayPopup}</Text>
                                                     </View>
-                                                    <View style={[styles.tooltipArrow, { borderTopColor: highlightColor }]} />
+                                                    <View style={styles.tooltipArrow} />
                                                 </Animated.View>
                                             )}
                                         </View>
 
                                         <TouchableOpacity activeOpacity={0.6} onPress={() => handlePress(vocabItem, exactId)}>
-                                            {/* FIX: Die Schriftgröße & Linienhöhe wird nun auch hier erzwungen */}
                                             <Text style={{
                                                 color: highlightColor,
                                                 fontSize: currentFontSize,
@@ -131,7 +125,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                 return (
                                     <Text
                                         key={`text-${pIdx}`}
-                                        // FIX: Die normale Textgröße wird nun auch auf nicht-anklickbare Wörter angewendet!
                                         style={{ color: textColor, fontSize: currentFontSize, lineHeight: currentLineHeight, fontWeight: 'bold' }}
                                     >
                                         {part}
@@ -148,7 +141,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
 const styles = StyleSheet.create({
     container: {
-        flexShrink: 1, // FIX: Lässt das Element im Feedback-Modal nicht mehr unsichtbar werden!
+        flexShrink: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -180,19 +173,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
     },
+    // --- Das neue Pop-up Styling ---
     tooltip: {
+        backgroundColor: '#333333', // Edles, dunkles Anthrazit
         paddingHorizontal: 14,
         paddingVertical: 8,
         borderRadius: 8,
         minWidth: 40,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 4,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3, // Etwas stärkerer Schatten für mehr Tiefe
+        shadowRadius: 5,
+        elevation: 6,
     },
     tooltipText: {
-        color: '#fff',
+        color: '#FFFFFF', // Klares Weiß
         fontWeight: 'bold',
         fontSize: 15,
         textAlign: 'center',
@@ -207,6 +202,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 6,
         borderLeftColor: 'transparent',
         borderRightColor: 'transparent',
+        borderTopColor: '#333333', // Muss exakt der backgroundColor der tooltip-Box entsprechen!
         marginTop: -1,
     }
 });
