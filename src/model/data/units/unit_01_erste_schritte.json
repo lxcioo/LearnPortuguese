@@ -325,9 +325,14 @@
                     "audioText": "Como te chamas",
                     "vocabulary": [
                         {
-                            "text": "Wie heißt du?",
-                            "translation": "Como te chamas?",
-                            "audio": "Como te chamas"
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "heißt du",
+                            "translation": "te chamas",
+                            "audio": "te chamas"
                         }
                     ]
                 },
@@ -341,9 +346,14 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "Wie heißen Sie?",
-                            "translation": "Como se chama?",
-                            "audio": "Como se chama"
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "heißen Sie",
+                            "translation": "se chama",
+                            "audio": "se chama"
                         }
                     ]
                 },
@@ -404,6 +414,16 @@
                     ],
                     "vocabulary": [
                         {
+                            "text": "Ich bin",
+                            "translation": "Sou",
+                            "audio": "Sou"
+                        },
+                        {
+                            "text": "aus",
+                            "translation": "da",
+                            "audio": "da"
+                        },
+                        {
                             "text": "Schweiz",
                             "translation": "Suíça",
                             "audio": "Suíça"
@@ -419,6 +439,16 @@
                         "Eu sou da Áustria"
                     ],
                     "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Sou",
+                            "audio": "Sou"
+                        },
+                        {
+                            "text": "aus",
+                            "translation": "da",
+                            "audio": "da"
+                        },
                         {
                             "text": "Österreich",
                             "translation": "Áustria",
@@ -444,6 +474,11 @@
                             "text": "em",
                             "translation": "in",
                             "audio": "em"
+                        },
+                        {
+                            "text": "Berlim",
+                            "translation": "Berlin",
+                            "audio": "Berlim"
                         }
                     ]
                 },
@@ -457,6 +492,11 @@
                         "Eu sou alemão"
                     ],
                     "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Sou",
+                            "audio": "Sou"
+                        },
                         {
                             "text": "Deutscher",
                             "translation": "alemão",
@@ -474,6 +514,11 @@
                         "Eu sou alemã"
                     ],
                     "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Sou",
+                            "audio": "Sou"
+                        },
                         {
                             "text": "Deutsche",
                             "translation": "alemã",
@@ -503,19 +548,24 @@
                     "id": "u1_l2_e13",
                     "type": "multiple_choice",
                     "question": "Vervollständige: Eu ___ português.",
-                    "correctAnswer": "falo",
+                    "correctAnswer": "Eu falo português.",
                     "options": [
                         "fala",
                         "falo",
                         "falas"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "falo",
+                    "audioText": "Eu falo português",
                     "vocabulary": [
                         {
                             "text": "Eu",
                             "translation": "Ich",
                             "audio": "Eu"
+                        },
+                        {
+                            "text": "falo",
+                            "translation": "spreche",
+                            "audio": "falo"
                         },
                         {
                             "text": "português",
@@ -534,7 +584,7 @@
                     ],
                     "vocabulary": [
                         {
-                            "text": "spreche kein",
+                            "text": "Ich spreche kein",
                             "translation": "não falo",
                             "audio": "não falo"
                         },
@@ -718,9 +768,6 @@
                     "type": "translate_to_pt",
                     "question": "Zwanzig",
                     "correctAnswer": "Vinte",
-                    "alternativeAnswers": [
-                        "20"
-                    ],
                     "vocabulary": [
                         {
                             "text": "Zwanzig",
@@ -750,9 +797,6 @@
                     "type": "translate_to_pt",
                     "question": "Vierzig",
                     "correctAnswer": "Quarenta",
-                    "alternativeAnswers": [
-                        "40"
-                    ],
                     "vocabulary": [
                         {
                             "text": "Vierzig",
@@ -782,9 +826,6 @@
                     "type": "translate_to_pt",
                     "question": "Hundert",
                     "correctAnswer": "Cem",
-                    "alternativeAnswers": [
-                        "100"
-                    ],
                     "vocabulary": [
                         {
                             "text": "Hundert",

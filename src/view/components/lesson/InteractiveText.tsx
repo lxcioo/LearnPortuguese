@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-// NEU: Wir nutzen ZoomIn und ZoomOut für eine flüssigere, fehlerfreie Animation!
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
 
 interface VocabWord {
@@ -27,6 +26,8 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     const currentFontSize = fontSize || 26;
     const currentLineHeight = currentFontSize * 1.4;
+    const wordSpacing = currentFontSize * 0.22;
+    const lineSpacing = currentFontSize * 0.3;
 
     if (!vocabulary || vocabulary.length === 0) {
         return (
@@ -42,19 +43,34 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         let searchStr = vocab.text;
         let displayPopup = vocab.translation;
 
-        if (!sentence.includes(vocab.text) && sentence.includes(vocab.translation)) {
+        // Wir entfernen Satzzeichen und machen alles klein, um den Satz robuster zu prüfen
+        const normSentence = sentence.toLowerCase();
+        const normText = vocab.text.toLowerCase();
+        const normTrans = vocab.translation.toLowerCase();
+
+        if (!normSentence.includes(normText) && normSentence.includes(normTrans)) {
             searchStr = vocab.translation;
             displayPopup = vocab.text;
         }
 
-        return { ...vocab, originalIndex, searchStr, displayPopup };
+        // Entferne Satzzeichen auch aus dem Suchstring, damit der Regex später sauber greift
+        let cleanSearchStr = searchStr.replace(/^[.,?!¿¡]+|[.,?!¿¡]+$/g, '');
+
+        return { ...vocab, originalIndex, searchStr: cleanSearchStr, displayPopup };
     });
 
     const sortedVocab = mappedVocab.sort((a, b) => b.searchStr.length - a.searchStr.length);
 
     sortedVocab.forEach((vocab, vIndex) => {
-        const regex = new RegExp(`(${escapeRegExp(vocab.searchStr)})`, 'g');
-        markedText = markedText.replace(regex, `___V${vIndex}___`);
+        // Verwende 'gi' (case-insensitive), um Abweichungen (wie "Como" vs "como") auszugleichen.
+        const regex = new RegExp(`(${escapeRegExp(vocab.searchStr)})`, 'gi');
+
+        markedText = markedText.replace(regex, (match) => {
+            // Wir verstecken Leerzeichen im gematchten String, damit split(/\s+/) zusammenhängende 
+            // Wörter (wie "Como te chamas") später nicht fälschlicherweise zerreißt.
+            const safeMatch = match.replace(/\s/g, '@@@');
+            return `___V${vIndex}---${safeMatch}___`;
+        });
     });
 
     const rawWords = markedText.split(/\s+/).filter(w => w.trim().length > 0);
@@ -73,22 +89,24 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { columnGap: wordSpacing, rowGap: lineSpacing }]}>
             {rawWords.map((rawWord, index) => {
-                const parts = rawWord.split(/(___V\d+___)/).filter(p => p !== '');
+                // Splitten nach unserem neuen exakten Token-Muster
+                const parts = rawWord.split(/(___V\d+---.*?___)/).filter(p => p !== '');
 
                 const isBlockActive = parts.some(p => {
-                    const match = p.match(/^___V(\d+)___$/);
+                    const match = p.match(/^___V(\d+)---(.*?)___$/);
                     return match && activeVocabId === `v_${match[1]}`;
                 });
 
                 return (
                     <View key={`word-${index}`} style={[styles.wordBlock, { zIndex: isBlockActive ? 100 : 1 }]}>
                         {parts.map((part, pIdx) => {
-                            const match = part.match(/^___V(\d+)___$/);
+                            const match = part.match(/^___V(\d+)---(.*?)___$/);
 
                             if (match) {
                                 const vIndex = parseInt(match[1]);
+                                const originalText = match[2].replace(/@@@/g, ' '); // Leerzeichen wiederherstellen
                                 const vocabItem = sortedVocab[vIndex];
                                 const exactId = `v_${vIndex}`;
                                 const isActive = activeVocabId === exactId;
@@ -97,8 +115,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                     <View key={`vocab-${pIdx}`} style={styles.interactiveAnchor}>
                                         <View style={styles.tooltipAnchor}>
                                             {isActive && (
-                                                // Die Animation wurde auf ZoomIn / ZoomOut geändert. Das wirkt wie ein 
-                                                // sanftes "Aufploppen" aus dem Wort heraus und versteckt den Rendering-Bug.
                                                 <Animated.View entering={ZoomIn.duration(200)} exiting={ZoomOut.duration(200)} style={styles.tooltipContent} pointerEvents="none">
                                                     <View style={styles.tooltip}>
                                                         <Text style={styles.tooltipText}>{vocabItem.displayPopup}</Text>
@@ -118,7 +134,8 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                                 textDecorationStyle: 'dotted',
                                                 textDecorationColor: highlightColor
                                             }}>
-                                                {vocabItem.searchStr}
+                                                {/* Wir rendern den exact gematchten Text aus dem Satz, nicht den aus der Vokabel! */}
+                                                {originalText}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -148,8 +165,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        rowGap: 8,
-        columnGap: 8,
     },
     wordBlock: {
         flexDirection: 'row',
@@ -201,7 +216,6 @@ const styles = StyleSheet.create({
         borderLeftWidth: 6,
         borderRightWidth: 6,
         borderTopWidth: 6,
-        // FIX: Explizites Nutzen der Null-Opacity rgba Werte verhindert das "Rechteck" auf Android!
         borderLeftColor: 'rgba(0, 0, 0, 0)',
         borderRightColor: 'rgba(0, 0, 0, 0)',
         borderTopColor: '#333333',
