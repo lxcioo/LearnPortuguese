@@ -43,7 +43,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
         let searchStr = vocab.text;
         let displayPopup = vocab.translation;
 
-        // Wir entfernen Satzzeichen und machen alles klein, um den Satz robuster zu prüfen
         const normSentence = sentence.toLowerCase();
         const normText = vocab.text.toLowerCase();
         const normTrans = vocab.translation.toLowerCase();
@@ -53,23 +52,22 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
             displayPopup = vocab.text;
         }
 
-        // Entferne Satzzeichen auch aus dem Suchstring, damit der Regex später sauber greift
-        let cleanSearchStr = searchStr.replace(/^[.,?!¿¡]+|[.,?!¿¡]+$/g, '');
-
-        return { ...vocab, originalIndex, searchStr: cleanSearchStr, displayPopup };
+        return { ...vocab, originalIndex, searchStr: searchStr, displayPopup };
     });
 
     const sortedVocab = mappedVocab.sort((a, b) => b.searchStr.length - a.searchStr.length);
 
-    sortedVocab.forEach((vocab, vIndex) => {
-        // Verwende 'gi' (case-insensitive), um Abweichungen (wie "Como" vs "como") auszugleichen.
-        const regex = new RegExp(`(${escapeRegExp(vocab.searchStr)})`, 'gi');
+    // NEU: Wir definieren alle Buchstaben, die zu einem Wort gehören können (inkl. Umlaute & PT-Zeichen).
+    const wordChars = 'a-zA-Z0-9_äöüßÄÖÜáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ';
 
-        markedText = markedText.replace(regex, (match) => {
-            // Wir verstecken Leerzeichen im gematchten String, damit split(/\s+/) zusammenhängende 
-            // Wörter (wie "Como te chamas") später nicht fälschlicherweise zerreißt.
-            const safeMatch = match.replace(/\s/g, '@@@');
-            return `___V${vIndex}---${safeMatch}___`;
+    sortedVocab.forEach((vocab, vIndex) => {
+        // Die Regex prüft jetzt, ob VOR und NACH dem gesuchten Wort ein "Nicht-Wort-Zeichen" steht.
+        // So wird "Tag" in "Nachmittag" sofort aussortiert, weil das "t" von "mit" ein Buchstabe ist.
+        const regex = new RegExp(`(^|[^${wordChars}])(${escapeRegExp(vocab.searchStr)})(?![${wordChars}])`, 'gi');
+
+        markedText = markedText.replace(regex, (match, p1, p2) => {
+            const safeMatch = p2.replace(/\s/g, '@@@');
+            return `${p1}___V${vIndex}---${safeMatch}___`;
         });
     });
 
@@ -91,7 +89,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     return (
         <View style={[styles.container, { columnGap: wordSpacing, rowGap: lineSpacing }]}>
             {rawWords.map((rawWord, index) => {
-                // Splitten nach unserem neuen exakten Token-Muster
                 const parts = rawWord.split(/(___V\d+---.*?___)/).filter(p => p !== '');
 
                 const isBlockActive = parts.some(p => {
@@ -106,7 +103,7 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
                             if (match) {
                                 const vIndex = parseInt(match[1]);
-                                const originalText = match[2].replace(/@@@/g, ' '); // Leerzeichen wiederherstellen
+                                const originalText = match[2].replace(/@@@/g, ' ');
                                 const vocabItem = sortedVocab[vIndex];
                                 const exactId = `v_${vIndex}`;
                                 const isActive = activeVocabId === exactId;
@@ -134,7 +131,6 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
                                                 textDecorationStyle: 'dotted',
                                                 textDecorationColor: highlightColor
                                             }}>
-                                                {/* Wir rendern den exact gematchten Text aus dem Satz, nicht den aus der Vokabel! */}
                                                 {originalText}
                                             </Text>
                                         </TouchableOpacity>
