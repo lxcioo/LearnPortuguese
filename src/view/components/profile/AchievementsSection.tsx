@@ -28,8 +28,8 @@ export function AchievementsSection({ achievements, theme, colors }: Achievement
       <Text style={[styles.sectionTitle, { color: colors.icon }]}>ERRUNGENSCHAFTEN</Text>
       <View style={styles.achievementsGrid}>
         {visibleAchievements.map((ach) => (
-          <TouchableOpacity 
-            key={ach.id} 
+          <TouchableOpacity
+            key={ach.id}
             style={[styles.achievementCard, { backgroundColor: theme === 'dark' ? '#222' : '#f9f9f9', opacity: ach.isUnlocked ? 1 : 0.5 }]}
             onPress={() => setSelectedAch(ach)}
             activeOpacity={0.7}
@@ -56,14 +56,14 @@ export function AchievementsSection({ achievements, theme, colors }: Achievement
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
               <View style={[styles.modalContent, { backgroundColor: theme === 'dark' ? '#1C1C1E' : '#FFFFFF' }]}>
-                
+
                 <View style={[styles.modalIconWrapper, { backgroundColor: selectedAch?.isUnlocked ? '#58cc02' : '#ccc' }]}>
                   <Ionicons name={selectedAch?.icon as any} size={50} color="#fff" />
                 </View>
-                
+
                 <Text style={[styles.modalTitle, { color: colors.text }]}>{selectedAch?.title}</Text>
                 <Text style={[styles.modalDesc, { color: colors.icon }]}>{selectedAch?.description}</Text>
-                
+
                 <View style={[styles.statusContainer, { backgroundColor: theme === 'dark' ? '#333' : '#f0f0f0' }]}>
                   {selectedAch?.isUnlocked ? (
                     <>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   achTitle: { fontSize: 14, fontWeight: 'bold', textAlign: 'center', marginBottom: 5 },
   achDesc: { fontSize: 12, color: '#999', textAlign: 'center' },
   expandBtn: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 15, borderRadius: 12, marginTop: 5 },
-  
+
   // Modal Styles
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   modalContent: { width: '100%', maxWidth: 340, padding: 30, borderRadius: 24, alignItems: 'center', elevation: 10, shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 15, shadowOffset: { width: 0, height: 10 } },

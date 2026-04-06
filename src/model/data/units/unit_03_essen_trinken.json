@@ -11,7 +11,14 @@
                     "id": "u3_l1_e1",
                     "type": "translate_to_de",
                     "question": "O pequeno-almoço",
-                    "correctAnswer": "Das Frühstück"
+                    "correctAnswer": "Das Frühstück",
+                    "vocabulary": [
+                        {
+                            "text": "O pequeno-almoço",
+                            "translation": "Das Frühstück",
+                            "audio": "O pequeno-almoço"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e2",
@@ -21,6 +28,18 @@
                     "alternativeAnswers": [
                         "Queria uma bica",
                         "Eu queria um café"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte",
+                            "translation": "Queria",
+                            "audio": "Queria"
+                        },
+                        {
+                            "text": "einen Kaffee",
+                            "translation": "um café",
+                            "audio": "um café"
+                        }
                     ]
                 },
                 {
@@ -35,13 +54,27 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "Um galão",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Ein Milchkaffee (im Glas)",
+                            "translation": "Um galão",
+                            "audio": "Um galão"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e4",
                     "type": "translate_to_pt",
                     "question": "Ein Milchkaffee (in der Tasse)",
-                    "correctAnswer": "Uma meia de leite"
+                    "correctAnswer": "Uma meia de leite",
+                    "vocabulary": [
+                        {
+                            "text": "Ein Milchkaffee",
+                            "translation": "Uma meia de leite",
+                            "audio": "Uma meia de leite"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e5",
@@ -50,6 +83,18 @@
                     "correctAnswer": "Das Brot mit Butter",
                     "alternativeAnswers": [
                         "Brot mit Butter"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O pão",
+                            "translation": "Das Brot",
+                            "audio": "O pão"
+                        },
+                        {
+                            "text": "com manteiga",
+                            "translation": "mit Butter",
+                            "audio": "com manteiga"
+                        }
                     ]
                 },
                 {
@@ -59,6 +104,23 @@
                     "correctAnswer": "Queijo e fiambre",
                     "alternativeAnswers": [
                         "O queijo e o fiambre"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Käse",
+                            "translation": "Queijo",
+                            "audio": "Queijo"
+                        },
+                        {
+                            "text": "und",
+                            "translation": "e",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "Schinken",
+                            "translation": "fiambre",
+                            "audio": "fiambre"
+                        }
                     ]
                 },
                 {
@@ -68,6 +130,13 @@
                     "correctAnswer": "Der Toast",
                     "alternativeAnswers": [
                         "Das Toastbrot"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A torrada",
+                            "translation": "Der Toast",
+                            "audio": "A torrada"
+                        }
                     ]
                 },
                 {
@@ -77,6 +146,13 @@
                     "correctAnswer": "O pastel de nata",
                     "alternativeAnswers": [
                         "Pastel de nata"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Puddingtörtchen",
+                            "translation": "O pastel de nata",
+                            "audio": "O pastel de nata"
+                        }
                     ]
                 },
                 {
@@ -90,7 +166,14 @@
                         "Tenho..."
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Queria"
+                    "audioText": "Queria",
+                    "vocabulary": [
+                        {
+                            "text": "Ich hätte gerne",
+                            "translation": "Queria",
+                            "audio": "Queria"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e10",
@@ -99,6 +182,23 @@
                     "correctAnswer": "Mit Zucker oder ohne Zucker",
                     "alternativeAnswers": [
                         "Mit Zucker oder ohne Zucker?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Com",
+                            "translation": "Mit",
+                            "audio": "Com"
+                        },
+                        {
+                            "text": "açúcar",
+                            "translation": "Zucker",
+                            "audio": "açúcar"
+                        },
+                        {
+                            "text": "ou sem",
+                            "translation": "oder ohne",
+                            "audio": "ou sem"
+                        }
                     ]
                 },
                 {
@@ -108,19 +208,50 @@
                     "correctAnswer": "O sumo de laranja",
                     "alternativeAnswers": [
                         "Sumo de laranja"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Orangensaft",
+                            "translation": "O sumo de laranja",
+                            "audio": "O sumo de laranja"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l1_e12",
                     "type": "translate_to_de",
                     "question": "Um chá preto",
-                    "correctAnswer": "Ein schwarzer Tee"
+                    "correctAnswer": "Ein schwarzer Tee",
+                    "vocabulary": [
+                        {
+                            "text": "Um chá",
+                            "translation": "Ein Tee",
+                            "audio": "Um chá"
+                        },
+                        {
+                            "text": "preto",
+                            "translation": "schwarzer",
+                            "audio": "preto"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e13",
                     "type": "translate_to_pt",
                     "question": "Ein Glas Wasser",
-                    "correctAnswer": "Um copo de água"
+                    "correctAnswer": "Um copo de água",
+                    "vocabulary": [
+                        {
+                            "text": "Ein Glas",
+                            "translation": "Um copo",
+                            "audio": "Um copo"
+                        },
+                        {
+                            "text": "Wasser",
+                            "translation": "de água",
+                            "audio": "de água"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e14",
@@ -134,7 +265,14 @@
                     ],
                     "correctAnswerIndex": 0,
                     "audioText": "Mais alguma coisa",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Noch etwas",
+                            "translation": "Mais alguma coisa",
+                            "audio": "Mais alguma coisa"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l1_e15",
@@ -144,6 +282,18 @@
                     "alternativeAnswers": [
                         "Não obrigada, é tudo.",
                         "Não, é tudo."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Nein, danke",
+                            "translation": "Não obrigado",
+                            "audio": "Não obrigado"
+                        },
+                        {
+                            "text": "Das ist alles",
+                            "translation": "é tudo",
+                            "audio": "é tudo"
+                        }
                     ]
                 }
             ]
@@ -156,7 +306,14 @@
                     "id": "u3_l2_e1",
                     "type": "translate_to_de",
                     "question": "O supermercado",
-                    "correctAnswer": "Der Supermarkt"
+                    "correctAnswer": "Der Supermarkt",
+                    "vocabulary": [
+                        {
+                            "text": "O supermercado",
+                            "translation": "Der Supermarkt",
+                            "audio": "O supermercado"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e2",
@@ -165,6 +322,23 @@
                     "correctAnswer": "A fruta e os legumes",
                     "alternativeAnswers": [
                         "As frutas e os legumes"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Obst",
+                            "translation": "A fruta",
+                            "audio": "A fruta"
+                        },
+                        {
+                            "text": "und",
+                            "translation": "e",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "das Gemüse",
+                            "translation": "os legumes",
+                            "audio": "os legumes"
+                        }
                     ]
                 },
                 {
@@ -178,7 +352,14 @@
                         "A pera"
                     ],
                     "correctAnswerIndex": 0,
-                    "audioText": "A maçã"
+                    "audioText": "A maçã",
+                    "vocabulary": [
+                        {
+                            "text": "Der Apfel",
+                            "translation": "A maçã",
+                            "audio": "A maçã"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e4",
@@ -187,19 +368,50 @@
                     "correctAnswer": "Die Tomate und die Kartoffel",
                     "alternativeAnswers": [
                         "Tomate und Kartoffel"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O tomate",
+                            "translation": "Die Tomate",
+                            "audio": "O tomate"
+                        },
+                        {
+                            "text": "e",
+                            "translation": "und",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "a batata",
+                            "translation": "die Kartoffel",
+                            "audio": "a batata"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l2_e5",
                     "type": "translate_to_pt",
                     "question": "Die Milch",
-                    "correctAnswer": "O leite"
+                    "correctAnswer": "O leite",
+                    "vocabulary": [
+                        {
+                            "text": "Die Milch",
+                            "translation": "O leite",
+                            "audio": "O leite"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e6",
                     "type": "translate_to_de",
                     "question": "Os ovos",
-                    "correctAnswer": "Die Eier"
+                    "correctAnswer": "Die Eier",
+                    "vocabulary": [
+                        {
+                            "text": "Os ovos",
+                            "translation": "Die Eier",
+                            "audio": "Os ovos"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e7",
@@ -213,13 +425,27 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "O peixe",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Fisch",
+                            "translation": "O peixe",
+                            "audio": "O peixe"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e8",
                     "type": "translate_to_pt",
                     "question": "Das Fleisch",
-                    "correctAnswer": "A carne"
+                    "correctAnswer": "A carne",
+                    "vocabulary": [
+                        {
+                            "text": "Das Fleisch",
+                            "translation": "A carne",
+                            "audio": "A carne"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e9",
@@ -228,13 +454,27 @@
                     "correctAnswer": "Das Hähnchen",
                     "alternativeAnswers": [
                         "Das Huhn"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O frango",
+                            "translation": "Das Hähnchen",
+                            "audio": "O frango"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l2_e10",
                     "type": "translate_to_pt",
                     "question": "Der Reis",
-                    "correctAnswer": "O arroz"
+                    "correctAnswer": "O arroz",
+                    "vocabulary": [
+                        {
+                            "text": "Der Reis",
+                            "translation": "O arroz",
+                            "audio": "O arroz"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e11",
@@ -243,13 +483,27 @@
                     "correctAnswer": "Die Nudeln",
                     "alternativeAnswers": [
                         "Die Pasta"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A massa",
+                            "translation": "Die Nudeln",
+                            "audio": "A massa"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l2_e12",
                     "type": "translate_to_pt",
                     "question": "Das Olivenöl",
-                    "correctAnswer": "O azeite"
+                    "correctAnswer": "O azeite",
+                    "vocabulary": [
+                        {
+                            "text": "Das Olivenöl",
+                            "translation": "O azeite",
+                            "audio": "O azeite"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e13",
@@ -262,7 +516,14 @@
                         "A garrafa"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "O saco de plástico"
+                    "audioText": "O saco de plástico",
+                    "vocabulary": [
+                        {
+                            "text": "Die Plastiktüte",
+                            "translation": "O saco de plástico",
+                            "audio": "O saco de plástico"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l2_e14",
@@ -272,6 +533,18 @@
                     "alternativeAnswers": [
                         "Bar zahlen",
                         "Mit Bargeld bezahlen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Pagar",
+                            "translation": "bezahlen",
+                            "audio": "Pagar"
+                        },
+                        {
+                            "text": "em dinheiro",
+                            "translation": "Bar",
+                            "audio": "em dinheiro"
+                        }
                     ]
                 },
                 {
@@ -281,6 +554,18 @@
                     "correctAnswer": "Pagar com cartão",
                     "alternativeAnswers": [
                         "Pagar com multibanco"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Mit Karte",
+                            "translation": "com cartão",
+                            "audio": "com cartão"
+                        },
+                        {
+                            "text": "bezahlen",
+                            "translation": "Pagar",
+                            "audio": "Pagar"
+                        }
                     ]
                 }
             ]
@@ -293,7 +578,14 @@
                     "id": "u3_l3_e1",
                     "type": "translate_to_de",
                     "question": "O restaurante",
-                    "correctAnswer": "Das Restaurant"
+                    "correctAnswer": "Das Restaurant",
+                    "vocabulary": [
+                        {
+                            "text": "O restaurante",
+                            "translation": "Das Restaurant",
+                            "audio": "O restaurante"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e2",
@@ -302,6 +594,23 @@
                     "correctAnswer": "Uma mesa para duas pessoas, por favor.",
                     "alternativeAnswers": [
                         "Uma mesa para dois por favor"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Einen Tisch",
+                            "translation": "Uma mesa",
+                            "audio": "Uma mesa"
+                        },
+                        {
+                            "text": "für zwei Personen",
+                            "translation": "para duas pessoas",
+                            "audio": "para duas pessoas"
+                        },
+                        {
+                            "text": "bitte",
+                            "translation": "por favor",
+                            "audio": "por favor"
+                        }
                     ]
                 },
                 {
@@ -315,31 +624,66 @@
                         "A ementa"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "A ementa"
+                    "audioText": "A ementa",
+                    "vocabulary": [
+                        {
+                            "text": "Die Speisekarte",
+                            "translation": "A ementa",
+                            "audio": "A ementa"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e4",
                     "type": "translate_to_de",
                     "question": "O prato do dia",
-                    "correctAnswer": "Das Tagesgericht"
+                    "correctAnswer": "Das Tagesgericht",
+                    "vocabulary": [
+                        {
+                            "text": "O prato do dia",
+                            "translation": "Das Tagesgericht",
+                            "audio": "O prato do dia"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e5",
                     "type": "translate_to_pt",
                     "question": "Die Vorspeise",
-                    "correctAnswer": "A entrada"
+                    "correctAnswer": "A entrada",
+                    "vocabulary": [
+                        {
+                            "text": "Die Vorspeise",
+                            "translation": "A entrada",
+                            "audio": "A entrada"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e6",
                     "type": "translate_to_de",
                     "question": "O prato principal",
-                    "correctAnswer": "Das Hauptgericht"
+                    "correctAnswer": "Das Hauptgericht",
+                    "vocabulary": [
+                        {
+                            "text": "O prato principal",
+                            "translation": "Das Hauptgericht",
+                            "audio": "O prato principal"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e7",
                     "type": "translate_to_pt",
                     "question": "Der Nachtisch (Das Dessert)",
-                    "correctAnswer": "A sobremesa"
+                    "correctAnswer": "A sobremesa",
+                    "vocabulary": [
+                        {
+                            "text": "Der Nachtisch",
+                            "translation": "A sobremesa",
+                            "audio": "A sobremesa"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e8",
@@ -352,7 +696,14 @@
                         "Onde fica?"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "O que recomenda"
+                    "audioText": "O que recomenda",
+                    "vocabulary": [
+                        {
+                            "text": "Was empfehlen Sie",
+                            "translation": "O que recomenda",
+                            "audio": "O que recomenda"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e9",
@@ -362,6 +713,18 @@
                     "alternativeAnswers": [
                         "Und zu trinken?",
                         "Und zum Trinken?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "E",
+                            "translation": "Und",
+                            "audio": "E"
+                        },
+                        {
+                            "text": "para beber",
+                            "translation": "zum Trinken",
+                            "audio": "para beber"
+                        }
                     ]
                 },
                 {
@@ -371,6 +734,18 @@
                     "correctAnswer": "Uma garrafa de vinho tinto",
                     "alternativeAnswers": [
                         "Garrafa de vinho tinto"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eine Flasche",
+                            "translation": "Uma garrafa",
+                            "audio": "Uma garrafa"
+                        },
+                        {
+                            "text": "Rotwein",
+                            "translation": "de vinho tinto",
+                            "audio": "de vinho tinto"
+                        }
                     ]
                 },
                 {
@@ -380,13 +755,37 @@
                     "correctAnswer": "Weißwein",
                     "alternativeAnswers": [
                         "Weißer Wein"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Vinho",
+                            "translation": "Wein",
+                            "audio": "Vinho"
+                        },
+                        {
+                            "text": "branco",
+                            "translation": "Weiß",
+                            "audio": "branco"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l3_e12",
                     "type": "translate_to_pt",
                     "question": "Wasser mit Kohlensäure",
-                    "correctAnswer": "Água com gás"
+                    "correctAnswer": "Água com gás",
+                    "vocabulary": [
+                        {
+                            "text": "Wasser",
+                            "translation": "Água",
+                            "audio": "Água"
+                        },
+                        {
+                            "text": "mit Kohlensäure",
+                            "translation": "com gás",
+                            "audio": "com gás"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e13",
@@ -400,7 +799,14 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "Bem passado",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Gut durchgebraten",
+                            "translation": "Bem passado",
+                            "audio": "Bem passado"
+                        }
+                    ]
                 },
                 {
                     "id": "u3_l3_e14",
@@ -409,13 +815,37 @@
                     "correctAnswer": "Es war lecker",
                     "alternativeAnswers": [
                         "Es war köstlich"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estava",
+                            "translation": "Es war",
+                            "audio": "Estava"
+                        },
+                        {
+                            "text": "delicioso",
+                            "translation": "lecker",
+                            "audio": "delicioso"
+                        }
                     ]
                 },
                 {
                     "id": "u3_l3_e15",
                     "type": "translate_to_pt",
                     "question": "Die Rechnung, bitte.",
-                    "correctAnswer": "A conta, por favor."
+                    "correctAnswer": "A conta, por favor.",
+                    "vocabulary": [
+                        {
+                            "text": "Die Rechnung",
+                            "translation": "A conta",
+                            "audio": "A conta"
+                        },
+                        {
+                            "text": "bitte",
+                            "translation": "por favor",
+                            "audio": "por favor"
+                        }
+                    ]
                 }
             ]
         }

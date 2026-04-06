@@ -11,13 +11,27 @@
                     "id": "u10_l1_e1",
                     "type": "translate_to_de",
                     "question": "O corpo",
-                    "correctAnswer": "Der Körper"
+                    "correctAnswer": "Der Körper",
+                    "vocabulary": [
+                        {
+                            "text": "O corpo",
+                            "translation": "Der Körper",
+                            "audio": "O corpo"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e2",
                     "type": "translate_to_pt",
                     "question": "Der Kopf",
-                    "correctAnswer": "A cabeça"
+                    "correctAnswer": "A cabeça",
+                    "vocabulary": [
+                        {
+                            "text": "Der Kopf",
+                            "translation": "A cabeça",
+                            "audio": "A cabeça"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e3",
@@ -26,6 +40,13 @@
                     "correctAnswer": "Das Gesicht",
                     "alternativeAnswers": [
                         "Das Gesicht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A cara",
+                            "translation": "Das Gesicht",
+                            "audio": "A cara"
+                        }
                     ]
                 },
                 {
@@ -40,25 +61,53 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "Os olhos",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Augen",
+                            "translation": "Os olhos",
+                            "audio": "Os olhos"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e5",
                     "type": "translate_to_pt",
                     "question": "Das Ohr",
-                    "correctAnswer": "A orelha"
+                    "correctAnswer": "A orelha",
+                    "vocabulary": [
+                        {
+                            "text": "Das Ohr",
+                            "translation": "A orelha",
+                            "audio": "A orelha"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e6",
                     "type": "translate_to_de",
                     "question": "O nariz",
-                    "correctAnswer": "Die Nase"
+                    "correctAnswer": "Die Nase",
+                    "vocabulary": [
+                        {
+                            "text": "O nariz",
+                            "translation": "Die Nase",
+                            "audio": "O nariz"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e7",
                     "type": "translate_to_pt",
                     "question": "Der Mund",
-                    "correctAnswer": "A boca"
+                    "correctAnswer": "A boca",
+                    "vocabulary": [
+                        {
+                            "text": "Der Mund",
+                            "translation": "A boca",
+                            "audio": "A boca"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e8",
@@ -71,49 +120,105 @@
                         "As costas"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "O braço"
+                    "audioText": "O braço",
+                    "vocabulary": [
+                        {
+                            "text": "Der Arm",
+                            "translation": "O braço",
+                            "audio": "O braço"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e9",
                     "type": "translate_to_de",
                     "question": "A mão",
-                    "correctAnswer": "Die Hand"
+                    "correctAnswer": "Die Hand",
+                    "vocabulary": [
+                        {
+                            "text": "A mão",
+                            "translation": "Die Hand",
+                            "audio": "A mão"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e10",
                     "type": "translate_to_pt",
                     "question": "Der Finger",
-                    "correctAnswer": "O dedo"
+                    "correctAnswer": "O dedo",
+                    "vocabulary": [
+                        {
+                            "text": "Der Finger",
+                            "translation": "O dedo",
+                            "audio": "O dedo"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e11",
                     "type": "translate_to_de",
                     "question": "A perna",
-                    "correctAnswer": "Das Bein"
+                    "correctAnswer": "Das Bein",
+                    "vocabulary": [
+                        {
+                            "text": "A perna",
+                            "translation": "Das Bein",
+                            "audio": "A perna"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e12",
                     "type": "translate_to_pt",
                     "question": "Der Fuß",
-                    "correctAnswer": "O pé"
+                    "correctAnswer": "O pé",
+                    "vocabulary": [
+                        {
+                            "text": "Der Fuß",
+                            "translation": "O pé",
+                            "audio": "O pé"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e13",
                     "type": "translate_to_de",
                     "question": "As costas",
-                    "correctAnswer": "Der Rücken"
+                    "correctAnswer": "Der Rücken",
+                    "vocabulary": [
+                        {
+                            "text": "As costas",
+                            "translation": "Der Rücken",
+                            "audio": "As costas"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e14",
                     "type": "translate_to_pt",
                     "question": "Der Bauch",
-                    "correctAnswer": "A barriga"
+                    "correctAnswer": "A barriga",
+                    "vocabulary": [
+                        {
+                            "text": "Der Bauch",
+                            "translation": "A barriga",
+                            "audio": "A barriga"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l1_e15",
                     "type": "translate_to_pt",
                     "question": "Das Herz",
-                    "correctAnswer": "O coração"
+                    "correctAnswer": "O coração",
+                    "vocabulary": [
+                        {
+                            "text": "Das Herz",
+                            "translation": "O coração",
+                            "audio": "O coração"
+                        }
+                    ]
                 }
             ]
         },
@@ -125,7 +230,14 @@
                     "id": "u10_l2_e1",
                     "type": "translate_to_de",
                     "question": "O médico",
-                    "correctAnswer": "Der Arzt"
+                    "correctAnswer": "Der Arzt",
+                    "vocabulary": [
+                        {
+                            "text": "O médico",
+                            "translation": "Der Arzt",
+                            "audio": "O médico"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e2",
@@ -134,13 +246,32 @@
                     "correctAnswer": "A consulta",
                     "alternativeAnswers": [
                         "A consulta médica"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Termin (beim Arzt)",
+                            "translation": "A consulta",
+                            "audio": "A consulta"
+                        }
                     ]
                 },
                 {
                     "id": "u10_l2_e3",
                     "type": "translate_to_de",
                     "question": "Estou doente",
-                    "correctAnswer": "Ich bin krank"
+                    "correctAnswer": "Ich bin krank",
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Ich bin",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "doente",
+                            "translation": "krank",
+                            "audio": "doente"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e4",
@@ -153,7 +284,14 @@
                         "Estou bem"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Tenho dores"
+                    "audioText": "Tenho dores",
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe Schmerzen",
+                            "translation": "Tenho dores",
+                            "audio": "Tenho dores"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e5",
@@ -162,19 +300,45 @@
                     "correctAnswer": "Tenho dor de cabeça",
                     "alternativeAnswers": [
                         "Tenho dores de cabeça"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe",
+                            "translation": "Tenho",
+                            "audio": "Tenho"
+                        },
+                        {
+                            "text": "Kopfschmerzen",
+                            "translation": "dor de cabeça",
+                            "audio": "dor de cabeça"
+                        }
                     ]
                 },
                 {
                     "id": "u10_l2_e6",
                     "type": "translate_to_de",
                     "question": "A febre",
-                    "correctAnswer": "Das Fieber"
+                    "correctAnswer": "Das Fieber",
+                    "vocabulary": [
+                        {
+                            "text": "A febre",
+                            "translation": "Das Fieber",
+                            "audio": "A febre"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e7",
                     "type": "translate_to_pt",
                     "question": "Der Husten",
-                    "correctAnswer": "A tosse"
+                    "correctAnswer": "A tosse",
+                    "vocabulary": [
+                        {
+                            "text": "Der Husten",
+                            "translation": "A tosse",
+                            "audio": "A tosse"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e8_m",
@@ -184,6 +348,18 @@
                     "gender": "m",
                     "alternativeAnswers": [
                         "Mir ist schlecht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Mir ist",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "maldisposto",
+                            "translation": "übel",
+                            "audio": "maldisposto"
+                        }
                     ]
                 },
                 {
@@ -194,37 +370,94 @@
                     "gender": "f",
                     "alternativeAnswers": [
                         "Mir ist schlecht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Mir ist",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "maldisposta",
+                            "translation": "übel",
+                            "audio": "maldisposta"
+                        }
                     ]
                 },
                 {
                     "id": "u10_l2_e10",
                     "type": "translate_to_pt",
                     "question": "Ich brauche einen Arzt",
-                    "correctAnswer": "Preciso de um médico"
+                    "correctAnswer": "Preciso de um médico",
+                    "vocabulary": [
+                        {
+                            "text": "Ich brauche",
+                            "translation": "Preciso de",
+                            "audio": "Preciso de"
+                        },
+                        {
+                            "text": "einen Arzt",
+                            "translation": "um médico",
+                            "audio": "um médico"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e11",
                     "type": "translate_to_de",
                     "question": "É urgente",
-                    "correctAnswer": "Es ist dringend"
+                    "correctAnswer": "Es ist dringend",
+                    "vocabulary": [
+                        {
+                            "text": "É",
+                            "translation": "Es ist",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "urgente",
+                            "translation": "dringend",
+                            "audio": "urgente"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e12",
                     "type": "translate_to_pt",
                     "question": "Helfen Sie mir! (formell)",
-                    "correctAnswer": "Ajude-me!"
+                    "correctAnswer": "Ajude-me!",
+                    "vocabulary": [
+                        {
+                            "text": "Helfen Sie mir",
+                            "translation": "Ajude-me",
+                            "audio": "Ajude-me"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e13",
                     "type": "translate_to_de",
                     "question": "A saúde",
-                    "correctAnswer": "Die Gesundheit"
+                    "correctAnswer": "Die Gesundheit",
+                    "vocabulary": [
+                        {
+                            "text": "A saúde",
+                            "translation": "Die Gesundheit",
+                            "audio": "A saúde"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e14",
                     "type": "translate_to_pt",
                     "question": "Atmen",
-                    "correctAnswer": "Respirar"
+                    "correctAnswer": "Respirar",
+                    "vocabulary": [
+                        {
+                            "text": "Atmen",
+                            "translation": "Respirar",
+                            "audio": "Respirar"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l2_e15",
@@ -237,7 +470,14 @@
                         "As melhoras"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "As melhoras"
+                    "audioText": "As melhoras",
+                    "vocabulary": [
+                        {
+                            "text": "Gute Besserung",
+                            "translation": "As melhoras",
+                            "audio": "As melhoras"
+                        }
+                    ]
                 }
             ]
         },
@@ -249,7 +489,14 @@
                     "id": "u10_l3_e1",
                     "type": "translate_to_de",
                     "question": "A farmácia",
-                    "correctAnswer": "Die Apotheke"
+                    "correctAnswer": "Die Apotheke",
+                    "vocabulary": [
+                        {
+                            "text": "A farmácia",
+                            "translation": "Die Apotheke",
+                            "audio": "A farmácia"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e2",
@@ -258,6 +505,13 @@
                     "correctAnswer": "O medicamento",
                     "alternativeAnswers": [
                         "O remédio"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Medikament",
+                            "translation": "O medicamento",
+                            "audio": "O medicamento"
+                        }
                     ]
                 },
                 {
@@ -268,6 +522,13 @@
                     "alternativeAnswers": [
                         "Das ärztliche Rezept",
                         "Die Verschreibung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A receita médica",
+                            "translation": "Das Rezept",
+                            "audio": "A receita médica"
+                        }
                     ]
                 },
                 {
@@ -282,25 +543,53 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "O comprimido",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Tablette",
+                            "translation": "O comprimido",
+                            "audio": "O comprimido"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e5",
                     "type": "translate_to_pt",
                     "question": "Die Salbe",
-                    "correctAnswer": "A pomada"
+                    "correctAnswer": "A pomada",
+                    "vocabulary": [
+                        {
+                            "text": "Die Salbe",
+                            "translation": "A pomada",
+                            "audio": "A pomada"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e6",
                     "type": "translate_to_de",
                     "question": "O penso rápido",
-                    "correctAnswer": "Das Pflaster"
+                    "correctAnswer": "Das Pflaster",
+                    "vocabulary": [
+                        {
+                            "text": "O penso rápido",
+                            "translation": "Das Pflaster",
+                            "audio": "O penso rápido"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e7",
                     "type": "translate_to_pt",
                     "question": "Die Spritze",
-                    "correctAnswer": "A injeção"
+                    "correctAnswer": "A injeção",
+                    "vocabulary": [
+                        {
+                            "text": "Die Spritze",
+                            "translation": "A injeção",
+                            "audio": "A injeção"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e8",
@@ -309,6 +598,23 @@
                     "correctAnswer": "Haben Sie etwas gegen Husten",
                     "alternativeAnswers": [
                         "Haben Sie etwas gegen den Husten?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Tem",
+                            "translation": "Haben Sie",
+                            "audio": "Tem"
+                        },
+                        {
+                            "text": "alguma coisa",
+                            "translation": "etwas",
+                            "audio": "alguma coisa"
+                        },
+                        {
+                            "text": "para a tosse",
+                            "translation": "gegen Husten",
+                            "audio": "para a tosse"
+                        }
                     ]
                 },
                 {
@@ -322,7 +628,19 @@
                         "Três vezes ao dia"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Duas vezes ao dia"
+                    "audioText": "Duas vezes ao dia",
+                    "vocabulary": [
+                        {
+                            "text": "Zweimal",
+                            "translation": "Duas vezes",
+                            "audio": "Duas vezes"
+                        },
+                        {
+                            "text": "am Tag",
+                            "translation": "ao dia",
+                            "audio": "ao dia"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e10",
@@ -331,6 +649,18 @@
                     "correctAnswer": "Antes de comer",
                     "alternativeAnswers": [
                         "Antes da refeição"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Vor",
+                            "translation": "Antes de",
+                            "audio": "Antes de"
+                        },
+                        {
+                            "text": "dem Essen",
+                            "translation": "comer",
+                            "audio": "comer"
+                        }
                     ]
                 },
                 {
@@ -340,6 +670,18 @@
                     "correctAnswer": "Nach dem Essen",
                     "alternativeAnswers": [
                         "Nach der Mahlzeit"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Depois de",
+                            "translation": "Nach",
+                            "audio": "Depois de"
+                        },
+                        {
+                            "text": "comer",
+                            "translation": "dem Essen",
+                            "audio": "comer"
+                        }
                     ]
                 },
                 {
@@ -349,13 +691,32 @@
                     "correctAnswer": "Tenho uma alergia",
                     "alternativeAnswers": [
                         "Eu tenho uma alergia"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe",
+                            "translation": "Tenho",
+                            "audio": "Tenho"
+                        },
+                        {
+                            "text": "eine Allergie",
+                            "translation": "uma alergia",
+                            "audio": "uma alergia"
+                        }
                     ]
                 },
                 {
                     "id": "u10_l3_e13",
                     "type": "translate_to_de",
                     "question": "As gotas",
-                    "correctAnswer": "Die Tropfen"
+                    "correctAnswer": "Die Tropfen",
+                    "vocabulary": [
+                        {
+                            "text": "As gotas",
+                            "translation": "Die Tropfen",
+                            "audio": "As gotas"
+                        }
+                    ]
                 },
                 {
                     "id": "u10_l3_e14",
@@ -365,13 +726,27 @@
                     "alternativeAnswers": [
                         "O analgésico",
                         "Comprimido para a dor"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Schmerztablette",
+                            "translation": "Analgésico",
+                            "audio": "Analgésico"
+                        }
                     ]
                 },
                 {
                     "id": "u10_l3_e15",
                     "type": "translate_to_pt",
                     "question": "Vorsicht (Seien Sie vorsichtig)",
-                    "correctAnswer": "Tenha cuidado"
+                    "correctAnswer": "Tenha cuidado",
+                    "vocabulary": [
+                        {
+                            "text": "Vorsicht",
+                            "translation": "Tenha cuidado",
+                            "audio": "Tenha cuidado"
+                        }
+                    ]
                 }
             ]
         }

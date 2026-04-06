@@ -11,19 +11,40 @@
                     "id": "u9_l1_e1",
                     "type": "translate_to_de",
                     "question": "A roupa",
-                    "correctAnswer": "Die Kleidung"
+                    "correctAnswer": "Die Kleidung",
+                    "vocabulary": [
+                        {
+                            "text": "A roupa",
+                            "translation": "Die Kleidung",
+                            "audio": "A roupa"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e2",
                     "type": "translate_to_pt",
                     "question": "Das T-Shirt",
-                    "correctAnswer": "A t-shirt"
+                    "correctAnswer": "A t-shirt",
+                    "vocabulary": [
+                        {
+                            "text": "Das T-Shirt",
+                            "translation": "A t-shirt",
+                            "audio": "A t-shirt"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e3",
                     "type": "translate_to_de",
                     "question": "A camisa",
-                    "correctAnswer": "Das Hemd"
+                    "correctAnswer": "Das Hemd",
+                    "vocabulary": [
+                        {
+                            "text": "A camisa",
+                            "translation": "Das Hemd",
+                            "audio": "A camisa"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e4",
@@ -36,13 +57,27 @@
                         "A saia"
                     ],
                     "correctAnswerIndex": 0,
-                    "audioText": "As calças"
+                    "audioText": "As calças",
+                    "vocabulary": [
+                        {
+                            "text": "Die Hose",
+                            "translation": "As calças",
+                            "audio": "As calças"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e5",
                     "type": "translate_to_pt",
                     "question": "Der Pullover",
-                    "correctAnswer": "A camisola"
+                    "correctAnswer": "A camisola",
+                    "vocabulary": [
+                        {
+                            "text": "Der Pullover",
+                            "translation": "A camisola",
+                            "audio": "A camisola"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e6",
@@ -51,19 +86,40 @@
                     "correctAnswer": "Die Jacke",
                     "alternativeAnswers": [
                         "Der Mantel"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O casaco",
+                            "translation": "Die Jacke",
+                            "audio": "O casaco"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l1_e7",
                     "type": "translate_to_pt",
                     "question": "Das Kleid",
-                    "correctAnswer": "O vestido"
+                    "correctAnswer": "O vestido",
+                    "vocabulary": [
+                        {
+                            "text": "Das Kleid",
+                            "translation": "O vestido",
+                            "audio": "O vestido"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e8",
                     "type": "translate_to_de",
                     "question": "A saia",
-                    "correctAnswer": "Der Rock"
+                    "correctAnswer": "Der Rock",
+                    "vocabulary": [
+                        {
+                            "text": "A saia",
+                            "translation": "Der Rock",
+                            "audio": "A saia"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e9",
@@ -77,19 +133,40 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "Os sapatos",
-                    "optionsLanguage": "pt"
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Die Schuhe (an den Füßen)",
+                            "translation": "Os sapatos",
+                            "audio": "Os sapatos"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e10",
                     "type": "translate_to_pt",
                     "question": "Die Socken",
-                    "correctAnswer": "As meias"
+                    "correctAnswer": "As meias",
+                    "vocabulary": [
+                        {
+                            "text": "Die Socken",
+                            "translation": "As meias",
+                            "audio": "As meias"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e11",
                     "type": "translate_to_de",
                     "question": "Os óculos",
-                    "correctAnswer": "Die Brille"
+                    "correctAnswer": "Die Brille",
+                    "vocabulary": [
+                        {
+                            "text": "Os óculos",
+                            "translation": "Die Brille",
+                            "audio": "Os óculos"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e12",
@@ -98,13 +175,27 @@
                     "correctAnswer": "O chapéu",
                     "alternativeAnswers": [
                         "Die Mütze"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Hut",
+                            "translation": "O chapéu",
+                            "audio": "O chapéu"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l1_e13",
                     "type": "translate_to_de",
                     "question": "O cachecol",
-                    "correctAnswer": "Der Schal"
+                    "correctAnswer": "Der Schal",
+                    "vocabulary": [
+                        {
+                            "text": "O cachecol",
+                            "translation": "Der Schal",
+                            "audio": "O cachecol"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l1_e14",
@@ -113,6 +204,13 @@
                     "correctAnswer": "A mala",
                     "alternativeAnswers": [
                         "O saco"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Tasche",
+                            "translation": "A mala",
+                            "audio": "A mala"
+                        }
                     ]
                 },
                 {
@@ -124,6 +222,13 @@
                         "Visto",
                         "Eu uso",
                         "Uso"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich trage",
+                            "translation": "Eu visto",
+                            "audio": "Eu visto"
+                        }
                     ]
                 }
             ]
@@ -136,19 +241,60 @@
                     "id": "u9_l2_e1",
                     "type": "translate_to_de",
                     "question": "A cor",
-                    "correctAnswer": "Die Farbe"
+                    "correctAnswer": "Die Farbe",
+                    "vocabulary": [
+                        {
+                            "text": "A cor",
+                            "translation": "Die Farbe",
+                            "audio": "A cor"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e2",
                     "type": "translate_to_pt",
                     "question": "Schwarz und weiß",
-                    "correctAnswer": "Preto e branco"
+                    "correctAnswer": "Preto e branco",
+                    "vocabulary": [
+                        {
+                            "text": "Schwarz",
+                            "translation": "Preto",
+                            "audio": "Preto"
+                        },
+                        {
+                            "text": "und",
+                            "translation": "e",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "weiß",
+                            "translation": "branco",
+                            "audio": "branco"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e3",
                     "type": "translate_to_de",
                     "question": "Azul e vermelho",
-                    "correctAnswer": "Blau und rot"
+                    "correctAnswer": "Blau und rot",
+                    "vocabulary": [
+                        {
+                            "text": "Azul",
+                            "translation": "Blau",
+                            "audio": "Azul"
+                        },
+                        {
+                            "text": "e",
+                            "translation": "und",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "vermelho",
+                            "translation": "rot",
+                            "audio": "vermelho"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e4",
@@ -162,13 +308,37 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "Verde e amarelo",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Grün und gelb",
+                            "translation": "Verde e amarelo",
+                            "audio": "Verde e amarelo"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e5",
                     "type": "translate_to_pt",
                     "question": "Hell und dunkel",
-                    "correctAnswer": "Claro e escuro"
+                    "correctAnswer": "Claro e escuro",
+                    "vocabulary": [
+                        {
+                            "text": "Hell",
+                            "translation": "Claro",
+                            "audio": "Claro"
+                        },
+                        {
+                            "text": "und",
+                            "translation": "e",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "dunkel",
+                            "translation": "escuro",
+                            "audio": "escuro"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e6",
@@ -177,13 +347,42 @@
                     "correctAnswer": "Welche Größe",
                     "alternativeAnswers": [
                         "Was ist die Größe?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Qual é",
+                            "translation": "Welche",
+                            "audio": "Qual é"
+                        },
+                        {
+                            "text": "o tamanho",
+                            "translation": "die Größe",
+                            "audio": "o tamanho"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l2_e7",
                     "type": "translate_to_pt",
                     "question": "Groß und klein",
-                    "correctAnswer": "Grande e pequeno"
+                    "correctAnswer": "Grande e pequeno",
+                    "vocabulary": [
+                        {
+                            "text": "Groß",
+                            "translation": "Grande",
+                            "audio": "Grande"
+                        },
+                        {
+                            "text": "und",
+                            "translation": "e",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "klein",
+                            "translation": "pequeno",
+                            "audio": "pequeno"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e8",
@@ -192,13 +391,27 @@
                     "correctAnswer": "Eng",
                     "alternativeAnswers": [
                         "Zu eng"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Apertado",
+                            "translation": "Eng",
+                            "audio": "Apertado"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l2_e9",
                     "type": "translate_to_pt",
                     "question": "Weit",
-                    "correctAnswer": "Largo"
+                    "correctAnswer": "Largo",
+                    "vocabulary": [
+                        {
+                            "text": "Weit",
+                            "translation": "Largo",
+                            "audio": "Largo"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e10",
@@ -211,7 +424,14 @@
                         "Pagar"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Experimentar"
+                    "audioText": "Experimentar",
+                    "vocabulary": [
+                        {
+                            "text": "Anprobieren",
+                            "translation": "Experimentar",
+                            "audio": "Experimentar"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e11",
@@ -220,6 +440,18 @@
                     "correctAnswer": "Posso experimentar?",
                     "alternativeAnswers": [
                         "Eu posso experimentar?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Kann ich",
+                            "translation": "Posso",
+                            "audio": "Posso"
+                        },
+                        {
+                            "text": "anprobieren",
+                            "translation": "experimentar",
+                            "audio": "experimentar"
+                        }
                     ]
                 },
                 {
@@ -229,25 +461,58 @@
                     "correctAnswer": "Die Umkleidekabine",
                     "alternativeAnswers": [
                         "Die Umkleide"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O provador",
+                            "translation": "Die Umkleidekabine",
+                            "audio": "O provador"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l2_e13",
                     "type": "translate_to_pt",
                     "question": "Es passt gut.",
-                    "correctAnswer": "Fica bem."
+                    "correctAnswer": "Fica bem.",
+                    "vocabulary": [
+                        {
+                            "text": "Es passt gut",
+                            "translation": "Fica bem",
+                            "audio": "Fica bem"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e14",
                     "type": "translate_to_de",
                     "question": "É muito grande.",
-                    "correctAnswer": "Es ist zu groß."
+                    "correctAnswer": "Es ist zu groß.",
+                    "vocabulary": [
+                        {
+                            "text": "É",
+                            "translation": "Es ist",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "muito grande",
+                            "translation": "zu groß",
+                            "audio": "muito grande"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l2_e15",
                     "type": "translate_to_pt",
                     "question": "Das Muster",
-                    "correctAnswer": "O padrão"
+                    "correctAnswer": "O padrão",
+                    "vocabulary": [
+                        {
+                            "text": "Das Muster",
+                            "translation": "O padrão",
+                            "audio": "O padrão"
+                        }
+                    ]
                 }
             ]
         },
@@ -262,6 +527,13 @@
                     "correctAnswer": "Das Geschäft",
                     "alternativeAnswers": [
                         "Der Laden"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A loja",
+                            "translation": "Das Geschäft",
+                            "audio": "A loja"
+                        }
                     ]
                 },
                 {
@@ -269,14 +541,38 @@
                     "type": "translate_to_pt",
                     "question": "Ich schaue nur, danke. (als Mann)",
                     "correctAnswer": "Estou só a ver, obrigado.",
-                    "gender": "m"
+                    "gender": "m",
+                    "vocabulary": [
+                        {
+                            "text": "Ich schaue nur",
+                            "translation": "Estou só a ver",
+                            "audio": "Estou só a ver"
+                        },
+                        {
+                            "text": "danke",
+                            "translation": "obrigado",
+                            "audio": "obrigado"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e2_f",
                     "type": "translate_to_pt",
                     "question": "Ich schaue nur, danke. (als Frau)",
                     "correctAnswer": "Estou só a ver, obrigada.",
-                    "gender": "f"
+                    "gender": "f",
+                    "vocabulary": [
+                        {
+                            "text": "Ich schaue nur",
+                            "translation": "Estou só a ver",
+                            "audio": "Estou só a ver"
+                        },
+                        {
+                            "text": "danke",
+                            "translation": "obrigada",
+                            "audio": "obrigada"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e4",
@@ -289,25 +585,53 @@
                         "O que é isto?"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Quanto custa isto"
+                    "audioText": "Quanto custa isto",
+                    "vocabulary": [
+                        {
+                            "text": "Wie viel kostet das",
+                            "translation": "Quanto custa isto",
+                            "audio": "Quanto custa isto"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e5",
                     "type": "translate_to_pt",
                     "question": "Es ist im Angebot (Schlussverkauf).",
-                    "correctAnswer": "Está nos saldos."
+                    "correctAnswer": "Está nos saldos.",
+                    "vocabulary": [
+                        {
+                            "text": "Es ist im Angebot",
+                            "translation": "Está nos saldos",
+                            "audio": "Está nos saldos"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e6",
                     "type": "translate_to_de",
                     "question": "O desconto",
-                    "correctAnswer": "Der Rabatt"
+                    "correctAnswer": "Der Rabatt",
+                    "vocabulary": [
+                        {
+                            "text": "O desconto",
+                            "translation": "Der Rabatt",
+                            "audio": "O desconto"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e7",
                     "type": "translate_to_pt",
                     "question": "Die Kasse",
-                    "correctAnswer": "A caixa"
+                    "correctAnswer": "A caixa",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kasse",
+                            "translation": "A caixa",
+                            "audio": "A caixa"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e8",
@@ -316,6 +640,18 @@
                     "correctAnswer": "Ich möchte das kaufen.",
                     "alternativeAnswers": [
                         "Ich will das kaufen."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Quero comprar",
+                            "translation": "Ich möchte kaufen",
+                            "audio": "Quero comprar"
+                        },
+                        {
+                            "text": "isto",
+                            "translation": "das",
+                            "audio": "isto"
+                        }
                     ]
                 },
                 {
@@ -329,7 +665,14 @@
                         "O talão"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "O talão"
+                    "audioText": "O talão",
+                    "vocabulary": [
+                        {
+                            "text": "Der Kassenbeleg",
+                            "translation": "O talão",
+                            "audio": "O talão"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e10",
@@ -338,6 +681,28 @@
                     "correctAnswer": "Paga em dinheiro ou com cartão?",
                     "alternativeAnswers": [
                         "Paga em dinheiro ou multibanco?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Zahlen Sie",
+                            "translation": "Paga",
+                            "audio": "Paga"
+                        },
+                        {
+                            "text": "bar",
+                            "translation": "em dinheiro",
+                            "audio": "em dinheiro"
+                        },
+                        {
+                            "text": "oder",
+                            "translation": "ou",
+                            "audio": "ou"
+                        },
+                        {
+                            "text": "mit Karte",
+                            "translation": "com cartão",
+                            "audio": "com cartão"
+                        }
                     ]
                 },
                 {
@@ -347,13 +712,37 @@
                     "correctAnswer": "Brauchen Sie eine Tüte",
                     "alternativeAnswers": [
                         "Brauchen Sie einen Beutel?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Precisa de",
+                            "translation": "Brauchen Sie",
+                            "audio": "Precisa de"
+                        },
+                        {
+                            "text": "um saco",
+                            "translation": "eine Tüte",
+                            "audio": "um saco"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l3_e12",
                     "type": "translate_to_pt",
                     "question": "Kann ich umtauschen?",
-                    "correctAnswer": "Posso trocar?"
+                    "correctAnswer": "Posso trocar?",
+                    "vocabulary": [
+                        {
+                            "text": "Kann ich",
+                            "translation": "Posso",
+                            "audio": "Posso"
+                        },
+                        {
+                            "text": "umtauschen",
+                            "translation": "trocar",
+                            "audio": "trocar"
+                        }
+                    ]
                 },
                 {
                     "id": "u9_l3_e13",
@@ -362,6 +751,18 @@
                     "correctAnswer": "Queria trocar esta camisa.",
                     "alternativeAnswers": [
                         "Eu queria trocar esta camisa."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte umtauschen",
+                            "translation": "Queria trocar",
+                            "audio": "Queria trocar"
+                        },
+                        {
+                            "text": "dieses Hemd",
+                            "translation": "esta camisa",
+                            "audio": "esta camisa"
+                        }
                     ]
                 },
                 {
@@ -371,13 +772,37 @@
                     "correctAnswer": "Es ist kaputt.",
                     "alternativeAnswers": [
                         "Es ist defekt."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Está",
+                            "translation": "Es ist",
+                            "audio": "Está"
+                        },
+                        {
+                            "text": "estragado",
+                            "translation": "kaputt",
+                            "audio": "estragado"
+                        }
                     ]
                 },
                 {
                     "id": "u9_l3_e15",
                     "type": "translate_to_pt",
                     "question": "Das Geld zurückgeben",
-                    "correctAnswer": "Devolver o dinheiro"
+                    "correctAnswer": "Devolver o dinheiro",
+                    "vocabulary": [
+                        {
+                            "text": "zurückgeben",
+                            "translation": "Devolver",
+                            "audio": "Devolver"
+                        },
+                        {
+                            "text": "Das Geld",
+                            "translation": "o dinheiro",
+                            "audio": "o dinheiro"
+                        }
+                    ]
                 }
             ]
         }
@@ -388,7 +813,7 @@
             "explanation": "Vergleiche baut man mit 'mais... do que' (mehr als) oder 'menos... do que' (weniger als).",
             "examples": [
                 "A blusa é mais cara do que a calça. (Die Bluse ist teurer als die Hose.)",
-                "O sapato é menos confortável. (Der Schuh ist weniger bequem.)",
+                "O sapato é menos confortável. (Der Schuh é menos confortável.)",
                 "tão ... como (genauso ... wie) - tão grande como (genauso groß wie)"
             ]
         },

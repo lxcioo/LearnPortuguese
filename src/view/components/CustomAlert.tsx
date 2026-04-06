@@ -8,7 +8,7 @@ interface CustomAlertProps {
   message: string;
   onClose: () => void; // Funktion für den primären Button
   isDarkMode?: boolean;
-  
+
   // NEUE PROPS FÜR MEHR FLEXIBILITÄT
   primaryText?: string;
   primaryColor?: string;
@@ -17,11 +17,11 @@ interface CustomAlertProps {
   onCancel?: () => void;
 }
 
-export function CustomAlert({ 
-  visible, 
-  title, 
-  message, 
-  onClose, 
+export function CustomAlert({
+  visible,
+  title,
+  message,
+  onClose,
   isDarkMode = false,
   primaryText = "Verstanden",
   primaryColor = "#58cc02",
@@ -46,16 +46,16 @@ export function CustomAlert({
 
           <View style={styles.buttonContainer}>
             {showCancel && (
-              <TouchableOpacity 
-                style={[styles.button, styles.cancelButton, { backgroundColor: isDarkMode ? '#333' : '#E5E5E5' }]} 
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton, { backgroundColor: isDarkMode ? '#333' : '#E5E5E5' }]}
                 onPress={onCancel}
               >
                 <Text style={[styles.cancelButtonText, { color: isDarkMode ? '#fff' : '#333' }]}>{cancelText}</Text>
               </TouchableOpacity>
             )}
-            
-            <TouchableOpacity 
-              style={[styles.button, { backgroundColor: primaryColor, flex: 2 }]} 
+
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: primaryColor, flex: 2 }]}
               onPress={onClose}
             >
               <Text style={styles.buttonText}>{primaryText}</Text>
@@ -69,16 +69,16 @@ export function CustomAlert({
 }
 
 const styles = StyleSheet.create({
-  modalOverlay: { 
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
     backgroundColor: 'rgba(0,0,0,0.6)', // Macht den Hintergrund dunkel und lenkt den Fokus auf den Alert
   },
-  content: { 
-    width: '100%', 
-    maxWidth: 340, 
+  content: {
+    width: '100%',
+    maxWidth: 340,
     alignItems: 'center',
     padding: 24,
     borderRadius: 24,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     gap: 12,
     width: '100%',
   },
-  button: { 
+  button: {
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 16,

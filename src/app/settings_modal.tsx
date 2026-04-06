@@ -187,7 +187,7 @@ export default function SettingsModal() {
             <Text style={[styles.alertMessage, { color: currentColors.secondaryText }]}>
               Dein gesamter Lernfortschritt geht verloren. Dies kann nicht rückgängig gemacht werden.
             </Text>
-            
+
             <View style={[styles.alertButtonGroup, { borderTopColor: currentColors.separator }]}>
               <TouchableOpacity style={styles.alertButton} onPress={() => setShowResetConfirm(false)}>
                 <Text style={[styles.alertButtonText, { color: currentColors.text }]}>Abbrechen</Text>
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 17,
   },
-  
+
   // Alert Styles
   alertBackdrop: {
     flex: 1,

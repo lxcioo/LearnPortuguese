@@ -22,13 +22,13 @@ export const Colors = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
-    
+
     // UI Spezifisch
     card: '#f9f9f9',
     cardBorder: '#f0f0f0',
     border: '#e5e5e5',
     subText: '#777',
-    
+
     // Practice & Lesson
     sectionTitle: '#444',
     mistakeBtnBg: '#fff',

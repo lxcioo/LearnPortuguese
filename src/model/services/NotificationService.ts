@@ -47,7 +47,7 @@ export const NotificationService = {
     await Notifications.cancelAllScheduledNotificationsAsync();
 
     const now = new Date();
-    
+
     // 2. Für die nächsten 14 Tage im Voraus planen
     for (let i = 0; i < 14; i++) {
       // Wenn es heute ist (Tag 0) und schon gelernt wurde -> überspringen!

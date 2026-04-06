@@ -33,7 +33,7 @@ export const useAudioPlayer = () => {
     try {
       const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
       if (sound) await sound.unloadAsync();
-      
+
       const { sound: newSound } = await Audio.Sound.createAsync(
         { uri: audioUrl },
         { shouldPlay: true }

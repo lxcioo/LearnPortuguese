@@ -11,13 +11,27 @@
                     "id": "u8_l1_e1",
                     "type": "translate_to_de",
                     "question": "A casa",
-                    "correctAnswer": "Das Haus"
+                    "correctAnswer": "Das Haus",
+                    "vocabulary": [
+                        {
+                            "text": "A casa",
+                            "translation": "Das Haus",
+                            "audio": "A casa"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e2",
                     "type": "translate_to_pt",
                     "question": "Die Wohnung",
-                    "correctAnswer": "O apartamento"
+                    "correctAnswer": "O apartamento",
+                    "vocabulary": [
+                        {
+                            "text": "Die Wohnung",
+                            "translation": "O apartamento",
+                            "audio": "O apartamento"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e3",
@@ -26,6 +40,13 @@
                     "correctAnswer": "Das Wohnzimmer",
                     "alternativeAnswers": [
                         "Das Wohnzimmer"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A sala de estar",
+                            "translation": "Das Wohnzimmer",
+                            "audio": "A sala de estar"
+                        }
                     ]
                 },
                 {
@@ -39,13 +60,27 @@
                         "A cozinha"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "O quarto"
+                    "audioText": "O quarto",
+                    "vocabulary": [
+                        {
+                            "text": "Das Schlafzimmer",
+                            "translation": "O quarto",
+                            "audio": "O quarto"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e5",
                     "type": "translate_to_pt",
                     "question": "Die Küche",
-                    "correctAnswer": "A cozinha"
+                    "correctAnswer": "A cozinha",
+                    "vocabulary": [
+                        {
+                            "text": "Die Küche",
+                            "translation": "A cozinha",
+                            "audio": "A cozinha"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e6",
@@ -55,13 +90,27 @@
                     "alternativeAnswers": [
                         "Das Bad",
                         "Die Toilette"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A casa de banho",
+                            "translation": "Das Badezimmer",
+                            "audio": "A casa de banho"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l1_e7",
                     "type": "translate_to_pt",
                     "question": "Der Balkon",
-                    "correctAnswer": "A varanda"
+                    "correctAnswer": "A varanda",
+                    "vocabulary": [
+                        {
+                            "text": "Der Balkon",
+                            "translation": "A varanda",
+                            "audio": "A varanda"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e8",
@@ -75,25 +124,53 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "A mesa",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Tisch",
+                            "translation": "A mesa",
+                            "audio": "A mesa"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e9",
                     "type": "translate_to_de",
                     "question": "A cadeira",
-                    "correctAnswer": "Der Stuhl"
+                    "correctAnswer": "Der Stuhl",
+                    "vocabulary": [
+                        {
+                            "text": "A cadeira",
+                            "translation": "Der Stuhl",
+                            "audio": "A cadeira"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e10",
                     "type": "translate_to_pt",
                     "question": "Das Sofa",
-                    "correctAnswer": "O sofá"
+                    "correctAnswer": "O sofá",
+                    "vocabulary": [
+                        {
+                            "text": "Das Sofa",
+                            "translation": "O sofá",
+                            "audio": "O sofá"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e11",
                     "type": "translate_to_de",
                     "question": "A cama",
-                    "correctAnswer": "Das Bett"
+                    "correctAnswer": "Das Bett",
+                    "vocabulary": [
+                        {
+                            "text": "A cama",
+                            "translation": "Das Bett",
+                            "audio": "A cama"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e12",
@@ -102,25 +179,53 @@
                     "correctAnswer": "O armário",
                     "alternativeAnswers": [
                         "O roupeiro"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Schrank",
+                            "translation": "O armário",
+                            "audio": "O armário"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l1_e13",
                     "type": "translate_to_de",
                     "question": "A porta",
-                    "correctAnswer": "Die Tür"
+                    "correctAnswer": "Die Tür",
+                    "vocabulary": [
+                        {
+                            "text": "A porta",
+                            "translation": "Die Tür",
+                            "audio": "A porta"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e14",
                     "type": "translate_to_pt",
                     "question": "Das Fenster",
-                    "correctAnswer": "A janela"
+                    "correctAnswer": "A janela",
+                    "vocabulary": [
+                        {
+                            "text": "Das Fenster",
+                            "translation": "A janela",
+                            "audio": "A janela"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l1_e15",
                     "type": "translate_to_pt",
                     "question": "Der Schlüssel",
-                    "correctAnswer": "A chave"
+                    "correctAnswer": "A chave",
+                    "vocabulary": [
+                        {
+                            "text": "Der Schlüssel",
+                            "translation": "A chave",
+                            "audio": "A chave"
+                        }
+                    ]
                 }
             ]
         },
@@ -132,13 +237,32 @@
                     "id": "u8_l2_e1",
                     "type": "translate_to_de",
                     "question": "Arrumar",
-                    "correctAnswer": "Aufräumen"
+                    "correctAnswer": "Aufräumen",
+                    "vocabulary": [
+                        {
+                            "text": "Arrumar",
+                            "translation": "Aufräumen",
+                            "audio": "Arrumar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e2",
                     "type": "translate_to_pt",
                     "question": "Das Zimmer aufräumen",
-                    "correctAnswer": "Arrumar o quarto"
+                    "correctAnswer": "Arrumar o quarto",
+                    "vocabulary": [
+                        {
+                            "text": "aufräumen",
+                            "translation": "Arrumar",
+                            "audio": "Arrumar"
+                        },
+                        {
+                            "text": "Das Zimmer",
+                            "translation": "o quarto",
+                            "audio": "o quarto"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e3",
@@ -147,6 +271,18 @@
                     "correctAnswer": "Das Haus putzen",
                     "alternativeAnswers": [
                         "Das Haus reinigen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Limpar",
+                            "translation": "putzen",
+                            "audio": "Limpar"
+                        },
+                        {
+                            "text": "a casa",
+                            "translation": "Das Haus",
+                            "audio": "a casa"
+                        }
                     ]
                 },
                 {
@@ -160,7 +296,14 @@
                         "Lavar as mãos"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Lavar a loiça"
+                    "audioText": "Lavar a loiça",
+                    "vocabulary": [
+                        {
+                            "text": "Den Abwasch machen",
+                            "translation": "Lavar a loiça",
+                            "audio": "Lavar a loiça"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e5",
@@ -169,19 +312,50 @@
                     "correctAnswer": "Lavar a roupa",
                     "alternativeAnswers": [
                         "Lavar roupa"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "waschen",
+                            "translation": "Lavar",
+                            "audio": "Lavar"
+                        },
+                        {
+                            "text": "Wäsche",
+                            "translation": "a roupa",
+                            "audio": "a roupa"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l2_e6",
                     "type": "translate_to_de",
                     "question": "Cozinhar",
-                    "correctAnswer": "Kochen"
+                    "correctAnswer": "Kochen",
+                    "vocabulary": [
+                        {
+                            "text": "Cozinhar",
+                            "translation": "Kochen",
+                            "audio": "Cozinhar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e7",
                     "type": "translate_to_pt",
                     "question": "Das Abendessen machen",
-                    "correctAnswer": "Fazer o jantar"
+                    "correctAnswer": "Fazer o jantar",
+                    "vocabulary": [
+                        {
+                            "text": "machen",
+                            "translation": "Fazer",
+                            "audio": "Fazer"
+                        },
+                        {
+                            "text": "Das Abendessen",
+                            "translation": "o jantar",
+                            "audio": "o jantar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e8",
@@ -194,7 +368,14 @@
                         "Pôr a mesa"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "Pôr a mesa"
+                    "audioText": "Pôr a mesa",
+                    "vocabulary": [
+                        {
+                            "text": "Den Tisch decken",
+                            "translation": "Pôr a mesa",
+                            "audio": "Pôr a mesa"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e9",
@@ -203,6 +384,18 @@
                     "correctAnswer": "Den Müll rausbringen",
                     "alternativeAnswers": [
                         "Den Müll wegwerfen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Deitar fora",
+                            "translation": "rausbringen",
+                            "audio": "Deitar fora"
+                        },
+                        {
+                            "text": "o lixo",
+                            "translation": "Den Müll",
+                            "audio": "o lixo"
+                        }
                     ]
                 },
                 {
@@ -212,13 +405,32 @@
                     "correctAnswer": "Aspirar",
                     "alternativeAnswers": [
                         "Passar o aspirador"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Staub saugen",
+                            "translation": "Aspirar",
+                            "audio": "Aspirar"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l2_e11",
                     "type": "translate_to_de",
                     "question": "Fazer a cama",
-                    "correctAnswer": "Das Bett machen"
+                    "correctAnswer": "Das Bett machen",
+                    "vocabulary": [
+                        {
+                            "text": "Fazer",
+                            "translation": "machen",
+                            "audio": "Fazer"
+                        },
+                        {
+                            "text": "a cama",
+                            "translation": "Das Bett",
+                            "audio": "a cama"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e12",
@@ -227,6 +439,13 @@
                     "correctAnswer": "Passar a ferro",
                     "alternativeAnswers": [
                         "Engomar"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Bügeln",
+                            "translation": "Passar a ferro",
+                            "audio": "Passar a ferro"
+                        }
                     ]
                 },
                 {
@@ -236,13 +455,32 @@
                     "correctAnswer": "Einkaufen gehen",
                     "alternativeAnswers": [
                         "Einkaufen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ir",
+                            "translation": "gehen",
+                            "audio": "Ir"
+                        },
+                        {
+                            "text": "às compras",
+                            "translation": "Einkaufen",
+                            "audio": "às compras"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l2_e14",
                     "type": "translate_to_pt",
                     "question": "Helfen",
-                    "correctAnswer": "Ajudar"
+                    "correctAnswer": "Ajudar",
+                    "vocabulary": [
+                        {
+                            "text": "Helfen",
+                            "translation": "Ajudar",
+                            "audio": "Ajudar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l2_e15",
@@ -251,6 +489,18 @@
                     "correctAnswer": "Eu ajudo-te",
                     "alternativeAnswers": [
                         "Ajudo-te"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich helfe",
+                            "translation": "ajudo",
+                            "audio": "ajudo"
+                        },
+                        {
+                            "text": "dir",
+                            "translation": "te",
+                            "audio": "te"
+                        }
                     ]
                 }
             ]
@@ -263,19 +513,40 @@
                     "id": "u8_l3_e1",
                     "type": "translate_to_de",
                     "question": "Alugar",
-                    "correctAnswer": "Mieten"
+                    "correctAnswer": "Mieten",
+                    "vocabulary": [
+                        {
+                            "text": "Alugar",
+                            "translation": "Mieten",
+                            "audio": "Alugar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e2",
                     "type": "translate_to_pt",
                     "question": "Die Miete",
-                    "correctAnswer": "A renda"
+                    "correctAnswer": "A renda",
+                    "vocabulary": [
+                        {
+                            "text": "Die Miete",
+                            "translation": "A renda",
+                            "audio": "A renda"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e3",
                     "type": "translate_to_de",
                     "question": "Comprar",
-                    "correctAnswer": "Kaufen"
+                    "correctAnswer": "Kaufen",
+                    "vocabulary": [
+                        {
+                            "text": "Comprar",
+                            "translation": "Kaufen",
+                            "audio": "Comprar"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e4",
@@ -288,7 +559,14 @@
                         "Limpar a casa"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Mudar de casa"
+                    "audioText": "Mudar de casa",
+                    "vocabulary": [
+                        {
+                            "text": "Umziehen",
+                            "translation": "Mudar de casa",
+                            "audio": "Mudar de casa"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e5",
@@ -297,6 +575,13 @@
                     "correctAnswer": "A fatura",
                     "alternativeAnswers": [
                         "A conta"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Rechnung",
+                            "translation": "A fatura",
+                            "audio": "A fatura"
+                        }
                     ]
                 },
                 {
@@ -306,13 +591,27 @@
                     "correctAnswer": "Der Strom",
                     "alternativeAnswers": [
                         "Die Elektrizität"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A eletricidade",
+                            "translation": "Der Strom",
+                            "audio": "A eletricidade"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l3_e7",
                     "type": "translate_to_pt",
                     "question": "Das Wasser",
-                    "correctAnswer": "A água"
+                    "correctAnswer": "A água",
+                    "vocabulary": [
+                        {
+                            "text": "Das Wasser",
+                            "translation": "A água",
+                            "audio": "A água"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e8",
@@ -326,7 +625,14 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "No rés do chão",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Im Erdgeschoss",
+                            "translation": "No rés do chão",
+                            "audio": "No rés do chão"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e9",
@@ -335,13 +641,27 @@
                     "correctAnswer": "Der erste Stock",
                     "alternativeAnswers": [
                         "Das erste Stockwerk"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O primeiro andar",
+                            "translation": "Der erste Stock",
+                            "audio": "O primeiro andar"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l3_e10",
                     "type": "translate_to_pt",
                     "question": "Der Nachbar",
-                    "correctAnswer": "O vizinho"
+                    "correctAnswer": "O vizinho",
+                    "vocabulary": [
+                        {
+                            "text": "Der Nachbar",
+                            "translation": "O vizinho",
+                            "audio": "O vizinho"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e11",
@@ -350,13 +670,42 @@
                     "correctAnswer": "Es ist sehr teuer",
                     "alternativeAnswers": [
                         "Das ist sehr teuer"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "É",
+                            "translation": "Es ist",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "muito",
+                            "translation": "sehr",
+                            "audio": "muito"
+                        },
+                        {
+                            "text": "caro",
+                            "translation": "teuer",
+                            "audio": "caro"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l3_e12",
                     "type": "translate_to_pt",
                     "question": "Es ist günstig (billig)",
-                    "correctAnswer": "É barato"
+                    "correctAnswer": "É barato",
+                    "vocabulary": [
+                        {
+                            "text": "Es ist",
+                            "translation": "É",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "günstig",
+                            "translation": "barato",
+                            "audio": "barato"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e13",
@@ -365,19 +714,55 @@
                     "correctAnswer": "Die Wohnung ist sehr hell",
                     "alternativeAnswers": [
                         "Die Wohnung hat viel Licht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O apartamento",
+                            "translation": "Die Wohnung",
+                            "audio": "O apartamento"
+                        },
+                        {
+                            "text": "tem muita luz",
+                            "translation": "ist sehr hell",
+                            "audio": "tem muita luz"
+                        }
                     ]
                 },
                 {
                     "id": "u8_l3_e14",
                     "type": "translate_to_pt",
                     "question": "Dunkel",
-                    "correctAnswer": "Escuro"
+                    "correctAnswer": "Escuro",
+                    "vocabulary": [
+                        {
+                            "text": "Dunkel",
+                            "translation": "Escuro",
+                            "audio": "Escuro"
+                        }
+                    ]
                 },
                 {
                     "id": "u8_l3_e15",
                     "type": "translate_to_pt",
                     "question": "Wie viele Zimmer hat die Wohnung?",
-                    "correctAnswer": "Quantos quartos tem o apartamento?"
+                    "correctAnswer": "Quantos quartos tem o apartamento?",
+                    "vocabulary": [
+                        {
+                            "text": "Wie viele Zimmer",
+                            "translation": "Quantos quartos",
+                            "audio": "Quantos quartos"
+                        },
+                        {
+                            "text": "hat",
+                            "translation": "tem",
+                            "audio": "tem"
+                        },
+                        {
+                            "text": "die Wohnung",
+                            "translation": "o apartamento",
+                            "audio": "o apartamento"
+                        }
+                    ]
                 }
             ]
         }

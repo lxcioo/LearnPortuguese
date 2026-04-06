@@ -11,13 +11,27 @@
                     "id": "u4_l1_e1",
                     "type": "translate_to_de",
                     "question": "O comboio",
-                    "correctAnswer": "Der Zug"
+                    "correctAnswer": "Der Zug",
+                    "vocabulary": [
+                        {
+                            "text": "O comboio",
+                            "translation": "Der Zug",
+                            "audio": "O comboio"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e2",
                     "type": "translate_to_pt",
                     "question": "Der Bus",
-                    "correctAnswer": "O autocarro"
+                    "correctAnswer": "O autocarro",
+                    "vocabulary": [
+                        {
+                            "text": "Der Bus",
+                            "translation": "O autocarro",
+                            "audio": "O autocarro"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e3",
@@ -31,13 +45,27 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "O elétrico",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Straßenbahn",
+                            "translation": "O elétrico",
+                            "audio": "O elétrico"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e4",
                     "type": "translate_to_de",
                     "question": "O metro",
-                    "correctAnswer": "Die U-Bahn"
+                    "correctAnswer": "Die U-Bahn",
+                    "vocabulary": [
+                        {
+                            "text": "O metro",
+                            "translation": "Die U-Bahn",
+                            "audio": "O metro"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e5",
@@ -46,6 +74,13 @@
                     "correctAnswer": "O bilhete",
                     "alternativeAnswers": [
                         "A passagem"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Ticket",
+                            "translation": "O bilhete",
+                            "audio": "O bilhete"
+                        }
                     ]
                 },
                 {
@@ -55,6 +90,13 @@
                     "correctAnswer": "Die Haltestelle",
                     "alternativeAnswers": [
                         "Die Bushaltestelle"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A paragem",
+                            "translation": "Die Haltestelle",
+                            "audio": "A paragem"
+                        }
                     ]
                 },
                 {
@@ -64,6 +106,13 @@
                     "correctAnswer": "A estação",
                     "alternativeAnswers": [
                         "A estação de comboios"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Bahnhof",
+                            "translation": "A estação",
+                            "audio": "A estação"
+                        }
                     ]
                 },
                 {
@@ -77,7 +126,14 @@
                         "Viajar"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Validar"
+                    "audioText": "Validar",
+                    "vocabulary": [
+                        {
+                            "text": "Entwerten",
+                            "translation": "Validar",
+                            "audio": "Validar"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e9",
@@ -86,19 +142,50 @@
                     "correctAnswer": "Um bilhete para Lisboa, por favor.",
                     "alternativeAnswers": [
                         "Um bilhete para Lisboa por favor"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ein Ticket",
+                            "translation": "Um bilhete",
+                            "audio": "Um bilhete"
+                        },
+                        {
+                            "text": "nach Lissabon",
+                            "translation": "para Lisboa",
+                            "audio": "para Lisboa"
+                        },
+                        {
+                            "text": "bitte",
+                            "translation": "por favor",
+                            "audio": "por favor"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l1_e10",
                     "type": "translate_to_de",
                     "question": "O aeroporto",
-                    "correctAnswer": "Der Flughafen"
+                    "correctAnswer": "Der Flughafen",
+                    "vocabulary": [
+                        {
+                            "text": "O aeroporto",
+                            "translation": "Der Flughafen",
+                            "audio": "O aeroporto"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e11",
                     "type": "translate_to_pt",
                     "question": "Das Flugzeug",
-                    "correctAnswer": "O avião"
+                    "correctAnswer": "O avião",
+                    "vocabulary": [
+                        {
+                            "text": "Das Flugzeug",
+                            "translation": "O avião",
+                            "audio": "O avião"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e12",
@@ -107,13 +194,27 @@
                     "correctAnswer": "Die Abfahrt",
                     "alternativeAnswers": [
                         "Der Abflug"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A partida",
+                            "translation": "Die Abfahrt",
+                            "audio": "A partida"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l1_e13",
                     "type": "translate_to_de",
                     "question": "A chegada",
-                    "correctAnswer": "Die Ankunft"
+                    "correctAnswer": "Die Ankunft",
+                    "vocabulary": [
+                        {
+                            "text": "A chegada",
+                            "translation": "Die Ankunft",
+                            "audio": "A chegada"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l1_e14",
@@ -122,6 +223,23 @@
                     "correctAnswer": "Onde compro bilhetes?",
                     "alternativeAnswers": [
                         "Onde é que compro bilhetes"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wo",
+                            "translation": "Onde",
+                            "audio": "Onde"
+                        },
+                        {
+                            "text": "kaufe ich",
+                            "translation": "compro",
+                            "audio": "compro"
+                        },
+                        {
+                            "text": "Tickets",
+                            "translation": "bilhetes",
+                            "audio": "bilhetes"
+                        }
                     ]
                 },
                 {
@@ -135,7 +253,14 @@
                         "Lavar um carro"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Alugar um carro"
+                    "audioText": "Alugar um carro",
+                    "vocabulary": [
+                        {
+                            "text": "Ein Auto mieten",
+                            "translation": "Alugar um carro",
+                            "audio": "Alugar um carro"
+                        }
+                    ]
                 }
             ]
         },
@@ -147,7 +272,14 @@
                     "id": "u4_l2_e1",
                     "type": "translate_to_de",
                     "question": "A cidade",
-                    "correctAnswer": "Die Stadt"
+                    "correctAnswer": "Die Stadt",
+                    "vocabulary": [
+                        {
+                            "text": "A cidade",
+                            "translation": "Die Stadt",
+                            "audio": "A cidade"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e2",
@@ -156,19 +288,40 @@
                     "correctAnswer": "O centro",
                     "alternativeAnswers": [
                         "O centro da cidade"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Zentrum",
+                            "translation": "O centro",
+                            "audio": "O centro"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l2_e3",
                     "type": "translate_to_de",
                     "question": "A rua",
-                    "correctAnswer": "Die Straße"
+                    "correctAnswer": "Die Straße",
+                    "vocabulary": [
+                        {
+                            "text": "A rua",
+                            "translation": "Die Straße",
+                            "audio": "A rua"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e4",
                     "type": "translate_to_pt",
                     "question": "Der Platz",
-                    "correctAnswer": "A praça"
+                    "correctAnswer": "A praça",
+                    "vocabulary": [
+                        {
+                            "text": "Der Platz",
+                            "translation": "A praça",
+                            "audio": "A praça"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e5",
@@ -181,25 +334,53 @@
                         "O parque"
                     ],
                     "correctAnswerIndex": 0,
-                    "audioText": "A ponte"
+                    "audioText": "A ponte",
+                    "vocabulary": [
+                        {
+                            "text": "Die Brücke",
+                            "translation": "A ponte",
+                            "audio": "A ponte"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e6",
                     "type": "translate_to_de",
                     "question": "O museu",
-                    "correctAnswer": "Das Museum"
+                    "correctAnswer": "Das Museum",
+                    "vocabulary": [
+                        {
+                            "text": "O museu",
+                            "translation": "Das Museum",
+                            "audio": "O museu"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e7",
                     "type": "translate_to_pt",
                     "question": "Die Kirche",
-                    "correctAnswer": "A igreja"
+                    "correctAnswer": "A igreja",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kirche",
+                            "translation": "A igreja",
+                            "audio": "A igreja"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e8",
                     "type": "translate_to_de",
                     "question": "O banco",
-                    "correctAnswer": "Die Bank"
+                    "correctAnswer": "Die Bank",
+                    "vocabulary": [
+                        {
+                            "text": "O banco",
+                            "translation": "Die Bank",
+                            "audio": "O banco"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e9",
@@ -208,6 +389,13 @@
                     "correctAnswer": "Os correios",
                     "alternativeAnswers": [
                         "O correio"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Post",
+                            "translation": "Os correios",
+                            "audio": "Os correios"
+                        }
                     ]
                 },
                 {
@@ -222,37 +410,79 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "A loja",
-                    "optionsLanguage": "de"
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Das Geschäft",
+                            "translation": "A loja",
+                            "audio": "A loja"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e11",
                     "type": "translate_to_pt",
                     "question": "Das Krankenhaus",
-                    "correctAnswer": "O hospital"
+                    "correctAnswer": "O hospital",
+                    "vocabulary": [
+                        {
+                            "text": "Das Krankenhaus",
+                            "translation": "O hospital",
+                            "audio": "O hospital"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e12",
                     "type": "translate_to_de",
                     "question": "A farmácia",
-                    "correctAnswer": "Die Apotheke"
+                    "correctAnswer": "Die Apotheke",
+                    "vocabulary": [
+                        {
+                            "text": "A farmácia",
+                            "translation": "Die Apotheke",
+                            "audio": "A farmácia"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e13",
                     "type": "translate_to_pt",
                     "question": "Die Bäckerei",
-                    "correctAnswer": "A padaria"
+                    "correctAnswer": "A padaria",
+                    "vocabulary": [
+                        {
+                            "text": "Die Bäckerei",
+                            "translation": "A padaria",
+                            "audio": "A padaria"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e14",
                     "type": "translate_to_de",
                     "question": "O mercado",
-                    "correctAnswer": "Der Markt"
+                    "correctAnswer": "Der Markt",
+                    "vocabulary": [
+                        {
+                            "text": "O mercado",
+                            "translation": "Der Markt",
+                            "audio": "O mercado"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l2_e15",
                     "type": "translate_to_pt",
                     "question": "Der Strand",
-                    "correctAnswer": "A praia"
+                    "correctAnswer": "A praia",
+                    "vocabulary": [
+                        {
+                            "text": "Der Strand",
+                            "translation": "A praia",
+                            "audio": "A praia"
+                        }
+                    ]
                 }
             ]
         },
@@ -267,6 +497,23 @@
                     "correctAnswer": "Entschuldigung wo ist das Museum",
                     "alternativeAnswers": [
                         "Entschuldigung, wo befindet sich das Museum?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Com licença",
+                            "translation": "Entschuldigung",
+                            "audio": "Com licença"
+                        },
+                        {
+                            "text": "onde fica",
+                            "translation": "wo ist",
+                            "audio": "onde fica"
+                        },
+                        {
+                            "text": "o museu",
+                            "translation": "das Museum",
+                            "audio": "o museu"
+                        }
                     ]
                 },
                 {
@@ -276,6 +523,13 @@
                     "correctAnswer": "Sempre em frente",
                     "alternativeAnswers": [
                         "Em frente"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Geradeaus",
+                            "translation": "Sempre em frente",
+                            "audio": "Sempre em frente"
+                        }
                     ]
                 },
                 {
@@ -289,7 +543,14 @@
                         "Sempre em frente"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Vire à direita"
+                    "audioText": "Vire à direita",
+                    "vocabulary": [
+                        {
+                            "text": "Biegen Sie rechts ab",
+                            "translation": "Vire à direita",
+                            "audio": "Vire à direita"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e4",
@@ -298,13 +559,32 @@
                     "correctAnswer": "Biegen Sie links ab",
                     "alternativeAnswers": [
                         "Nach links abbiegen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Vire à esquerda",
+                            "translation": "Biegen Sie links ab",
+                            "audio": "Vire à esquerda"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l3_e5",
                     "type": "translate_to_pt",
                     "question": "Ist es weit?",
-                    "correctAnswer": "É longe?"
+                    "correctAnswer": "É longe?",
+                    "vocabulary": [
+                        {
+                            "text": "Ist es",
+                            "translation": "É",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "weit",
+                            "translation": "longe",
+                            "audio": "longe"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e6",
@@ -313,6 +593,23 @@
                     "correctAnswer": "Nein es ist sehr nah",
                     "alternativeAnswers": [
                         "Nein, es ist ganz in der Nähe"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Não",
+                            "translation": "Nein",
+                            "audio": "Não"
+                        },
+                        {
+                            "text": "é",
+                            "translation": "es ist",
+                            "audio": "é"
+                        },
+                        {
+                            "text": "muito perto",
+                            "translation": "sehr nah",
+                            "audio": "muito perto"
+                        }
                     ]
                 },
                 {
@@ -322,13 +619,27 @@
                     "correctAnswer": "Aqui",
                     "alternativeAnswers": [
                         "Cá"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Hier",
+                            "translation": "Aqui",
+                            "audio": "Aqui"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l3_e8",
                     "type": "translate_to_de",
                     "question": "Ali",
-                    "correctAnswer": "Dort"
+                    "correctAnswer": "Dort",
+                    "vocabulary": [
+                        {
+                            "text": "Ali",
+                            "translation": "Dort",
+                            "audio": "Ali"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e9",
@@ -341,25 +652,63 @@
                         "Atravessar a rua"
                     ],
                     "correctAnswerIndex": 0,
-                    "audioText": "No fim da rua"
+                    "audioText": "No fim da rua",
+                    "vocabulary": [
+                        {
+                            "text": "Am Ende der Straße",
+                            "translation": "No fim da rua",
+                            "audio": "No fim da rua"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e10",
                     "type": "translate_to_pt",
                     "question": "Die Straße überqueren",
-                    "correctAnswer": "Atravessar a rua"
+                    "correctAnswer": "Atravessar a rua",
+                    "vocabulary": [
+                        {
+                            "text": "Die Straße",
+                            "translation": "a rua",
+                            "audio": "a rua"
+                        },
+                        {
+                            "text": "überqueren",
+                            "translation": "Atravessar",
+                            "audio": "Atravessar"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e11",
                     "type": "translate_to_de",
                     "question": "Ao lado do banco",
-                    "correctAnswer": "Neben der Bank"
+                    "correctAnswer": "Neben der Bank",
+                    "vocabulary": [
+                        {
+                            "text": "Ao lado",
+                            "translation": "Neben",
+                            "audio": "Ao lado"
+                        },
+                        {
+                            "text": "do banco",
+                            "translation": "der Bank",
+                            "audio": "do banco"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e12",
                     "type": "translate_to_pt",
                     "question": "Die Karte (Stadtplan)",
-                    "correctAnswer": "O mapa"
+                    "correctAnswer": "O mapa",
+                    "vocabulary": [
+                        {
+                            "text": "Die Karte (Stadtplan)",
+                            "translation": "O mapa",
+                            "audio": "O mapa"
+                        }
+                    ]
                 },
                 {
                     "id": "u4_l3_e13_m",
@@ -369,6 +718,13 @@
                     "gender": "m",
                     "alternativeAnswers": [
                         "Ich bin verloren"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou perdido",
+                            "translation": "Ich habe mich verlaufen",
+                            "audio": "Estou perdido"
+                        }
                     ]
                 },
                 {
@@ -379,13 +735,27 @@
                     "gender": "f",
                     "alternativeAnswers": [
                         "Ich bin verloren"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou perdida",
+                            "translation": "Ich habe mich verlaufen",
+                            "audio": "Estou perdida"
+                        }
                     ]
                 },
                 {
                     "id": "u4_l3_e15",
                     "type": "translate_to_pt",
                     "question": "Die Ecke",
-                    "correctAnswer": "A esquina"
+                    "correctAnswer": "A esquina",
+                    "vocabulary": [
+                        {
+                            "text": "Die Ecke",
+                            "translation": "A esquina",
+                            "audio": "A esquina"
+                        }
+                    ]
                 }
             ]
         }

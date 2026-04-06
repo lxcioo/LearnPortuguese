@@ -38,10 +38,10 @@ export function ReportModal({ visible, onClose, onSubmit, theme, isDarkMode }: R
           </Text>
 
           <TextInput
-            style={[styles.input, { 
-              backgroundColor: theme.inputBg, 
-              borderColor: theme.border, 
-              color: theme.text 
+            style={[styles.input, {
+              backgroundColor: theme.inputBg,
+              borderColor: theme.border,
+              color: theme.text
             }]}
             placeholder="Deine Nachricht..."
             placeholderTextColor="#ccc"
@@ -56,8 +56,8 @@ export function ReportModal({ visible, onClose, onSubmit, theme, isDarkMode }: R
             <TouchableOpacity style={[styles.alertButton, { backgroundColor: theme.inputBg }]} onPress={onClose} disabled={isSubmitting}>
               <Text style={[styles.alertButtonText, { color: theme.text }]}>Abbrechen</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.alertButton, styles.alertPrimaryButton, { opacity: !text.trim() ? 0.5 : 1 }]} 
+            <TouchableOpacity
+              style={[styles.alertButton, styles.alertPrimaryButton, { opacity: !text.trim() ? 0.5 : 1 }]}
               onPress={handleSubmit}
               disabled={isSubmitting || !text.trim()}
             >

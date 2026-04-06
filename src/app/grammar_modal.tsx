@@ -11,10 +11,10 @@ export default function GrammarModal() {
   const { theme } = useTheme();
   const currentColors = Colors[theme];
   const router = useRouter();
-  
+
   // Wir holen uns die ID des Kapitels, auf das geklickt wurde
   const { unitId } = useLocalSearchParams<{ unitId: string }>();
-  
+
   // Wir suchen das passende Kapitel im Datenstamm
   const courseData = content.courses[0];
   const unit = courseData.units.find(u => u.id === unitId);
@@ -47,7 +47,7 @@ export default function GrammarModal() {
           <View key={index} style={styles.section}>
             <Text style={[styles.sectionHeading, { color: currentColors.text }]}>{section.heading}</Text>
             <Text style={[styles.explanation, { color: currentColors.text }]}>{section.explanation}</Text>
-            
+
             {section.examples && section.examples.length > 0 && (
               <View style={[styles.examplesContainer, { backgroundColor: theme === 'dark' ? '#222' : '#f0f5f0', borderColor: unit.color }]}>
                 {section.examples.map((example, i) => (
@@ -60,7 +60,7 @@ export default function GrammarModal() {
             )}
           </View>
         ))}
-        
+
         {/* Platzhalter am Ende zum bequemen Scrollen */}
         <View style={{ height: 40 }} />
       </ScrollView>

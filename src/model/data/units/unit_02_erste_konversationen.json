@@ -14,6 +14,18 @@
                     "correctAnswer": "Como estás?",
                     "alternativeAnswers": [
                         "Como é que estás"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "geht es dir",
+                            "translation": "estás",
+                            "audio": "estás"
+                        }
                     ]
                 },
                 {
@@ -24,6 +36,18 @@
                     "alternativeAnswers": [
                         "Como o senhor está",
                         "Como a senhora está"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "geht es Ihnen",
+                            "translation": "está",
+                            "audio": "está"
+                        }
                     ]
                 },
                 {
@@ -34,6 +58,28 @@
                     "alternativeAnswers": [
                         "Mir geht es gut, und dir?",
                         "Mir gehts gut und dir"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Mir geht es",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "bem",
+                            "translation": "gut",
+                            "audio": "bem"
+                        },
+                        {
+                            "text": "e",
+                            "translation": "und",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "tu",
+                            "translation": "dir",
+                            "audio": "tu"
+                        }
                     ]
                 },
                 {
@@ -47,7 +93,19 @@
                         "E tu?"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "E consigo"
+                    "audioText": "E consigo",
+                    "vocabulary": [
+                        {
+                            "text": "Und",
+                            "translation": "E",
+                            "audio": "E"
+                        },
+                        {
+                            "text": "Ihnen",
+                            "translation": "consigo",
+                            "audio": "consigo"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e5",
@@ -56,31 +114,76 @@
                     "correctAnswer": "Mehr oder weniger",
                     "alternativeAnswers": [
                         "Geht so"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Mais",
+                            "translation": "Mehr",
+                            "audio": "Mais"
+                        },
+                        {
+                            "text": "ou",
+                            "translation": "oder",
+                            "audio": "ou"
+                        },
+                        {
+                            "text": "menos",
+                            "translation": "weniger",
+                            "audio": "menos"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l1_e6",
                     "type": "translate_to_pt",
                     "question": "Entschuldigung (um durchzugehen / Aufmerksamkeit)",
-                    "correctAnswer": "Com licença"
+                    "correctAnswer": "Com licença",
+                    "vocabulary": [
+                        {
+                            "text": "Entschuldigung",
+                            "translation": "Com licença",
+                            "audio": "Com licença"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e7",
                     "type": "translate_to_pt",
                     "question": "Entschuldigung (für einen Fehler - formell)",
-                    "correctAnswer": "Desculpe"
+                    "correctAnswer": "Desculpe",
+                    "vocabulary": [
+                        {
+                            "text": "Entschuldigung",
+                            "translation": "Desculpe",
+                            "audio": "Desculpe"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e8",
                     "type": "translate_to_pt",
                     "question": "Entschuldigung (für einen Fehler - informell)",
-                    "correctAnswer": "Desculpa"
+                    "correctAnswer": "Desculpa",
+                    "vocabulary": [
+                        {
+                            "text": "Entschuldigung",
+                            "translation": "Desculpa",
+                            "audio": "Desculpa"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e9",
                     "type": "translate_to_de",
                     "question": "Sinto muito",
-                    "correctAnswer": "Es tut mir leid"
+                    "correctAnswer": "Es tut mir leid",
+                    "vocabulary": [
+                        {
+                            "text": "Sinto muito",
+                            "translation": "Es tut mir leid",
+                            "audio": "Sinto muito"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e10",
@@ -93,7 +196,14 @@
                         "Não faz mal"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "Não faz mal"
+                    "audioText": "Não faz mal",
+                    "vocabulary": [
+                        {
+                            "text": "Das macht nichts",
+                            "translation": "Não faz mal",
+                            "audio": "Não faz mal"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e11_m",
@@ -103,6 +213,13 @@
                     "gender": "m",
                     "alternativeAnswers": [
                         "Willkommen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Seja bem-vindo",
+                            "translation": "Herzlich willkommen",
+                            "audio": "Seja bem-vindo"
+                        }
                     ]
                 },
                 {
@@ -113,13 +230,32 @@
                     "gender": "f",
                     "alternativeAnswers": [
                         "Willkommen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Seja bem-vinda",
+                            "translation": "Herzlich willkommen",
+                            "audio": "Seja bem-vinda"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l1_e13",
                     "type": "translate_to_pt",
                     "question": "Viel Glück",
-                    "correctAnswer": "Boa sorte"
+                    "correctAnswer": "Boa sorte",
+                    "vocabulary": [
+                        {
+                            "text": "Viel",
+                            "translation": "Boa",
+                            "audio": "Boa"
+                        },
+                        {
+                            "text": "Glück",
+                            "translation": "sorte",
+                            "audio": "sorte"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l1_e14",
@@ -129,13 +265,32 @@
                     "alternativeAnswers": [
                         "Natürlich",
                         "Selbstverständlich"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Com",
+                            "translation": "Mit",
+                            "audio": "Com"
+                        },
+                        {
+                            "text": "certeza",
+                            "translation": "Sicherheit (Sicher)",
+                            "audio": "certeza"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l1_e15",
                     "type": "translate_to_pt",
                     "question": "Vielleicht",
-                    "correctAnswer": "Talvez"
+                    "correctAnswer": "Talvez",
+                    "vocabulary": [
+                        {
+                            "text": "Vielleicht",
+                            "translation": "Talvez",
+                            "audio": "Talvez"
+                        }
+                    ]
                 }
             ]
         },
@@ -151,6 +306,23 @@
                     "alternativeAnswers": [
                         "Was ist das?",
                         "Was ist dies?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O que",
+                            "translation": "Was",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "é",
+                            "translation": "ist",
+                            "audio": "é"
+                        },
+                        {
+                            "text": "isto",
+                            "translation": "das",
+                            "audio": "isto"
+                        }
                     ]
                 },
                 {
@@ -160,6 +332,18 @@
                     "correctAnswer": "Quem é?",
                     "alternativeAnswers": [
                         "Quem é isso?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wer",
+                            "translation": "Quem",
+                            "audio": "Quem"
+                        },
+                        {
+                            "text": "ist",
+                            "translation": "é",
+                            "audio": "é"
+                        }
                     ]
                 },
                 {
@@ -173,7 +357,14 @@
                         "Onde?"
                     ],
                     "correctAnswerIndex": 2,
-                    "audioText": "Onde"
+                    "audioText": "Onde",
+                    "vocabulary": [
+                        {
+                            "text": "Wo",
+                            "translation": "Onde",
+                            "audio": "Onde"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l2_e4",
@@ -183,6 +374,23 @@
                     "alternativeAnswers": [
                         "Wo ist das Badezimmer?",
                         "Wo ist das Klo?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Onde",
+                            "translation": "Wo",
+                            "audio": "Onde"
+                        },
+                        {
+                            "text": "é",
+                            "translation": "ist",
+                            "audio": "é"
+                        },
+                        {
+                            "text": "a casa de banho",
+                            "translation": "die Toilette",
+                            "audio": "a casa de banho"
+                        }
                     ]
                 },
                 {
@@ -192,13 +400,32 @@
                     "correctAnswer": "Onde fica o hotel?",
                     "alternativeAnswers": [
                         "Onde é o hotel?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wo befindet sich",
+                            "translation": "Onde fica",
+                            "audio": "Onde fica"
+                        },
+                        {
+                            "text": "das Hotel",
+                            "translation": "o hotel",
+                            "audio": "o hotel"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l2_e6",
                     "type": "translate_to_pt",
                     "question": "Wann?",
-                    "correctAnswer": "Quando?"
+                    "correctAnswer": "Quando?",
+                    "vocabulary": [
+                        {
+                            "text": "Wann",
+                            "translation": "Quando",
+                            "audio": "Quando"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l2_e7",
@@ -207,6 +434,13 @@
                     "correctAnswer": "Warum",
                     "alternativeAnswers": [
                         "Wieso"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Porquê",
+                            "translation": "Warum",
+                            "audio": "Porquê"
+                        }
                     ]
                 },
                 {
@@ -216,6 +450,18 @@
                     "correctAnswer": "Quanto custa?",
                     "alternativeAnswers": [
                         "Quanto é?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wie viel",
+                            "translation": "Quanto",
+                            "audio": "Quanto"
+                        },
+                        {
+                            "text": "kostet",
+                            "translation": "custa",
+                            "audio": "custa"
+                        }
                     ]
                 },
                 {
@@ -229,7 +475,24 @@
                         "Onde é o problema?"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Qual é o problema"
+                    "audioText": "Qual é o problema",
+                    "vocabulary": [
+                        {
+                            "text": "Was",
+                            "translation": "Qual",
+                            "audio": "Qual"
+                        },
+                        {
+                            "text": "ist",
+                            "translation": "é",
+                            "audio": "é"
+                        },
+                        {
+                            "text": "das Problem",
+                            "translation": "o problema",
+                            "audio": "o problema"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l2_e10",
@@ -238,6 +501,18 @@
                     "correctAnswer": "Tens a certeza?",
                     "alternativeAnswers": [
                         "Tu tens a certeza?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Bist du",
+                            "translation": "Tens",
+                            "audio": "Tens"
+                        },
+                        {
+                            "text": "sicher",
+                            "translation": "a certeza",
+                            "audio": "a certeza"
+                        }
                     ]
                 },
                 {
@@ -248,6 +523,18 @@
                     "alternativeAnswers": [
                         "O senhor tem a certeza?",
                         "A senhora tem a certeza?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Sind Sie",
+                            "translation": "Tem",
+                            "audio": "Tem"
+                        },
+                        {
+                            "text": "sicher",
+                            "translation": "a certeza",
+                            "audio": "a certeza"
+                        }
                     ]
                 },
                 {
@@ -257,6 +544,18 @@
                     "correctAnswer": "Kann ich helfen",
                     "alternativeAnswers": [
                         "Darf ich helfen?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Posso",
+                            "translation": "Kann ich",
+                            "audio": "Posso"
+                        },
+                        {
+                            "text": "ajudar",
+                            "translation": "helfen",
+                            "audio": "ajudar"
+                        }
                     ]
                 },
                 {
@@ -266,6 +565,23 @@
                     "correctAnswer": "Podes ajudar-me?",
                     "alternativeAnswers": [
                         "Podes me ajudar?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Kannst du",
+                            "translation": "Podes",
+                            "audio": "Podes"
+                        },
+                        {
+                            "text": "helfen",
+                            "translation": "ajudar",
+                            "audio": "ajudar"
+                        },
+                        {
+                            "text": "mir",
+                            "translation": "me",
+                            "audio": "me"
+                        }
                     ]
                 },
                 {
@@ -275,6 +591,23 @@
                     "correctAnswer": "Pode ajudar-me?",
                     "alternativeAnswers": [
                         "Pode me ajudar?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Können Sie",
+                            "translation": "Pode",
+                            "audio": "Pode"
+                        },
+                        {
+                            "text": "helfen",
+                            "translation": "ajudar",
+                            "audio": "ajudar"
+                        },
+                        {
+                            "text": "mir",
+                            "translation": "me",
+                            "audio": "me"
+                        }
                     ]
                 },
                 {
@@ -288,7 +621,19 @@
                         "Quem és?"
                     ],
                     "correctAnswerIndex": 0,
-                    "audioText": "O que fazes"
+                    "audioText": "O que fazes",
+                    "vocabulary": [
+                        {
+                            "text": "Was",
+                            "translation": "O que",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "machst du",
+                            "translation": "fazes",
+                            "audio": "fazes"
+                        }
+                    ]
                 }
             ]
         },
@@ -304,6 +649,23 @@
                     "alternativeAnswers": [
                         "Ich verstehe das nicht",
                         "Ich kapiere es nicht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eu",
+                            "translation": "Ich",
+                            "audio": "Eu"
+                        },
+                        {
+                            "text": "não",
+                            "translation": "nicht",
+                            "audio": "não"
+                        },
+                        {
+                            "text": "percebo",
+                            "translation": "verstehe",
+                            "audio": "percebo"
+                        }
                     ]
                 },
                 {
@@ -315,6 +677,18 @@
                         "Percebo",
                         "Compreendo",
                         "Eu compreendo"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich",
+                            "translation": "Eu",
+                            "audio": "Eu"
+                        },
+                        {
+                            "text": "verstehe",
+                            "translation": "percebo",
+                            "audio": "percebo"
+                        }
                     ]
                 },
                 {
@@ -325,6 +699,23 @@
                     "alternativeAnswers": [
                         "Podes repetir, por favor?",
                         "Podes repetir?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Kannst du",
+                            "translation": "Podes",
+                            "audio": "Podes"
+                        },
+                        {
+                            "text": "wiederholen",
+                            "translation": "repetir",
+                            "audio": "repetir"
+                        },
+                        {
+                            "text": "bitte",
+                            "translation": "por favor",
+                            "audio": "por favor"
+                        }
                     ]
                 },
                 {
@@ -338,7 +729,24 @@
                         "Não percebo."
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Pode repetir por favor"
+                    "audioText": "Pode repetir por favor",
+                    "vocabulary": [
+                        {
+                            "text": "Können Sie",
+                            "translation": "Pode",
+                            "audio": "Pode"
+                        },
+                        {
+                            "text": "wiederholen",
+                            "translation": "repetir",
+                            "audio": "repetir"
+                        },
+                        {
+                            "text": "bitte",
+                            "translation": "por favor",
+                            "audio": "por favor"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e5",
@@ -347,13 +755,42 @@
                     "correctAnswer": "Sprechen Sie bitte langsamer",
                     "alternativeAnswers": [
                         "Sprechen Sie langsamer bitte"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Fale",
+                            "translation": "Sprechen Sie",
+                            "audio": "Fale"
+                        },
+                        {
+                            "text": "mais devagar",
+                            "translation": "langsamer",
+                            "audio": "mais devagar"
+                        },
+                        {
+                            "text": "por favor",
+                            "translation": "bitte",
+                            "audio": "por favor"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l3_e6",
                     "type": "translate_to_pt",
                     "question": "Sprich langsamer",
-                    "correctAnswer": "Fala mais devagar"
+                    "correctAnswer": "Fala mais devagar",
+                    "vocabulary": [
+                        {
+                            "text": "Sprich",
+                            "translation": "Fala",
+                            "audio": "Fala"
+                        },
+                        {
+                            "text": "langsamer",
+                            "translation": "mais devagar",
+                            "audio": "mais devagar"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e7",
@@ -362,13 +799,37 @@
                     "correctAnswer": "Ich weiß nicht",
                     "alternativeAnswers": [
                         "Ich weiß es nicht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Não",
+                            "translation": "nicht",
+                            "audio": "Não"
+                        },
+                        {
+                            "text": "sei",
+                            "translation": "Ich weiß",
+                            "audio": "sei"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l3_e8",
                     "type": "translate_to_pt",
                     "question": "Wie schreibt man das?",
-                    "correctAnswer": "Como se escreve?"
+                    "correctAnswer": "Como se escreve?",
+                    "vocabulary": [
+                        {
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "schreibt man",
+                            "translation": "se escreve",
+                            "audio": "se escreve"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e9",
@@ -378,6 +839,23 @@
                     "alternativeAnswers": [
                         "Was bedeutet dies?",
                         "Was heißt das?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O que",
+                            "translation": "Was",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "significa",
+                            "translation": "bedeutet",
+                            "audio": "significa"
+                        },
+                        {
+                            "text": "isto",
+                            "translation": "das",
+                            "audio": "isto"
+                        }
                     ]
                 },
                 {
@@ -387,6 +865,23 @@
                     "correctAnswer": "Como se diz Olá em português?",
                     "alternativeAnswers": [
                         "Como se diz 'Olá' em português?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "sagt man",
+                            "translation": "se diz",
+                            "audio": "se diz"
+                        },
+                        {
+                            "text": "auf Portugiesisch",
+                            "translation": "em português",
+                            "audio": "em português"
+                        }
                     ]
                 },
                 {
@@ -396,19 +891,75 @@
                     "correctAnswer": "Falo um pouco de português",
                     "alternativeAnswers": [
                         "Eu falo um pouco de português"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich spreche",
+                            "translation": "Falo",
+                            "audio": "Falo"
+                        },
+                        {
+                            "text": "ein bisschen",
+                            "translation": "um pouco de",
+                            "audio": "um pouco de"
+                        },
+                        {
+                            "text": "Portugiesisch",
+                            "translation": "português",
+                            "audio": "português"
+                        }
                     ]
                 },
                 {
                     "id": "u2_l3_e12",
                     "type": "translate_to_de",
                     "question": "Ele fala alemão",
-                    "correctAnswer": "Er spricht Deutsch"
+                    "correctAnswer": "Er spricht Deutsch",
+                    "vocabulary": [
+                        {
+                            "text": "Ele",
+                            "translation": "Er",
+                            "audio": "Ele"
+                        },
+                        {
+                            "text": "fala",
+                            "translation": "spricht",
+                            "audio": "fala"
+                        },
+                        {
+                            "text": "alemão",
+                            "translation": "Deutsch",
+                            "audio": "alemão"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e13",
                     "type": "translate_to_pt",
                     "question": "Sie spricht kein Englisch",
-                    "correctAnswer": "Ela não fala inglês"
+                    "correctAnswer": "Ela não fala inglês",
+                    "vocabulary": [
+                        {
+                            "text": "Sie",
+                            "translation": "Ela",
+                            "audio": "Ela"
+                        },
+                        {
+                            "text": "spricht",
+                            "translation": "fala",
+                            "audio": "fala"
+                        },
+                        {
+                            "text": "kein",
+                            "translation": "não",
+                            "audio": "não"
+                        },
+                        {
+                            "text": "Englisch",
+                            "translation": "inglês",
+                            "audio": "inglês"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e14",
@@ -422,13 +973,37 @@
                     ],
                     "correctAnswerIndex": 1,
                     "audioText": "A língua",
-                    "optionsLanguage": "pt"
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Die",
+                            "translation": "A",
+                            "audio": "A"
+                        },
+                        {
+                            "text": "Sprache",
+                            "translation": "língua",
+                            "audio": "língua"
+                        }
+                    ]
                 },
                 {
                     "id": "u2_l3_e15",
                     "type": "translate_to_de",
                     "question": "A palavra",
-                    "correctAnswer": "Das Wort"
+                    "correctAnswer": "Das Wort",
+                    "vocabulary": [
+                        {
+                            "text": "A",
+                            "translation": "Das",
+                            "audio": "A"
+                        },
+                        {
+                            "text": "palavra",
+                            "translation": "Wort",
+                            "audio": "palavra"
+                        }
+                    ]
                 }
             ]
         }

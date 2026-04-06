@@ -15,7 +15,7 @@ export function useUserProgress() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       // 1. Scores laden
       const savedScores = await AsyncStorage.getItem('lessonScores');
       setScores(savedScores ? JSON.parse(savedScores) : {});
@@ -32,15 +32,15 @@ export function useUserProgress() {
       // 4. Tagesfehler laden
       const dailyMistakesStr = await AsyncStorage.getItem('dailyMistakes');
       if (dailyMistakesStr) {
-          const data = JSON.parse(dailyMistakesStr);
-          const today = new Date().toDateString();
-          if (data.date === today) {
-              setMistakesCount(data.exercises.length);
-          } else {
-              setMistakesCount(0);
-          }
-      } else {
+        const data = JSON.parse(dailyMistakesStr);
+        const today = new Date().toDateString();
+        if (data.date === today) {
+          setMistakesCount(data.exercises.length);
+        } else {
           setMistakesCount(0);
+        }
+      } else {
+        setMistakesCount(0);
       }
 
     } catch (e) {
