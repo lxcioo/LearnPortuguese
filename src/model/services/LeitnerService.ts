@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import content from '../data/content';
 import { Exercise, VocabDatabase } from '../types';
 import { ProgressService } from './ProgressService';
 
@@ -6,6 +7,39 @@ const KEYS = {
     PRACTICE_SESSION: 'currentPracticeSession',
     GLOBAL_VOCAB: 'globalVocabDB',
 };
+
+// --- Hilfsfunktion: Veraltete Storage-Daten mit frischen JSON-Daten anreichern ---
+let _exerciseCache: Record<string, Exercise> | null = null;
+
+function getFreshExerciseMap(): Record<string, Exercise> {
+    if (_exerciseCache) return _exerciseCache;
+    _exerciseCache = {};
+
+    // Iteriere durch den statischen Content und baue ein Dictionary (Map) anhand der IDs auf
+    content.courses.forEach(course => {
+        course.units.forEach(unit => {
+            // HIER KORRIGIERT: 'levels' statt 'lessons'
+            unit.levels.forEach(level => {
+                level.exercises.forEach(ex => {
+                    if (_exerciseCache) {
+                        _exerciseCache[ex.id] = ex as Exercise;
+                    }
+                });
+            });
+        });
+    });
+    return _exerciseCache;
+}
+
+function enrichWithFreshData(exercises: Exercise[]): Exercise[] {
+    const freshMap = getFreshExerciseMap();
+    return exercises.map(ex => {
+        const freshData = freshMap[ex.id];
+        // Mergen: Frische Daten überschreiben alte Daten. 
+        // So wird das fehlende 'vocabulary'-Array aus den statischen Dateien hinzugefügt.
+        return freshData ? { ...ex, ...freshData } : ex;
+    });
+}
 
 // --- Dynamische Zeitfenster (Fuzzing) ----
 function getRandomNextDate(box: number): string {
@@ -120,9 +154,11 @@ export const LeitnerService = {
             if (!json) return [];
             const db: VocabDatabase = JSON.parse(json);
             const today = new Date().toISOString().split('T')[0];
-            return Object.values(db)
+            const exercises = Object.values(db)
                 .filter(e => e.lastPracticed === today && e.mistakesToday > 0)
                 .map(e => e.exerciseRef);
+
+            return enrichWithFreshData(exercises); // <-- Anreicherung hier
         } catch (e) { return []; }
     },
 
@@ -132,9 +168,11 @@ export const LeitnerService = {
             if (!json) return [];
             const db: VocabDatabase = JSON.parse(json);
             const nowISO = new Date().toISOString();
-            return Object.values(db)
+            const exercises = Object.values(db)
                 .filter(e => e.nextReviewDate <= nowISO && e.box >= 1)
                 .map(e => e.exerciseRef);
+
+            return enrichWithFreshData(exercises); // <-- Anreicherung hier
         } catch (e) { return []; }
     },
 
@@ -143,11 +181,13 @@ export const LeitnerService = {
             const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
             if (!json) return [];
             const db: VocabDatabase = JSON.parse(json);
-            return Object.values(db)
+            const exercises = Object.values(db)
                 .sort((a, b) => b.mistakeCount - a.mistakeCount)
                 .slice(0, 20)
                 .filter(e => e.mistakeCount > 0)
                 .map(e => e.exerciseRef);
+
+            return enrichWithFreshData(exercises); // <-- Anreicherung hier
         } catch (e) { return []; }
     },
 
@@ -175,9 +215,11 @@ export const LeitnerService = {
             const json = await AsyncStorage.getItem(KEYS.GLOBAL_VOCAB);
             if (!json) return [];
             const db: VocabDatabase = JSON.parse(json);
-            return Object.values(db)
+            const exercises = Object.values(db)
                 .filter(entry => entry.box === boxIndex)
                 .map(entry => entry.exerciseRef);
+
+            return enrichWithFreshData(exercises); // <-- Anreicherung hier
         } catch (e) {
             console.error("Fehler beim Laden der Box-Vokabeln", e);
             return [];

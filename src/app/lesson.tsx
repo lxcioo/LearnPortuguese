@@ -128,15 +128,22 @@ export default function LessonScreen() {
                 <Ionicons name="volume-medium" size={30} color="#58cc02" />
               </TouchableOpacity>
 
-              <InteractiveText
-                sentence={currentExercise.question}
-                // @ts-ignore (Damit TS nicht meckert, falls vocabulary noch nicht im globalen Type definiert wurde)
-                vocabulary={state.activeVocabulary}
-                exerciseId={currentExercise.id}
-                playAudio={actions.playAudio}
-                textColor={theme.text}
-                highlightColor="#58cc02" // Das blaue Theme passend zum Speaker-Button
-              />
+              {/* Bedingtes Rendern: Im Übungsmodus normales Text-Feld, sonst InteractiveText */}
+              {finishScreenData.isPractice ? (
+                <Text style={[styles.question, { color: theme.text }]}>
+                  {currentExercise.question}
+                </Text>
+              ) : (
+                <InteractiveText
+                  sentence={currentExercise.question}
+                  // @ts-ignore
+                  vocabulary={state.activeVocabulary}
+                  exerciseId={currentExercise.id}
+                  playAudio={actions.playAudio}
+                  textColor={theme.text}
+                  highlightColor="#58cc02"
+                />
+              )}
             </View>
 
             {viewProps.isTranslateExercise && (
