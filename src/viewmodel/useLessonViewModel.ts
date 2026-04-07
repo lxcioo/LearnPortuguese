@@ -25,6 +25,8 @@ export function useLessonViewModel() {
   const isTranslate = currentExercise?.type.includes('translate') ?? false;
   const isTranslateToPt = currentExercise?.type === 'translate_to_pt';
 
+  const isExam = lessonType === 'exam';
+
   const instructionText = isTranslate
     ? (isTranslateToPt ? 'Übersetze ins Portugiesische' : 'Übersetze ins Deutsche')
     : 'Wähle die richtige Lösung';
@@ -56,6 +58,7 @@ export function useLessonViewModel() {
       instructionText,
       placeholderText,
       isCheckButtonDisabled,
+      isExam,
     },
     // Data for the feedback modal
     feedback: {

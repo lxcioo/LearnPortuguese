@@ -128,8 +128,8 @@ export default function LessonScreen() {
                 <Ionicons name="volume-medium" size={30} color="#58cc02" />
               </TouchableOpacity>
 
-              {/* Bedingtes Rendern: Im Übungsmodus normales Text-Feld, sonst InteractiveText */}
-              {finishScreenData.isPractice ? (
+              {/* Bedingtes Rendern: Im Übungsmodus oder Exam normales Text-Feld, sonst InteractiveText */}
+              {finishScreenData.isPractice || viewProps.isExam ? (
                 <Text style={[styles.question, { color: theme.text }]}>
                   {currentExercise.question}
                 </Text>
