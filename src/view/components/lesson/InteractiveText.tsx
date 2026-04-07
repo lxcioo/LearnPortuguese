@@ -26,8 +26,10 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     const currentFontSize = fontSize || 26;
     const currentLineHeight = currentFontSize * 1.4;
-    const wordSpacing = currentFontSize * 0.22;
-    const lineSpacing = currentFontSize * 0.3;
+
+    // Math.round verhindert Sub-Pixel-Fehler beim Rendering in React Native
+    const wordSpacing = Math.round(currentFontSize * 0.25);
+    const lineSpacing = Math.round(currentFontSize * 0.3);
 
     if (!vocabulary || vocabulary.length === 0) {
         return (
@@ -57,17 +59,17 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
 
     const sortedVocab = mappedVocab.sort((a, b) => b.searchStr.length - a.searchStr.length);
 
-    // NEU: Wir definieren alle Buchstaben, die zu einem Wort gehören können (inkl. Umlaute & PT-Zeichen).
     const wordChars = 'a-zA-Z0-9_äöüßÄÖÜáàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ';
 
     sortedVocab.forEach((vocab, vIndex) => {
-        // Die Regex prüft jetzt, ob VOR und NACH dem gesuchten Wort ein "Nicht-Wort-Zeichen" steht.
-        // So wird "Tag" in "Nachmittag" sofort aussortiert, weil das "t" von "mit" ein Buchstabe ist.
         const regex = new RegExp(`(^|[^${wordChars}])(${escapeRegExp(vocab.searchStr)})(?![${wordChars}])`, 'gi');
 
         markedText = markedText.replace(regex, (match, p1, p2) => {
-            const safeMatch = p2.replace(/\s/g, '@@@');
-            return `${p1}___V${vIndex}---${safeMatch}___`;
+            // Wir verstecken das Leerzeichen und nutzen WXYZ statt Sonderzeichen.
+            // Da WXYZ aus "Wort-Buchstaben" besteht, wird dieser Block absolut sicher 
+            // vor späteren versehentlichen Regex-Überschreibungen geschützt.
+            const safeMatch = p2.replace(/\s/g, 'QWERT');
+            return `${p1}WXYZ${vIndex}WXYZ${safeMatch}WXYZ`;
         });
     });
 
@@ -87,23 +89,25 @@ export function InteractiveText({ sentence, vocabulary, exerciseId, playAudio, t
     };
 
     return (
-        <View style={[styles.container, { columnGap: wordSpacing, rowGap: lineSpacing }]}>
+        <View style={styles.container}>
             {rawWords.map((rawWord, index) => {
-                const parts = rawWord.split(/(___V\d+---.*?___)/).filter(p => p !== '');
+                const parts = rawWord.split(/(WXYZ\d+WXYZ.*?WXYZ)/).filter(p => p !== '');
 
                 const isBlockActive = parts.some(p => {
-                    const match = p.match(/^___V(\d+)---(.*?)___$/);
+                    const match = p.match(/^WXYZ(\d+)WXYZ(.*?)WXYZ$/);
                     return match && activeVocabId === `v_${match[1]}`;
                 });
 
                 return (
-                    <View key={`word-${index}`} style={[styles.wordBlock, { zIndex: isBlockActive ? 100 : 1 }]}>
+                    // FIX: Die Abstände sind jetzt als Margin direkt am Wort (marginRight / marginBottom)
+                    // Dadurch berechnet der FlexWrap den Platzfehlerfrei und bricht kleine Wörter wie "E tu" nicht um!
+                    <View key={`word-${index}`} style={[styles.wordBlock, { zIndex: isBlockActive ? 100 : 1, marginRight: wordSpacing, marginBottom: lineSpacing }]}>
                         {parts.map((part, pIdx) => {
-                            const match = part.match(/^___V(\d+)---(.*?)___$/);
+                            const match = part.match(/^WXYZ(\d+)WXYZ(.*?)WXYZ$/);
 
                             if (match) {
                                 const vIndex = parseInt(match[1]);
-                                const originalText = match[2].replace(/@@@/g, ' ');
+                                const originalText = match[2].replace(/QWERT/g, ' ');
                                 const vocabItem = sortedVocab[vIndex];
                                 const exactId = `v_${vIndex}`;
                                 const isActive = activeVocabId === exactId;
@@ -161,6 +165,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        // HIER KEIN rowGap UND columnGap MEHR!
     },
     wordBlock: {
         flexDirection: 'row',
