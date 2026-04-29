@@ -2,7 +2,6 @@ import { DiscordService } from '@/src/model/services/DiscordService';
 import { CustomAlert } from '@/src/view/components/CustomAlert';
 import { FeedbackModal } from '@/src/view/components/lesson/FeedbackModal';
 import { FinishScreen } from '@/src/view/components/lesson/FinishScreen';
-import { InteractiveText } from '@/src/view/components/lesson/InteractiveText';
 import { ReportModal } from '@/src/view/components/lesson/ReportModal';
 import { useLessonViewModel } from '@/src/viewmodel/useLessonViewModel';
 import { Ionicons } from '@expo/vector-icons';
@@ -128,7 +127,12 @@ export default function LessonScreen() {
                 <Ionicons name="volume-medium" size={30} color="#58cc02" />
               </TouchableOpacity>
 
-              {/* Bedingtes Rendern: Im Übungsmodus oder Exam normales Text-Feld, sonst InteractiveText */}
+              {/* Vokabel-Hilfe während der Aufgabe vorerst deaktiviert, daher immer normalen Text anzeigen */}
+              <Text style={[styles.question, { color: theme.text }]}>
+                {currentExercise.question}
+              </Text>
+
+              {/* Ursprüngliche Logik mit InteractiveText für die Zukunft aufgehoben:
               {finishScreenData.isPractice || viewProps.isExam ? (
                 <Text style={[styles.question, { color: theme.text }]}>
                   {currentExercise.question}
@@ -144,6 +148,7 @@ export default function LessonScreen() {
                   highlightColor="#58cc02"
                 />
               )}
+              */}
             </View>
 
             {viewProps.isTranslateExercise && (

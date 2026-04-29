@@ -107,8 +107,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
       }
 
       // Vokabeln laden
-      const seen = await ProgressService.getSeenVocabulary();
-      setSeenVocabGlobal(seen);
+      // const seen = await ProgressService.getSeenVocabulary();
+      // setSeenVocabGlobal(seen);
 
       setLessonQueue(filtered);
       setTotalQuestions(filtered.length);
@@ -119,7 +119,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
   }, [lessonId, lessonType, gender]);
 
   // NEUER VOKABEL-FILTER
-  useEffect(() => {
+  /* useEffect(() => {
     if (loading || !lessonQueue[currentExerciseIndex]) return;
 
     const currentEx = lessonQueue[currentExerciseIndex];
@@ -159,6 +159,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
       ProgressService.saveNewVocabulary(newWordsToSave);
     }
   }, [currentExerciseIndex, loading, lessonQueue]);
+  */
 
   const currentExercise = lessonQueue[currentExerciseIndex];
 
