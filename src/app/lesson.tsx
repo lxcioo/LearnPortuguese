@@ -185,7 +185,7 @@ export default function LessonScreen() {
       </KeyboardAvoidingView>
 
       <FeedbackModal
-        isVisible={feedback.show}
+        isVisible={feedback.show && !showReportModal}
         isCorrect={feedback.isCorrect}
         solutionData={feedback.solutionData}
         onContinue={actions.nextExercise}
