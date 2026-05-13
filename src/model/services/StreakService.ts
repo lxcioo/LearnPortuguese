@@ -7,6 +7,14 @@ const KEYS = {
     STREAK_DATA: 'streakData',
 };
 
+// Hilfsfunktion: Gibt das Datum immer als YYYY-MM-DD in der LOKALEN Zeitzone zurück
+const getLocalDateString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+
 export const StreakService = {
     async checkAndRepairStreak(): Promise<StreakData> {
         try {
@@ -38,7 +46,7 @@ export const StreakService = {
 
                 while (daysToCover > 0 && streakData.streakOnIceCount > 0) {
                     streakData.streakOnIceCount--;
-                    const dateStr = currentDateToFill.toISOString().split('T')[0];
+                    const dateStr = getLocalDateString(currentDateToFill);
                     streakData.history[dateStr] = 'frozen';
                     streakData.lastStreakDate = dateStr;
                     currentDateToFill.setDate(currentDateToFill.getDate() + 1);
@@ -60,7 +68,7 @@ export const StreakService = {
     async updateStreak(forceComplete: boolean = false) {
         try {
             const todayObj = new Date();
-            const todayStr = todayObj.toISOString().split('T')[0];
+            const todayStr = getLocalDateString(todayObj);
             const todayDateString = todayObj.toDateString();
 
             const dailyProgressStr = await AsyncStorage.getItem(KEYS.DAILY_PROGRESS);
@@ -110,7 +118,7 @@ export const StreakService = {
             const json = await AsyncStorage.getItem(KEYS.STREAK_DATA);
             if (!json) return false;
             const streakData: StreakData = JSON.parse(json);
-            const todayStr = new Date().toISOString().split('T')[0];
+            const todayStr = getLocalDateString(new Date());
             return streakData.history?.[todayStr] === 'learned';
         } catch (e) { return false; }
     },
