@@ -550,14 +550,14 @@
                     "id": "u5_l3_e6",
                     "type": "translate_to_de",
                     "question": "Chato",
-                    "correctAnswer": "Langweilig",
+                    "correctAnswer": "Genervt",
                     "alternativeAnswers": [
                         "Nervig"
                     ],
                     "vocabulary": [
                         {
                             "text": "Chato",
-                            "translation": "Langweilig",
+                            "translation": "Genervt",
                             "audio": "Chato"
                         }
                     ]
@@ -592,19 +592,19 @@
                     "id": "u5_l3_e9",
                     "type": "multiple_choice",
                     "question": "Was ist das Gegenteil von faul?",
-                    "correctAnswer": "Trabalhador",
+                    "correctAnswer": "Esforçado",
                     "options": [
                         "Nervoso",
-                        "Trabalhador",
+                        "Esforçado",
                         "Triste"
                     ],
                     "correctAnswerIndex": 1,
-                    "audioText": "Trabalhador",
+                    "audioText": "Esforçado",
                     "vocabulary": [
                         {
                             "text": "Das Gegenteil von faul",
-                            "translation": "Trabalhador",
-                            "audio": "Trabalhador"
+                            "translation": "Esforçado",
+                            "audio": "Esforçado"
                         }
                     ]
                 },
@@ -612,12 +612,12 @@
                     "id": "u5_l3_e10",
                     "type": "translate_to_pt",
                     "question": "Fleißig",
-                    "correctAnswer": "Trabalhador",
+                    "correctAnswer": "Esforçado",
                     "vocabulary": [
                         {
                             "text": "Fleißig",
-                            "translation": "Trabalhador",
-                            "audio": "Trabalhador"
+                            "translation": "Esforçado",
+                            "audio": "Esforçado"
                         }
                     ]
                 },
