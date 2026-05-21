@@ -42,7 +42,12 @@ const checkWithAI = async (userInput: string, correctAnswer: string): Promise<bo
   }, 10000);
 
   try {
-    const apiKey = "AIzaSyBSRm18zqlyecZpo8-cSyW2326urAbdIxM".trim();
+    const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY?.trim() || "";
+
+    if (!apiKey) {
+      console.error("Fehler: API-Key fehlt in der .env Datei!");
+      return false;
+    }
     const prompt = `Du bist ein strenger, aber fairer Lehrer für europäisches Portugiesisch. Der Schüler hat "${userInput}" geschrieben. Die offizielle Musterlösung lautet "${correctAnswer}". Bedeutet die Eingabe des Schülers im Kontext faktisch das Gleiche und ist grammatikalisch vertretbar? Antworte AUSSCHLIESSLICH mit dem Wort "true" oder "false". Keine Erklärungen.`;
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
