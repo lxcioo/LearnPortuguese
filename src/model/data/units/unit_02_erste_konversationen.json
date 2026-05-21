@@ -861,10 +861,10 @@
                 {
                     "id": "u2_l3_e10",
                     "type": "translate_to_pt",
-                    "question": "Wie sagt man 'Hallo' auf Portugiesisch?",
-                    "correctAnswer": "Como se diz Olá em português?",
+                    "question": "Wie sagt man?",
+                    "correctAnswer": "Como se diz?",
                     "alternativeAnswers": [
-                        "Como se diz 'Olá' em português?"
+                        "Como se diz isso?"
                     ],
                     "vocabulary": [
                         {
