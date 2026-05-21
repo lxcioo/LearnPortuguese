@@ -671,7 +671,7 @@
                 {
                     "id": "u2_l3_e2",
                     "type": "translate_to_pt",
-                    "question": "Ich verstehe (PT-PT)",
+                    "question": "Ich verstehe",
                     "correctAnswer": "Eu percebo",
                     "alternativeAnswers": [
                         "Percebo",

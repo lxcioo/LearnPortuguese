@@ -154,10 +154,13 @@
                 {
                     "id": "u6_l1_e9",
                     "type": "translate_to_de",
-                    "question": "E meia",
-                    "correctAnswer": "Und halb",
+                    "question": "Cinco e meia",
+                    "correctAnswer": "Halb sechs",
                     "alternativeAnswers": [
-                        "Halb"
+                        "5 Uhr 30",
+                        "5 Uhr 30 Minuten",
+                        "5:30 Uhr",
+                        "5:30"
                     ],
                     "vocabulary": [
                         {
