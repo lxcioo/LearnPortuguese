@@ -51,6 +51,8 @@ export function useLessonViewModel() {
       selectedOption: logic.selectedOption,
       activeVocabulary: logic.activeVocabulary, // <--- GEFILTERT FÜR DEN SATZ
       fullVocabulary: currentExercise?.vocabulary || [], // <--- KOMPLETT (Neu)
+      isChecking: logic.isChecking,
+      isAIAccepted: logic.isAIAccepted,
     },
     // Pre-computed props for UI elements
     viewProps: {

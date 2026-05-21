@@ -28,7 +28,6 @@ import Toast from 'react-native-toast-message';
 // ==========================================
 // 2. VIEW
 // ==========================================
-// Die dumme View-Komponente, die nur noch Daten darstellt.
 export default function LessonScreen() {
   const { state, viewProps, feedback, finishScreenData, rating, actions, theme, isDarkMode } = useLessonViewModel();
   const navigation = useNavigation();
@@ -61,7 +60,7 @@ export default function LessonScreen() {
     width: `${progressWidth.value}%`
   }));
 
-  // 2. Fehler-Wackeln (ohne das Einfliegen)
+  // 2. Fehler-Wackeln
   useEffect(() => {
     if (feedback.show && !feedback.isCorrect) {
       shakeTranslateX.value = withSequence(
@@ -80,12 +79,11 @@ export default function LessonScreen() {
     ]
   }));
 
-  // --- NAVIGATION GUARD (View-spezifisch) ---
+  // --- NAVIGATION GUARD ---
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
       if (finishScreenData.isFinished || finishScreenData.isPractice) return;
       e.preventDefault();
-      // Anstatt Alert.alert zeigen wir unseren Custom Dialog:
       setConfirmExit({ visible: true, action: e.data.action });
     });
     return unsubscribe;
@@ -107,6 +105,9 @@ export default function LessonScreen() {
     />;
   }
 
+  // Überprüfen, ob der Button gerade blockiert werden soll
+  const isButtonDisabled = viewProps.isCheckButtonDisabled || state.isChecking;
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'bottom', 'left', 'right']}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.flex1}>
@@ -127,28 +128,9 @@ export default function LessonScreen() {
                 <Ionicons name="volume-medium" size={30} color="#58cc02" />
               </TouchableOpacity>
 
-              {/* Vokabel-Hilfe während der Aufgabe vorerst deaktiviert, daher immer normalen Text anzeigen */}
               <Text style={[styles.question, { color: theme.text }]}>
                 {currentExercise.question}
               </Text>
-
-              {/* Ursprüngliche Logik mit InteractiveText für die Zukunft aufgehoben:
-              {finishScreenData.isPractice || viewProps.isExam ? (
-                <Text style={[styles.question, { color: theme.text }]}>
-                  {currentExercise.question}
-                </Text>
-              ) : (
-                <InteractiveText
-                  sentence={currentExercise.question}
-                  // @ts-ignore
-                  vocabulary={state.activeVocabulary}
-                  exerciseId={currentExercise.id}
-                  playAudio={actions.playAudio}
-                  textColor={theme.text}
-                  highlightColor="#58cc02"
-                />
-              )}
-              */}
             </View>
 
             {viewProps.isTranslateExercise && (
@@ -178,8 +160,17 @@ export default function LessonScreen() {
         </ScrollView>
 
         <View style={[styles.footer, { borderColor: theme.cardBorder }]}>
-          <TouchableOpacity style={[styles.checkButton, viewProps.isCheckButtonDisabled && styles.disabledButton]} onPress={actions.checkAnswer} disabled={viewProps.isCheckButtonDisabled}>
-            <Text style={styles.checkButtonText}>ÜBERPRÜFEN</Text>
+          <TouchableOpacity
+            style={[styles.checkButton, isButtonDisabled && styles.disabledButton]}
+            onPress={actions.checkAnswer}
+            disabled={isButtonDisabled}
+          >
+            {/* Ladekreis anzeigen, wenn Gemini arbeitet, ansonsten normalen Text */}
+            {state.isChecking ? (
+              <ActivityIndicator size="small" color={isButtonDisabled ? "#999" : "#fff"} />
+            ) : (
+              <Text style={[styles.checkButtonText, isButtonDisabled && styles.disabledButtonText]}>ÜBERPRÜFEN</Text>
+            )}
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -188,6 +179,7 @@ export default function LessonScreen() {
         isVisible={feedback.show && !showReportModal}
         isCorrect={feedback.isCorrect}
         solutionData={feedback.solutionData}
+        isAIAccepted={state.isAIAccepted}
         onContinue={actions.nextExercise}
         onRate={actions.ratePractice}
         onPlayAudio={state.currentExercise ? () => actions.playAudio(state.currentExercise.id) : undefined}
@@ -207,7 +199,7 @@ export default function LessonScreen() {
         title="Lektion abbrechen?"
         message="Dein bisheriger Fortschritt in dieser Lektion geht verloren."
         primaryText="Verlassen"
-        primaryColor="#ea2b2b" // Rot für destruktive Aktion
+        primaryColor="#ea2b2b"
         showCancel={true}
         cancelText="Bleiben"
         onCancel={() => setConfirmExit({ visible: false, action: null })}
@@ -252,4 +244,5 @@ const styles = StyleSheet.create({
   checkButton: { backgroundColor: '#58cc02', padding: 16, borderRadius: 16, alignItems: 'center', width: '100%' },
   disabledButton: { backgroundColor: '#e5e5e5' },
   checkButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', textAlign: 'center' },
+  disabledButtonText: { color: '#999' },
 });

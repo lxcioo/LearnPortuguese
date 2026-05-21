@@ -1,9 +1,12 @@
 import content from '@/src/model/data/content';
+import { DiscordService } from '@/src/model/services/DiscordService';
 import { LeitnerService } from '@/src/model/services/LeitnerService';
 import { ProgressService } from '@/src/model/services/ProgressService';
 import { StreakService } from '@/src/model/services/StreakService';
 import { Course, Exercise, Unit } from '@/src/model/types/index';
 import * as Haptics from 'expo-haptics';
+import * as Network from 'expo-network';
+import Fuse from 'fuse.js';
 import { useCallback, useEffect, useState } from 'react';
 
 const courseData = content.courses[0] as Course;
@@ -28,8 +31,65 @@ const normalizeText = (str: string, removeArticle: boolean = false) => {
     .replace(/\s+/g, "");
 };
 
+// --- KI-FALLBACK FUNKTION (GOOGLE GEMINI 3.1 FLASH-LITE MIT 10s TIMEOUT) ---
+const checkWithAI = async (userInput: string, correctAnswer: string): Promise<boolean> => {
+  // 1. AbortController für den Timeout aufsetzen
+  const controller = new AbortController();
+
+  // 2. Timer starten: Nach exakt 10.000 Millisekunden (10 Sekunden) wird das Signal zum Abbruch gesendet
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 10000);
+
+  try {
+    const apiKey = "AIzaSyBSRm18zqlyecZpo8-cSyW2326urAbdIxM".trim();
+    const prompt = `Du bist ein strenger, aber fairer Lehrer für europäisches Portugiesisch. Der Schüler hat "${userInput}" geschrieben. Die offizielle Musterlösung lautet "${correctAnswer}". Bedeutet die Eingabe des Schülers im Kontext faktisch das Gleiche und ist grammatikalisch vertretbar? Antworte AUSSCHLIESSLICH mit dem Wort "true" oder "false". Keine Erklärungen.`;
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.1 }
+      }),
+      signal: controller.signal // 3. Hier übergeben wir das Abbruch-Signal an den fetch-Befehl
+    });
+
+    // 4. Wenn die Antwort rechtzeitig ankam, stoppen wir den 10s-Timer, damit er nicht im Hintergrund weiterläuft
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`API Fehler ${response.status}:`, errorText);
+      return false;
+    }
+
+    const data = await response.json();
+    const answerText = data.candidates[0].content.parts[0].text.toLowerCase();
+
+    return answerText.includes('true');
+  } catch (error: any) {
+    // Sicherstellen, dass der Timer auch bei einem Fehler aufgeräumt wird
+    clearTimeout(timeoutId);
+
+    // Prüfen, ob der Fehler unser eigener 10-Sekunden-Timeout war
+    if (error.name === 'AbortError') {
+      console.log("KI-Abfrage Timeout: Die Internetverbindung war zu langsam (>10s). Nutze Offline-Fallback.");
+    } else {
+      console.error("KI-Abfrage komplett fehlgeschlagen:", error);
+    }
+
+    return false; // Fallback auf normale Auswertung
+  }
+};
+
 export const useLessonLogic = (lessonId: string, lessonType: string, gender: string | null) => {
   const [loading, setLoading] = useState(true);
+  const [isChecking, setIsChecking] = useState(false);
   const [lessonQueue, setLessonQueue] = useState<Exercise[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -45,10 +105,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
   const [lessonError, setLessonError] = useState<string | null>(null);
 
   const isPractice = lessonId === 'practice';
-
-  // --- NEUE STATES FÜR VOKABELN ---
   const [seenVocabGlobal, setSeenVocabGlobal] = useState<Record<string, string>>({});
   const [activeVocabulary, setActiveVocabulary] = useState<any[]>([]);
+
+  const [isAIAccepted, setIsAIAccepted] = useState(false);
 
   useEffect(() => {
     const fetchExercises = async () => {
@@ -70,12 +130,10 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         }
       }
 
-      // 1. Nach Geschlecht filtern
       let filtered = rawExercises.filter(ex =>
         !ex.gender || !gender || gender === 'd' || ex.gender === gender
       );
 
-      // Übungsbereich zufällig umdrehen
       if (isPractice) {
         filtered = filtered.map(ex => {
           if (ex.type.includes('translate') && Math.random() > 0.5) {
@@ -96,7 +154,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         });
       }
 
-      // Prüfungslogik (Mischen & Limitieren)
       if (lessonType === 'exam') {
         for (let i = filtered.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -106,10 +163,6 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         if (filtered.length === 0) setLessonError("Keine Übungen gefunden!");
       }
 
-      // Vokabeln laden
-      // const seen = await ProgressService.getSeenVocabulary();
-      // setSeenVocabGlobal(seen);
-
       setLessonQueue(filtered);
       setTotalQuestions(filtered.length);
       setLoading(false);
@@ -118,72 +171,70 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     fetchExercises();
   }, [lessonId, lessonType, gender]);
 
-  // NEUER VOKABEL-FILTER
-  /* useEffect(() => {
-    if (loading || !lessonQueue[currentExerciseIndex]) return;
-
-    const currentEx = lessonQueue[currentExerciseIndex];
-
-    if (!currentEx.vocabulary || currentEx.vocabulary.length === 0) {
-      setActiveVocabulary([]);
-      return;
-    }
-
-    const newActiveVocab: any[] = [];
-    const newWordsToSave: Record<string, string> = {};
-
-    currentEx.vocabulary.forEach(v => {
-      // 1. Wir machen beide Wörter klein und entfernen Leerzeichen
-      const w1 = v.text.toLowerCase().trim();
-      const w2 = v.translation.toLowerCase().trim();
-
-      // 2. Wir sortieren sie alphabetisch und verbinden sie.
-      // So wird aus "Até" + "Bis" IMMER "até_bis", egal in welcher Reihenfolge!
-      const key = [w1, w2].sort().join('_');
-
-      if (!seenVocabGlobal[key]) {
-        // Fall 1: Diese Wortkombination ist KOMPLETT NEU
-        newActiveVocab.push(v);
-        newWordsToSave[key] = currentEx.id;
-      } else if (seenVocabGlobal[key] === currentEx.id) {
-        // Fall 2: Kombination ist bekannt, und wir sind in der URSPRUNGS-ÜBUNG
-        newActiveVocab.push(v);
-      }
-      // Fall 3: Kombination ist bekannt und aus einer anderen Übung -> ignorieren!
-    });
-
-    setActiveVocabulary(newActiveVocab);
-
-    if (Object.keys(newWordsToSave).length > 0) {
-      setSeenVocabGlobal(prev => ({ ...prev, ...newWordsToSave }));
-      ProgressService.saveNewVocabulary(newWordsToSave);
-    }
-  }, [currentExerciseIndex, loading, lessonQueue]);
-  */
-
+  // HIER WAR DER FEHLER: Diese Zeile hat in der letzten Version gefehlt!
   const currentExercise = lessonQueue[currentExerciseIndex];
 
-  const checkAnswer = (playAudio: (id: string) => void) => {
-    if (!currentExercise) return;
+  const checkAnswer = async (playAudio: (id: string) => void) => {
+    if (!currentExercise || isChecking) return;
 
+    setIsChecking(true);
     let correct = false;
 
     if (currentExercise.type.includes('translate')) {
       const inputNorm = normalizeText(userInput);
       const answerNorm = normalizeText(currentExercise.correctAnswer);
-      const isAlt = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt) === inputNorm);
+      const altAnswers = currentExercise.alternativeAnswers || [];
 
-      if (inputNorm === answerNorm || isAlt) correct = true;
-      else {
+      // --- STUFE 1: Exakter Match (mit Typisierung 'a: string') ---
+      const exactMatches = [answerNorm, ...altAnswers.map((a: string) => normalizeText(a))];
+      if (exactMatches.includes(inputNorm)) {
+        correct = true;
+      } else {
         const inputSoft = normalizeText(userInput, true);
-        const answerSoft = normalizeText(currentExercise.correctAnswer, true);
-        const isAltSoft = currentExercise.alternativeAnswers?.some(alt => normalizeText(alt, true) === inputSoft);
-        if (inputSoft === answerSoft || isAltSoft) correct = true;
+        const softMatches = [
+          normalizeText(currentExercise.correctAnswer, true),
+          ...altAnswers.map((a: string) => normalizeText(a, true))
+        ];
+        if (softMatches.includes(inputSoft)) {
+          correct = true;
+        } else {
+          // --- STUFE 2: Fuzzy Matching (Tippfehler verzeihen, offline) ---
+          const validOptions = [currentExercise.correctAnswer, ...altAnswers].map(text => ({ text: normalizeText(text) }));
+          const fuse = new Fuse(validOptions, {
+            keys: ['text'],
+            includeScore: true,
+            threshold: 0.25,
+          });
+
+          const results = fuse.search(inputNorm);
+          if (results.length > 0 && results[0].score !== undefined && results[0].score <= 0.25) {
+            correct = true;
+          } else {
+            // --- STUFE 3: KI Fallback (Synonyme, online) ---
+            const networkState = await Network.getNetworkStateAsync();
+            if (networkState.isConnected && networkState.isInternetReachable) {
+              console.log("Stufe 1 & 2 fehlgeschlagen. Frage KI...");
+              correct = await checkWithAI(userInput, currentExercise.correctAnswer);
+
+              if (correct) {
+                // 1. Wir merken uns für das UI, dass die KI diese Antwort gerettet hat
+                setIsAIAccepted(true);
+
+                // 2. Wir feuern den Webhook im Hintergrund ab (ohne 'await', damit es nicht blockiert)
+                const discordMessage = `🤖 **KI hat alternative Antwort akzeptiert:**\n**Übung ID:** ${currentExercise.id}\n**Frage:** ${currentExercise.question}\n**Offizielle Lösung:** ${currentExercise.correctAnswer}\n**User Eingabe:** ${userInput}`;
+
+                DiscordService.sendFeedback("KI Auto-Approve", discordMessage)
+                  .catch(e => console.error("Discord Webhook Fehler:", e));
+              }
+            }
+          }
+        }
       }
     } else if (currentExercise.type === 'multiple_choice') {
       if (selectedOption === currentExercise.correctAnswerIndex) correct = true;
     }
 
+    // --- ERGEBNIS VERARBEITEN ---
     setIsCorrect(correct);
     setShowFeedback(true);
 
@@ -217,6 +268,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
         LeitnerService.trackResult(currentExercise, false, 'practice');
       }
     }
+
+    setIsChecking(false);
   };
 
   const ratePractice = (boxRating: number) => {
@@ -229,6 +282,7 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     setShowFeedback(false);
     setUserInput('');
     setSelectedOption(null);
+    setIsAIAccepted(false);
     if (currentExerciseIndex < lessonQueue.length - 1) {
       setCurrentExerciseIndex(prev => prev + 1);
     } else {
@@ -296,6 +350,8 @@ export const useLessonLogic = (lessonId: string, lessonType: string, gender: str
     showFeedback, isCorrect, isLessonFinished, earnedStars,
     checkAnswer, nextExercise, ratePractice, isPractice,
     getSolutionData, lessonError, setLessonError,
-    activeVocabulary // Gefiltertes Array wird zurückgegeben
+    activeVocabulary,
+    isChecking,
+    isAIAccepted,
   };
 };

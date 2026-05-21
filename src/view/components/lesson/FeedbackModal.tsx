@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { InteractiveText } from './InteractiveText'; // <--- IMPORT hinzugefügt
+import { InteractiveText } from './InteractiveText';
 
 type RatingButton = {
   box: number;
@@ -34,14 +34,15 @@ type FeedbackModalProps = {
   isDarkMode: boolean;
   animatedStyle: any;
 
-  // --- NEUE PROPS FÜR INTERACTIVE TEXT ---
   vocabulary?: any[];
   exerciseId?: string;
   playAudioById?: (id: string) => void;
+
+  isAIAccepted?: boolean; // Perfekt, hier ist deine Prop!
 };
 
 export function FeedbackModal({
-  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, onReportClick, rating, theme, isDarkMode, animatedStyle, vocabulary, exerciseId, playAudioById
+  isVisible, isCorrect, solutionData, onContinue, onRate, onPlayAudio, onReportClick, rating, theme, isDarkMode, animatedStyle, vocabulary, exerciseId, playAudioById, isAIAccepted
 }: FeedbackModalProps) {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -59,8 +60,23 @@ export function FeedbackModal({
               </TouchableOpacity>
             )}
           </View>
+
+          {/* --- NEU: HIER IST DER KI HINWEIS --- */}
+          {isAIAccepted && (
+            <View style={[styles.aiHintContainer, { backgroundColor: isDarkMode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.4)' }]}>
+              <Text style={[styles.aiHintText, { color: theme.feedbackText }]}>
+                ✨ Sinngemäß richtig! Die offizielle Musterlösung lautet:
+              </Text>
+            </View>
+          )}
+          {/* ---------------------------------- */}
+
           <View style={styles.marginBottom20}>
-            <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
+            {/* Wir verstecken das normale "Lösung:", wenn die KI schon ihren Text anzeigt, das sieht sauberer aus */}
+            {!isAIAccepted && (
+              <Text style={[styles.feedbackSubtitle, { color: theme.subText }]}>Lösung:</Text>
+            )}
+
             <View style={styles.solutionRow}>
               {onPlayAudio && (
                 <TouchableOpacity style={[styles.speakerButton, { backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }]} onPress={onPlayAudio}>
@@ -68,8 +84,6 @@ export function FeedbackModal({
                 </TouchableOpacity>
               )}
               <View style={styles.solutionTextCol}>
-
-                {/* --- INTERACTIVE TEXT EINGEBAUT --- */}
                 {vocabulary && vocabulary.length > 0 && exerciseId && playAudioById ? (
                   <View style={{ marginBottom: 2 }}>
                     <InteractiveText
@@ -78,15 +92,13 @@ export function FeedbackModal({
                       exerciseId={exerciseId}
                       playAudio={playAudioById}
                       textColor={theme.feedbackText}
-                      highlightColor={theme.feedbackText} // Die Farbe des Pop-ups passt sich dem Erfolg/Fehler an
-                      fontSize={20} // Die kleinere Schriftgröße für das Modal
+                      highlightColor={theme.feedbackText}
+                      fontSize={20}
                     />
                   </View>
                 ) : (
                   <Text style={[styles.feedbackSolutionPt, { color: theme.feedbackText }]}>{solutionData.pt}</Text>
                 )}
-                {/* ---------------------------------- */}
-
                 <Text style={[styles.feedbackSolutionDe, { color: theme.subText }]}>{solutionData.de}</Text>
               </View>
             </View>
@@ -120,6 +132,12 @@ const styles = StyleSheet.create({
   feedbackContainer: { padding: 24, paddingBottom: 40, borderTopLeftRadius: 24, borderTopRightRadius: 24 },
   titleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   feedbackTitle: { fontSize: 24, fontWeight: 'bold' },
+
+  // --- NEUE STYLES FÜR DEN KI HINWEIS ---
+  aiHintContainer: { padding: 10, borderRadius: 12, marginBottom: 10 },
+  aiHintText: { fontSize: 15, fontWeight: '600' },
+  // --------------------------------------
+
   feedbackSubtitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
   solutionRow: { flexDirection: 'row', alignItems: 'center' },
   speakerButton: { padding: 10, borderRadius: 14, marginRight: 12, justifyContent: 'center', alignItems: 'center' },
