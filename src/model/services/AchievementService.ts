@@ -3,18 +3,39 @@ import { Achievement, StreakData } from '../types';
 
 const ACHIEVEMENTS_KEY = 'userAchievements_v1';
 
-// Die isUnlocked und unlockedAt Felder lassen wir hier weg, da sie dynamisch befüllt werden
+// Aktualisierte und erweiterte Achievements mit Stufensystem
 const achievementDefinitions: Omit<Achievement, 'isUnlocked' | 'unlockedAt'>[] = [
+    // --- LEKTIONEN (Fortschritt) ---
     { id: 'les_1', title: 'Erste Schritte', description: '1 Lektion abgeschlossen.', icon: 'footsteps' },
     { id: 'les_10', title: 'Dranbleiber', description: '10 Lektionen abgeschlossen.', icon: 'bicycle' },
-    { id: 'les_30', title: 'Meister des Pfads', description: 'Alle 30 Lektionen abgeschlossen.', icon: 'airplane' },
-    { id: 'streak_7', title: 'Feuer & Flamme', description: '7-Tage-Lernserie.', icon: 'flame' },
-    { id: 'stars_90', title: 'Galaxie', description: 'Sammle alle 90 Sterne.', icon: 'sparkles' },
-    { id: 'exam_10', title: 'Meisterabschluss', description: 'Bestehe alle 10 Prüfungen.', icon: 'trophy' },
-    { id: 'perf_30', title: 'Makellos', description: 'Alle 30 Lektionen mit 3 Sternen.', icon: 'star' },
-    { id: 'mem_50', title: 'Elefantengedächtnis', description: 'Bringe 50 Wörter ins Langzeitgedächtnis.', icon: 'brain' },
-    { id: 'clean_slate', title: 'Weiße Weste', description: 'Lerne heute (min 30 Wörter) und korrigiere alle deine heutigen Fehler.', icon: 'checkmark-done-circle' },
-    { id: 'ice', title: 'Gerettet!', description: 'Nutze eine Eisflamme um deinen Streak zu retten.', icon: 'snow' }
+    { id: 'les_30', title: 'Halbzeit', description: '30 Lektionen abgeschlossen.', icon: 'map' },
+    { id: 'les_60', title: 'Meister des Pfads', description: 'Alle 60 Lektionen abgeschlossen.', icon: 'airplane' },
+
+    // --- STERNE & PERFEKTION (Qualität) ---
+    { id: 'stars_50', title: 'Sternensammler', description: 'Sammle 50 Sterne.', icon: 'star-half' },
+    { id: 'stars_100', title: 'Leuchtfeuer', description: 'Sammle 100 Sterne.', icon: 'star' },
+    { id: 'stars_180', title: 'Galaxie', description: 'Sammle alle 180 Sterne.', icon: 'sparkles' },
+    { id: 'perf_10', title: 'Streber', description: '10 Lektionen mit 3 Sternen abgeschlossen.', icon: 'medal' },
+    { id: 'perf_60', title: 'Makellos', description: 'Alle 60 Lektionen mit 3 Sternen abgeschlossen.', icon: 'trophy' },
+
+    // --- PRÜFUNGEN (Meilensteine) ---
+    { id: 'exam_1', title: 'Erster Test', description: 'Bestehe deine erste Prüfung.', icon: 'pencil' },
+    { id: 'exam_10', title: 'Halbzeit-Zeugnis', description: 'Bestehe 10 Prüfungen.', icon: 'school' },
+    { id: 'exam_20', title: 'Absolvent', description: 'Bestehe alle 20 Prüfungen.', icon: 'library' },
+
+    // --- STREAK (Konsistenz) ---
+    { id: 'streak_7', title: 'Feuer & Flamme', description: '7-Tage-Lernserie erreicht.', icon: 'flame' },
+    { id: 'streak_30', title: 'Gewohnheitstier', description: '30-Tage-Lernserie erreicht.', icon: 'calendar' },
+    { id: 'streak_100', title: 'Unaufhaltsam', description: '100-Tage-Lernserie erreicht.', icon: 'bonfire' },
+
+    // --- LANGZEITGEDÄCHTNIS (Leitner Box 4) ---
+    { id: 'mem_50', title: 'Gutes Gedächtnis', description: '50 Wörter dauerhaft gemerkt.', icon: 'book' },
+    { id: 'mem_200', title: 'Elefantengedächtnis', description: '200 Wörter dauerhaft gemerkt.', icon: 'brain' },
+    { id: 'mem_500', title: 'Wandelndes Lexikon', description: '500 Wörter dauerhaft gemerkt.', icon: 'language' },
+
+    // --- SPEZIAL (Besondere Ereignisse) ---
+    { id: 'clean_slate', title: 'Weiße Weste', description: 'Lerne heute (min. 30 Wörter) und korrigiere alle Fehler.', icon: 'checkmark-done-circle' },
+    { id: 'ice', title: 'Gerettet!', description: 'Nutze eine Eisflamme, um deinen Streak zu retten.', icon: 'snow' }
 ];
 
 export interface AchievementStats {
@@ -29,24 +50,52 @@ export interface AchievementStats {
 }
 
 export const AchievementService = {
-    // NEU: Asynchrone Funktion, die auch den Speicher (AsyncStorage) abfragt
     async loadAchievements(stats: AchievementStats): Promise<Achievement[]> {
         try {
-            // 1. Gespeicherte Freischalt-Daten abrufen (z.B. { "les_1": "12.04.2026" })
+            // 1. Gespeicherte Freischalt-Daten abrufen
             const savedDatesJson = await AsyncStorage.getItem(ACHIEVEMENTS_KEY);
             let unlockedDates: Record<string, string> = savedDatesJson ? JSON.parse(savedDatesJson) : {};
 
             const usedIce = stats.streakData ? Object.values(stats.streakData.history || {}).includes('frozen') : false;
 
-            // 2. Aktuelle Bedingungen prüfen
+            // 2. Aktualisierte Bedingungen prüfen
             const unlockConditions: { [key: string]: boolean } = {
-                'les_1': stats.completedLessonsCount >= 1, 'les_10': stats.completedLessonsCount >= 10, 'les_30': stats.completedLessonsCount >= 30,
-                'streak_7': stats.streak >= 7, 'stars_90': stats.totalStars >= 90, 'exam_10': stats.passedExamsCount >= 10,
-                'perf_30': stats.threeStarLessonsCount >= 30, 'mem_50': stats.longTermMemoryCount >= 50, 'clean_slate': stats.hasCleanSlate, 'ice': usedIce,
+                // Lektionen
+                'les_1': stats.completedLessonsCount >= 1,
+                'les_10': stats.completedLessonsCount >= 10,
+                'les_30': stats.completedLessonsCount >= 30,
+                'les_60': stats.completedLessonsCount >= 60,
+
+                // Sterne
+                'stars_50': stats.totalStars >= 50,
+                'stars_100': stats.totalStars >= 100,
+                'stars_180': stats.totalStars >= 180,
+
+                // Perfektion
+                'perf_10': stats.threeStarLessonsCount >= 10,
+                'perf_60': stats.threeStarLessonsCount >= 60,
+
+                // Prüfungen
+                'exam_1': stats.passedExamsCount >= 1,
+                'exam_10': stats.passedExamsCount >= 10,
+                'exam_20': stats.passedExamsCount >= 20,
+
+                // Streak
+                'streak_7': stats.streak >= 7,
+                'streak_30': stats.streak >= 30,
+                'streak_100': stats.streak >= 100,
+
+                // Gedächtnis
+                'mem_50': stats.longTermMemoryCount >= 50,
+                'mem_200': stats.longTermMemoryCount >= 200,
+                'mem_500': stats.longTermMemoryCount >= 500,
+
+                // Spezial
+                'clean_slate': stats.hasCleanSlate,
+                'ice': usedIce,
             };
 
             let hasChanges = false;
-            // Deutsches Datumsformat (z.B. 12.04.2026)
             const todayStr = new Date().toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
             // 3. Errungenschaften zusammenbauen
@@ -54,7 +103,7 @@ export const AchievementService = {
                 const isUnlockedNow = unlockConditions[def.id] || false;
                 let unlockedAt = unlockedDates[def.id];
 
-                // Wenn es JETZT freigeschaltet ist, aber noch kein Datum hat -> Neues Datum vergeben!
+                // Wenn es JETZT freigeschaltet ist, aber noch kein Datum hat -> Neues Datum vergeben
                 if (isUnlockedNow && !unlockedAt) {
                     unlockedAt = todayStr;
                     unlockedDates[def.id] = unlockedAt;
