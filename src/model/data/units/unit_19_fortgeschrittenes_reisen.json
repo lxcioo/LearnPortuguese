@@ -1,0 +1,820 @@
+{
+    "id": "unit_19",
+    "title": "Kapitel 19: Fortgeschrittenes Reisen",
+    "color": "#16a085",
+    "levels": [
+        {
+            "id": "u19_l1",
+            "title": "Am Flughafen & Flugreise",
+            "exercises": [
+                {
+                    "id": "u19_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O voo",
+                    "correctAnswer": "Der Flug",
+                    "vocabulary": [
+                        {
+                            "text": "O voo",
+                            "translation": "Der Flug",
+                            "audio": "O voo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Gate (Flugsteig)",
+                    "correctAnswer": "A porta de embarque",
+                    "vocabulary": [
+                        {
+                            "text": "Das Gate",
+                            "translation": "A porta de embarque",
+                            "audio": "A porta de embarque"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O cartão de embarque",
+                    "correctAnswer": "Die Bordkarte",
+                    "vocabulary": [
+                        {
+                            "text": "O cartão",
+                            "translation": "Die Karte",
+                            "audio": "O cartão"
+                        },
+                        {
+                            "text": "de embarque",
+                            "translation": "zum Einsteigen (Bord-)",
+                            "audio": "de embarque"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A bagagem'?",
+                    "correctAnswer": "Das Gepäck",
+                    "options": [
+                        "Das Ticket",
+                        "Das Gepäck",
+                        "Der Zoll"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A bagagem",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Das Gepäck",
+                            "translation": "A bagagem",
+                            "audio": "A bagagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Gepäckausgabe",
+                    "correctAnswer": "A recolha de bagagem",
+                    "vocabulary": [
+                        {
+                            "text": "Die Ausgabe (Abholung)",
+                            "translation": "A recolha",
+                            "audio": "A recolha"
+                        },
+                        {
+                            "text": "Gepäck",
+                            "translation": "de bagagem",
+                            "audio": "de bagagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A alfândega",
+                    "correctAnswer": "Der Zoll",
+                    "vocabulary": [
+                        {
+                            "text": "A alfândega",
+                            "translation": "Der Zoll",
+                            "audio": "A alfândega"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Flug hat Verspätung.",
+                    "correctAnswer": "O voo está atrasado.",
+                    "alternativeAnswers": [
+                        "O voo tem atraso."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Flug",
+                            "translation": "O voo",
+                            "audio": "O voo"
+                        },
+                        {
+                            "text": "hat Verspätung",
+                            "translation": "está atrasado",
+                            "audio": "está atrasado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Cancelado",
+                    "correctAnswer": "Storniert",
+                    "alternativeAnswers": [
+                        "Abgesagt"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Cancelado",
+                            "translation": "Storniert",
+                            "audio": "Cancelado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Der Zwischenstopp'?",
+                    "correctAnswer": "A escala",
+                    "options": [
+                        "A paragem",
+                        "A escala",
+                        "A chegada"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A escala",
+                    "vocabulary": [
+                        {
+                            "text": "Der Zwischenstopp",
+                            "translation": "A escala",
+                            "audio": "A escala"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Fluggesellschaft",
+                    "correctAnswer": "A companhia aérea",
+                    "vocabulary": [
+                        {
+                            "text": "Die Fluggesellschaft",
+                            "translation": "A companhia aérea",
+                            "audio": "A companhia aérea"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "O passaporte está caducado.",
+                    "correctAnswer": "Der Reisepass ist abgelaufen",
+                    "vocabulary": [
+                        {
+                            "text": "O passaporte",
+                            "translation": "Der Reisepass",
+                            "audio": "O passaporte"
+                        },
+                        {
+                            "text": "está caducado",
+                            "translation": "ist abgelaufen",
+                            "audio": "está caducado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Sitzplatz",
+                    "correctAnswer": "O assento",
+                    "alternativeAnswers": [
+                        "O lugar"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Sitzplatz",
+                            "translation": "O assento",
+                            "audio": "O assento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "À janela ou no corredor?",
+                    "correctAnswer": "Am Fenster oder am Gang",
+                    "vocabulary": [
+                        {
+                            "text": "À janela",
+                            "translation": "Am Fenster",
+                            "audio": "À janela"
+                        },
+                        {
+                            "text": "ou",
+                            "translation": "oder",
+                            "audio": "ou"
+                        },
+                        {
+                            "text": "no corredor",
+                            "translation": "am Gang",
+                            "audio": "no corredor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Den Sicherheitsgurt anschnallen",
+                    "correctAnswer": "Apertar o cinto de segurança",
+                    "alternativeAnswers": [
+                        "Aperte o cinto"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Anschnallen",
+                            "translation": "Apertar",
+                            "audio": "Apertar"
+                        },
+                        {
+                            "text": "den Sicherheitsgurt",
+                            "translation": "o cinto de segurança",
+                            "audio": "o cinto de segurança"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "Fazer o check-in",
+                    "correctAnswer": "Einchecken",
+                    "vocabulary": [
+                        {
+                            "text": "Fazer o check-in",
+                            "translation": "Einchecken",
+                            "audio": "Fazer o check-in"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u19_l2",
+            "title": "Autovermietung & Verkehr",
+            "exercises": [
+                {
+                    "id": "u19_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O rent-a-car",
+                    "correctAnswer": "Die Autovermietung",
+                    "vocabulary": [
+                        {
+                            "text": "O rent-a-car",
+                            "translation": "Die Autovermietung",
+                            "audio": "O rent-a-car"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Führerschein",
+                    "correctAnswer": "A carta de condução",
+                    "vocabulary": [
+                        {
+                            "text": "Der Führerschein",
+                            "translation": "A carta de condução",
+                            "audio": "A carta de condução"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "O seguro contra todos os riscos",
+                    "correctAnswer": "Die Vollkaskoversicherung",
+                    "alternativeAnswers": [
+                        "Versicherung gegen alle Risiken"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O seguro",
+                            "translation": "Die Versicherung",
+                            "audio": "O seguro"
+                        },
+                        {
+                            "text": "contra todos os riscos",
+                            "translation": "gegen alle Risiken",
+                            "audio": "contra todos os riscos"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bezahlt man auf portugiesischen Autobahnen?",
+                    "correctAnswer": "A portagem",
+                    "options": [
+                        "A passagem",
+                        "A portagem",
+                        "O imposto"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A portagem",
+                    "vocabulary": [
+                        {
+                            "text": "Die Maut",
+                            "translation": "A portagem",
+                            "audio": "A portagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Autobahn",
+                    "correctAnswer": "A autoestrada",
+                    "vocabulary": [
+                        {
+                            "text": "Die Autobahn",
+                            "translation": "A autoestrada",
+                            "audio": "A autoestrada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "A rotunda",
+                    "correctAnswer": "Der Kreisverkehr",
+                    "vocabulary": [
+                        {
+                            "text": "A rotunda",
+                            "translation": "Der Kreisverkehr",
+                            "audio": "A rotunda"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Tankstelle",
+                    "correctAnswer": "A bomba de gasolina",
+                    "alternativeAnswers": [
+                        "O posto de combustível"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Tankstelle",
+                            "translation": "A bomba de gasolina",
+                            "audio": "A bomba de gasolina"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Atestar o depósito, por favor.",
+                    "correctAnswer": "Bitte volltanken",
+                    "alternativeAnswers": [
+                        "Volltanken bitte",
+                        "Den Tank füllen, bitte."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Atestar",
+                            "translation": "Volltanken (Füllen)",
+                            "audio": "Atestar"
+                        },
+                        {
+                            "text": "o depósito",
+                            "translation": "den Tank",
+                            "audio": "o depósito"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e9",
+                    "type": "translate_to_pt",
+                    "question": "Die Panne",
+                    "correctAnswer": "A avaria",
+                    "vocabulary": [
+                        {
+                            "text": "Die Panne",
+                            "translation": "A avaria",
+                            "audio": "A avaria"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e10",
+                    "type": "translate_to_de",
+                    "question": "O pneu furado",
+                    "correctAnswer": "Der platte Reifen",
+                    "alternativeAnswers": [
+                        "Reifenpanne"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O pneu",
+                            "translation": "Der Reifen",
+                            "audio": "O pneu"
+                        },
+                        {
+                            "text": "furado",
+                            "translation": "platt (durchlöchert)",
+                            "audio": "furado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e11",
+                    "type": "translate_to_pt",
+                    "question": "Das Tempolimit",
+                    "correctAnswer": "O limite de velocidade",
+                    "vocabulary": [
+                        {
+                            "text": "Das Tempolimit",
+                            "translation": "O limite de velocidade",
+                            "audio": "O limite de velocidade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e12",
+                    "type": "translate_to_de",
+                    "question": "A multa",
+                    "correctAnswer": "Der Strafzettel",
+                    "alternativeAnswers": [
+                        "Die Strafe",
+                        "Das Bußgeld"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A multa",
+                            "translation": "Der Strafzettel",
+                            "audio": "A multa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e13",
+                    "type": "translate_to_pt",
+                    "question": "Parken",
+                    "correctAnswer": "Estacionar",
+                    "vocabulary": [
+                        {
+                            "text": "Parken",
+                            "translation": "Estacionar",
+                            "audio": "Estacionar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e14",
+                    "type": "translate_to_de",
+                    "question": "O parque de estacionamento",
+                    "correctAnswer": "Das Parkhaus",
+                    "alternativeAnswers": [
+                        "Der Parkplatz"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O parque de estacionamento",
+                            "translation": "Das Parkhaus / Der Parkplatz",
+                            "audio": "O parque de estacionamento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Das Auto hat eine Gangschaltung.",
+                    "correctAnswer": "O carro tem caixa manual.",
+                    "vocabulary": [
+                        {
+                            "text": "Das Auto hat",
+                            "translation": "O carro tem",
+                            "audio": "O carro tem"
+                        },
+                        {
+                            "text": "eine Gangschaltung",
+                            "translation": "caixa manual",
+                            "audio": "caixa manual"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u19_l3",
+            "title": "Hotelprobleme & Beschwerden",
+            "exercises": [
+                {
+                    "id": "u19_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "O livro de reclamações",
+                    "correctAnswer": "Das Beschwerdebuch",
+                    "vocabulary": [
+                        {
+                            "text": "O livro",
+                            "translation": "Das Buch",
+                            "audio": "O livro"
+                        },
+                        {
+                            "text": "de reclamações",
+                            "translation": "für Beschwerden",
+                            "audio": "de reclamações"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich möchte mich beschweren.",
+                    "correctAnswer": "Quero fazer uma reclamação.",
+                    "alternativeAnswers": [
+                        "Queria fazer uma reclamação."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte machen",
+                            "translation": "Quero fazer",
+                            "audio": "Quero fazer"
+                        },
+                        {
+                            "text": "eine Beschwerde",
+                            "translation": "uma reclamação",
+                            "audio": "uma reclamação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O ar condicionado não funciona.",
+                    "correctAnswer": "Die Klimaanlage funktioniert nicht",
+                    "vocabulary": [
+                        {
+                            "text": "O ar condicionado",
+                            "translation": "Die Klimaanlage",
+                            "audio": "O ar condicionado"
+                        },
+                        {
+                            "text": "não funciona",
+                            "translation": "funktioniert nicht",
+                            "audio": "não funciona"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Avariado'?",
+                    "correctAnswer": "Kaputt (technischer Defekt)",
+                    "options": [
+                        "Schmutzig",
+                        "Kaputt (technischer Defekt)",
+                        "Laut"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Avariado",
+                    "vocabulary": [
+                        {
+                            "text": "Kaputt (Defekt)",
+                            "translation": "Avariado",
+                            "audio": "Avariado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Der Schlüssel öffnet die Tür nicht.",
+                    "correctAnswer": "A chave não abre a porta.",
+                    "vocabulary": [
+                        {
+                            "text": "Der Schlüssel",
+                            "translation": "A chave",
+                            "audio": "A chave"
+                        },
+                        {
+                            "text": "öffnet nicht",
+                            "translation": "não abre",
+                            "audio": "não abre"
+                        },
+                        {
+                            "text": "die Tür",
+                            "translation": "a porta",
+                            "audio": "a porta"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Não há água quente.",
+                    "correctAnswer": "Es gibt kein warmes Wasser",
+                    "vocabulary": [
+                        {
+                            "text": "Não há",
+                            "translation": "Es gibt kein",
+                            "audio": "Não há"
+                        },
+                        {
+                            "text": "água quente",
+                            "translation": "warmes Wasser",
+                            "audio": "água quente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Das Zimmer ist schmutzig.",
+                    "correctAnswer": "O quarto está sujo.",
+                    "vocabulary": [
+                        {
+                            "text": "Das Zimmer",
+                            "translation": "O quarto",
+                            "audio": "O quarto"
+                        },
+                        {
+                            "text": "ist schmutzig",
+                            "translation": "está sujo",
+                            "audio": "está sujo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "A toalha",
+                    "correctAnswer": "Das Handtuch",
+                    "vocabulary": [
+                        {
+                            "text": "A toalha",
+                            "translation": "Das Handtuch",
+                            "audio": "A toalha"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e9",
+                    "type": "translate_to_pt",
+                    "question": "Ich möchte mit dem Manager sprechen.",
+                    "correctAnswer": "Quero falar com o gerente.",
+                    "alternativeAnswers": [
+                        "Queria falar com o gerente."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte sprechen",
+                            "translation": "Quero falar",
+                            "audio": "Quero falar"
+                        },
+                        {
+                            "text": "mit dem Manager",
+                            "translation": "com o gerente",
+                            "audio": "com o gerente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e10",
+                    "type": "translate_to_de",
+                    "question": "O reembolso",
+                    "correctAnswer": "Die Rückerstattung",
+                    "vocabulary": [
+                        {
+                            "text": "O reembolso",
+                            "translation": "Die Rückerstattung",
+                            "audio": "O reembolso"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e11",
+                    "type": "translate_to_pt",
+                    "question": "Der Aufzug ist kaputt.",
+                    "correctAnswer": "O elevador está avariado.",
+                    "vocabulary": [
+                        {
+                            "text": "Der Aufzug",
+                            "translation": "O elevador",
+                            "audio": "O elevador"
+                        },
+                        {
+                            "text": "ist kaputt",
+                            "translation": "está avariado",
+                            "audio": "está avariado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e12",
+                    "type": "translate_to_de",
+                    "question": "Há muito barulho.",
+                    "correctAnswer": "Es gibt viel Lärm",
+                    "alternativeAnswers": [
+                        "Es ist sehr laut"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Há",
+                            "translation": "Es gibt",
+                            "audio": "Há"
+                        },
+                        {
+                            "text": "muito barulho",
+                            "translation": "viel Lärm",
+                            "audio": "muito barulho"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e13",
+                    "type": "translate_to_pt",
+                    "question": "Das Problem lösen",
+                    "correctAnswer": "Resolver o problema",
+                    "vocabulary": [
+                        {
+                            "text": "Lösen",
+                            "translation": "Resolver",
+                            "audio": "Resolver"
+                        },
+                        {
+                            "text": "das Problem",
+                            "translation": "o problema",
+                            "audio": "o problema"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e14",
+                    "type": "translate_to_de",
+                    "question": "A fatura está errada.",
+                    "correctAnswer": "Die Rechnung ist falsch",
+                    "vocabulary": [
+                        {
+                            "text": "A fatura",
+                            "translation": "Die Rechnung",
+                            "audio": "A fatura"
+                        },
+                        {
+                            "text": "está errada",
+                            "translation": "ist falsch",
+                            "audio": "está errada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u19_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Sich entschuldigen",
+                    "correctAnswer": "Pedir desculpa",
+                    "vocabulary": [
+                        {
+                            "text": "Sich entschuldigen",
+                            "translation": "Pedir desculpa",
+                            "audio": "Pedir desculpa"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "O Livro de Reclamações",
+            "explanation": "Das 'Livro de Reclamações' (Beschwerdebuch) ist eine sehr ernste Angelegenheit in Portugal. Jedes Geschäft, Hotel oder Restaurant ist gesetzlich verpflichtet, es bereitzustellen, wenn der Kunde danach verlangt. Eine Eintragung dort geht direkt an die zuständigen staatlichen Aufsichtsbehörden.",
+            "examples": [
+                "Traga-me o livro de reclamações, por favor! (Bringen Sie mir bitte das Beschwerdebuch!)"
+            ]
+        },
+        {
+            "heading": "A carta de condução & A portagem",
+            "explanation": "Im Straßenverkehr gibt es klare EU-PT Begriffe. Den Führerschein nennt man 'A carta de condução' (in Brasilien: Carteira de motorista). Und die Mautgebühren, die fast überall auf Autobahnen fällig werden, heißen 'Portagens'.",
+            "examples": [
+                "Esqueci-me da minha carta de condução. (Ich habe meinen Führerschein vergessen.)",
+                "Temos de pagar a portagem. (Wir müssen die Maut bezahlen.)"
+            ]
+        },
+        {
+            "heading": "Avariado vs. Partido",
+            "explanation": "Wenn etwas 'kaputt' ist, muss man in Portugal unterscheiden: 'Avariado' nutzt man für elektronische Geräte oder Maschinen, die einen technischen Defekt haben (Klimaanlage, Auto, Aufzug). 'Partido' nutzt man für Dinge, die physisch zerbrochen sind (Glas, Teller).",
+            "examples": [
+                "O carro está avariado. (Das Auto hat eine Panne / einen Defekt.)",
+                "O copo está partido. (Das Glas ist zerbrochen.)"
+            ]
+        }
+    ]
+}

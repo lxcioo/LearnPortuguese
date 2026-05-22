@@ -1,0 +1,733 @@
+{
+    "id": "unit_18",
+    "title": "Kapitel 18: Medien & Nachrichten",
+    "color": "#3498db",
+    "levels": [
+        {
+            "id": "u18_l1",
+            "title": "Fernsehen & Radio",
+            "exercises": [
+                {
+                    "id": "u18_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "A televisão",
+                    "correctAnswer": "Das Fernsehen",
+                    "alternativeAnswers": [
+                        "Der Fernseher"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A televisão",
+                            "translation": "Das Fernsehen",
+                            "audio": "A televisão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Fernbedienung",
+                    "correctAnswer": "O comando",
+                    "vocabulary": [
+                        {
+                            "text": "Die Fernbedienung",
+                            "translation": "O comando",
+                            "audio": "O comando"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O canal",
+                    "correctAnswer": "Der Kanal",
+                    "alternativeAnswers": [
+                        "Der Sender"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O canal",
+                            "translation": "Der Kanal",
+                            "audio": "O canal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie nennt man die Hauptnachrichtensendung am Abend in Portugal?",
+                    "correctAnswer": "O telejornal",
+                    "options": [
+                        "O documentário",
+                        "O telejornal",
+                        "O filme"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O telejornal",
+                    "vocabulary": [
+                        {
+                            "text": "Die Nachrichtensendung",
+                            "translation": "O telejornal",
+                            "audio": "O telejornal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Serie",
+                    "correctAnswer": "A série",
+                    "vocabulary": [
+                        {
+                            "text": "Die Serie",
+                            "translation": "A série",
+                            "audio": "A série"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A temporada",
+                    "correctAnswer": "Die Staffel",
+                    "vocabulary": [
+                        {
+                            "text": "A temporada",
+                            "translation": "Die Staffel",
+                            "audio": "A temporada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Dokumentarfilm",
+                    "correctAnswer": "O documentário",
+                    "vocabulary": [
+                        {
+                            "text": "Der Dokumentarfilm",
+                            "translation": "O documentário",
+                            "audio": "O documentário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Em direto",
+                    "correctAnswer": "Live",
+                    "alternativeAnswers": [
+                        "Direktübertragung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Em direto",
+                            "translation": "Live",
+                            "audio": "Em direto"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Os anúncios' (oft in der Werbepause)?",
+                    "correctAnswer": "Die Werbung (Werbespots)",
+                    "options": [
+                        "Die Nachrichten",
+                        "Die Werbung (Werbespots)",
+                        "Die Schauspieler"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Os anúncios",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Werbung",
+                            "translation": "Os anúncios",
+                            "audio": "Os anúncios"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Lautstärke",
+                    "correctAnswer": "O volume",
+                    "vocabulary": [
+                        {
+                            "text": "Die Lautstärke",
+                            "translation": "O volume",
+                            "audio": "O volume"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "Aumentar o volume",
+                    "correctAnswer": "Die Lautstärke erhöhen",
+                    "alternativeAnswers": [
+                        "Lauter machen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Aumentar",
+                            "translation": "Erhöhen",
+                            "audio": "Aumentar"
+                        },
+                        {
+                            "text": "o volume",
+                            "translation": "die Lautstärke",
+                            "audio": "o volume"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Leiser machen",
+                    "correctAnswer": "Baixar o volume",
+                    "alternativeAnswers": [
+                        "Diminuir o volume"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Leiser machen",
+                            "translation": "Baixar o volume",
+                            "audio": "Baixar o volume"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "O programa de rádio",
+                    "correctAnswer": "Das Radioprogramm",
+                    "alternativeAnswers": [
+                        "Die Radiosendung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O programa",
+                            "translation": "Das Programm",
+                            "audio": "O programa"
+                        },
+                        {
+                            "text": "de rádio",
+                            "translation": "vom Radio",
+                            "audio": "de rádio"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Der Sprecher (Moderator)",
+                    "correctAnswer": "O apresentador",
+                    "vocabulary": [
+                        {
+                            "text": "Der Sprecher / Moderator",
+                            "translation": "O apresentador",
+                            "audio": "O apresentador"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "O ecrã plano",
+                    "correctAnswer": "Der Flachbildschirm",
+                    "vocabulary": [
+                        {
+                            "text": "O ecrã",
+                            "translation": "Der Bildschirm",
+                            "audio": "O ecrã"
+                        },
+                        {
+                            "text": "plano",
+                            "translation": "flach",
+                            "audio": "plano"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u18_l2",
+            "title": "Presse & Online-Medien",
+            "exercises": [
+                {
+                    "id": "u18_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A notícia",
+                    "correctAnswer": "Die Nachricht",
+                    "vocabulary": [
+                        {
+                            "text": "A notícia",
+                            "translation": "Die Nachricht",
+                            "audio": "A notícia"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Nachrichten",
+                    "correctAnswer": "As notícias",
+                    "vocabulary": [
+                        {
+                            "text": "Die Nachrichten",
+                            "translation": "As notícias",
+                            "audio": "As notícias"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "A imprensa",
+                    "correctAnswer": "Die Presse",
+                    "vocabulary": [
+                        {
+                            "text": "A imprensa",
+                            "translation": "Die Presse",
+                            "audio": "A imprensa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'A manchete' auf der Titelseite einer Zeitung?",
+                    "correctAnswer": "Die Schlagzeile",
+                    "options": [
+                        "Die Werbung",
+                        "Die Schlagzeile",
+                        "Der Comic"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A manchete",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Schlagzeile",
+                            "translation": "A manchete",
+                            "audio": "A manchete"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Der Journalist",
+                    "correctAnswer": "O jornalista",
+                    "vocabulary": [
+                        {
+                            "text": "Der Journalist",
+                            "translation": "O jornalista",
+                            "audio": "O jornalista"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "A jornalista",
+                    "correctAnswer": "Die Journalistin",
+                    "vocabulary": [
+                        {
+                            "text": "A jornalista",
+                            "translation": "Die Journalistin",
+                            "audio": "A jornalista"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Tageszeitung",
+                    "correctAnswer": "O jornal diário",
+                    "alternativeAnswers": [
+                        "O diário"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Tageszeitung",
+                            "translation": "O jornal diário",
+                            "audio": "O jornal diário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "A revista semanal",
+                    "correctAnswer": "Die Wochenzeitschrift",
+                    "vocabulary": [
+                        {
+                            "text": "A revista",
+                            "translation": "Die Zeitschrift",
+                            "audio": "A revista"
+                        },
+                        {
+                            "text": "semanal",
+                            "translation": "wöchentlich",
+                            "audio": "semanal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Abonnieren' (z. B. einen Podcast oder eine Zeitung) im europäischen Portugiesisch?",
+                    "correctAnswer": "Subscrever",
+                    "options": [
+                        "Assinar",
+                        "Subscrever",
+                        "Comprar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Subscrever",
+                    "vocabulary": [
+                        {
+                            "text": "Abonnieren",
+                            "translation": "Subscrever",
+                            "audio": "Subscrever"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Das Abonnement",
+                    "correctAnswer": "A subscrição",
+                    "alternativeAnswers": [
+                        "A assinatura"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Abonnement",
+                            "translation": "A subscrição",
+                            "audio": "A subscrição"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "A reportagem",
+                    "correctAnswer": "Die Reportage",
+                    "alternativeAnswers": [
+                        "Der Bericht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A reportagem",
+                            "translation": "Die Reportage",
+                            "audio": "A reportagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Podcast",
+                    "correctAnswer": "O podcast",
+                    "vocabulary": [
+                        {
+                            "text": "Der Podcast",
+                            "translation": "O podcast",
+                            "audio": "O podcast"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "A fonte",
+                    "correctAnswer": "Die Quelle",
+                    "vocabulary": [
+                        {
+                            "text": "A fonte",
+                            "translation": "Die Quelle",
+                            "audio": "A fonte"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Falschmeldungen (Fake News)",
+                    "correctAnswer": "Notícias falsas",
+                    "vocabulary": [
+                        {
+                            "text": "Falschmeldungen",
+                            "translation": "Notícias falsas",
+                            "audio": "Notícias falsas"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "Eu leio as notícias.",
+                    "correctAnswer": "Ich lese die Nachrichten",
+                    "vocabulary": [
+                        {
+                            "text": "Eu leio",
+                            "translation": "Ich lese",
+                            "audio": "Eu leio"
+                        },
+                        {
+                            "text": "as notícias",
+                            "translation": "die Nachrichten",
+                            "audio": "as notícias"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u18_l3",
+            "title": "Politik & Weltgeschehen",
+            "exercises": [
+                {
+                    "id": "u18_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "O governo",
+                    "correctAnswer": "Die Regierung",
+                    "vocabulary": [
+                        {
+                            "text": "O governo",
+                            "translation": "Die Regierung",
+                            "audio": "O governo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Politik",
+                    "correctAnswer": "A política",
+                    "vocabulary": [
+                        {
+                            "text": "Die Politik",
+                            "translation": "A política",
+                            "audio": "A política"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O presidente",
+                    "correctAnswer": "Der Präsident",
+                    "vocabulary": [
+                        {
+                            "text": "O presidente",
+                            "translation": "Der Präsident",
+                            "audio": "O presidente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Wählen' im politischen Sinne (die Stimme abgeben)?",
+                    "correctAnswer": "Votar",
+                    "options": [
+                        "Escolher",
+                        "Votar",
+                        "Ganhar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Votar",
+                    "vocabulary": [
+                        {
+                            "text": "Wählen (Stimme abgeben)",
+                            "translation": "Votar",
+                            "audio": "Votar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Wahlen",
+                    "correctAnswer": "As eleições",
+                    "vocabulary": [
+                        {
+                            "text": "Die Wahlen",
+                            "translation": "As eleições",
+                            "audio": "As eleições"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "A crise",
+                    "correctAnswer": "Die Krise",
+                    "vocabulary": [
+                        {
+                            "text": "A crise",
+                            "translation": "Die Krise",
+                            "audio": "A crise"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Streik",
+                    "correctAnswer": "A greve",
+                    "vocabulary": [
+                        {
+                            "text": "Der Streik",
+                            "translation": "A greve",
+                            "audio": "A greve"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "O sindicato",
+                    "correctAnswer": "Die Gewerkschaft",
+                    "vocabulary": [
+                        {
+                            "text": "O sindicato",
+                            "translation": "Die Gewerkschaft",
+                            "audio": "O sindicato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Haver (es gibt) im Präteritum: Wie sagt man 'Es gab einen Unfall'?",
+                    "correctAnswer": "Houve um acidente",
+                    "options": [
+                        "Houve um acidente",
+                        "Há um acidente",
+                        "Havia um acidente"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Houve um acidente",
+                    "vocabulary": [
+                        {
+                            "text": "Es gab einen Unfall",
+                            "translation": "Houve um acidente",
+                            "audio": "Houve um acidente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Unfall",
+                    "correctAnswer": "O acidente",
+                    "vocabulary": [
+                        {
+                            "text": "Der Unfall",
+                            "translation": "O acidente",
+                            "audio": "O acidente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "A economia",
+                    "correctAnswer": "Die Wirtschaft",
+                    "vocabulary": [
+                        {
+                            "text": "A economia",
+                            "translation": "Die Wirtschaft",
+                            "audio": "A economia"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Die Entwicklung",
+                    "correctAnswer": "O desenvolvimento",
+                    "vocabulary": [
+                        {
+                            "text": "Die Entwicklung",
+                            "translation": "O desenvolvimento",
+                            "audio": "O desenvolvimento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "O crime",
+                    "correctAnswer": "Das Verbrechen",
+                    "alternativeAnswers": [
+                        "Die Kriminalität"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O crime",
+                            "translation": "Das Verbrechen",
+                            "audio": "O crime"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Der Frieden",
+                    "correctAnswer": "A paz",
+                    "vocabulary": [
+                        {
+                            "text": "Der Frieden",
+                            "translation": "A paz",
+                            "audio": "A paz"
+                        }
+                    ]
+                },
+                {
+                    "id": "u18_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "A guerra",
+                    "correctAnswer": "Der Krieg",
+                    "vocabulary": [
+                        {
+                            "text": "A guerra",
+                            "translation": "Der Krieg",
+                            "audio": "A guerra"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Em direto vs. Ao vivo",
+            "explanation": "Während Brasilianer bei Live-Übertragungen im Fernsehen immer 'ao vivo' sagen, sieht man im portugiesischen Fernsehen oben in der Ecke immer 'Em direto' eingeblendet.",
+            "examples": [
+                "O telejornal é transmitido em direto. (Die Nachrichtensendung wird live übertragen.)"
+            ]
+        },
+        {
+            "heading": "O comando",
+            "explanation": "Eine weitere Besonderheit: Wenn du in Portugal auf der Couch sitzt und den Sender wechseln willst, bittest du um 'o comando' (die Fernbedienung). Das brasilianische 'controle remoto' wird in Portugal kaum genutzt.",
+            "examples": [
+                "Podes passar-me o comando? (Kannst du mir die Fernbedienung reichen?)"
+            ]
+        },
+        {
+            "heading": "Es gab... (Houve)",
+            "explanation": "Das Verb 'haver' in der Bedeutung 'es gibt' wird in Nachrichten oft in der Vergangenheit (Pretérito Perfeito) genutzt. Aus 'há' (es gibt) wird dann 'houve' (es gab / es hat gegeben).",
+            "examples": [
+                "Houve um acidente grave na autoestrada. (Es gab einen schweren Unfall auf der Autobahn.)",
+                "Houve eleições ontem. (Gestern gab es Wahlen.)"
+            ]
+        }
+    ]
+}

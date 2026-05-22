@@ -1,0 +1,768 @@
+{
+    "id": "unit_11",
+    "title": "Kapitel 11: Arbeit & Beruf",
+    "color": "#0984e3",
+    "levels": [
+        {
+            "id": "u11_l1",
+            "title": "Berufe",
+            "exercises": [
+                {
+                    "id": "u11_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O professor",
+                    "correctAnswer": "Der Lehrer",
+                    "vocabulary": [
+                        {
+                            "text": "O professor",
+                            "translation": "Der Lehrer",
+                            "audio": "O professor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Ingenieurin",
+                    "correctAnswer": "A engenheira",
+                    "vocabulary": [
+                        {
+                            "text": "Die Ingenieurin",
+                            "translation": "A engenheira",
+                            "audio": "A engenheira"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O polícia",
+                    "correctAnswer": "Der Polizist",
+                    "alternativeAnswers": [
+                        "Die Polizei"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O polícia",
+                            "translation": "Der Polizist",
+                            "audio": "O polícia"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'O advogado'?",
+                    "correctAnswer": "Der Anwalt",
+                    "options": [
+                        "Der Arzt",
+                        "Der Anwalt",
+                        "Der Architekt"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O advogado",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Anwalt",
+                            "translation": "O advogado",
+                            "audio": "O advogado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e5",
+                    "type": "translate_to_de",
+                    "question": "O programador",
+                    "correctAnswer": "Der Programmierer",
+                    "vocabulary": [
+                        {
+                            "text": "O programador",
+                            "translation": "Der Programmierer",
+                            "audio": "O programador"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O enfermeiro",
+                    "correctAnswer": "Der Krankenpfleger",
+                    "vocabulary": [
+                        {
+                            "text": "O enfermeiro",
+                            "translation": "Der Krankenpfleger",
+                            "audio": "O enfermeiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Friseurin",
+                    "correctAnswer": "A cabeleireira",
+                    "vocabulary": [
+                        {
+                            "text": "Die Friseurin",
+                            "translation": "A cabeleireira",
+                            "audio": "A cabeleireira"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Qual é a sua profissão?",
+                    "correctAnswer": "Was sind Sie von Beruf?",
+                    "alternativeAnswers": [
+                        "Was ist Ihr Beruf?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Qual é",
+                            "translation": "Was ist",
+                            "audio": "Qual é"
+                        },
+                        {
+                            "text": "a sua profissão",
+                            "translation": "Ihr Beruf",
+                            "audio": "a sua profissão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e9",
+                    "type": "translate_to_pt",
+                    "question": "Ich arbeite als...",
+                    "correctAnswer": "Trabalho como...",
+                    "alternativeAnswers": [
+                        "Eu trabalho como..."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich arbeite",
+                            "translation": "Trabalho",
+                            "audio": "Trabalho"
+                        },
+                        {
+                            "text": "als",
+                            "translation": "como",
+                            "audio": "como"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Verkäufer",
+                    "correctAnswer": "O vendedor",
+                    "vocabulary": [
+                        {
+                            "text": "Der Verkäufer",
+                            "translation": "O vendedor",
+                            "audio": "O vendedor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "O cozinheiro",
+                    "correctAnswer": "Der Koch",
+                    "vocabulary": [
+                        {
+                            "text": "O cozinheiro",
+                            "translation": "Der Koch",
+                            "audio": "O cozinheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e12",
+                    "type": "translate_to_de",
+                    "question": "A empresária",
+                    "correctAnswer": "Die Unternehmerin",
+                    "vocabulary": [
+                        {
+                            "text": "A empresária",
+                            "translation": "Die Unternehmerin",
+                            "audio": "A empresária"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e13_m",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin arbeitslos",
+                    "correctAnswer": "Estou desempregado",
+                    "gender": "m",
+                    "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Estou",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "arbeitslos",
+                            "translation": "desempregado",
+                            "audio": "desempregado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e13_f",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin arbeitslos",
+                    "correctAnswer": "Estou desempregada",
+                    "gender": "f",
+                    "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Estou",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "arbeitslos",
+                            "translation": "desempregada",
+                            "audio": "desempregada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l1_e15",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Der Bäcker'?",
+                    "correctAnswer": "O padeiro",
+                    "options": [
+                        "O mecânico",
+                        "O carpinteiro",
+                        "O padeiro"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "O padeiro",
+                    "vocabulary": [
+                        {
+                            "text": "Der Bäcker",
+                            "translation": "O padeiro",
+                            "audio": "O padeiro"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u11_l2",
+            "title": "Im Büro",
+            "exercises": [
+                {
+                    "id": "u11_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O escritório",
+                    "correctAnswer": "Das Büro",
+                    "vocabulary": [
+                        {
+                            "text": "O escritório",
+                            "translation": "Das Büro",
+                            "audio": "O escritório"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Kollegin",
+                    "correctAnswer": "A colega",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kollegin",
+                            "translation": "A colega",
+                            "audio": "A colega"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "O chefe",
+                    "correctAnswer": "Der Chef",
+                    "vocabulary": [
+                        {
+                            "text": "O chefe",
+                            "translation": "Der Chef",
+                            "audio": "O chefe"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A secretária'?",
+                    "correctAnswer": "Der Schreibtisch",
+                    "options": [
+                        "Der Schreibtisch",
+                        "Das Regal",
+                        "Der Stuhl"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "A secretária",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Schreibtisch",
+                            "translation": "A secretária",
+                            "audio": "A secretária"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Meeting",
+                    "correctAnswer": "A reunião",
+                    "alternativeAnswers": [
+                        "A reuniao",
+                        "Die Besprechung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Meeting",
+                            "translation": "A reunião",
+                            "audio": "A reunião"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O documento",
+                    "correctAnswer": "Das Dokument",
+                    "vocabulary": [
+                        {
+                            "text": "O documento",
+                            "translation": "Das Dokument",
+                            "audio": "O documento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Computer",
+                    "correctAnswer": "O computador",
+                    "vocabulary": [
+                        {
+                            "text": "Der Computer",
+                            "translation": "O computador",
+                            "audio": "O computador"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Trabalho muito",
+                    "correctAnswer": "Ich arbeite viel",
+                    "vocabulary": [
+                        {
+                            "text": "Trabalho",
+                            "translation": "Ich arbeite",
+                            "audio": "Trabalho"
+                        },
+                        {
+                            "text": "muito",
+                            "translation": "viel",
+                            "audio": "muito"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e9",
+                    "type": "translate_to_pt",
+                    "question": "Der Drucker",
+                    "correctAnswer": "A impressora",
+                    "vocabulary": [
+                        {
+                            "text": "Der Drucker",
+                            "translation": "A impressora",
+                            "audio": "A impressora"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e10",
+                    "type": "translate_to_de",
+                    "question": "A pausa para almoço",
+                    "correctAnswer": "Die Mittagspause",
+                    "vocabulary": [
+                        {
+                            "text": "A pausa",
+                            "translation": "Die Pause",
+                            "audio": "A pausa"
+                        },
+                        {
+                            "text": "para almoço",
+                            "translation": "fürs Mittagessen",
+                            "audio": "para almoço"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Eu escrevo um e-mail",
+                    "correctAnswer": "Ich schreibe eine E-Mail",
+                    "vocabulary": [
+                        {
+                            "text": "Eu escrevo",
+                            "translation": "Ich schreibe",
+                            "audio": "Eu escrevo"
+                        },
+                        {
+                            "text": "um e-mail",
+                            "translation": "eine E-Mail",
+                            "audio": "um e-mail"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Das Telefon klingelt",
+                    "correctAnswer": "O telefone toca",
+                    "vocabulary": [
+                        {
+                            "text": "Das Telefon",
+                            "translation": "O telefone",
+                            "audio": "O telefone"
+                        },
+                        {
+                            "text": "klingelt",
+                            "translation": "toca",
+                            "audio": "toca"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "A tempo inteiro",
+                    "correctAnswer": "Vollzeit",
+                    "alternativeAnswers": [
+                        "In Vollzeit"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A tempo inteiro",
+                            "translation": "Vollzeit",
+                            "audio": "A tempo inteiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Teilzeit",
+                    "correctAnswer": "A part-time",
+                    "alternativeAnswers": [
+                        "A tempo parcial",
+                        "Em part-time"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Teilzeit",
+                            "translation": "A part-time",
+                            "audio": "A part-time"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l2_e15",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Die Arbeitszeit'?",
+                    "correctAnswer": "O horário de trabalho",
+                    "options": [
+                        "O horário de trabalho",
+                        "A hora do almoço",
+                        "O fim do expediente"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "O horário de trabalho",
+                    "vocabulary": [
+                        {
+                            "text": "Die Arbeitszeit",
+                            "translation": "O horário de trabalho",
+                            "audio": "O horário de trabalho"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u11_l3",
+            "title": "Bewerbung & Arbeitsalltag",
+            "exercises": [
+                {
+                    "id": "u11_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "O currículo",
+                    "correctAnswer": "Der Lebenslauf",
+                    "alternativeAnswers": [
+                        "Das Curriculum"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O currículo",
+                            "translation": "Der Lebenslauf",
+                            "audio": "O currículo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Vorstellungsgespräch",
+                    "correctAnswer": "A entrevista de emprego",
+                    "alternativeAnswers": [
+                        "A entrevista"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Vorstellungsgespräch",
+                            "translation": "A entrevista",
+                            "audio": "A entrevista"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O contrato",
+                    "correctAnswer": "Der Vertrag",
+                    "vocabulary": [
+                        {
+                            "text": "O contrato",
+                            "translation": "Der Vertrag",
+                            "audio": "O contrato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O ordenado'?",
+                    "correctAnswer": "Das Gehalt",
+                    "options": [
+                        "Die Steuern",
+                        "Das Gehalt",
+                        "Die Rechnung"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O ordenado",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Das Gehalt",
+                            "translation": "O ordenado",
+                            "audio": "O ordenado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Gehalt",
+                    "correctAnswer": "O salário",
+                    "alternativeAnswers": [
+                        "O ordenado"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Gehalt",
+                            "translation": "O salário",
+                            "audio": "O salário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "A empresa",
+                    "correctAnswer": "Das Unternehmen",
+                    "alternativeAnswers": [
+                        "Die Firma"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A empresa",
+                            "translation": "Das Unternehmen",
+                            "audio": "A empresa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Unterschreiben",
+                    "correctAnswer": "Assinar",
+                    "vocabulary": [
+                        {
+                            "text": "Unterschreiben",
+                            "translation": "Assinar",
+                            "audio": "Assinar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Estou à procura de emprego",
+                    "correctAnswer": "Ich bin auf der Suche nach Arbeit",
+                    "alternativeAnswers": [
+                        "Ich suche Arbeit",
+                        "Ich suche einen Job"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Estou à procura",
+                            "translation": "Ich suche",
+                            "audio": "Estou à procura"
+                        },
+                        {
+                            "text": "de emprego",
+                            "translation": "nach Arbeit",
+                            "audio": "de emprego"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Geld verdienen'?",
+                    "correctAnswer": "Ganhar dinheiro",
+                    "options": [
+                        "Gastar dinheiro",
+                        "Ganhar dinheiro",
+                        "Perder dinheiro"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Ganhar dinheiro",
+                    "vocabulary": [
+                        {
+                            "text": "Geld verdienen",
+                            "translation": "Ganhar dinheiro",
+                            "audio": "Ganhar dinheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Erfahrung",
+                    "correctAnswer": "A experiência",
+                    "vocabulary": [
+                        {
+                            "text": "Die Erfahrung",
+                            "translation": "A experiência",
+                            "audio": "A experiência"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "As férias",
+                    "correctAnswer": "Der Urlaub",
+                    "alternativeAnswers": [
+                        "Die Ferien"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "As férias",
+                            "translation": "Der Urlaub",
+                            "audio": "As férias"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Erfolg haben",
+                    "correctAnswer": "Ter sucesso",
+                    "vocabulary": [
+                        {
+                            "text": "Erfolg haben",
+                            "translation": "Ter sucesso",
+                            "audio": "Ter sucesso"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "A promoção",
+                    "correctAnswer": "Die Beförderung",
+                    "vocabulary": [
+                        {
+                            "text": "A promoção",
+                            "translation": "Die Beförderung",
+                            "audio": "A promoção"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Die Kündigung",
+                    "correctAnswer": "O despedimento",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kündigung",
+                            "translation": "O despedimento",
+                            "audio": "O despedimento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u11_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "O candidato",
+                    "correctAnswer": "Der Bewerber",
+                    "vocabulary": [
+                        {
+                            "text": "O candidato",
+                            "translation": "Der Bewerber",
+                            "audio": "O candidato"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Berufe und Artikel",
+            "explanation": "Im Portugiesischen verwendet man normalerweise *keinen* unbestimmten Artikel (um/uma), wenn man über den eigenen Beruf spricht.",
+            "examples": [
+                "Eu sou médico. (Ich bin Arzt. -> NICHT: Eu sou um médico.)",
+                "Ela é professora. (Sie ist Lehrerin.)"
+            ]
+        },
+        {
+            "heading": "Präpositionen am Arbeitsplatz",
+            "explanation": "Um zu sagen, *wo* oder *für wen* du arbeitest, benutzt man die Präpositionen 'em' (in/bei) und 'para' (für).",
+            "examples": [
+                "Eu trabalho num escritório. (Ich arbeite in einem Büro. -> em + um = num)",
+                "Eu trabalho para uma empresa alemã. (Ich arbeite für ein deutsches Unternehmen.)"
+            ]
+        },
+        {
+            "heading": "Trabalhar (arbeiten)",
+            "explanation": "Ein regelmäßiges Verb auf -ar, das extrem wichtig im Alltag ist.",
+            "examples": [
+                "eu trabalho, tu trabalhas, ele/ela trabalha",
+                "nós trabalhamos, eles/elas trabalham",
+                "Eles trabalham muito. (Sie arbeiten viel.)"
+            ]
+        }
+    ]
+}

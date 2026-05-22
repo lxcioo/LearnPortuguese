@@ -1,0 +1,743 @@
+{
+    "id": "unit_12",
+    "title": "Kapitel 12: Technologie & digitale Welt",
+    "color": "#00cec9",
+    "levels": [
+        {
+            "id": "u12_l1",
+            "title": "Hardware & Geräte",
+            "exercises": [
+                {
+                    "id": "u12_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O telemóvel",
+                    "correctAnswer": "Das Handy",
+                    "alternativeAnswers": [
+                        "Das Smartphone"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O telemóvel",
+                            "translation": "Das Handy",
+                            "audio": "O telemóvel"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Laptop",
+                    "correctAnswer": "O computador portátil",
+                    "alternativeAnswers": [
+                        "O portátil"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Laptop",
+                            "translation": "O portátil",
+                            "audio": "O portátil"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O ecrã",
+                    "correctAnswer": "Der Bildschirm",
+                    "alternativeAnswers": [
+                        "Das Display"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O ecrã",
+                            "translation": "Der Bildschirm",
+                            "audio": "O ecrã"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Die Tastatur'?",
+                    "correctAnswer": "O teclado",
+                    "options": [
+                        "O rato",
+                        "O ecrã",
+                        "O teclado"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "O teclado",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Die Tastatur",
+                            "translation": "O teclado",
+                            "audio": "O teclado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Maus",
+                    "correctAnswer": "O rato",
+                    "vocabulary": [
+                        {
+                            "text": "Die Maus",
+                            "translation": "O rato",
+                            "audio": "O rato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O carregador",
+                    "correctAnswer": "Das Ladegerät",
+                    "alternativeAnswers": [
+                        "Das Ladekabel"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O carregador",
+                            "translation": "Das Ladegerät",
+                            "audio": "O carregador"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Akku",
+                    "correctAnswer": "A bateria",
+                    "alternativeAnswers": [
+                        "Die Batterie"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Der Akku",
+                            "translation": "A bateria",
+                            "audio": "A bateria"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Os auscultadores",
+                    "correctAnswer": "Die Kopfhörer",
+                    "vocabulary": [
+                        {
+                            "text": "Os auscultadores",
+                            "translation": "Die Kopfhörer",
+                            "audio": "Os auscultadores"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Ligar' in Bezug auf Geräte?",
+                    "correctAnswer": "Einschalten",
+                    "options": [
+                        "Ausschalten",
+                        "Einschalten",
+                        "Aufladen"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Ligar",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Einschalten",
+                            "translation": "Ligar",
+                            "audio": "Ligar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Ausschalten",
+                    "correctAnswer": "Desligar",
+                    "vocabulary": [
+                        {
+                            "text": "Ausschalten",
+                            "translation": "Desligar",
+                            "audio": "Desligar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "O cabo",
+                    "correctAnswer": "Das Kabel",
+                    "vocabulary": [
+                        {
+                            "text": "O cabo",
+                            "translation": "Das Kabel",
+                            "audio": "O cabo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Die Steckdose",
+                    "correctAnswer": "A tomada",
+                    "vocabulary": [
+                        {
+                            "text": "Die Steckdose",
+                            "translation": "A tomada",
+                            "audio": "A tomada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A ficha",
+                    "correctAnswer": "Der Stecker",
+                    "vocabulary": [
+                        {
+                            "text": "A ficha",
+                            "translation": "Der Stecker",
+                            "audio": "A ficha"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Das Tablet",
+                    "correctAnswer": "O tablet",
+                    "vocabulary": [
+                        {
+                            "text": "Das Tablet",
+                            "translation": "O tablet",
+                            "audio": "O tablet"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "A câmara",
+                    "correctAnswer": "Die Kamera",
+                    "vocabulary": [
+                        {
+                            "text": "A câmara",
+                            "translation": "Die Kamera",
+                            "audio": "A câmara"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u12_l2",
+            "title": "Software & Internet",
+            "exercises": [
+                {
+                    "id": "u12_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A palavra-passe",
+                    "correctAnswer": "Das Passwort",
+                    "alternativeAnswers": [
+                        "Das Kennwort"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A palavra-passe",
+                            "translation": "Das Passwort",
+                            "audio": "A palavra-passe"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Datei",
+                    "correctAnswer": "O ficheiro",
+                    "vocabulary": [
+                        {
+                            "text": "Die Datei",
+                            "translation": "O ficheiro",
+                            "audio": "O ficheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "A pasta",
+                    "correctAnswer": "Der Ordner",
+                    "vocabulary": [
+                        {
+                            "text": "A pasta",
+                            "translation": "Der Ordner",
+                            "audio": "A pasta"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie nennt man eine App in Portugal?",
+                    "correctAnswer": "A aplicação",
+                    "options": [
+                        "A aplicação",
+                        "O aplicativo",
+                        "O ecrã"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "A aplicação",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Die App",
+                            "translation": "A aplicação",
+                            "audio": "A aplicação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Herunterladen",
+                    "correctAnswer": "Descarregar",
+                    "alternativeAnswers": [
+                        "Fazer o download"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Herunterladen",
+                            "translation": "Descarregar",
+                            "audio": "Descarregar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O endereço de e-mail",
+                    "correctAnswer": "Die E-Mail-Adresse",
+                    "vocabulary": [
+                        {
+                            "text": "O endereço",
+                            "translation": "Die Adresse",
+                            "audio": "O endereço"
+                        },
+                        {
+                            "text": "de e-mail",
+                            "translation": "E-Mail",
+                            "audio": "de e-mail"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Webseite",
+                    "correctAnswer": "O site",
+                    "alternativeAnswers": [
+                        "A página web"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Webseite",
+                            "translation": "O site",
+                            "audio": "O site"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "A nuvem",
+                    "correctAnswer": "Die Cloud",
+                    "alternativeAnswers": [
+                        "Die Wolke"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A nuvem",
+                            "translation": "Die Cloud",
+                            "audio": "A nuvem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Atualizar'?",
+                    "correctAnswer": "Aktualisieren",
+                    "options": [
+                        "Löschen",
+                        "Aktualisieren",
+                        "Speichern"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Atualizar",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Aktualisieren",
+                            "translation": "Atualizar",
+                            "audio": "Atualizar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Klicken",
+                    "correctAnswer": "Clicar",
+                    "vocabulary": [
+                        {
+                            "text": "Klicken",
+                            "translation": "Clicar",
+                            "audio": "Clicar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Pesquisar na internet",
+                    "correctAnswer": "Im Internet suchen",
+                    "alternativeAnswers": [
+                        "Im Internet recherchieren"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Pesquisar",
+                            "translation": "Suchen",
+                            "audio": "Pesquisar"
+                        },
+                        {
+                            "text": "na internet",
+                            "translation": "Im Internet",
+                            "audio": "na internet"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Fehler (System)",
+                    "correctAnswer": "O erro",
+                    "vocabulary": [
+                        {
+                            "text": "Der Fehler",
+                            "translation": "O erro",
+                            "audio": "O erro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "O link",
+                    "correctAnswer": "Der Link",
+                    "vocabulary": [
+                        {
+                            "text": "O link",
+                            "translation": "Der Link",
+                            "audio": "O link"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Das Netzwerk",
+                    "correctAnswer": "A rede",
+                    "vocabulary": [
+                        {
+                            "text": "Das Netzwerk",
+                            "translation": "A rede",
+                            "audio": "A rede"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "O vírus",
+                    "correctAnswer": "Der Virus",
+                    "vocabulary": [
+                        {
+                            "text": "O vírus",
+                            "translation": "Der Virus",
+                            "audio": "O vírus"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u12_l3",
+            "title": "Kommunikation & Aktionen",
+            "exercises": [
+                {
+                    "id": "u12_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Enviar uma mensagem",
+                    "correctAnswer": "Eine Nachricht senden",
+                    "alternativeAnswers": [
+                        "Eine Nachricht schicken"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Enviar",
+                            "translation": "Senden",
+                            "audio": "Enviar"
+                        },
+                        {
+                            "text": "uma mensagem",
+                            "translation": "eine Nachricht",
+                            "audio": "uma mensagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Anrufen",
+                    "correctAnswer": "Telefonar",
+                    "alternativeAnswers": [
+                        "Ligar"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Anrufen",
+                            "translation": "Telefonar",
+                            "audio": "Telefonar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "A videochamada",
+                    "correctAnswer": "Der Videoanruf",
+                    "vocabulary": [
+                        {
+                            "text": "A videochamada",
+                            "translation": "Der Videoanruf",
+                            "audio": "A videochamada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Speichern' auf Portugiesisch (EU)?",
+                    "correctAnswer": "Guardar",
+                    "options": [
+                        "Salvar",
+                        "Guardar",
+                        "Apagar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Guardar",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Speichern",
+                            "translation": "Guardar",
+                            "audio": "Guardar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Löschen",
+                    "correctAnswer": "Apagar",
+                    "vocabulary": [
+                        {
+                            "text": "Löschen",
+                            "translation": "Apagar",
+                            "audio": "Apagar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Partilhar",
+                    "correctAnswer": "Teilen",
+                    "vocabulary": [
+                        {
+                            "text": "Partilhar",
+                            "translation": "Teilen",
+                            "audio": "Partilhar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Online sein",
+                    "correctAnswer": "Estar online",
+                    "vocabulary": [
+                        {
+                            "text": "Online sein",
+                            "translation": "Estar online",
+                            "audio": "Estar online"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "A rede social",
+                    "correctAnswer": "Das soziale Netzwerk",
+                    "vocabulary": [
+                        {
+                            "text": "A rede",
+                            "translation": "Das Netzwerk",
+                            "audio": "A rede"
+                        },
+                        {
+                            "text": "social",
+                            "translation": "soziale",
+                            "audio": "social"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'Publicar'?",
+                    "correctAnswer": "Veröffentlichen / Posten",
+                    "options": [
+                        "Teilen",
+                        "Veröffentlichen / Posten",
+                        "Löschen"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Publicar",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Veröffentlichen",
+                            "translation": "Publicar",
+                            "audio": "Publicar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Das Profil",
+                    "correctAnswer": "O perfil",
+                    "vocabulary": [
+                        {
+                            "text": "Das Profil",
+                            "translation": "O perfil",
+                            "audio": "O perfil"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "O comentário",
+                    "correctAnswer": "Der Kommentar",
+                    "vocabulary": [
+                        {
+                            "text": "O comentário",
+                            "translation": "Der Kommentar",
+                            "audio": "O comentário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Blockieren",
+                    "correctAnswer": "Bloquear",
+                    "vocabulary": [
+                        {
+                            "text": "Blockieren",
+                            "translation": "Bloquear",
+                            "audio": "Bloquear"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "O seguidor",
+                    "correctAnswer": "Der Follower",
+                    "alternativeAnswers": [
+                        "Der Abonnent"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O seguidor",
+                            "translation": "Der Follower",
+                            "audio": "O seguidor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Die Benachrichtigung",
+                    "correctAnswer": "A notificação",
+                    "vocabulary": [
+                        {
+                            "text": "Die Benachrichtigung",
+                            "translation": "A notificação",
+                            "audio": "A notificação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u12_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "O chat",
+                    "correctAnswer": "Der Chat",
+                    "vocabulary": [
+                        {
+                            "text": "O chat",
+                            "translation": "Der Chat",
+                            "audio": "O chat"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Europäisches vs. Brasilianisches Portugiesisch",
+            "explanation": "In der Technikwelt gibt es massive Unterschiede! In Portugal sagt man z. B. 'telemóvel' (Handy), 'ecrã' (Bildschirm), 'rato' (Maus), 'ficheiro' (Datei), 'palavra-passe' (Passwort) und 'descarregar' (herunterladen). Brasilianische Begriffe wie 'celular', 'tela' oder 'baixar' werden in Portugal zwar verstanden, gelten aber als Fremdkörper.",
+            "examples": [
+                "PT: O meu telemóvel tem um ecrã novo. (Mein Handy hat einen neuen Bildschirm.)",
+                "BR: O meu celular tem uma tela nova."
+            ]
+        },
+        {
+            "heading": "Verben für Technik",
+            "explanation": "Für das Ein- und Ausschalten von elektronischen Geräten benutzt man 'ligar' (wörtlich: verbinden) und 'desligar' (trennen). Man benutzt nicht 'abrir/fechar' (öffnen/schließen), es sei denn, man meint eine App (Abrir a aplicação).",
+            "examples": [
+                "Ligar o computador (Den Computer einschalten)",
+                "Desligar a televisão (Den Fernseher ausschalten)"
+            ]
+        },
+        {
+            "heading": "Speichern vs. Retten (Guardar/Salvar)",
+            "explanation": "In Portugal nutzt man für das Speichern von Dateien das Wort 'guardar' (aufbewahren/behalten). Das Wort 'salvar' nutzt man in Europa fast ausschließlich für das Retten von Leben!",
+            "examples": [
+                "Vou guardar o ficheiro. (Ich werde die Datei speichern.)",
+                "O bombeiro salvou o gato. (Der Feuerwehrmann hat die Katze gerettet.)"
+            ]
+        }
+    ]
+}

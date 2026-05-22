@@ -1,0 +1,843 @@
+{
+    "id": "unit_17",
+    "title": "Kapitel 17: Gefühle & Meinungen",
+    "color": "#e67e22",
+    "levels": [
+        {
+            "id": "u17_l1",
+            "title": "Emotionen & Gefühle",
+            "exercises": [
+                {
+                    "id": "u17_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O sentimento",
+                    "correctAnswer": "Das Gefühl",
+                    "vocabulary": [
+                        {
+                            "text": "O sentimento",
+                            "translation": "Das Gefühl",
+                            "audio": "O sentimento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Emotion",
+                    "correctAnswer": "A emoção",
+                    "vocabulary": [
+                        {
+                            "text": "Die Emotion",
+                            "translation": "A emoção",
+                            "audio": "A emoção"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O amor",
+                    "correctAnswer": "Die Liebe",
+                    "vocabulary": [
+                        {
+                            "text": "O amor",
+                            "translation": "Die Liebe",
+                            "audio": "O amor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'O medo'?",
+                    "correctAnswer": "Die Angst",
+                    "options": [
+                        "Die Freude",
+                        "Die Angst",
+                        "Die Wut"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O medo",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Angst",
+                            "translation": "O medo",
+                            "audio": "O medo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ich habe Angst",
+                    "correctAnswer": "Tenho medo",
+                    "alternativeAnswers": [
+                        "Eu tenho medo"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe",
+                            "translation": "Tenho",
+                            "audio": "Tenho"
+                        },
+                        {
+                            "text": "Angst",
+                            "translation": "medo",
+                            "audio": "medo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "A raiva",
+                    "correctAnswer": "Die Wut",
+                    "alternativeAnswers": [
+                        "Der Zorn"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A raiva",
+                            "translation": "Die Wut",
+                            "audio": "A raiva"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Überraschung",
+                    "correctAnswer": "A surpresa",
+                    "vocabulary": [
+                        {
+                            "text": "Die Überraschung",
+                            "translation": "A surpresa",
+                            "audio": "A surpresa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "A esperança",
+                    "correctAnswer": "Die Hoffnung",
+                    "vocabulary": [
+                        {
+                            "text": "A esperança",
+                            "translation": "Die Hoffnung",
+                            "audio": "A esperança"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Die Freude'?",
+                    "correctAnswer": "A alegria",
+                    "options": [
+                        "A dor",
+                        "A alegria",
+                        "A paz"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A alegria",
+                    "vocabulary": [
+                        {
+                            "text": "Die Freude",
+                            "translation": "A alegria",
+                            "audio": "A alegria"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Sorge",
+                    "correctAnswer": "A preocupação",
+                    "vocabulary": [
+                        {
+                            "text": "Die Sorge",
+                            "translation": "A preocupação",
+                            "audio": "A preocupação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e11_m",
+                    "type": "translate_to_de",
+                    "question": "Estou preocupado.",
+                    "correctAnswer": "Ich bin besorgt",
+                    "gender": "m",
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Ich bin",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "preocupado",
+                            "translation": "besorgt",
+                            "audio": "preocupado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e11_f",
+                    "type": "translate_to_de",
+                    "question": "Estou preocupada.",
+                    "correctAnswer": "Ich bin besorgt",
+                    "gender": "f",
+                    "vocabulary": [
+                        {
+                            "text": "Estou",
+                            "translation": "Ich bin",
+                            "audio": "Estou"
+                        },
+                        {
+                            "text": "preocupada",
+                            "translation": "besorgt",
+                            "audio": "preocupada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "Sentir",
+                    "correctAnswer": "Fühlen",
+                    "alternativeAnswers": [
+                        "Sich fühlen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Sentir",
+                            "translation": "Fühlen",
+                            "audio": "Sentir"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich fühle mich gut.",
+                    "correctAnswer": "Sinto-me bem.",
+                    "alternativeAnswers": [
+                        "Eu sinto-me bem."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich fühle mich",
+                            "translation": "Sinto-me",
+                            "audio": "Sinto-me"
+                        },
+                        {
+                            "text": "gut",
+                            "translation": "bem",
+                            "audio": "bem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Lachen",
+                    "correctAnswer": "Rir",
+                    "vocabulary": [
+                        {
+                            "text": "Lachen",
+                            "translation": "Rir",
+                            "audio": "Rir"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u17_l2",
+            "title": "Meinungen äußern",
+            "exercises": [
+                {
+                    "id": "u17_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A opinião",
+                    "correctAnswer": "Die Meinung",
+                    "vocabulary": [
+                        {
+                            "text": "A opinião",
+                            "translation": "Die Meinung",
+                            "audio": "A opinião"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich denke, dass...",
+                    "correctAnswer": "Acho que...",
+                    "alternativeAnswers": [
+                        "Eu acho que...",
+                        "Penso que..."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich denke",
+                            "translation": "Acho",
+                            "audio": "Acho"
+                        },
+                        {
+                            "text": "dass",
+                            "translation": "que",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "Na minha opinião",
+                    "correctAnswer": "Meiner Meinung nach",
+                    "vocabulary": [
+                        {
+                            "text": "Na",
+                            "translation": "In",
+                            "audio": "Na"
+                        },
+                        {
+                            "text": "minha",
+                            "translation": "meiner",
+                            "audio": "minha"
+                        },
+                        {
+                            "text": "opinião",
+                            "translation": "Meinung",
+                            "audio": "opinião"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Ich glaube, dass...'?",
+                    "correctAnswer": "Acredito que...",
+                    "options": [
+                        "Duvido que...",
+                        "Acredito que...",
+                        "Espero que..."
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Acredito que",
+                    "vocabulary": [
+                        {
+                            "text": "Ich glaube, dass",
+                            "translation": "Acredito que",
+                            "audio": "Acredito que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Zustimmen",
+                    "correctAnswer": "Concordar",
+                    "vocabulary": [
+                        {
+                            "text": "Zustimmen",
+                            "translation": "Concordar",
+                            "audio": "Concordar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Concordo.",
+                    "correctAnswer": "Ich stimme zu",
+                    "alternativeAnswers": [
+                        "Ich bin einverstanden"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Concordo",
+                            "translation": "Ich stimme zu",
+                            "audio": "Concordo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Ich stimme dir zu.",
+                    "correctAnswer": "Concordo contigo.",
+                    "vocabulary": [
+                        {
+                            "text": "Ich stimme zu",
+                            "translation": "Concordo",
+                            "audio": "Concordo"
+                        },
+                        {
+                            "text": "dir",
+                            "translation": "contigo",
+                            "audio": "contigo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Discordar",
+                    "correctAnswer": "Nicht zustimmen",
+                    "alternativeAnswers": [
+                        "Widersprechen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Discordar",
+                            "translation": "Nicht zustimmen",
+                            "audio": "Discordar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Du hast recht'?",
+                    "correctAnswer": "Tens razão",
+                    "options": [
+                        "Tens razão",
+                        "Tens tempo",
+                        "Tens sorte"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "Tens razão",
+                    "vocabulary": [
+                        {
+                            "text": "Du hast recht",
+                            "translation": "Tens razão",
+                            "audio": "Tens razão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Du hast unrecht.",
+                    "correctAnswer": "Não tens razão.",
+                    "alternativeAnswers": [
+                        "Não tens razao"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Du hast",
+                            "translation": "tens",
+                            "audio": "tens"
+                        },
+                        {
+                            "text": "unrecht",
+                            "translation": "Não razão",
+                            "audio": "Não razão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "É possível.",
+                    "correctAnswer": "Es ist möglich",
+                    "vocabulary": [
+                        {
+                            "text": "É",
+                            "translation": "Es ist",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "possível",
+                            "translation": "möglich",
+                            "audio": "possível"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Klar! (Natürlich!)",
+                    "correctAnswer": "Claro!",
+                    "vocabulary": [
+                        {
+                            "text": "Klar",
+                            "translation": "Claro",
+                            "audio": "Claro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "É verdade.",
+                    "correctAnswer": "Es ist wahr",
+                    "alternativeAnswers": [
+                        "Das stimmt"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "É",
+                            "translation": "Es ist",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "verdade",
+                            "translation": "wahr",
+                            "audio": "verdade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Es ist eine Lüge.",
+                    "correctAnswer": "É mentira.",
+                    "vocabulary": [
+                        {
+                            "text": "Es ist",
+                            "translation": "É",
+                            "audio": "É"
+                        },
+                        {
+                            "text": "eine Lüge",
+                            "translation": "mentira",
+                            "audio": "mentira"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "O que achas?",
+                    "correctAnswer": "Was denkst du",
+                    "alternativeAnswers": [
+                        "Was meinst du?",
+                        "Wie findest du das?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O que",
+                            "translation": "Was",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "achas",
+                            "translation": "denkst du",
+                            "audio": "achas"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u17_l3",
+            "title": "Hoffnungen & Der Conjuntivo",
+            "exercises": [
+                {
+                    "id": "u17_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Espero que...",
+                    "correctAnswer": "Ich hoffe dass",
+                    "alternativeAnswers": [
+                        "Ich hoffe, dass..."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Espero",
+                            "translation": "Ich hoffe",
+                            "audio": "Espero"
+                        },
+                        {
+                            "text": "que",
+                            "translation": "dass",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich möchte, dass...",
+                    "correctAnswer": "Quero que...",
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte",
+                            "translation": "Quero",
+                            "audio": "Quero"
+                        },
+                        {
+                            "text": "dass",
+                            "translation": "que",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "É importante que...",
+                    "correctAnswer": "Es ist wichtig dass",
+                    "alternativeAnswers": [
+                        "Es ist wichtig, dass..."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "É importante",
+                            "translation": "Es ist wichtig",
+                            "audio": "É importante"
+                        },
+                        {
+                            "text": "que",
+                            "translation": "dass",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Es ist besser, dass...'?",
+                    "correctAnswer": "É melhor que...",
+                    "options": [
+                        "É bom que...",
+                        "É melhor que...",
+                        "É pior que..."
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "É melhor que",
+                    "vocabulary": [
+                        {
+                            "text": "Es ist besser, dass",
+                            "translation": "É melhor que",
+                            "audio": "É melhor que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ich hoffe, dass alles gut geht.",
+                    "correctAnswer": "Espero que corra tudo bem.",
+                    "vocabulary": [
+                        {
+                            "text": "Ich hoffe dass",
+                            "translation": "Espero que",
+                            "audio": "Espero que"
+                        },
+                        {
+                            "text": "alles gut geht",
+                            "translation": "corra tudo bem",
+                            "audio": "corra tudo bem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Que pena!",
+                    "correctAnswer": "Schade",
+                    "alternativeAnswers": [
+                        "Wie schade!"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Que",
+                            "translation": "Was für eine",
+                            "audio": "Que"
+                        },
+                        {
+                            "text": "pena",
+                            "translation": "Schade (Mitleid)",
+                            "audio": "pena"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Es tut mir leid, dass...",
+                    "correctAnswer": "Sinto muito que...",
+                    "vocabulary": [
+                        {
+                            "text": "Es tut mir leid",
+                            "translation": "Sinto muito",
+                            "audio": "Sinto muito"
+                        },
+                        {
+                            "text": "dass",
+                            "translation": "que",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "É possível que...",
+                    "correctAnswer": "Es ist möglich dass",
+                    "vocabulary": [
+                        {
+                            "text": "É possível",
+                            "translation": "Es ist möglich",
+                            "audio": "É possível"
+                        },
+                        {
+                            "text": "que",
+                            "translation": "dass",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Das Wort 'Talvez' löst den Conjuntivo aus. Was heißt 'Vielleicht regnet es'?",
+                    "correctAnswer": "Talvez chova.",
+                    "options": [
+                        "Talvez chove.",
+                        "Talvez chova.",
+                        "Talvez chuva."
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Talvez chova",
+                    "vocabulary": [
+                        {
+                            "text": "Vielleicht regnet es",
+                            "translation": "Talvez chova",
+                            "audio": "Talvez chova"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Zweifeln",
+                    "correctAnswer": "Duvidar",
+                    "vocabulary": [
+                        {
+                            "text": "Zweifeln",
+                            "translation": "Duvidar",
+                            "audio": "Duvidar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Duvido que...",
+                    "correctAnswer": "Ich bezweifle dass",
+                    "vocabulary": [
+                        {
+                            "text": "Duvido",
+                            "translation": "Ich bezweifle",
+                            "audio": "Duvido"
+                        },
+                        {
+                            "text": "que",
+                            "translation": "dass",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Es ist schade, dass...",
+                    "correctAnswer": "É pena que...",
+                    "vocabulary": [
+                        {
+                            "text": "Es ist schade",
+                            "translation": "É pena",
+                            "audio": "É pena"
+                        },
+                        {
+                            "text": "dass",
+                            "translation": "que",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Gosto que...",
+                    "correctAnswer": "Mir gefällt dass",
+                    "alternativeAnswers": [
+                        "Ich mag es, dass..."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Gosto",
+                            "translation": "Mir gefällt",
+                            "audio": "Gosto"
+                        },
+                        {
+                            "text": "que",
+                            "translation": "dass",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich habe Angst, dass...",
+                    "correctAnswer": "Tenho medo que...",
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe Angst",
+                            "translation": "Tenho medo",
+                            "audio": "Tenho medo"
+                        },
+                        {
+                            "text": "dass",
+                            "translation": "que",
+                            "audio": "que"
+                        }
+                    ]
+                },
+                {
+                    "id": "u17_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Glückwunsch! (Gut gemacht!)",
+                    "correctAnswer": "Parabéns!",
+                    "vocabulary": [
+                        {
+                            "text": "Glückwunsch",
+                            "translation": "Parabéns",
+                            "audio": "Parabéns"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Die Meinung sagen: 'Achar' vs. 'Pensar'",
+            "explanation": "Wenn Portugiesen ihre eigene Meinung zu einem Thema ausdrücken, benutzen sie fast immer das Verb 'achar' (wörtlich: finden). Das Verb 'pensar' nutzt man eher für den physischen Akt des Nachdenkens.",
+            "examples": [
+                "Eu acho que a casa é bonita. (Ich denke/finde, dass das Haus schön ist.)",
+                "Estou a pensar no meu trabalho. (Ich denke gerade an meine Arbeit.)"
+            ]
+        },
+        {
+            "heading": "Einleitung in den Conjuntivo",
+            "explanation": "Der 'Conjuntivo' ist der portugiesische Konjunktiv. Anders als im Deutschen wird er im Alltag ständig benutzt! Er wird immer dann fällig, wenn eine Aussage nicht absolut objektiv ist, sondern subjektiv gefärbt ist (Wunsch, Zweifel, Gefühl). Die Struktur ist oft: 'Gefühl/Wunsch + que + neues Subjekt + Conjuntivo-Verb'.",
+            "examples": [
+                "Espero que tu estejas bem. (Ich hoffe, dass es dir gut geht. -> 'estejas' ist der Conjuntivo von 'estar')."
+            ]
+        },
+        {
+            "heading": "Wörter, die den Conjuntivo auslösen",
+            "explanation": "Merke dir für den Anfang feste Ausdrücke, nach denen sich das nächste Verb verändern muss. Die wichtigsten sind: Espero que (Ich hoffe, dass), Duvido que (Ich bezweifle, dass), Talvez (Vielleicht), É possível que (Es ist möglich, dass).",
+            "examples": [
+                "Talvez ele venha. (Vielleicht kommt er. -> 'venha' ist der Conjuntivo von 'vir')."
+            ]
+        }
+    ]
+}

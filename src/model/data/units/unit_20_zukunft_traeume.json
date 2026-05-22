@@ -1,0 +1,878 @@
+{
+    "id": "unit_20",
+    "title": "Kapitel 20: Zukunftspläne & Träume",
+    "color": "#f1c40f",
+    "levels": [
+        {
+            "id": "u20_l1",
+            "title": "Träume & Ziele",
+            "exercises": [
+                {
+                    "id": "u20_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O sonho",
+                    "correctAnswer": "Der Traum",
+                    "vocabulary": [
+                        {
+                            "text": "O sonho",
+                            "translation": "Der Traum",
+                            "audio": "O sonho"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Träumen",
+                    "correctAnswer": "Sonhar",
+                    "vocabulary": [
+                        {
+                            "text": "Träumen",
+                            "translation": "Sonhar",
+                            "audio": "Sonhar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O futuro",
+                    "correctAnswer": "Die Zukunft",
+                    "vocabulary": [
+                        {
+                            "text": "O futuro",
+                            "translation": "Die Zukunft",
+                            "audio": "O futuro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Planen' im europäischen Portugiesisch?",
+                    "correctAnswer": "Planear",
+                    "options": [
+                        "Planejar",
+                        "Planear",
+                        "Plantar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Planear",
+                    "vocabulary": [
+                        {
+                            "text": "Planen",
+                            "translation": "Planear",
+                            "audio": "Planear"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Ziel",
+                    "correctAnswer": "O objetivo",
+                    "alternativeAnswers": [
+                        "A meta"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Ziel",
+                            "translation": "O objetivo",
+                            "audio": "O objetivo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O desejo",
+                    "correctAnswer": "Der Wunsch",
+                    "vocabulary": [
+                        {
+                            "text": "O desejo",
+                            "translation": "Der Wunsch",
+                            "audio": "O desejo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Wünschen",
+                    "correctAnswer": "Desejar",
+                    "vocabulary": [
+                        {
+                            "text": "Wünschen",
+                            "translation": "Desejar",
+                            "audio": "Desejar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "Viajar pelo mundo",
+                    "correctAnswer": "Um die Welt reisen",
+                    "alternativeAnswers": [
+                        "Durch die Welt reisen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Viajar",
+                            "translation": "Reisen",
+                            "audio": "Viajar"
+                        },
+                        {
+                            "text": "pelo mundo",
+                            "translation": "um die Welt",
+                            "audio": "pelo mundo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'A reforma' in Portugal?",
+                    "correctAnswer": "Die Rente / Pension",
+                    "options": [
+                        "Der Umbau",
+                        "Die Rente / Pension",
+                        "Die Arbeit"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A reforma",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Rente",
+                            "translation": "A reforma",
+                            "audio": "A reforma"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Heiraten",
+                    "correctAnswer": "Casar",
+                    "alternativeAnswers": [
+                        "Casar-se"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Heiraten",
+                            "translation": "Casar",
+                            "audio": "Casar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "Ter filhos",
+                    "correctAnswer": "Kinder haben",
+                    "vocabulary": [
+                        {
+                            "text": "Ter",
+                            "translation": "Haben",
+                            "audio": "Ter"
+                        },
+                        {
+                            "text": "filhos",
+                            "translation": "Kinder",
+                            "audio": "filhos"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Reich werden",
+                    "correctAnswer": "Ficar rico",
+                    "vocabulary": [
+                        {
+                            "text": "Werden (Zustand)",
+                            "translation": "Ficar",
+                            "audio": "Ficar"
+                        },
+                        {
+                            "text": "reich",
+                            "translation": "rico",
+                            "audio": "rico"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "Mudar de país",
+                    "correctAnswer": "Auswandern",
+                    "alternativeAnswers": [
+                        "Das Land wechseln"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Mudar",
+                            "translation": "Wechseln",
+                            "audio": "Mudar"
+                        },
+                        {
+                            "text": "de país",
+                            "translation": "das Land",
+                            "audio": "de país"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Glücklich sein",
+                    "correctAnswer": "Ser feliz",
+                    "vocabulary": [
+                        {
+                            "text": "Glücklich",
+                            "translation": "feliz",
+                            "audio": "feliz"
+                        },
+                        {
+                            "text": "sein",
+                            "translation": "Ser",
+                            "audio": "Ser"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "Eu tenho um sonho.",
+                    "correctAnswer": "Ich habe einen Traum",
+                    "vocabulary": [
+                        {
+                            "text": "Eu tenho",
+                            "translation": "Ich habe",
+                            "audio": "Eu tenho"
+                        },
+                        {
+                            "text": "um sonho",
+                            "translation": "einen Traum",
+                            "audio": "um sonho"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u20_l2",
+            "title": "Die Zukunft ausdrücken",
+            "exercises": [
+                {
+                    "id": "u20_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O que vais fazer?",
+                    "correctAnswer": "Was wirst du machen",
+                    "alternativeAnswers": [
+                        "Was wirst du tun?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O que",
+                            "translation": "Was",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "vais",
+                            "translation": "wirst du",
+                            "audio": "vais"
+                        },
+                        {
+                            "text": "fazer",
+                            "translation": "machen",
+                            "audio": "fazer"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Ich werde reisen",
+                    "correctAnswer": "Vou viajar",
+                    "alternativeAnswers": [
+                        "Eu vou viajar"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich werde",
+                            "translation": "Vou",
+                            "audio": "Vou"
+                        },
+                        {
+                            "text": "reisen",
+                            "translation": "viajar",
+                            "audio": "viajar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "No futuro",
+                    "correctAnswer": "In der Zukunft",
+                    "vocabulary": [
+                        {
+                            "text": "No",
+                            "translation": "In der",
+                            "audio": "No"
+                        },
+                        {
+                            "text": "futuro",
+                            "translation": "Zukunft",
+                            "audio": "futuro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Nächstes Jahr'?",
+                    "correctAnswer": "No próximo ano",
+                    "options": [
+                        "No último ano",
+                        "No próximo ano",
+                        "No ano passado"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "No próximo ano",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Nächstes Jahr",
+                            "translation": "No próximo ano",
+                            "audio": "No próximo ano"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Bald",
+                    "correctAnswer": "Brevemente",
+                    "alternativeAnswers": [
+                        "Em breve"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Bald",
+                            "translation": "Brevemente",
+                            "audio": "Brevemente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "Daqui a dez anos",
+                    "correctAnswer": "In zehn Jahren",
+                    "vocabulary": [
+                        {
+                            "text": "Daqui a",
+                            "translation": "In",
+                            "audio": "Daqui a"
+                        },
+                        {
+                            "text": "dez anos",
+                            "translation": "zehn Jahren",
+                            "audio": "dez anos"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Eines Tages",
+                    "correctAnswer": "Um dia",
+                    "vocabulary": [
+                        {
+                            "text": "Eines",
+                            "translation": "Um",
+                            "audio": "Um"
+                        },
+                        {
+                            "text": "Tages",
+                            "translation": "dia",
+                            "audio": "dia"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Ganhar a lotaria",
+                    "correctAnswer": "Im Lotto gewinnen",
+                    "alternativeAnswers": [
+                        "Die Lotterie gewinnen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ganhar",
+                            "translation": "Gewinnen",
+                            "audio": "Ganhar"
+                        },
+                        {
+                            "text": "a lotaria",
+                            "translation": "im Lotto",
+                            "audio": "a lotaria"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Ich verspreche'?",
+                    "correctAnswer": "Eu prometo",
+                    "options": [
+                        "Eu planeio",
+                        "Eu prometo",
+                        "Eu pergunto"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Eu prometo",
+                    "vocabulary": [
+                        {
+                            "text": "Ich verspreche",
+                            "translation": "Eu prometo",
+                            "audio": "Eu prometo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Das Versprechen",
+                    "correctAnswer": "A promessa",
+                    "vocabulary": [
+                        {
+                            "text": "Das Versprechen",
+                            "translation": "A promessa",
+                            "audio": "A promessa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "Quando eu for velho...",
+                    "correctAnswer": "Wenn ich alt bin",
+                    "vocabulary": [
+                        {
+                            "text": "Quando",
+                            "translation": "Wenn / Sobald",
+                            "audio": "Quando"
+                        },
+                        {
+                            "text": "eu for",
+                            "translation": "ich bin (Zukunft)",
+                            "audio": "eu for"
+                        },
+                        {
+                            "text": "velho",
+                            "translation": "alt",
+                            "audio": "velho"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Ein Haus kaufen",
+                    "correctAnswer": "Comprar uma casa",
+                    "vocabulary": [
+                        {
+                            "text": "Kaufen",
+                            "translation": "Comprar",
+                            "audio": "Comprar"
+                        },
+                        {
+                            "text": "ein Haus",
+                            "translation": "uma casa",
+                            "audio": "uma casa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "Adivinhar",
+                    "correctAnswer": "Erraten",
+                    "alternativeAnswers": [
+                        "Vorhersagen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Adivinhar",
+                            "translation": "Erraten",
+                            "audio": "Adivinhar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Alles wird gut.",
+                    "correctAnswer": "Tudo vai ficar bem.",
+                    "vocabulary": [
+                        {
+                            "text": "Alles",
+                            "translation": "Tudo",
+                            "audio": "Tudo"
+                        },
+                        {
+                            "text": "wird",
+                            "translation": "vai ficar",
+                            "audio": "vai ficar"
+                        },
+                        {
+                            "text": "gut",
+                            "translation": "bem",
+                            "audio": "bem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "Eu vou estudar mais.",
+                    "correctAnswer": "Ich werde mehr lernen",
+                    "alternativeAnswers": [
+                        "Ich werde mehr studieren"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eu vou",
+                            "translation": "Ich werde",
+                            "audio": "Eu vou"
+                        },
+                        {
+                            "text": "estudar",
+                            "translation": "lernen",
+                            "audio": "estudar"
+                        },
+                        {
+                            "text": "mais",
+                            "translation": "mehr",
+                            "audio": "mais"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u20_l3",
+            "title": "Konditional & Fantasie",
+            "exercises": [
+                {
+                    "id": "u20_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Eu gostaria de...",
+                    "correctAnswer": "Ich würde gerne",
+                    "alternativeAnswers": [
+                        "Ich möchte gerne"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eu gostaria",
+                            "translation": "Ich würde",
+                            "audio": "Eu gostaria"
+                        },
+                        {
+                            "text": "de",
+                            "translation": "gerne",
+                            "audio": "de"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wenn ich Geld hätte...",
+                    "correctAnswer": "Se eu tivesse dinheiro...",
+                    "vocabulary": [
+                        {
+                            "text": "Wenn",
+                            "translation": "Se",
+                            "audio": "Se"
+                        },
+                        {
+                            "text": "ich hätte",
+                            "translation": "eu tivesse",
+                            "audio": "eu tivesse"
+                        },
+                        {
+                            "text": "Geld",
+                            "translation": "dinheiro",
+                            "audio": "dinheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O que farias?",
+                    "correctAnswer": "Was würdest du tun",
+                    "alternativeAnswers": [
+                        "Was würdest du machen?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O que",
+                            "translation": "Was",
+                            "audio": "O que"
+                        },
+                        {
+                            "text": "farias",
+                            "translation": "würdest du tun",
+                            "audio": "farias"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Es wäre fantastisch'?",
+                    "correctAnswer": "Seria fantástico",
+                    "options": [
+                        "É fantástico",
+                        "Foi fantástico",
+                        "Seria fantástico"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "Seria fantástico",
+                    "vocabulary": [
+                        {
+                            "text": "Es wäre fantastisch",
+                            "translation": "Seria fantástico",
+                            "audio": "Seria fantástico"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Wahrscheinlich",
+                    "correctAnswer": "Provável",
+                    "alternativeAnswers": [
+                        "Provavelmente"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wahrscheinlich",
+                            "translation": "Provável",
+                            "audio": "Provável"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "Improvável",
+                    "correctAnswer": "Unwahrscheinlich",
+                    "vocabulary": [
+                        {
+                            "text": "Improvável",
+                            "translation": "Unwahrscheinlich",
+                            "audio": "Improvável"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Unmöglich",
+                    "correctAnswer": "Impossível",
+                    "vocabulary": [
+                        {
+                            "text": "Unmöglich",
+                            "translation": "Impossível",
+                            "audio": "Impossível"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "A imaginação",
+                    "correctAnswer": "Die Fantasie",
+                    "alternativeAnswers": [
+                        "Die Vorstellungskraft"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A imaginação",
+                            "translation": "Die Fantasie",
+                            "audio": "A imaginação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Sich vorstellen'?",
+                    "correctAnswer": "Imaginar",
+                    "options": [
+                        "Sonhar",
+                        "Imaginar",
+                        "Esquecer"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Imaginar",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Sich vorstellen",
+                            "translation": "Imaginar",
+                            "audio": "Imaginar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Ich würde gehen",
+                    "correctAnswer": "Eu iria",
+                    "vocabulary": [
+                        {
+                            "text": "Ich",
+                            "translation": "Eu",
+                            "audio": "Eu"
+                        },
+                        {
+                            "text": "würde gehen",
+                            "translation": "iria",
+                            "audio": "iria"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Eu seria rico.",
+                    "correctAnswer": "Ich wäre reich",
+                    "vocabulary": [
+                        {
+                            "text": "Eu seria",
+                            "translation": "Ich wäre",
+                            "audio": "Eu seria"
+                        },
+                        {
+                            "text": "rico",
+                            "translation": "reich",
+                            "audio": "rico"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Das Leben ändern",
+                    "correctAnswer": "Mudar de vida",
+                    "vocabulary": [
+                        {
+                            "text": "Ändern",
+                            "translation": "Mudar",
+                            "audio": "Mudar"
+                        },
+                        {
+                            "text": "das Leben",
+                            "translation": "de vida",
+                            "audio": "de vida"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Se eu tivesse tempo...",
+                    "correctAnswer": "Wenn ich Zeit hätte",
+                    "vocabulary": [
+                        {
+                            "text": "Se",
+                            "translation": "Wenn",
+                            "audio": "Se"
+                        },
+                        {
+                            "text": "eu tivesse",
+                            "translation": "ich hätte",
+                            "audio": "eu tivesse"
+                        },
+                        {
+                            "text": "tempo",
+                            "translation": "Zeit",
+                            "audio": "tempo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Die Welt entdecken",
+                    "correctAnswer": "Descobrir o mundo",
+                    "vocabulary": [
+                        {
+                            "text": "Entdecken",
+                            "translation": "Descobrir",
+                            "audio": "Descobrir"
+                        },
+                        {
+                            "text": "die Welt",
+                            "translation": "o mundo",
+                            "audio": "o mundo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u20_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "Nunca se sabe.",
+                    "correctAnswer": "Man weiß nie",
+                    "vocabulary": [
+                        {
+                            "text": "Nunca",
+                            "translation": "Nie",
+                            "audio": "Nunca"
+                        },
+                        {
+                            "text": "se sabe",
+                            "translation": "weiß man",
+                            "audio": "se sabe"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Planear vs. Planejar",
+            "explanation": "Ein klassischer Unterschied: In Portugal sagt man 'planear' (planen), in Brasilien 'planejar'. Wer in Portugal 'planejar' sagt, wird zwar verstanden, outet sich aber sofort als Brasilien-Fan.",
+            "examples": [
+                "Eu planeio viajar. (Ich plane zu reisen.)"
+            ]
+        },
+        {
+            "heading": "Die Zukunft: Ir + Infinitivo",
+            "explanation": "Genau wie im Englischen (going to) nutzt man im Portugiesischen im Alltag meistens das Verb 'ir' (gehen/werden) + das Hauptverb in der Grundform, um über die Zukunft zu sprechen.",
+            "examples": [
+                "Eu vou trabalhar. (Ich werde arbeiten.)",
+                "Nós vamos comer. (Wir werden essen.)"
+            ]
+        },
+        {
+            "heading": "Der Konditional (Würde)",
+            "explanation": "Um Wünsche oder hypothetische Situationen auszudrücken, hängt man an die Grundform des Verbs meistens die Endung '-ia' an.",
+            "examples": [
+                "Eu faria... (Ich würde machen...)",
+                "Eu iria... (Ich würde gehen...)",
+                "Gostaria de um café. (Ich hätte gerne einen Kaffee.)"
+            ]
+        }
+    ]
+}

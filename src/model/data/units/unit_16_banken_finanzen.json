@@ -1,0 +1,806 @@
+{
+    "id": "unit_16",
+    "title": "Kapitel 16: Banken & Finanzen",
+    "color": "#34495e",
+    "levels": [
+        {
+            "id": "u16_l1",
+            "title": "Geld & Konto",
+            "exercises": [
+                {
+                    "id": "u16_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O dinheiro",
+                    "correctAnswer": "Das Geld",
+                    "vocabulary": [
+                        {
+                            "text": "O dinheiro",
+                            "translation": "Das Geld",
+                            "audio": "O dinheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Bank",
+                    "correctAnswer": "O banco",
+                    "vocabulary": [
+                        {
+                            "text": "Die Bank",
+                            "translation": "O banco",
+                            "audio": "O banco"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "A conta bancária",
+                    "correctAnswer": "Das Bankkonto",
+                    "alternativeAnswers": [
+                        "Das Konto"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A conta",
+                            "translation": "Das Konto",
+                            "audio": "A conta"
+                        },
+                        {
+                            "text": "bancária",
+                            "translation": "Bank-",
+                            "audio": "bancária"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Geld abheben' in Portugal?",
+                    "correctAnswer": "Levantar dinheiro",
+                    "options": [
+                        "Tirar dinheiro",
+                        "Levantar dinheiro",
+                        "Ganhar dinheiro"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Levantar dinheiro",
+                    "vocabulary": [
+                        {
+                            "text": "Geld abheben",
+                            "translation": "Levantar dinheiro",
+                            "audio": "Levantar dinheiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Kreditkarte",
+                    "correctAnswer": "O cartão de crédito",
+                    "vocabulary": [
+                        {
+                            "text": "A Kreditkarte",
+                            "translation": "O cartão de crédito",
+                            "audio": "O cartão de crédito"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O multibanco",
+                    "correctAnswer": "Der Geldautomat",
+                    "alternativeAnswers": [
+                        "Das Kartenterminal"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O multibanco",
+                            "translation": "Der Geldautomat",
+                            "audio": "O multibanco"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Überweisung",
+                    "correctAnswer": "A transferência",
+                    "vocabulary": [
+                        {
+                            "text": "Die Überweisung",
+                            "translation": "A transferência",
+                            "audio": "A transferência"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "O saldo",
+                    "correctAnswer": "Der Kontostand",
+                    "alternativeAnswers": [
+                        "Der Saldo"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O saldo",
+                            "translation": "Der Kontostand",
+                            "audio": "O saldo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'A nota' im finanziellen Kontext?",
+                    "correctAnswer": "Der Geldschein",
+                    "options": [
+                        "Die Münze",
+                        "Der Geldschein",
+                        "Die Rechnung"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A nota",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Geldschein",
+                            "translation": "A nota",
+                            "audio": "A nota"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Münze",
+                    "correctAnswer": "A moeda",
+                    "alternativeAnswers": [
+                        "Die Währung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Münze",
+                            "translation": "A moeda",
+                            "audio": "A moeda"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "Abrir uma conta",
+                    "correctAnswer": "Ein Konto eröffnen",
+                    "vocabulary": [
+                        {
+                            "text": "Abrir",
+                            "translation": "Eröffnen",
+                            "audio": "Abrir"
+                        },
+                        {
+                            "text": "uma conta",
+                            "translation": "ein Konto",
+                            "audio": "uma conta"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Das Passwort (für die Karte)",
+                    "correctAnswer": "O código PIN",
+                    "alternativeAnswers": [
+                        "O PIN"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Passwort",
+                            "translation": "O código PIN",
+                            "audio": "O código PIN"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A despesa",
+                    "correctAnswer": "Die Ausgabe",
+                    "alternativeAnswers": [
+                        "Die Kosten"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A despesa",
+                            "translation": "Die Ausgabe",
+                            "audio": "A despesa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Das Einkommen",
+                    "correctAnswer": "O rendimento",
+                    "vocabulary": [
+                        {
+                            "text": "Das Einkommen",
+                            "translation": "O rendimento",
+                            "audio": "O rendimento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "O empréstimo",
+                    "correctAnswer": "Der Kredit",
+                    "alternativeAnswers": [
+                        "Das Darlehen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O empréstimo",
+                            "translation": "Der Kredit",
+                            "audio": "O empréstimo"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u16_l2",
+            "title": "Steuern & Dokumente",
+            "exercises": [
+                {
+                    "id": "u16_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "O NIF",
+                    "correctAnswer": "Die Steuernummer",
+                    "alternativeAnswers": [
+                        "Número de Identificação Fiscal"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O NIF",
+                            "translation": "Die Steuernummer",
+                            "audio": "O NIF"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Rechnung",
+                    "correctAnswer": "A fatura",
+                    "vocabulary": [
+                        {
+                            "text": "Die Rechnung",
+                            "translation": "A fatura",
+                            "audio": "A fatura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "O recibo",
+                    "correctAnswer": "Die Quittung",
+                    "alternativeAnswers": [
+                        "Der Beleg"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O recibo",
+                            "translation": "Die Quittung",
+                            "audio": "O recibo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'O imposto'?",
+                    "correctAnswer": "Die Steuer",
+                    "options": [
+                        "Die Steuer",
+                        "Die Versicherung",
+                        "Die Gebühr"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "O imposto",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Steuer",
+                            "translation": "O imposto",
+                            "audio": "O imposto"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Gebühr",
+                    "correctAnswer": "A taxa",
+                    "vocabulary": [
+                        {
+                            "text": "Die Gebühr",
+                            "translation": "A taxa",
+                            "audio": "A taxa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O Cartão de Cidadão",
+                    "correctAnswer": "Der Personalausweis",
+                    "vocabulary": [
+                        {
+                            "text": "O Cartão",
+                            "translation": "Die Karte (Ausweis)",
+                            "audio": "O Cartão"
+                        },
+                        {
+                            "text": "de Cidadão",
+                            "translation": "des Bürgers",
+                            "audio": "de Cidadão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Reisepass",
+                    "correctAnswer": "O passaporte",
+                    "vocabulary": [
+                        {
+                            "text": "Der Reisepass",
+                            "translation": "O passaporte",
+                            "audio": "O passaporte"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Assinar o documento",
+                    "correctAnswer": "Das Dokument unterschreiben",
+                    "vocabulary": [
+                        {
+                            "text": "Assinar",
+                            "translation": "Unterschreiben",
+                            "audio": "Assinar"
+                        },
+                        {
+                            "text": "o documento",
+                            "translation": "das Dokument",
+                            "audio": "o documento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie fragt der Kassierer oft, ob du die Steuernummer auf der Rechnung möchtest?",
+                    "correctAnswer": "Quer contribuinte na fatura?",
+                    "options": [
+                        "Quer pagar com cartão?",
+                        "Quer contribuinte na fatura?",
+                        "Quer o recibo?"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Quer contribuinte na fatura",
+                    "vocabulary": [
+                        {
+                            "text": "Möchten Sie die Steuernummer auf der Rechnung?",
+                            "translation": "Quer contribuinte na fatura?",
+                            "audio": "Quer contribuinte na fatura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Die Unterschrift",
+                    "correctAnswer": "A assinatura",
+                    "vocabulary": [
+                        {
+                            "text": "Die Unterschrift",
+                            "translation": "A assinatura",
+                            "audio": "A assinatura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "A morada",
+                    "correctAnswer": "Die Adresse",
+                    "alternativeAnswers": [
+                        "Der Wohnsitz"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A morada",
+                            "translation": "Die Adresse",
+                            "audio": "A morada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Vertrag",
+                    "correctAnswer": "O contrato",
+                    "vocabulary": [
+                        {
+                            "text": "Der Vertrag",
+                            "translation": "O contrato",
+                            "audio": "O contrato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "A dívida",
+                    "correctAnswer": "Die Schuld",
+                    "alternativeAnswers": [
+                        "Die Schulden"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A dívida",
+                            "translation": "Die Schuld",
+                            "audio": "A dívida"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Die Versicherung",
+                    "correctAnswer": "O seguro",
+                    "vocabulary": [
+                        {
+                            "text": "Die Versicherung",
+                            "translation": "O seguro",
+                            "audio": "O seguro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "O formulário",
+                    "correctAnswer": "Das Formular",
+                    "vocabulary": [
+                        {
+                            "text": "O formulário",
+                            "translation": "Das Formular",
+                            "audio": "O formulário"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u16_l3",
+            "title": "Alltag an der Kasse & Bank",
+            "exercises": [
+                {
+                    "id": "u16_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Queria abrir uma conta, por favor.",
+                    "correctAnswer": "Ich möchte bitte ein Konto eröffnen",
+                    "alternativeAnswers": [
+                        "Ich hätte gerne ein Konto."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Queria",
+                            "translation": "Ich möchte",
+                            "audio": "Queria"
+                        },
+                        {
+                            "text": "abrir uma conta",
+                            "translation": "ein Konto eröffnen",
+                            "audio": "abrir uma conta"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wie möchten Sie bezahlen?",
+                    "correctAnswer": "Como quer pagar?",
+                    "alternativeAnswers": [
+                        "Como deseja pagar?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wie",
+                            "translation": "Como",
+                            "audio": "Como"
+                        },
+                        {
+                            "text": "möchten Sie",
+                            "translation": "quer",
+                            "audio": "quer"
+                        },
+                        {
+                            "text": "bezahlen",
+                            "translation": "pagar",
+                            "audio": "pagar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Vou pagar com cartão.",
+                    "correctAnswer": "Ich werde mit Karte bezahlen",
+                    "alternativeAnswers": [
+                        "Ich zahle mit Karte"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Vou pagar",
+                            "translation": "Ich werde bezahlen",
+                            "audio": "Vou pagar"
+                        },
+                        {
+                            "text": "com cartão",
+                            "translation": "mit Karte",
+                            "audio": "com cartão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Was steht oft auf dem Display des Kartenlesegeräts?",
+                    "correctAnswer": "Introduza o código PIN",
+                    "options": [
+                        "Retire o cartão",
+                        "Introduza o código PIN",
+                        "O cartão foi recusado"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Introduza o código PIN",
+                    "vocabulary": [
+                        {
+                            "text": "Geben Sie die PIN ein",
+                            "translation": "Introduza o código PIN",
+                            "audio": "Introduza o código PIN"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Wo gibt es einen Geldautomaten?",
+                    "correctAnswer": "Onde há um multibanco?",
+                    "alternativeAnswers": [
+                        "Onde fica o multibanco?"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wo gibt es",
+                            "translation": "Onde há",
+                            "audio": "Onde há"
+                        },
+                        {
+                            "text": "einen Geldautomaten",
+                            "translation": "um multibanco",
+                            "audio": "um multibanco"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "O cartão foi recusado.",
+                    "correctAnswer": "Die Karte wurde abgelehnt",
+                    "vocabulary": [
+                        {
+                            "text": "O cartão",
+                            "translation": "Die Karte",
+                            "audio": "O cartão"
+                        },
+                        {
+                            "text": "foi recusado",
+                            "translation": "wurde abgelehnt",
+                            "audio": "foi recusado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Ich möchte hundert Euro abheben.",
+                    "correctAnswer": "Quero levantar cem euros.",
+                    "alternativeAnswers": [
+                        "Queria levantar cem euros."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich möchte",
+                            "translation": "Quero",
+                            "audio": "Quero"
+                        },
+                        {
+                            "text": "abheben",
+                            "translation": "levantar",
+                            "audio": "levantar"
+                        },
+                        {
+                            "text": "hundert Euros",
+                            "translation": "cem euros",
+                            "audio": "cem euros"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "Retirar o cartão",
+                    "correctAnswer": "Die Karte entnehmen",
+                    "alternativeAnswers": [
+                        "Karte herausnehmen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Retirar",
+                            "translation": "Entnehmen",
+                            "audio": "Retirar"
+                        },
+                        {
+                            "text": "o cartão",
+                            "translation": "die Karte",
+                            "audio": "o cartão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e9",
+                    "type": "translate_to_pt",
+                    "question": "Was ist mein Kontostand?",
+                    "correctAnswer": "Qual é o meu saldo?",
+                    "vocabulary": [
+                        {
+                            "text": "Was ist",
+                            "translation": "Qual é",
+                            "audio": "Qual é"
+                        },
+                        {
+                            "text": "mein Kontostand",
+                            "translation": "o meu saldo",
+                            "audio": "o meu saldo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e10",
+                    "type": "translate_to_de",
+                    "question": "Confirmar",
+                    "correctAnswer": "Bestätigen",
+                    "vocabulary": [
+                        {
+                            "text": "Confirmar",
+                            "translation": "Bestätigen",
+                            "audio": "Confirmar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e11",
+                    "type": "translate_to_pt",
+                    "question": "Abbrechen",
+                    "correctAnswer": "Cancelar",
+                    "vocabulary": [
+                        {
+                            "text": "Abbrechen",
+                            "translation": "Cancelar",
+                            "audio": "Cancelar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e12",
+                    "type": "translate_to_de",
+                    "question": "Preciso do seu NIF.",
+                    "correctAnswer": "Ich brauche Ihre Steuernummer",
+                    "vocabulary": [
+                        {
+                            "text": "Preciso",
+                            "translation": "Ich brauche",
+                            "audio": "Preciso"
+                        },
+                        {
+                            "text": "do seu NIF",
+                            "translation": "Ihre Steuernummer",
+                            "audio": "do seu NIF"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e13",
+                    "type": "translate_to_pt",
+                    "question": "Das Rückgeld",
+                    "correctAnswer": "O troco",
+                    "vocabulary": [
+                        {
+                            "text": "Das Rückgeld",
+                            "translation": "O troco",
+                            "audio": "O troco"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e14",
+                    "type": "translate_to_de",
+                    "question": "Pode guardar o troco.",
+                    "correctAnswer": "Sie können das Rückgeld behalten",
+                    "alternativeAnswers": [
+                        "Stimmt so."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Pode guardar",
+                            "translation": "Sie können behalten",
+                            "audio": "Pode guardar"
+                        },
+                        {
+                            "text": "o troco",
+                            "translation": "das Rückgeld",
+                            "audio": "o troco"
+                        }
+                    ]
+                },
+                {
+                    "id": "u16_l3_e15",
+                    "type": "translate_to_pt",
+                    "question": "Das Ticket (Warteschlange in der Bank)",
+                    "correctAnswer": "A senha",
+                    "vocabulary": [
+                        {
+                            "text": "Das Ticket (Warteschlange)",
+                            "translation": "A senha",
+                            "audio": "A senha"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "O Multibanco",
+            "explanation": "Das 'Multibanco'-System ist einzigartig in Portugal. Es ist nicht nur ein Geldautomat, sondern ein Netzwerk, mit dem man fast alles machen kann: Steuern zahlen, Handy aufladen, Mautgebühren begleichen und Bahntickets kaufen. Auch das Kartenterminal an der Kasse wird umgangssprachlich oft 'Multibanco' genannt.",
+            "examples": [
+                "Pode pagar no multibanco. (Sie können am Terminal/Geldautomaten bezahlen.)",
+                "Vou ao multibanco levantar dinheiro. (Ich gehe zum Geldautomaten, um Geld abzuheben.)"
+            ]
+        },
+        {
+            "heading": "O NIF / Contribuinte",
+            "explanation": "Die Número de Identificação Fiscal (NIF) oder 'Número de Contribuinte' ist die portugiesische Steuernummer. In fast jedem Geschäft oder Restaurant wird man beim Bezahlen gefragt: 'Quer contribuinte na fatura?' (Möchten Sie die Steuernummer auf der Rechnung?). Dies dient der portugiesischen Steuererklärung.",
+            "examples": [
+                "Sim, o meu NIF é o 123456789. (Ja, meine Steuernummer ist die 123456789.)",
+                "Não, obrigado. (Nein, danke - wenn man die Nummer nicht angeben will.)"
+            ]
+        },
+        {
+            "heading": "Geld abheben: Levantar",
+            "explanation": "Das Verb für 'Geld abheben' lautet 'levantar dinheiro' (wörtlich: Geld anheben). Das Verb 'tirar' (ziehen/nehmen) wird in diesem Kontext in Portugal nicht verwendet.",
+            "examples": [
+                "Tenho de levantar dinheiro. (Ich muss Geld abheben.)"
+            ]
+        }
+    ]
+}

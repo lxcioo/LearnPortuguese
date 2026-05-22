@@ -1,0 +1,844 @@
+{
+    "id": "unit_13",
+    "title": "Kapitel 13: Bildung & Universität",
+    "color": "#8e44ad",
+    "levels": [
+        {
+            "id": "u13_l1",
+            "title": "Schule & Universität",
+            "exercises": [
+                {
+                    "id": "u13_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "A escola",
+                    "correctAnswer": "Die Schule",
+                    "vocabulary": [
+                        {
+                            "text": "A escola",
+                            "translation": "Die Schule",
+                            "audio": "A escola"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Universität",
+                    "correctAnswer": "A universidade",
+                    "alternativeAnswers": [
+                        "A faculdade"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Universität",
+                            "translation": "A universidade",
+                            "audio": "A universidade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O estudante",
+                    "correctAnswer": "Der Student",
+                    "vocabulary": [
+                        {
+                            "text": "O estudante",
+                            "translation": "Der Student",
+                            "audio": "O estudante"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e4_m",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin Schüler (männlich)",
+                    "correctAnswer": "Eu sou aluno",
+                    "gender": "m",
+                    "alternativeAnswers": [
+                        "Sou aluno"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Eu sou",
+                            "audio": "Eu sou"
+                        },
+                        {
+                            "text": "Schüler",
+                            "translation": "aluno",
+                            "audio": "aluno"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e4_f",
+                    "type": "translate_to_pt",
+                    "question": "Ich bin Schülerin (weiblich)",
+                    "correctAnswer": "Eu sou aluna",
+                    "gender": "f",
+                    "alternativeAnswers": [
+                        "Sou aluna"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich bin",
+                            "translation": "Eu sou",
+                            "audio": "Eu sou"
+                        },
+                        {
+                            "text": "Schülerin",
+                            "translation": "aluna",
+                            "audio": "aluna"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e6",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A licenciatura'?",
+                    "correctAnswer": "Der Bachelor",
+                    "options": [
+                        "Der Master",
+                        "Der Bachelor",
+                        "Das Abitur"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A licenciatura",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Bachelor",
+                            "translation": "A licenciatura",
+                            "audio": "A licenciatura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Master",
+                    "correctAnswer": "O mestrado",
+                    "vocabulary": [
+                        {
+                            "text": "Der Master",
+                            "translation": "O mestrado",
+                            "audio": "O mestrado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "A informática",
+                    "correctAnswer": "Die Informatik",
+                    "vocabulary": [
+                        {
+                            "text": "A informática",
+                            "translation": "Die Informatik",
+                            "audio": "A informática"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e9",
+                    "type": "translate_to_pt",
+                    "question": "Der Kurs (oder Studiengang)",
+                    "correctAnswer": "O curso",
+                    "vocabulary": [
+                        {
+                            "text": "Der Kurs / Studiengang",
+                            "translation": "O curso",
+                            "audio": "O curso"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e10",
+                    "type": "translate_to_de",
+                    "question": "O professor universitário",
+                    "correctAnswer": "Der Professor",
+                    "alternativeAnswers": [
+                        "Der Universitätsprofessor"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O professor",
+                            "translation": "Der Professor",
+                            "audio": "O professor"
+                        },
+                        {
+                            "text": "universitário",
+                            "translation": "universitär",
+                            "audio": "universitário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e11",
+                    "type": "translate_to_pt",
+                    "question": "Die Bibliothek",
+                    "correctAnswer": "A biblioteca",
+                    "vocabulary": [
+                        {
+                            "text": "Die Bibliothek",
+                            "translation": "A biblioteca",
+                            "audio": "A biblioteca"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e12",
+                    "type": "translate_to_de",
+                    "question": "A propina",
+                    "correctAnswer": "Die Studiengebühr",
+                    "vocabulary": [
+                        {
+                            "text": "A propina",
+                            "translation": "Die Studiengebühr",
+                            "audio": "A propina"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e13",
+                    "type": "multiple_choice",
+                    "question": "Wie nennt man die 'Fakultät' (z. B. Medizinische Fakultät)?",
+                    "correctAnswer": "A faculdade",
+                    "options": [
+                        "A escola",
+                        "A faculdade",
+                        "A biblioteca"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A faculdade",
+                    "vocabulary": [
+                        {
+                            "text": "Die Fakultät",
+                            "translation": "A faculdade",
+                            "audio": "A faculdade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Studieren",
+                    "correctAnswer": "Estudar",
+                    "alternativeAnswers": [
+                        "Lernen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Studieren",
+                            "translation": "Estudar",
+                            "audio": "Estudar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "Aprender",
+                    "correctAnswer": "Lernen",
+                    "vocabulary": [
+                        {
+                            "text": "Aprender",
+                            "translation": "Lernen",
+                            "audio": "Aprender"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u13_l2",
+            "title": "Prüfungen & Materialien",
+            "exercises": [
+                {
+                    "id": "u13_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A aula",
+                    "correctAnswer": "Der Unterricht",
+                    "alternativeAnswers": [
+                        "Die Vorlesung",
+                        "Die Stunde"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A aula",
+                            "translation": "Der Unterricht / Die Vorlesung",
+                            "audio": "A aula"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Notizbuch (Heft)",
+                    "correctAnswer": "O caderno",
+                    "vocabulary": [
+                        {
+                            "text": "Das Notizbuch",
+                            "translation": "O caderno",
+                            "audio": "O caderno"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "A caneta e o lápis",
+                    "correctAnswer": "Der Kugelschreiber und der Bleistift",
+                    "vocabulary": [
+                        {
+                            "text": "A caneta",
+                            "translation": "Der Kugelschreiber",
+                            "audio": "A caneta"
+                        },
+                        {
+                            "text": "e",
+                            "translation": "und",
+                            "audio": "e"
+                        },
+                        {
+                            "text": "o lápis",
+                            "translation": "der Bleistift",
+                            "audio": "o lápis"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A mochila'?",
+                    "correctAnswer": "Der Rucksack",
+                    "options": [
+                        "Die Tasche",
+                        "Der Rucksack",
+                        "Das Buch"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A mochila",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Rucksack",
+                            "translation": "A mochila",
+                            "audio": "A mochila"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Die Prüfung",
+                    "correctAnswer": "O exame",
+                    "vocabulary": [
+                        {
+                            "text": "Die Prüfung",
+                            "translation": "O exame",
+                            "audio": "O exame"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "A nota",
+                    "correctAnswer": "Die Note",
+                    "vocabulary": [
+                        {
+                            "text": "A nota",
+                            "translation": "Die Note",
+                            "audio": "A nota"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Präsentation",
+                    "correctAnswer": "A apresentação",
+                    "vocabulary": [
+                        {
+                            "text": "Die Präsentation",
+                            "translation": "A apresentação",
+                            "audio": "A apresentação"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "Fazer um exame",
+                    "correctAnswer": "Eine Prüfung schreiben",
+                    "alternativeAnswers": [
+                        "Eine Prüfung machen",
+                        "Ein Examen machen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Fazer",
+                            "translation": "Machen / Schreiben",
+                            "audio": "Fazer"
+                        },
+                        {
+                            "text": "um exame",
+                            "translation": "eine Prüfung",
+                            "audio": "um exame"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Durchfallen' in Portugal?",
+                    "correctAnswer": "Chumbar",
+                    "options": [
+                        "Passar",
+                        "Chumbar",
+                        "Faltar"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Chumbar",
+                    "vocabulary": [
+                        {
+                            "text": "Durchfallen",
+                            "translation": "Chumbar",
+                            "audio": "Chumbar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e10",
+                    "type": "translate_to_pt",
+                    "question": "Bestehen (eine Prüfung)",
+                    "correctAnswer": "Passar",
+                    "vocabulary": [
+                        {
+                            "text": "Bestehen",
+                            "translation": "Passar",
+                            "audio": "Passar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e11",
+                    "type": "translate_to_de",
+                    "question": "O semestre",
+                    "correctAnswer": "Das Semester",
+                    "vocabulary": [
+                        {
+                            "text": "O semestre",
+                            "translation": "Das Semester",
+                            "audio": "O semestre"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der Stundenplan",
+                    "correctAnswer": "O horário",
+                    "vocabulary": [
+                        {
+                            "text": "Der Stundenplan",
+                            "translation": "O horário",
+                            "audio": "O horário"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "O quadro",
+                    "correctAnswer": "Die Tafel",
+                    "vocabulary": [
+                        {
+                            "text": "O quadro",
+                            "translation": "Die Tafel",
+                            "audio": "O quadro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Das Klassenzimmer (oder Hörsaal)",
+                    "correctAnswer": "A sala de aula",
+                    "vocabulary": [
+                        {
+                            "text": "Die Klasse (Raum)",
+                            "translation": "A sala",
+                            "audio": "A sala"
+                        },
+                        {
+                            "text": "des Unterrichts",
+                            "translation": "de aula",
+                            "audio": "de aula"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "Faltar às aulas",
+                    "correctAnswer": "Den Unterricht schwänzen",
+                    "alternativeAnswers": [
+                        "Im Unterricht fehlen",
+                        "Fehlen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Faltar",
+                            "translation": "Fehlen",
+                            "audio": "Faltar"
+                        },
+                        {
+                            "text": "às aulas",
+                            "translation": "im Unterricht",
+                            "audio": "às aulas"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u13_l3",
+            "title": "Studienalltag",
+            "exercises": [
+                {
+                    "id": "u13_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "Eu estudo na universidade.",
+                    "correctAnswer": "Ich studiere an der Universität",
+                    "alternativeAnswers": [
+                        "Ich studiere an der Uni."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eu estudo",
+                            "translation": "Ich studiere",
+                            "audio": "Eu estudo"
+                        },
+                        {
+                            "text": "na",
+                            "translation": "an der",
+                            "audio": "na"
+                        },
+                        {
+                            "text": "universidade",
+                            "translation": "Universität",
+                            "audio": "universidade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wir haben heute einen Test.",
+                    "correctAnswer": "Nós temos um teste hoje.",
+                    "alternativeAnswers": [
+                        "Temos um teste hoje."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wir haben",
+                            "translation": "Nós temos",
+                            "audio": "Nós temos"
+                        },
+                        {
+                            "text": "um teste",
+                            "translation": "einen Test",
+                            "audio": "um teste"
+                        },
+                        {
+                            "text": "hoje",
+                            "translation": "heute",
+                            "audio": "hoje"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "Os trabalhos de casa",
+                    "correctAnswer": "Die Hausaufgaben",
+                    "alternativeAnswers": [
+                        "O TPC"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Os trabalhos",
+                            "translation": "Die Arbeiten",
+                            "audio": "Os trabalhos"
+                        },
+                        {
+                            "text": "de casa",
+                            "translation": "von zu Hause",
+                            "audio": "de casa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie nennt man das 'Stipendium'?",
+                    "correctAnswer": "A bolsa de estudo",
+                    "options": [
+                        "A mochila de estudo",
+                        "A bolsa de estudo",
+                        "A propina"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A bolsa de estudo",
+                    "vocabulary": [
+                        {
+                            "text": "Das Stipendium",
+                            "translation": "A bolsa de estudo",
+                            "audio": "A bolsa de estudo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Projekt",
+                    "correctAnswer": "O projeto",
+                    "vocabulary": [
+                        {
+                            "text": "Das Projekt",
+                            "translation": "O projeto",
+                            "audio": "O projeto"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "A pesquisa",
+                    "correctAnswer": "Die Forschung",
+                    "alternativeAnswers": [
+                        "Die Recherche"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A pesquisa",
+                            "translation": "Die Forschung",
+                            "audio": "A pesquisa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Gruppenarbeit",
+                    "correctAnswer": "O trabalho de grupo",
+                    "vocabulary": [
+                        {
+                            "text": "Die Arbeit",
+                            "translation": "O trabalho",
+                            "audio": "O trabalho"
+                        },
+                        {
+                            "text": "der Gruppe",
+                            "translation": "de grupo",
+                            "audio": "de grupo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "O colega de turma",
+                    "correctAnswer": "Der Mitschüler",
+                    "alternativeAnswers": [
+                        "Der Kommilitone"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O colega",
+                            "translation": "Der Kollege",
+                            "audio": "O colega"
+                        },
+                        {
+                            "text": "de turma",
+                            "translation": "der Klasse",
+                            "audio": "de turma"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was heißt 'Die Vorlesung haben'?",
+                    "correctAnswer": "Ter uma aula",
+                    "options": [
+                        "Fazer uma aula",
+                        "Ter uma aula",
+                        "Faltar uma aula"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Ter uma aula",
+                    "vocabulary": [
+                        {
+                            "text": "Eine Vorlesung haben",
+                            "translation": "Ter uma aula",
+                            "audio": "Ter uma aula"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Einen Artikel lesen",
+                    "correctAnswer": "Ler um artigo",
+                    "vocabulary": [
+                        {
+                            "text": "Lesen",
+                            "translation": "Ler",
+                            "audio": "Ler"
+                        },
+                        {
+                            "text": "einen Artikel",
+                            "translation": "um artigo",
+                            "audio": "um artigo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "O semestre começa amanhã.",
+                    "correctAnswer": "Das Semester beginnt morgen",
+                    "vocabulary": [
+                        {
+                            "text": "O semestre",
+                            "translation": "Das Semester",
+                            "audio": "O semestre"
+                        },
+                        {
+                            "text": "começa",
+                            "translation": "beginnt",
+                            "audio": "começa"
+                        },
+                        {
+                            "text": "amanhã",
+                            "translation": "morgen",
+                            "audio": "amanhã"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Die Prüfung ist schwer.",
+                    "correctAnswer": "O exame é difícil.",
+                    "vocabulary": [
+                        {
+                            "text": "Die Prüfung",
+                            "translation": "O exame",
+                            "audio": "O exame"
+                        },
+                        {
+                            "text": "ist",
+                            "translation": "é",
+                            "audio": "é"
+                        },
+                        {
+                            "text": "schwer",
+                            "translation": "difícil",
+                            "audio": "difícil"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Fácil",
+                    "correctAnswer": "Einfach",
+                    "alternativeAnswers": [
+                        "Leicht"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Fácil",
+                            "translation": "Einfach",
+                            "audio": "Fácil"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Ich habe gute Noten.",
+                    "correctAnswer": "Eu tenho boas notas.",
+                    "alternativeAnswers": [
+                        "Tenho boas notas."
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ich habe",
+                            "translation": "Eu tenho",
+                            "audio": "Eu tenho"
+                        },
+                        {
+                            "text": "gute Noten",
+                            "translation": "boas notas",
+                            "audio": "boas notas"
+                        }
+                    ]
+                },
+                {
+                    "id": "u13_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "Eu percebo a matéria.",
+                    "correctAnswer": "Ich verstehe den Stoff",
+                    "alternativeAnswers": [
+                        "Ich verstehe das Thema",
+                        "Ich begreife den Lehrstoff"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Eu percebo",
+                            "translation": "Ich verstehe",
+                            "audio": "Eu percebo"
+                        },
+                        {
+                            "text": "a matéria",
+                            "translation": "den Stoff",
+                            "audio": "a matéria"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Estudar vs. Aprender",
+            "explanation": "Im Portugiesischen unterscheidet man genau zwischen diesen zwei Wörtern. 'Estudar' nutzt man, wenn man sich aktiv hinsetzt und büffelt oder an einer Uni eingeschrieben ist. 'Aprender' bedeutet, dass man eine neue Fähigkeit erlangt (z. B. schwimmen lernen) oder das Wissen tatsächlich im Kopf bleibt.",
+            "examples": [
+                "Eu estudo na universidade. (Ich studiere an der Universität.)",
+                "Eu aprendo a falar português. (Ich lerne Portugiesisch sprechen.)"
+            ]
+        },
+        {
+            "heading": "Vorlesungen und Prüfungen",
+            "explanation": "Man sagt nicht 'eine Prüfung nehmen/schreiben' (wie im Englischen oder Deutschen), sondern man 'macht' sie: 'Fazer um exame'. Eine Vorlesung 'hat' man: 'Ter uma aula'.",
+            "examples": [
+                "Amanhã vou fazer um exame. (Morgen werde ich eine Prüfung schreiben.)",
+                "Hoje não tenho aulas. (Heute habe ich keine Vorlesungen/keinen Unterricht.)"
+            ]
+        },
+        {
+            "heading": "A Propina – Ein falscher Freund!",
+            "explanation": "Vorsicht in Portugal! 'A propina' bedeutet an einer portugiesischen Universität die 'Studiengebühren'. In Brasilien und vielen spanischsprachigen Ländern bedeutet das Wort hingegen 'Trinkgeld' oder sogar 'Schmiergeld'!",
+            "examples": [
+                "Eu tenho de pagar a propina. (Ich muss die Studiengebühr bezahlen.)",
+                "Para o café, deixamos gorjeta. (Für den Kaffee hinterlassen wir Trinkgeld.)"
+            ]
+        }
+    ]
+}

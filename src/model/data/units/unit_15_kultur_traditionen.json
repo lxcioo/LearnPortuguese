@@ -1,0 +1,761 @@
+{
+    "id": "unit_15",
+    "title": "Kapitel 15: Kultur & Traditionen",
+    "color": "#c0392b",
+    "levels": [
+        {
+            "id": "u15_l1",
+            "title": "Feste & Feiertage",
+            "exercises": [
+                {
+                    "id": "u15_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O feriado",
+                    "correctAnswer": "Der Feiertag",
+                    "vocabulary": [
+                        {
+                            "text": "O feriado",
+                            "translation": "Der Feiertag",
+                            "audio": "O feriado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Fest",
+                    "correctAnswer": "A festa",
+                    "alternativeAnswers": [
+                        "Die Party"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Das Fest",
+                            "translation": "A festa",
+                            "audio": "A festa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "O Natal",
+                    "correctAnswer": "Weihnachten",
+                    "alternativeAnswers": [
+                        "Das Weihnachtsfest"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O Natal",
+                            "translation": "Weihnachten",
+                            "audio": "O Natal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie wünscht man 'Frohe Weihnachten'?",
+                    "correctAnswer": "Feliz Natal",
+                    "options": [
+                        "Bom dia",
+                        "Feliz Natal",
+                        "Boa Páscoa"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Feliz Natal",
+                    "vocabulary": [
+                        {
+                            "text": "Frohe Weihnachten",
+                            "translation": "Feliz Natal",
+                            "audio": "Feliz Natal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Ostern",
+                    "correctAnswer": "A Páscoa",
+                    "vocabulary": [
+                        {
+                            "text": "Ostern",
+                            "translation": "A Páscoa",
+                            "audio": "A Páscoa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "Boa Páscoa",
+                    "correctAnswer": "Frohe Ostern",
+                    "vocabulary": [
+                        {
+                            "text": "Boa",
+                            "translation": "Gute / Frohe",
+                            "audio": "Boa"
+                        },
+                        {
+                            "text": "Páscoa",
+                            "translation": "Ostern",
+                            "audio": "Páscoa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Volksfeste",
+                    "correctAnswer": "Os Santos Populares",
+                    "alternativeAnswers": [
+                        "As festas populares"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Volksfeste",
+                            "translation": "Os Santos Populares",
+                            "audio": "Os Santos Populares"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "O santo",
+                    "correctAnswer": "Der Heilige",
+                    "vocabulary": [
+                        {
+                            "text": "O santo",
+                            "translation": "Der Heilige",
+                            "audio": "O santo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist die 'Consoada' in Portugal?",
+                    "correctAnswer": "Heiligabend (das Abendessen am 24. Dezember)",
+                    "options": [
+                        "Ein Sommerfest",
+                        "Heiligabend (das Abendessen am 24. Dezember)",
+                        "Ein traditioneller Tanz"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A consoada",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Heiligabend (Essen)",
+                            "translation": "A consoada",
+                            "audio": "A consoada"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e10",
+                    "type": "translate_to_pt",
+                    "question": "Der Karneval",
+                    "correctAnswer": "O Carnaval",
+                    "vocabulary": [
+                        {
+                            "text": "Der Karneval",
+                            "translation": "O Carnaval",
+                            "audio": "O Carnaval"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e11",
+                    "type": "translate_to_de",
+                    "question": "O Ano Novo",
+                    "correctAnswer": "Das Neujahr",
+                    "alternativeAnswers": [
+                        "Neujahr"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O Ano Novo",
+                            "translation": "Das Neujahr",
+                            "audio": "O Ano Novo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Frohes neues Jahr",
+                    "correctAnswer": "Bom Ano Novo",
+                    "alternativeAnswers": [
+                        "Feliz Ano Novo"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Frohes",
+                            "translation": "Bom",
+                            "audio": "Bom"
+                        },
+                        {
+                            "text": "neues Jahr",
+                            "translation": "Ano Novo",
+                            "audio": "Ano Novo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "Celebrar",
+                    "correctAnswer": "Feiern",
+                    "alternativeAnswers": [
+                        "Festeiern"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Celebrar",
+                            "translation": "Feiern",
+                            "audio": "Celebrar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Feiern (Feste feiern)",
+                    "correctAnswer": "Festejar",
+                    "vocabulary": [
+                        {
+                            "text": "Feiern",
+                            "translation": "Festejar",
+                            "audio": "Festejar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l1_e15",
+                    "type": "translate_to_pt",
+                    "question": "Wir feiern heute",
+                    "correctAnswer": "Nós festejamos hoje",
+                    "alternativeAnswers": [
+                        "Festejamos hoje",
+                        "Nós celebramos hoje"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Wir feiern",
+                            "translation": "Nós festejamos",
+                            "audio": "Nós festejamos"
+                        },
+                        {
+                            "text": "heute",
+                            "translation": "hoje",
+                            "audio": "hoje"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u15_l2",
+            "title": "Musik & Erbe",
+            "exercises": [
+                {
+                    "id": "u15_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A tradição",
+                    "correctAnswer": "Die Tradition",
+                    "vocabulary": [
+                        {
+                            "text": "A tradição",
+                            "translation": "Die Tradition",
+                            "audio": "A tradição"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Die Kultur",
+                    "correctAnswer": "A cultura",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kultur",
+                            "translation": "A cultura",
+                            "audio": "A cultura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "O fado",
+                    "correctAnswer": "Der Fado",
+                    "alternativeAnswers": [
+                        "Fado"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O fado",
+                            "translation": "Der Fado",
+                            "audio": "O fado"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Welches Instrument begleitet typischerweise den Fado?",
+                    "correctAnswer": "A guitarra portuguesa",
+                    "options": [
+                        "O piano",
+                        "A guitarra portuguesa",
+                        "O violino"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A guitarra portuguesa",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Die portugiesische Gitarre",
+                            "translation": "A guitarra portuguesa",
+                            "audio": "A guitarra portuguesa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e5_m",
+                    "type": "translate_to_pt",
+                    "question": "Der Sänger",
+                    "correctAnswer": "O cantor",
+                    "gender": "m",
+                    "vocabulary": [
+                        {
+                            "text": "Der Sänger",
+                            "translation": "O cantor",
+                            "audio": "O cantor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e5_f",
+                    "type": "translate_to_pt",
+                    "question": "Die Sängerin",
+                    "correctAnswer": "A cantora",
+                    "gender": "f",
+                    "vocabulary": [
+                        {
+                            "text": "Die Sängerin",
+                            "translation": "A cantora",
+                            "audio": "A cantora"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e7",
+                    "type": "translate_to_de",
+                    "question": "A canção",
+                    "correctAnswer": "Das Lied",
+                    "alternativeAnswers": [
+                        "Der Song"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A canção",
+                            "translation": "Das Lied",
+                            "audio": "A canção"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e8",
+                    "type": "translate_to_pt",
+                    "question": "Weinen",
+                    "correctAnswer": "Chorar",
+                    "vocabulary": [
+                        {
+                            "text": "Weinen",
+                            "translation": "Chorar",
+                            "audio": "Chorar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e9",
+                    "type": "multiple_choice",
+                    "question": "Was beschreibt das berühmte portugiesische Wort 'Saudade'?",
+                    "correctAnswer": "Ein tiefes Gefühl von Sehnsucht und Melancholie",
+                    "options": [
+                        "Ein tiefes Gefühl von Sehnsucht und Melancholie",
+                        "Ein schnelles, fröhliches Lied",
+                        "Ein typisches Mittagessen"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "A saudade",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Sehnsucht",
+                            "translation": "A saudade",
+                            "audio": "A saudade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e10",
+                    "type": "translate_to_de",
+                    "question": "Tenho saudades tuas",
+                    "correctAnswer": "Ich vermisse dich",
+                    "alternativeAnswers": [
+                        "Ich habe Sehnsucht nach dir"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Tenho",
+                            "translation": "Ich habe",
+                            "audio": "Tenho"
+                        },
+                        {
+                            "text": "saudades",
+                            "translation": "Sehnsucht",
+                            "audio": "saudades"
+                        },
+                        {
+                            "text": "tuas",
+                            "translation": "nach dir",
+                            "audio": "tuas"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e11",
+                    "type": "translate_to_pt",
+                    "question": "Die Kacheln (Fliesen)",
+                    "correctAnswer": "Os azulejos",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kacheln (Fliesen)",
+                            "translation": "Os azulejos",
+                            "audio": "Os azulejos"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e12",
+                    "type": "translate_to_de",
+                    "question": "O castelo",
+                    "correctAnswer": "Die Burg",
+                    "alternativeAnswers": [
+                        "Das Schloss"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O castelo",
+                            "translation": "Die Burg",
+                            "audio": "O castelo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e13",
+                    "type": "translate_to_pt",
+                    "question": "Das Kloster",
+                    "correctAnswer": "O mosteiro",
+                    "vocabulary": [
+                        {
+                            "text": "Das Kloster",
+                            "translation": "O mosteiro",
+                            "audio": "O mosteiro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e14",
+                    "type": "translate_to_de",
+                    "question": "A história",
+                    "correctAnswer": "Die Geschichte",
+                    "vocabulary": [
+                        {
+                            "text": "A história",
+                            "translation": "Die Geschichte",
+                            "audio": "A história"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l2_e15",
+                    "type": "translate_to_pt",
+                    "question": "Das Denkmal",
+                    "correctAnswer": "O monumento",
+                    "vocabulary": [
+                        {
+                            "text": "Das Denkmal",
+                            "translation": "O monumento",
+                            "audio": "O monumento"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u15_l3",
+            "title": "Lebensart & Typisch Portugiesisch",
+            "exercises": [
+                {
+                    "id": "u15_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "A gastronomia",
+                    "correctAnswer": "Die Gastronomie",
+                    "vocabulary": [
+                        {
+                            "text": "A gastronomia",
+                            "translation": "Die Gastronomie",
+                            "audio": "A gastronomia"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Das Rezept",
+                    "correctAnswer": "A receita",
+                    "vocabulary": [
+                        {
+                            "text": "Das Rezept",
+                            "translation": "A receita",
+                            "audio": "A receita"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O bacalhau",
+                    "correctAnswer": "Der Stockfisch",
+                    "alternativeAnswers": [
+                        "Der Kabeljau"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O bacalhau",
+                            "translation": "Der Stockfisch",
+                            "audio": "O bacalhau"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e4",
+                    "type": "translate_to_pt",
+                    "question": "Der Knoblauch",
+                    "correctAnswer": "O alho",
+                    "vocabulary": [
+                        {
+                            "text": "Der Knoblauch",
+                            "translation": "O alho",
+                            "audio": "O alho"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e5",
+                    "type": "translate_to_de",
+                    "question": "A cortiça",
+                    "correctAnswer": "Der Kork",
+                    "vocabulary": [
+                        {
+                            "text": "A cortiça",
+                            "translation": "Der Kork",
+                            "audio": "A cortiça"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e6",
+                    "type": "translate_to_pt",
+                    "question": "Das Kunsthandwerk",
+                    "correctAnswer": "O artesanato",
+                    "vocabulary": [
+                        {
+                            "text": "Das Kunsthandwerk",
+                            "translation": "O artesanato",
+                            "audio": "O artesanato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e7",
+                    "type": "translate_to_de",
+                    "question": "A cerâmica",
+                    "correctAnswer": "Die Keramik",
+                    "vocabulary": [
+                        {
+                            "text": "A cerâmica",
+                            "translation": "Die Keramik",
+                            "audio": "A cerâmica"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e8",
+                    "type": "multiple_choice",
+                    "question": "Was ist ein sehr bekanntes Souvenir (oft schwarz-bunt bemalt)?",
+                    "correctAnswer": "O galo de Barcelos",
+                    "options": [
+                        "O galo de Barcelos",
+                        "O azulejo de Lisboa",
+                        "O peixe de Faro"
+                    ],
+                    "correctAnswerIndex": 0,
+                    "audioText": "O galo de Barcelos",
+                    "optionsLanguage": "pt",
+                    "vocabulary": [
+                        {
+                            "text": "Der Hahn von Barcelos",
+                            "translation": "O galo de Barcelos",
+                            "audio": "O galo de Barcelos"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e9",
+                    "type": "translate_to_pt",
+                    "question": "Die Legende",
+                    "correctAnswer": "A lenda",
+                    "vocabulary": [
+                        {
+                            "text": "Die Legende",
+                            "translation": "A lenda",
+                            "audio": "A lenda"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e10",
+                    "type": "translate_to_de",
+                    "question": "Pois é.",
+                    "correctAnswer": "Genau",
+                    "alternativeAnswers": [
+                        "So ist es",
+                        "Tja",
+                        "Eben"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Pois é",
+                            "translation": "Genau (So ist es)",
+                            "audio": "Pois é"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e11",
+                    "type": "translate_to_pt",
+                    "question": "Ohne Zweifel (Zweifellos)",
+                    "correctAnswer": "Sem dúvida",
+                    "vocabulary": [
+                        {
+                            "text": "Ohne",
+                            "translation": "Sem",
+                            "audio": "Sem"
+                        },
+                        {
+                            "text": "Zweifel",
+                            "translation": "dúvida",
+                            "audio": "dúvida"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e12",
+                    "type": "translate_to_de",
+                    "question": "O hábito",
+                    "correctAnswer": "Die Gewohnheit",
+                    "vocabulary": [
+                        {
+                            "text": "O hábito",
+                            "translation": "Die Gewohnheit",
+                            "audio": "O hábito"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "A calçada portuguesa",
+                    "correctAnswer": "Das portugiesische Pflaster",
+                    "alternativeAnswers": [
+                        "Das Kopfsteinpflaster"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A calçada",
+                            "translation": "Das Pflaster",
+                            "audio": "A calçada"
+                        },
+                        {
+                            "text": "portuguesa",
+                            "translation": "portugiesische",
+                            "audio": "portuguesa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Besuchen",
+                    "correctAnswer": "Visitar",
+                    "vocabulary": [
+                        {
+                            "text": "Besuchen",
+                            "translation": "Visitar",
+                            "audio": "Visitar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u15_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "Eu visito o monumento.",
+                    "correctAnswer": "Ich besuche das Denkmal",
+                    "vocabulary": [
+                        {
+                            "text": "Eu visito",
+                            "translation": "Ich besuche",
+                            "audio": "Eu visito"
+                        },
+                        {
+                            "text": "o monumento",
+                            "translation": "das Denkmal",
+                            "audio": "o monumento"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Saudade – Das unübersetzbare Wort",
+            "explanation": "Saudade ist wohl das berühmteste portugiesische Wort. Es beschreibt ein tiefes Gefühl von Sehnsucht, Melancholie oder den Schmerz über die Abwesenheit von jemandem oder etwas. Man kann Saudade nach einem Ort, einer Person oder sogar einer vergangenen Zeit haben.",
+            "examples": [
+                "Tenho saudades tuas. (Ich vermisse dich / Ich habe Sehnsucht nach dir.)",
+                "Tenho saudades de Portugal. (Ich vermisse Portugal.)"
+            ]
+        },
+        {
+            "heading": "Die Füllwörter: Pois und Pois é",
+            "explanation": "Wer in Portugal Gesprächen lauscht, hört ständig 'Pois' oder 'Pois é'. Es sind die ultimativen Füllwörter, um Zustimmung zu signalisieren. Es bedeutet so viel wie 'Genau', 'Tja' oder 'So ist es'.",
+            "examples": [
+                "— Está muito frio hoje! (Es ist sehr kalt heute!)",
+                "— Pois é... (Ja, genau... / Wem sagst du das...)"
+            ]
+        },
+        {
+            "heading": "Os Santos Populares",
+            "explanation": "Im Juni feiert ganz Portugal die 'Santos Populares' (Volksheilige). In Lissabon feiert man Santo António (13. Juni), in Porto São João (24. Juni). Es gibt Straßenfeste, gegrillte Sardinen, Basilikumtöpfchen (Manjerico) und überall Musik.",
+            "examples": [
+                "No Santo António comemos sardinhas assadas. (An Santo António essen wir gegrillte Sardinen.)"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,774 @@
+{
+    "id": "unit_14",
+    "title": "Kapitel 14: Natur, Wetter & Umwelt",
+    "color": "#27ae60",
+    "levels": [
+        {
+            "id": "u14_l1",
+            "title": "Das Wetter",
+            "exercises": [
+                {
+                    "id": "u14_l1_e1",
+                    "type": "translate_to_de",
+                    "question": "O tempo",
+                    "correctAnswer": "Das Wetter",
+                    "alternativeAnswers": [
+                        "Die Zeit"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O tempo",
+                            "translation": "Das Wetter",
+                            "audio": "O tempo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e2",
+                    "type": "translate_to_pt",
+                    "question": "Wie ist das Wetter?",
+                    "correctAnswer": "Como está o tempo?",
+                    "vocabulary": [
+                        {
+                            "text": "Wie ist",
+                            "translation": "Como está",
+                            "audio": "Como está"
+                        },
+                        {
+                            "text": "das Wetter",
+                            "translation": "o tempo",
+                            "audio": "o tempo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e3",
+                    "type": "translate_to_de",
+                    "question": "Está sol.",
+                    "correctAnswer": "Die Sonne scheint",
+                    "alternativeAnswers": [
+                        "Es ist sonnig"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Está",
+                            "translation": "Es ist",
+                            "audio": "Está"
+                        },
+                        {
+                            "text": "sol",
+                            "translation": "sonnig (Sonne)",
+                            "audio": "sol"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Es regnet (gerade)' in Portugal?",
+                    "correctAnswer": "Está a chover",
+                    "options": [
+                        "Está chovendo",
+                        "Está a chover",
+                        "Faz chuva"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "Está a chover",
+                    "vocabulary": [
+                        {
+                            "text": "Es regnet",
+                            "translation": "Está a chover",
+                            "audio": "Está a chover"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e5",
+                    "type": "translate_to_pt",
+                    "question": "Der Regen",
+                    "correctAnswer": "A chuva",
+                    "vocabulary": [
+                        {
+                            "text": "Der Regen",
+                            "translation": "A chuva",
+                            "audio": "A chuva"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e6",
+                    "type": "translate_to_de",
+                    "question": "O vento",
+                    "correctAnswer": "Der Wind",
+                    "vocabulary": [
+                        {
+                            "text": "O vento",
+                            "translation": "Der Wind",
+                            "audio": "O vento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e7",
+                    "type": "translate_to_pt",
+                    "question": "Es ist windig",
+                    "correctAnswer": "Está vento",
+                    "alternativeAnswers": [
+                        "Está muito vento"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Es ist",
+                            "translation": "Está",
+                            "audio": "Está"
+                        },
+                        {
+                            "text": "windig",
+                            "translation": "vento",
+                            "audio": "vento"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e8",
+                    "type": "translate_to_de",
+                    "question": "A neve",
+                    "correctAnswer": "Der Schnee",
+                    "vocabulary": [
+                        {
+                            "text": "A neve",
+                            "translation": "Der Schnee",
+                            "audio": "A neve"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e9",
+                    "type": "translate_to_pt",
+                    "question": "Es ist sehr heiß",
+                    "correctAnswer": "Está muito calor",
+                    "alternativeAnswers": [
+                        "Faz muito calor",
+                        "Está calor"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Es ist",
+                            "translation": "Está",
+                            "audio": "Está"
+                        },
+                        {
+                            "text": "sehr",
+                            "translation": "muito",
+                            "audio": "muito"
+                        },
+                        {
+                            "text": "heiß",
+                            "translation": "calor",
+                            "audio": "calor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e10",
+                    "type": "translate_to_de",
+                    "question": "Está frio",
+                    "correctAnswer": "Es ist kalt",
+                    "vocabulary": [
+                        {
+                            "text": "Está",
+                            "translation": "Es ist",
+                            "audio": "Está"
+                        },
+                        {
+                            "text": "frio",
+                            "translation": "kalt",
+                            "audio": "frio"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e11",
+                    "type": "multiple_choice",
+                    "question": "Was bedeutet 'A nuvem'?",
+                    "correctAnswer": "Die Wolke",
+                    "options": [
+                        "Der Nebel",
+                        "Der Schnee",
+                        "Die Wolke"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "A nuvem",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Die Wolke",
+                            "translation": "A nuvem",
+                            "audio": "A nuvem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e12",
+                    "type": "translate_to_pt",
+                    "question": "Der blaue Himmel",
+                    "correctAnswer": "O céu azul",
+                    "vocabulary": [
+                        {
+                            "text": "Der Himmel",
+                            "translation": "O céu",
+                            "audio": "O céu"
+                        },
+                        {
+                            "text": "blaue",
+                            "translation": "azul",
+                            "audio": "azul"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e13",
+                    "type": "translate_to_de",
+                    "question": "A tempestade",
+                    "correctAnswer": "Der Sturm",
+                    "alternativeAnswers": [
+                        "Das Unwetter"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A tempestade",
+                            "translation": "Der Sturm",
+                            "audio": "A tempestade"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e14",
+                    "type": "translate_to_pt",
+                    "question": "Wie ist die Temperatur?",
+                    "correctAnswer": "Qual é a temperatura?",
+                    "vocabulary": [
+                        {
+                            "text": "Wie ist",
+                            "translation": "Qual é",
+                            "audio": "Qual é"
+                        },
+                        {
+                            "text": "die Temperatur",
+                            "translation": "a temperatura",
+                            "audio": "a temperatura"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l1_e15",
+                    "type": "translate_to_de",
+                    "question": "Hoje está um dia bonito.",
+                    "correctAnswer": "Heute ist ein schöner Tag",
+                    "vocabulary": [
+                        {
+                            "text": "Hoje",
+                            "translation": "Heute",
+                            "audio": "Hoje"
+                        },
+                        {
+                            "text": "está",
+                            "translation": "ist",
+                            "audio": "está"
+                        },
+                        {
+                            "text": "um dia bonito",
+                            "translation": "ein schöner Tag",
+                            "audio": "um dia bonito"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u14_l2",
+            "title": "Natur & Landschaft",
+            "exercises": [
+                {
+                    "id": "u14_l2_e1",
+                    "type": "translate_to_de",
+                    "question": "A natureza",
+                    "correctAnswer": "Die Natur",
+                    "vocabulary": [
+                        {
+                            "text": "A natureza",
+                            "translation": "Die Natur",
+                            "audio": "A natureza"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Baum",
+                    "correctAnswer": "A árvore",
+                    "vocabulary": [
+                        {
+                            "text": "Der Baum",
+                            "translation": "A árvore",
+                            "audio": "A árvore"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e3",
+                    "type": "translate_to_de",
+                    "question": "A flor",
+                    "correctAnswer": "Die Blume",
+                    "vocabulary": [
+                        {
+                            "text": "A flor",
+                            "translation": "Die Blume",
+                            "audio": "A flor"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie sagt man 'Der Wald'?",
+                    "correctAnswer": "A floresta",
+                    "options": [
+                        "A árvore",
+                        "A floresta",
+                        "O rio"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "A floresta",
+                    "vocabulary": [
+                        {
+                            "text": "Der Wald",
+                            "translation": "A floresta",
+                            "audio": "A floresta"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e5",
+                    "type": "translate_to_pt",
+                    "question": "Der Berg",
+                    "correctAnswer": "A montanha",
+                    "vocabulary": [
+                        {
+                            "text": "Der Berg",
+                            "translation": "A montanha",
+                            "audio": "A montanha"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e6",
+                    "type": "translate_to_de",
+                    "question": "O rio",
+                    "correctAnswer": "Der Fluss",
+                    "vocabulary": [
+                        {
+                            "text": "O rio",
+                            "translation": "Der Fluss",
+                            "audio": "O rio"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e7",
+                    "type": "translate_to_pt",
+                    "question": "Der Ozean",
+                    "correctAnswer": "O oceano",
+                    "vocabulary": [
+                        {
+                            "text": "Der Ozean",
+                            "translation": "O oceano",
+                            "audio": "O oceano"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e8",
+                    "type": "translate_to_de",
+                    "question": "A costa",
+                    "correctAnswer": "Die Küste",
+                    "vocabulary": [
+                        {
+                            "text": "A costa",
+                            "translation": "Die Küste",
+                            "audio": "A costa"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e9",
+                    "type": "translate_to_pt",
+                    "question": "Die Insel",
+                    "correctAnswer": "A ilha",
+                    "vocabulary": [
+                        {
+                            "text": "Die Insel",
+                            "translation": "A ilha",
+                            "audio": "A ilha"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e10",
+                    "type": "translate_to_de",
+                    "question": "A paisagem",
+                    "correctAnswer": "Die Landschaft",
+                    "vocabulary": [
+                        {
+                            "text": "A paisagem",
+                            "translation": "Die Landschaft",
+                            "audio": "A paisagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e11",
+                    "type": "multiple_choice",
+                    "question": "Was ist 'O lago'?",
+                    "correctAnswer": "Der See",
+                    "options": [
+                        "Das Meer",
+                        "Der Fluss",
+                        "Der See"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "O lago",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der See",
+                            "translation": "O lago",
+                            "audio": "O lago"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e12",
+                    "type": "translate_to_pt",
+                    "question": "Das Tal",
+                    "correctAnswer": "O vale",
+                    "vocabulary": [
+                        {
+                            "text": "Das Tal",
+                            "translation": "O vale",
+                            "audio": "O vale"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e13",
+                    "type": "translate_to_de",
+                    "question": "Dar um passeio",
+                    "correctAnswer": "Einen Spaziergang machen",
+                    "alternativeAnswers": [
+                        "Spazieren gehen"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Dar",
+                            "translation": "Machen (Geben)",
+                            "audio": "Dar"
+                        },
+                        {
+                            "text": "um passeio",
+                            "translation": "einen Spaziergang",
+                            "audio": "um passeio"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e14",
+                    "type": "translate_to_pt",
+                    "question": "Im Freien",
+                    "correctAnswer": "Ao ar livre",
+                    "alternativeAnswers": [
+                        "Lá fora"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Im Freien",
+                            "translation": "Ao ar livre",
+                            "audio": "Ao ar livre"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l2_e15",
+                    "type": "translate_to_de",
+                    "question": "O parque nacional",
+                    "correctAnswer": "Der Nationalpark",
+                    "vocabulary": [
+                        {
+                            "text": "O parque",
+                            "translation": "Der Park",
+                            "audio": "O parque"
+                        },
+                        {
+                            "text": "nacional",
+                            "translation": "National-",
+                            "audio": "nacional"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "u14_l3",
+            "title": "Tiere & Umwelt",
+            "exercises": [
+                {
+                    "id": "u14_l3_e1",
+                    "type": "translate_to_de",
+                    "question": "O animal",
+                    "correctAnswer": "Das Tier",
+                    "vocabulary": [
+                        {
+                            "text": "O animal",
+                            "translation": "Das Tier",
+                            "audio": "O animal"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e2",
+                    "type": "translate_to_pt",
+                    "question": "Der Hund",
+                    "correctAnswer": "O cão",
+                    "vocabulary": [
+                        {
+                            "text": "Der Hund",
+                            "translation": "O cão",
+                            "audio": "O cão"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e3",
+                    "type": "translate_to_de",
+                    "question": "O gato",
+                    "correctAnswer": "Die Katze",
+                    "alternativeAnswers": [
+                        "Der Kater"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "O gato",
+                            "translation": "Die Katze",
+                            "audio": "O gato"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e4",
+                    "type": "multiple_choice",
+                    "question": "Wie nennt man den 'Vogel'?",
+                    "correctAnswer": "O pássaro",
+                    "options": [
+                        "O gato",
+                        "O cão",
+                        "O pássaro"
+                    ],
+                    "correctAnswerIndex": 2,
+                    "audioText": "O pássaro",
+                    "vocabulary": [
+                        {
+                            "text": "Der Vogel",
+                            "translation": "O pássaro",
+                            "audio": "O pássaro"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e5",
+                    "type": "translate_to_pt",
+                    "question": "Das Pferd",
+                    "correctAnswer": "O cavalo",
+                    "vocabulary": [
+                        {
+                            "text": "Das Pferd",
+                            "translation": "O cavalo",
+                            "audio": "O cavalo"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e6",
+                    "type": "translate_to_de",
+                    "question": "O meio ambiente",
+                    "correctAnswer": "Die Umwelt",
+                    "vocabulary": [
+                        {
+                            "text": "O meio ambiente",
+                            "translation": "Die Umwelt",
+                            "audio": "O meio ambiente"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e7",
+                    "type": "translate_to_pt",
+                    "question": "Die Verschmutzung",
+                    "correctAnswer": "A poluição",
+                    "alternativeAnswers": [
+                        "Die Umweltverschmutzung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Die Verschmutzung",
+                            "translation": "A poluição",
+                            "audio": "A poluição"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e8",
+                    "type": "translate_to_de",
+                    "question": "A reciclagem",
+                    "correctAnswer": "Das Recycling",
+                    "alternativeAnswers": [
+                        "Die Wiederverwertung"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "A reciclagem",
+                            "translation": "Das Recycling",
+                            "audio": "A reciclagem"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e9",
+                    "type": "multiple_choice",
+                    "question": "Was ist ein 'Ecoponto' in Portugal?",
+                    "correctAnswer": "Ein Recycling-Container",
+                    "options": [
+                        "Ein Nationalpark",
+                        "Ein Recycling-Container",
+                        "Ein Supermarkt"
+                    ],
+                    "correctAnswerIndex": 1,
+                    "audioText": "O ecoponto",
+                    "optionsLanguage": "de",
+                    "vocabulary": [
+                        {
+                            "text": "Der Recycling-Container",
+                            "translation": "O ecoponto",
+                            "audio": "O ecoponto"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e10",
+                    "type": "translate_to_pt",
+                    "question": "Recyceln",
+                    "correctAnswer": "Reciclar",
+                    "vocabulary": [
+                        {
+                            "text": "Recyceln",
+                            "translation": "Reciclar",
+                            "audio": "Reciclar"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e11",
+                    "type": "translate_to_de",
+                    "question": "Proteger",
+                    "correctAnswer": "Schützen",
+                    "vocabulary": [
+                        {
+                            "text": "Proteger",
+                            "translation": "Schützen",
+                            "audio": "Proteger"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e12",
+                    "type": "translate_to_pt",
+                    "question": "Die Erde",
+                    "correctAnswer": "A terra",
+                    "vocabulary": [
+                        {
+                            "text": "Die Erde",
+                            "translation": "A terra",
+                            "audio": "A terra"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e13",
+                    "type": "translate_to_de",
+                    "question": "Ecológico",
+                    "correctAnswer": "Ökologisch",
+                    "alternativeAnswers": [
+                        "Umweltfreundlich"
+                    ],
+                    "vocabulary": [
+                        {
+                            "text": "Ecológico",
+                            "translation": "Ökologisch",
+                            "audio": "Ecológico"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e14",
+                    "type": "translate_to_pt",
+                    "question": "Die Kuh",
+                    "correctAnswer": "A vaca",
+                    "vocabulary": [
+                        {
+                            "text": "Die Kuh",
+                            "translation": "A vaca",
+                            "audio": "A vaca"
+                        }
+                    ]
+                },
+                {
+                    "id": "u14_l3_e15",
+                    "type": "translate_to_de",
+                    "question": "O porco",
+                    "correctAnswer": "Das Schwein",
+                    "vocabulary": [
+                        {
+                            "text": "O porco",
+                            "translation": "Das Schwein",
+                            "audio": "O porco"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "grammarGuide": [
+        {
+            "heading": "Hunde und Welpen",
+            "explanation": "Ein großer Stolperstein: In Portugal ist ein Hund 'um cão'. Das Wort 'cachorro' benutzt man in Portugal nur für Hunde-Welpen! (In Brasilien ist 'cachorro' der normale Hund).",
+            "examples": [
+                "O meu cão é grande. (Mein Hund ist groß.)",
+                "Olha, que cachorro tão fofo! (Schau, was für ein süßer Welpe!)"
+            ]
+        },
+        {
+            "heading": "Die Verlaufsform (Está a chover)",
+            "explanation": "Um zu sagen, dass etwas *jetzt gerade* passiert (wie das englische -ing), benutzt man in Portugal 'Estar a + Infinitiv'.",
+            "examples": [
+                "Está a chover. (Es regnet gerade / It is raining.)",
+                "O cão está a dormir. (Der Hund schläft gerade.)"
+            ]
+        },
+        {
+            "heading": "Ecopontos",
+            "explanation": "Wenn man in Portugal Müll entsorgt, spricht man von den 'Ecopontos'. Es gibt den blauen (Papier/papeleira), den gelben (Plastik/embalagens) und den grünen (Glas/vidro).",
+            "examples": [
+                "Vou pôr o vidro no ecoponto. (Ich werde das Glas in den Recycling-Container werfen.)"
+            ]
+        }
+    ]
+}
