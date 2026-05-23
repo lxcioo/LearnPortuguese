@@ -56,7 +56,7 @@ export default function ChatTabScreen() {
     const fallbackName = gender === 'f' ? 'Lernende' : 'Lernender';
     const finalUserName = themeUserName || profileName || fallbackName;
 
-    const { messages, isLoading, error, sendMessage, messageCount, MAX_MESSAGES_PER_DAY, initializeChat, resetChat } = useChatLogic(finalUserName, gender, topic);
+    const { messages, isLoading, error, sendMessage, messageCount, MAX_MESSAGES_PER_DAY, initializeChat, resetChat, playAudioMessage, loadingAudioId, playingAudioId } = useChatLogic(finalUserName, gender, topic);
 
     const [inputText, setInputText] = useState('');
     const flatListRef = useRef<FlatList>(null);
@@ -97,6 +97,23 @@ export default function ChatTabScreen() {
                     <Text style={[styles.messageText, isUser ? styles.messageTextUser : { color: theme.text }]}>
                         {item.text}
                     </Text>
+                    {!isUser && (
+                        <TouchableOpacity
+                            style={{ marginTop: 8, alignSelf: 'flex-end', flexDirection: 'row', alignItems: 'center' }}
+                            onPress={() => playAudioMessage(item.id, item.text)}
+                            disabled={loadingAudioId === item.id}
+                        >
+                            {loadingAudioId === item.id ? (
+                                <ActivityIndicator size="small" color={theme.icon} />
+                            ) : (
+                                <Ionicons 
+                                    name={playingAudioId === item.id ? "volume-high" : "mic-outline"} 
+                                    size={20} 
+                                    color={playingAudioId === item.id ? '#58cc02' : theme.icon} 
+                                />
+                            )}
+                        </TouchableOpacity>
+                    )}
                 </View>
             </View>
         );

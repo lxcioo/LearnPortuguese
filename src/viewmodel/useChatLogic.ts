@@ -1,5 +1,8 @@
 import * as Network from 'expo-network';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+import { Audio } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
+import { DiscordService } from '@/src/model/services/DiscordService';
 
 export interface ChatMessage {
     id: string;
@@ -15,6 +18,112 @@ export const useChatLogic = (userName: string, userGender: string | null, topic:
     // Kostenkontrolle: Maximal 15 Nachrichten pro Tag
     const [messageCount, setMessageCount] = useState(0);
     const MAX_MESSAGES_PER_DAY = 50;
+
+    // TTS Audio State
+    const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
+    const [loadingAudioId, setLoadingAudioId] = useState<string | null>(null);
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
+
+    // Audio initialisieren
+    useEffect(() => {
+        const configureAudio = async () => {
+            try {
+                await Audio.setAudioModeAsync({
+                    playsInSilentModeIOS: true,
+                    allowsRecordingIOS: false,
+                    staysActiveInBackground: false,
+                    shouldDuckAndroid: true,
+                    playThroughEarpieceAndroid: false,
+                });
+            } catch (e) {
+                console.error("Audio Config Error:", e);
+            }
+        };
+        configureAudio();
+    }, []);
+
+    // Cleanup beim Verlassen
+    useEffect(() => {
+        return sound ? () => { sound.unloadAsync(); } : undefined;
+    }, [sound]);
+
+    const playAudioMessage = async (messageId: string, text: string) => {
+        if (loadingAudioId === messageId) return; // Verhindert mehrfaches Klicken
+        
+        try {
+            setLoadingAudioId(messageId);
+            
+            // Falls aktuell ein anderes Audio läuft, stoppen
+            if (sound) {
+                await sound.unloadAsync();
+                setPlayingAudioId(null);
+            }
+
+            // Text bereinigen (Markdown & Emojis entfernen, da sie das API-Limit belasten)
+            const cleanText = text.replace(/[\u{1F600}-\u{1F6FF}]/gu, '').replace(/[*_]/g, '').trim();
+            
+            // Google TTS hat ein Limit von ca. 200 Zeichen. Wir teilen den Text in Chunks von max 150 Zeichen.
+            const words = cleanText.split(/\s+/);
+            const chunks: string[] = [];
+            let currentChunk = '';
+            
+            for (const word of words) {
+                if (currentChunk.length + word.length + 1 > 150) {
+                    chunks.push(currentChunk);
+                    currentChunk = word;
+                } else {
+                    currentChunk = currentChunk ? currentChunk + ' ' + word : word;
+                }
+            }
+            if (currentChunk) chunks.push(currentChunk);
+
+            setLoadingAudioId(null);
+            setPlayingAudioId(messageId);
+
+            // Sequentielles Abspielen der Chunks
+            for (let i = 0; i < chunks.length; i++) {
+                const chunk = chunks[i];
+                if (!chunk.trim()) continue;
+                
+                const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(chunk)}&tl=pt-PT&client=tw-ob`;
+
+                const { sound: newSound } = await Audio.Sound.createAsync(
+                    { uri: url },
+                    { shouldPlay: true }
+                );
+                
+                setSound(newSound);
+                
+                // Warten, bis der aktuelle Chunk fertig abgespielt ist
+                await new Promise((resolve) => {
+                    newSound.setOnPlaybackStatusUpdate((status) => {
+                        // Wenn der Chunk zu Ende ist oder es einen Fehler gibt, weiter zum nächsten
+                        if (status.isLoaded && status.didJustFinish) {
+                            resolve(true);
+                        } else if (!status.isLoaded && status.error) {
+                            resolve(true); // Trotzdem weiter, damit die App nicht hängt
+                        }
+                    });
+                });
+            }
+
+            setPlayingAudioId(null);
+
+        } catch (e: any) {
+            console.error("Play Audio Error:", e);
+            const errorMsg = e instanceof Error ? e.message : JSON.stringify(e);
+            setError(`Audio Fehler: ${errorMsg}`);
+            
+            try {
+                const errorStack = e instanceof Error ? e.stack : 'N/A';
+                await DiscordService.sendFeedback("AudioDebugger", `TTS Fehler aufgetreten:\n${errorMsg}\n\nStack:\n${errorStack}`);
+            } catch (discordErr) {
+                console.log("Konnte Fehler nicht an Discord senden", discordErr);
+            }
+        } finally {
+            if (loadingAudioId === messageId) setLoadingAudioId(null);
+        }
+    };
 
     const resetChat = useCallback(() => {
         setMessages([]);
@@ -152,5 +261,18 @@ Tutor:`;
         }
     }, [messages, userName, userGender, topic, messageCount]);
 
-    return { messages, isLoading, error, sendMessage, setMessages, messageCount, MAX_MESSAGES_PER_DAY, initializeChat, resetChat };
+    return { 
+        messages, 
+        isLoading, 
+        error, 
+        sendMessage, 
+        setMessages, 
+        messageCount, 
+        MAX_MESSAGES_PER_DAY, 
+        initializeChat, 
+        resetChat,
+        playAudioMessage,
+        loadingAudioId,
+        playingAudioId
+    };
 };
