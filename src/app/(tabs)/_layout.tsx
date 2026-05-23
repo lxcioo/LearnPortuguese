@@ -102,6 +102,13 @@ export default function TabLayout() {
         }}
       />
       <MaterialTopTabs.Screen
+        name="chat"
+        options={{
+          title: 'Chat',
+          tabBarIcon: ({ color }: { color: string }) => <Ionicons name="sparkles" size={24} color={color} />,
+        }}
+      />
+      <MaterialTopTabs.Screen
         name="profile"
         options={{
           title: 'Profil',

@@ -173,7 +173,7 @@ export default function SettingsModal() {
         </View>
 
         <View style={{ marginTop: 30, marginBottom: 50, alignItems: 'center' }}>
-          <Text style={{ color: currentColors.secondaryText }}>Version 1.1.0</Text>
+          <Text style={{ color: currentColors.secondaryText }}>Beta Version</Text>
         </View>
 
       </ScrollView>
