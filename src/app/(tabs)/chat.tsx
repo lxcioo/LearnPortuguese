@@ -18,7 +18,8 @@ export default function ChatTabScreen() {
     // Umgeht TypeScript-Fehler, falls der Name nicht im Context definiert ist
     const themeContext = useTheme() as any;
     const gender = themeContext.gender || 'm';
-    const themeUserName = themeContext.userName || themeContext.name;
+    const themeUserNameRaw = themeContext.userName || themeContext.name;
+    const themeUserName = typeof themeUserNameRaw === 'string' ? themeUserNameRaw.replace(/['"]/g, '') : themeUserNameRaw;
 
     const [topic, setTopic] = useState('Alltag & Hobbys');
     const [isTopicModalVisible, setIsTopicModalVisible] = useState(false);
@@ -30,9 +31,19 @@ export default function ChatTabScreen() {
     useEffect(() => {
         const fetchName = async () => {
             try {
-                const storedName = await AsyncStorage.getItem('userName') || await AsyncStorage.getItem('name') || await AsyncStorage.getItem('username');
+                let storedName = await AsyncStorage.getItem('userName') || await AsyncStorage.getItem('name') || await AsyncStorage.getItem('username');
+                
+                if (!storedName) {
+                    const profileStr = await AsyncStorage.getItem('userProfile') || await AsyncStorage.getItem('profile');
+                    if (profileStr) {
+                        try {
+                            const parsed = JSON.parse(profileStr);
+                            storedName = parsed.name || parsed.userName || parsed.username;
+                        } catch (e) {}
+                    }
+                }
                 if (storedName) {
-                    setProfileName(storedName);
+                    setProfileName(storedName.replace(/['"]/g, ''));
                 }
             } catch (e) {
                 console.log("Fehler beim Laden des Namens", e);
@@ -65,6 +76,7 @@ export default function ChatTabScreen() {
     const startChat = (selectedTopic: string) => {
         setTopic(selectedTopic);
         setIsTopicModalVisible(false);
+        setCustomTopic('');
         setHasStarted(true);
         initializeChat(selectedTopic);
     };
@@ -180,11 +192,14 @@ export default function ChatTabScreen() {
                         <Text style={[styles.modalTitle, { color: theme.text }]}>Wähle ein Thema</Text>
                         <Text style={[styles.modalSubtitle, { color: theme.icon }]}>Worüber möchtest du heute auf Portugiesisch sprechen?</Text>
                         <View style={styles.topicButtons}>
-                            {['Im Café bestellen', 'Nach dem Weg fragen', 'Smalltalk & Hobbys'].map(t => (
-                                <TouchableOpacity key={t} style={[styles.topicBtn, { borderColor: theme.border }]} onPress={() => startChat(t)}>
-                                    <Text style={[styles.topicBtnText, { color: theme.text }]}>{t}</Text>
+                        {['Im Café bestellen', 'Nach dem Weg fragen', 'Smalltalk & Hobbys'].map(t => {
+                            const isSelected = customTopic === t;
+                            return (
+                                <TouchableOpacity key={t} style={[styles.topicBtn, { borderColor: isSelected ? '#58cc02' : theme.border, backgroundColor: isSelected ? 'rgba(88,204,2,0.1)' : 'transparent' }]} onPress={() => setCustomTopic(t)}>
+                                    <Text style={[styles.topicBtnText, { color: isSelected ? '#58cc02' : theme.text }]}>{t}</Text>
                                 </TouchableOpacity>
-                            ))}
+                            );
+                        })}
                         </View>
                         <Text style={[styles.orText, { color: theme.icon }]}>Oder eigenes Thema:</Text>
                         <TextInput

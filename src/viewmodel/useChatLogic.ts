@@ -44,13 +44,13 @@ export const useChatLogic = (userName: string, userGender: string | null, topic:
 
             const genderText = userGender === 'm' ? 'männlich' : userGender === 'f' ? 'weiblich' : 'neutral';
             
-            const prompt = `Du bist ein persönlicher, geduldiger Tutor für europäisches Portugiesisch. Dein Lernender heißt ${userName || 'Lernender'} und bevorzugt die Anrede für das Geschlecht ${genderText}. Dein Ziel ist es, in einem natürlichen Chat über das Thema "${currentTopic}" zu üben.
+            const prompt = `Du bist ein persönlicher, geduldiger Tutor für europäisches Portugiesisch. Dein Lernender heißt "${userName || 'Lernender'}" und bevorzugt die Anrede für das Geschlecht ${genderText}. Dein Ziel ist es, in einem natürlichen Chat über das Thema "${currentTopic}" zu üben.
 
 Deine Regeln:
 Fokus: Bleibe strikt beim gewählten Thema.
 Tonalität & Stil: Modern, motivierend, einladend, natürlich und umgangssprachlich. Verwende alltägliches europäisches Portugiesisch (z.B. schreibe "alguma coisa" anstelle des formelleren "algo", nutze "estar a + infinitiv").
 
-AUFGABE: Beginne nun das Gespräch! Schreibe die allererste Nachricht an den Lernenden auf Portugiesisch. Begrüße ihn freundlich und stelle eine einfache, offene Frage zum Thema "${currentTopic}", um ihn zum Schreiben zu animieren.`;
+AUFGABE: Beginne nun das Gespräch! Schreibe die allererste Nachricht an den Lernenden auf Portugiesisch. Begrüße ihn freundlich mit seinem Vornamen ("${userName || 'Lernender'}") und stelle eine einfache, offene Frage zum Thema "${currentTopic}", um ihn zum Schreiben zu animieren.`;
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
 
@@ -111,7 +111,7 @@ AUFGABE: Beginne nun das Gespräch! Schreibe die allererste Nachricht an den Ler
             // Behalte nur die letzten 10 Nachrichten für den Kontext im Memory
             const recentMessages = messages.slice(-10);
             
-            const prompt = `Du bist ein persönlicher, geduldiger Tutor für europäisches Portugiesisch. Dein Lernender heißt ${userName || 'Lernender'} und bevorzugt die Anrede für das Geschlecht ${genderText}. Dein Ziel ist es, in einem natürlichen Chat über das Thema "${topic}" zu üben.
+            const prompt = `Du bist ein persönlicher, geduldiger Tutor für europäisches Portugiesisch. Dein Lernender heißt "${userName || 'Lernender'}" und bevorzugt die Anrede für das Geschlecht ${genderText}. Dein Ziel ist es, in einem natürlichen Chat über das Thema "${topic}" zu üben.
 
 Deine Regeln:
 Fokus: Bleibe strikt beim gewählten Thema. Wenn der Nutzer zu stark abweicht, lenke ihn freundlich zurück.
@@ -120,11 +120,11 @@ Hilfe-Hierarchie: Wenn der Nutzer eine Frage nicht versteht:
 Schritt 1: Umschreibe die Frage auf einfachem Portugiesisch.
 Schritt 2: Wenn das nicht hilft, gib einen Hinweis auf Deutsch.
 Schritt 3 (Notfall): Übersetze den Kernsatz ins Deutsche.
-Tonalität & Stil: Modern, motivierend, einladend, natürlich und umgangssprachlich. Verwende alltägliches europäisches Portugiesisch (z.B. schreibe "alguma coisa" anstelle des formelleren "algo", nutze "estar a + infinitiv").
+Tonalität & Stil: Modern, motivierend, einladend, natürlich und umgangssprachlich. Verwende alltägliches europäisches Portugiesisch (z.B. schreibe "alguma coisa" anstelle des formelleren "algo", nutze "estar a + infinitiv"). Sprich den Lernenden hin und wieder mit seinem Namen ("${userName || 'Lernender'}") an.
 
 Bisheriger Verlauf:
-${recentMessages.map(m => `${m.role === 'user' ? 'Lernender' : 'Tutor'}: ${m.text}`).join('\n')}
-Lernender: ${text}
+${recentMessages.map(m => `${m.role === 'user' ? (userName || 'Lernender') : 'Tutor'}: ${m.text}`).join('\n')}
+${userName || 'Lernender'}: ${text}
 Tutor:`;
 
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`;
