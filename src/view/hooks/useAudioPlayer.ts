@@ -32,44 +32,46 @@ export const useAudioPlayer = () => {
 
   const playAudio = async (filename: string) => {
     try {
-      // TypeScript-Bypass: Wir zwingen TS hier (als "any"), den Wert zu akzeptieren.
-      // Zur Laufzeit auf dem Smartphone existiert documentDirectory garantiert.
+      const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
       const docDir = (FileSystem as any).documentDirectory;
-
-      if (!docDir) {
-        console.error("Fehler: Kein Zugriff auf das lokale Dateisystem.");
-        return;
-      }
-
-      // 2. Pfad zusammenbauen
-      const localUri = `${docDir}${filename}.mp3`;
-
-      // 3. Datei-Info abrufen
-      const fileInfo = await FileSystem.getInfoAsync(localUri);
-
-      if (!fileInfo.exists) {
-        console.log(`Audiodatei nicht gefunden. Lade ${filename}.mp3 herunter...`);
-        const audioUrl = `${BASE_URL}/audio/${filename}.mp3`;
-
-        // 4. Herunterladen
-        const downloadResult = await FileSystem.downloadAsync(audioUrl, localUri);
-
-        if (downloadResult.status !== 200) {
-          console.error("Fehler beim Download der Audiodatei. URL:", audioUrl);
-          return; // Abbruch, falls die Datei auf dem Server nicht existiert
-        }
-      } else {
-        console.log(`Spiele Offline-Datei ab: ${filename}.mp3`);
-      }
 
       if (sound) await sound.unloadAsync();
 
-      // 5. Abspielen
+      // FALLBACK: Wenn kein lokales Dateisystem existiert (z.B. im Web-Browser) -> Direkt streamen!
+      if (!docDir) {
+        console.log(`Kein Speicherzugriff. Streame direkt: ${audioUrl}`);
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          { uri: audioUrl },
+          { shouldPlay: true }
+        );
+        setSound(newSound);
+        return;
+      }
+
+      // NORMALER WEG: Auf dem Android-Gerät lokal speichern
+      const localUri = `${docDir}${filename}.mp3`;
+      const fileInfo = await FileSystem.getInfoAsync(localUri);
+
+      if (!fileInfo.exists) {
+        const downloadResult = await FileSystem.downloadAsync(audioUrl, localUri);
+        if (downloadResult.status !== 200) {
+          console.error("Download fehlgeschlagen. Versuche direkten Stream...");
+          // Notfall-Stream, falls der Download serverseitig abgelehnt wird
+          const { sound: fallbackSound } = await Audio.Sound.createAsync(
+            { uri: audioUrl }, { shouldPlay: true }
+          );
+          setSound(fallbackSound);
+          return;
+        }
+      }
+
+      // Abspielen der lokal gespeicherten Datei
       const { sound: newSound } = await Audio.Sound.createAsync(
         { uri: localUri },
         { shouldPlay: true }
       );
       setSound(newSound);
+
     } catch (e) {
       console.error("Play Audio Error:", e);
     }
