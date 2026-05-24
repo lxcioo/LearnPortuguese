@@ -6,7 +6,7 @@ import { Achievement, UserProfile } from '@/src/models/types';
 import { useTheme } from '@/src/views/context/ThemeContext';
 import { useUserProgress } from '@/src/viewmodels/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export function useProfileViewModel() {
   const { gender } = useTheme();
@@ -16,58 +16,56 @@ export function useProfileViewModel() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [dailyStats, setDailyStats] = useState({ wordsLearned: 0, mistakesMade: 0 });
   const [box4Count, setBox4Count] = useState(0);
-  const [todayMistakesCount, setTodayMistakesCount] = useState(-1);
-
-  // NEU: Achievements als State, da sie jetzt asynchron geladen werden
+  const [todayMistakesCount, setTodayMistakesCount] = useState(0);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
 
-  // 1. Daten laden (wird ausgeführt, sobald der Tab geöffnet wird)
   useFocusEffect(
     useCallback(() => {
-      async function fetchData() {
-        const userProfile = await UserProfileService.getUserProfile();
+      (async () => {
+        const [userProfile, stats, leitnerStats, mistakes] = await Promise.all([
+          UserProfileService.getUserProfile(),
+          ProgressService.getDailyStats(),
+          LeitnerService.getLeitnerStats(),
+          LeitnerService.getTodayMistakes(),
+        ]);
+
         setProfile(userProfile);
-
-        const stats = await ProgressService.getDailyStats();
         setDailyStats(stats);
-
-        const leitnerStats = await LeitnerService.getLeitnerStats();
         setBox4Count(leitnerStats[4] || 0);
-
-        const mistakes = await LeitnerService.getTodayMistakes();
         setTodayMistakesCount(mistakes.length);
-      }
-      fetchData();
+      })();
     }, [])
   );
 
-  // 2. Ableitungen und Berechnungen
-  const safeScores = scores || {};
-  const safeExamScores = examScores || {};
+  const { totalStars, completedLessonsCount, threeStarLessonsCount, passedExamsCount, hasCleanSlate } = useMemo(() => {
+    const safeScores = scores || {};
+    const safeExamScores = examScores || {};
 
-  const totalStars = Object.values(safeScores).reduce<number>((sum, stars) => sum + (typeof stars === 'number' ? stars : 0), 0);
-  const safeStreak = typeof streak === 'number' ? streak : 0;
-  const totalXP = (totalStars * 10) + (safeStreak * 5);
+    const total = Object.values(safeScores).reduce<number>((sum, stars) => sum + (typeof stars === 'number' ? stars : 0), 0);
+    const completed = Object.keys(safeScores).length;
+    const threeStar = Object.values(safeScores).filter(s => s === 3).length;
+    const passed = Object.keys(safeExamScores).length;
+    const cleanSlate = todayMistakesCount === 0 && dailyStats.wordsLearned > 30;
 
-  const currentLevel = Math.floor(totalXP / 100) + 1;
-  const xpForNextLevel = 100;
-  const currentLevelXP = totalXP % 100;
-  const progressPercent = (currentLevelXP / xpForNextLevel) * 100;
+    return { totalStars: total, completedLessonsCount: completed, threeStarLessonsCount: threeStar, passedExamsCount: passed, hasCleanSlate: cleanSlate };
+  }, [scores, examScores, todayMistakesCount, dailyStats.wordsLearned]);
+
+  const safeStreak = streak ?? 0;
+
+  const { currentLevel, currentLevelXP, xpForNextLevel, progressPercent } = useMemo(() => {
+    const totalXP = (totalStars * 10) + (safeStreak * 5);
+    const level = Math.floor(totalXP / 100) + 1;
+    const levelXp = totalXP % 100;
+
+    return { currentLevel: level, currentLevelXP: levelXp, xpForNextLevel: 100, progressPercent: (levelXp / 100) * 100 };
+  }, [totalStars, safeStreak]);
 
   let studentTitle = 'Portugiesisch-Schüler';
   if (gender === 'f') studentTitle = 'Portugiesisch-Schülerin';
   if (gender === 'd') studentTitle = 'Portugiesisch-Schüler*in';
 
-  const completedLessonsCount = Object.keys(safeScores).length;
-  const threeStarLessonsCount = Object.values(safeScores).filter(s => s === 3).length;
-  const passedExamsCount = Object.keys(safeExamScores).length;
-  const hasCleanSlate = todayMistakesCount === 0 && dailyStats.wordsLearned > 30;
-
-  // NEU: Sobald alle abhängigen Daten geladen sind, prüfen wir die Errungenschaften
   useEffect(() => {
-    if (todayMistakesCount === -1) return; // Warten, bis Daten da sind
-
-    const loadAchievementsAsync = async () => {
+    (async () => {
       const achs = await AchievementService.loadAchievements({
         completedLessonsCount,
         threeStarLessonsCount,
@@ -79,25 +77,22 @@ export function useProfileViewModel() {
         streakData,
       });
       setAchievements(achs);
-    };
-
-    loadAchievementsAsync();
-  }, [completedLessonsCount, threeStarLessonsCount, passedExamsCount, safeStreak, totalStars, box4Count, hasCleanSlate, streakData, todayMistakesCount]);
+    })();
+  }, [completedLessonsCount, threeStarLessonsCount, passedExamsCount, safeStreak, totalStars, box4Count, hasCleanSlate, streakData]);
 
   const maxDaily = Math.max(1, dailyStats.wordsLearned, dailyStats.mistakesMade);
-  const dailyStatsFormatted = {
-    wordsLearned: dailyStats.wordsLearned,
-    mistakesMade: dailyStats.mistakesMade,
-    wordsLearnedHeight: (dailyStats.wordsLearned / maxDaily) * 100,
-    mistakesMadeHeight: (dailyStats.mistakesMade / maxDaily) * 100,
-  };
 
-  // 3. Übergabe an den Screen
   return {
-    profile, studentTitle,
+    profile,
+    studentTitle,
     levelInfo: { currentLevel, currentLevelXP, xpForNextLevel, progressPercent },
-    dailyStats: dailyStatsFormatted,
-    achievements, // Jetzt der geladene State
+    dailyStats: {
+      wordsLearned: dailyStats.wordsLearned,
+      mistakesMade: dailyStats.mistakesMade,
+      wordsLearnedHeight: (dailyStats.wordsLearned / maxDaily) * 100,
+      mistakesMadeHeight: (dailyStats.mistakesMade / maxDaily) * 100,
+    },
+    achievements,
     actions: { navigateToSettings: () => router.push('/settings_modal') },
   };
 }

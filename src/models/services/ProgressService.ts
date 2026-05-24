@@ -1,82 +1,60 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DailyStats } from '../types';
+import { StorageService } from './StorageService';
 
 const KEYS = {
-    LESSON_SCORES: 'lessonScores',
-    EXAM_SCORES: 'examScores',
-    DAILY_STATS: 'dailyStats_v2',
-    SEEN_VOCABULARY: 'seenVocabulary_v2',
+  LESSON_SCORES: 'lessonScores',
+  EXAM_SCORES: 'examScores',
+  DAILY_STATS: 'dailyStats_v2',
+  SEEN_VOCABULARY: 'seenVocabulary_v2',
 };
 
 export const ProgressService = {
-    async saveLessonScore(lessonId: string, stars: number): Promise<void> {
-        try {
-            const existingData = await AsyncStorage.getItem(KEYS.LESSON_SCORES);
-            let scores = existingData ? JSON.parse(existingData) : {};
-            const oldScore = scores[lessonId] || 0;
-            if (stars >= oldScore) {
-                scores[lessonId] = stars;
-                await AsyncStorage.setItem(KEYS.LESSON_SCORES, JSON.stringify(scores));
-            }
-        } catch (e) { console.error("Error saving lesson score", e); }
-    },
+  async saveLessonScore(lessonId: string, stars: number): Promise<void> {
+    const scores = (await StorageService.getItem<Record<string, number>>(KEYS.LESSON_SCORES)) || {};
+    if (stars >= (scores[lessonId] || 0)) {
+      scores[lessonId] = stars;
+      await StorageService.setItem(KEYS.LESSON_SCORES, scores);
+    }
+  },
 
-    async markExamPassed(lessonId: string): Promise<void> {
-        try {
-            const existingExams = await AsyncStorage.getItem(KEYS.EXAM_SCORES);
-            let exams = existingExams ? JSON.parse(existingExams) : {};
-            exams[lessonId] = true;
-            await AsyncStorage.setItem(KEYS.EXAM_SCORES, JSON.stringify(exams));
-        } catch (e) { console.error("Error marking exam passed", e); }
-    },
+  async markExamPassed(lessonId: string): Promise<void> {
+    const exams = (await StorageService.getItem<Record<string, boolean>>(KEYS.EXAM_SCORES)) || {};
+    exams[lessonId] = true;
+    await StorageService.setItem(KEYS.EXAM_SCORES, exams);
+  },
 
-    async updateDailyStats(isCorrect: boolean, isLearned: boolean): Promise<void> {
-        try {
-            const today = new Date().toISOString().split('T')[0];
-            const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
-            let stats: DailyStats = json ? JSON.parse(json) : { date: today, wordsLearned: 0, mistakesMade: 0 };
-            if (stats.date !== today) {
-                stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
-            }
+  async updateDailyStats(isCorrect: boolean, isLearned: boolean): Promise<void> {
+    const today = new Date().toISOString().split('T')[0];
+    let stats = (await StorageService.getItem<DailyStats>(KEYS.DAILY_STATS)) || {
+      date: today,
+      wordsLearned: 0,
+      mistakesMade: 0,
+    };
 
-            // Logik verbessert: 'wordsLearned' wird nur erhöht, wenn ein Wort als "gelernt" gilt.
-            if (isLearned) {
-                stats.wordsLearned++;
-            }
-            if (!isCorrect) {
-                stats.mistakesMade++;
-            }
+    if (stats.date !== today) {
+      stats = { date: today, wordsLearned: 0, mistakesMade: 0 };
+    }
 
-            await AsyncStorage.setItem(KEYS.DAILY_STATS, JSON.stringify(stats));
-        } catch (e) { console.error("Error updating daily stats", e); }
-    },
+    if (isLearned) stats.wordsLearned++;
+    if (!isCorrect) stats.mistakesMade++;
 
-    async getDailyStats(): Promise<DailyStats> {
-        const today = new Date().toISOString().split('T')[0];
-        try {
-            const json = await AsyncStorage.getItem(KEYS.DAILY_STATS);
-            if (json) {
-                const stats = JSON.parse(json);
-                if (stats.date === today) return stats;
-            }
-        } catch (e) { console.error("Error getting daily stats", e); }
-        return { date: today, wordsLearned: 0, mistakesMade: 0 };
-    },
+    await StorageService.setItem(KEYS.DAILY_STATS, stats);
+  },
 
-    // NEU: Lädt das globale Vokabel-Wissen (welches Wort gehört zu welcher Übungs-ID)
-    async getSeenVocabulary(): Promise<Record<string, string>> {
-        try {
-            const json = await AsyncStorage.getItem(KEYS.SEEN_VOCABULARY);
-            return json ? JSON.parse(json) : {};
-        } catch (e) { return {}; }
-    },
+  async getDailyStats(): Promise<DailyStats> {
+    const today = new Date().toISOString().split('T')[0];
+    const stats = await StorageService.getItem<DailyStats>(KEYS.DAILY_STATS);
 
-    // NEU: Speichert neue Wörter mit ihrer exerciseId
-    async saveNewVocabulary(newWords: Record<string, string>): Promise<void> {
-        try {
-            const existing = await this.getSeenVocabulary();
-            const updated = { ...existing, ...newWords };
-            await AsyncStorage.setItem(KEYS.SEEN_VOCABULARY, JSON.stringify(updated));
-        } catch (e) { console.error("Error saving seen vocabulary", e); }
-    },
+    if (stats && stats.date === today) return stats;
+    return { date: today, wordsLearned: 0, mistakesMade: 0 };
+  },
+
+  async getSeenVocabulary(): Promise<Record<string, string>> {
+    return (await StorageService.getItem<Record<string, string>>(KEYS.SEEN_VOCABULARY)) || {};
+  },
+
+  async saveNewVocabulary(newWords: Record<string, string>): Promise<void> {
+    const existing = await this.getSeenVocabulary();
+    await StorageService.setItem(KEYS.SEEN_VOCABULARY, { ...existing, ...newWords });
+  },
 };
