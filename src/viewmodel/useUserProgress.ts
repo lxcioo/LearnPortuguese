@@ -16,7 +16,7 @@ export function useUserProgress() {
     try {
       setLoading(true);
 
-      // 1. Scores laden
+      // 1. Scores laden.
       const savedScores = await AsyncStorage.getItem('lessonScores');
       setScores(savedScores ? JSON.parse(savedScores) : {});
 
