@@ -1,7 +1,7 @@
-import { UserProfileService } from '@/src/model/services/UserProfileService';
-import { CustomAlert } from '@/src/view/components/CustomAlert';
-import { Colors } from '@/src/view/constants/theme';
-import { useTheme } from '@/src/view/context/ThemeContext';
+import { UserProfileService } from '@/src/models/services/UserProfileService';
+import { CustomAlert } from '@/src/views/components/CustomAlert';
+import { Colors } from '@/src/views/constants/theme';
+import { useTheme } from '@/src/views/context/ThemeContext';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';

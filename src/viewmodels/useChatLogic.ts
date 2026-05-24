@@ -2,7 +2,7 @@ import * as Network from 'expo-network';
 import { useCallback, useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
-import { DiscordService } from '@/src/model/services/DiscordService';
+import { DiscordService } from '@/src/models/services/DiscordService';
 
 export interface ChatMessage {
     id: string;

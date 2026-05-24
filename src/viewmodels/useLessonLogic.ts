@@ -1,9 +1,9 @@
-import content from '@/src/model/data/content';
-import { DiscordService } from '@/src/model/services/DiscordService';
-import { LeitnerService } from '@/src/model/services/LeitnerService';
-import { ProgressService } from '@/src/model/services/ProgressService';
-import { StreakService } from '@/src/model/services/StreakService';
-import { Course, Exercise, Unit } from '@/src/model/types/index';
+import content from '@/src/models/data/content';
+import { DiscordService } from '@/src/models/services/DiscordService';
+import { LeitnerService } from '@/src/models/services/LeitnerService';
+import { ProgressService } from '@/src/models/services/ProgressService';
+import { StreakService } from '@/src/models/services/StreakService';
+import { Course, Exercise, Unit } from '@/src/models/types/index';
 import * as Haptics from 'expo-haptics';
 import * as Network from 'expo-network';
 import Fuse from 'fuse.js';

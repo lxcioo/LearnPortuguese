@@ -1,6 +1,6 @@
-import content from '@/src/model/data/content';
-import { LeitnerService } from '@/src/model/services/LeitnerService';
-import { useUserProgress } from '@/src/viewmodel/useUserProgress';
+import content from '@/src/models/data/content';
+import { LeitnerService } from '@/src/models/services/LeitnerService';
+import { useUserProgress } from '@/src/viewmodels/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 

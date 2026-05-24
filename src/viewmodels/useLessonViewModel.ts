@@ -1,12 +1,13 @@
-import { Colors } from '@/src/view/constants/theme';
-import { useTheme } from '@/src/view/context/ThemeContext';
-import { useAudioPlayer } from '@/src/view/hooks/useAudioPlayer';
-import { useColorScheme } from '@/src/view/hooks/useColorScheme';
-import { useLessonLogic } from '@/src/viewmodel/useLessonLogic';
+import { DiscordService } from '@/src/models/services/DiscordService';
+import { Colors } from '@/src/views/constants/theme';
+import { useTheme } from '@/src/views/context/ThemeContext';
+import { useAudioPlayer } from '@/src/views/hooks/useAudioPlayer';
+import { useColorScheme } from '@/src/views/hooks/useColorScheme';
+import { useLessonLogic } from '@/src/viewmodels/useLessonLogic';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
+import Toast from 'react-native-toast-message';
 
-// This ViewModel encapsulates all presentation logic for the LessonScreen.
-// It fetches raw data from the model (useLessonLogic) and prepares it for the View.
 export function useLessonViewModel() {
   const router = useRouter();
   const { id: lessonId, type: lessonType } = useLocalSearchParams<{ id: string, type: string }>();
@@ -17,10 +18,11 @@ export function useLessonViewModel() {
 
   const { playAudio } = useAudioPlayer();
 
-  // 1. Get raw data and core logic from the Model layer
   const logic = useLessonLogic(lessonId, lessonType, gender);
 
-  // 2. Derive state and compute values specifically for the View's needs
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [confirmExit, setConfirmExit] = useState<{ visible: boolean; action: any }>({ visible: false, action: null });
+
   const currentExercise = logic.currentExercise;
   const isTranslate = currentExercise?.type.includes('translate') ?? false;
   const isTranslateToPt = currentExercise?.type === 'translate_to_pt';
@@ -40,21 +42,44 @@ export function useLessonViewModel() {
     { box: 3, label: 'Leicht', sub: '10-14 Tage', color: '#1cb0f6' },
   ];
 
-  // 3. Return a clean, structured interface for the View
+  const handleReportSubmit = async (message: string) => {
+    if (!currentExercise) return;
+    try {
+      const fullMessage = `**Übung ID:** ${currentExercise.id}\n**Frage:** ${currentExercise.question}\n**Antwort:** ${currentExercise.correctAnswer}\n\n**Nachricht:**\n${message}`;
+      await DiscordService.sendFeedback("App User (Übung)", fullMessage);
+      Toast.show({ type: 'success', text1: 'Gesendet', text2: 'Vielen Dank für dein Feedback!' });
+    } catch (e) {
+      Toast.show({ type: 'error', text1: 'Fehler', text2: 'Nachricht konnte nicht gesendet werden.' });
+    }
+  };
+
+  const executeExit = () => {
+    setConfirmExit({ visible: false, action: null });
+    if (confirmExit.action) {
+        // dispatching navigation actions in expo-router can be tricky, 
+        // fallback to standard back if it fails
+        try {
+            router.back(); 
+        } catch (e) {}
+    } else {
+        router.back();
+    }
+  };
+
   return {
-    // Raw state for the view to display
     state: {
       loading: logic.loading,
       currentExercise,
       progressPercent: logic.progressPercent,
       userInput: logic.userInput,
       selectedOption: logic.selectedOption,
-      activeVocabulary: logic.activeVocabulary, // <--- GEFILTERT FÜR DEN SATZ
-      fullVocabulary: currentExercise?.vocabulary || [], // <--- KOMPLETT (Neu)
+      activeVocabulary: logic.activeVocabulary,
+      fullVocabulary: currentExercise?.vocabulary || [],
       isChecking: logic.isChecking,
       isAIAccepted: logic.isAIAccepted,
+      showReportModal,
+      confirmExit,
     },
-    // Pre-computed props for UI elements
     viewProps: {
       isTranslateExercise: isTranslate,
       instructionText,
@@ -62,24 +87,20 @@ export function useLessonViewModel() {
       isCheckButtonDisabled,
       isExam,
     },
-    // Data for the feedback modal
     feedback: {
       show: logic.showFeedback,
       isCorrect: logic.isCorrect,
       solutionData: logic.getSolutionData ? logic.getSolutionData() : { pt: '', de: '' },
     },
-    // Data for the finish screen (View will use this to determine routing/alerts)
     finishScreenData: {
       isFinished: logic.isLessonFinished,
       isPractice: logic.isPractice,
       earnedStars: logic.earnedStars,
     },
-    // Data for the rating component
     rating: {
       show: showRating,
       buttons: ratingButtons,
     },
-    // All actions the view can trigger
     actions: {
       setUserInput: logic.setUserInput,
       setSelectedOption: (index: number) => {
@@ -91,6 +112,10 @@ export function useLessonViewModel() {
       ratePractice: logic.ratePractice,
       playAudio: (id: string) => playAudio(id),
       goBack: () => router.back(),
+      setShowReportModal,
+      setConfirmExit,
+      handleReportSubmit,
+      executeExit,
     },
     theme,
     isDarkMode,

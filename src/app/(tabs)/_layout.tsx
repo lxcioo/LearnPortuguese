@@ -1,5 +1,5 @@
-import { Colors } from '@/src/view/constants/theme';
-import { useColorScheme } from '@/src/view/hooks/useColorScheme';
+import { Colors } from '@/src/views/constants/theme';
+import { useColorScheme } from '@/src/views/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
 import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs';
 import { BlurView } from 'expo-blur';

@@ -1,8 +1,8 @@
-import { DiscordService } from '@/src/model/services/DiscordService';
-import { NotificationService } from '@/src/model/services/NotificationService';
-import { ErrorFallbackScreen } from '@/src/view/components/ui/ErrorFallbackScreen';
-import { Colors } from '@/src/view/constants/theme';
-import { ThemeProvider, useTheme } from '@/src/view/context/ThemeContext';
+import { DiscordService } from '@/src/models/services/DiscordService';
+import { NotificationService } from '@/src/models/services/NotificationService';
+import { ErrorFallbackScreen } from '@/src/views/components/ui/ErrorFallbackScreen';
+import { Colors } from '@/src/views/constants/theme';
+import { ThemeProvider, useTheme } from '@/src/views/context/ThemeContext';
 import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import { ErrorBoundaryProps, Stack } from 'expo-router';
@@ -13,7 +13,7 @@ import * as Updates from 'expo-updates';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StreakService } from '../model/services/StreakService';
+import { StreakService } from '../models/services/StreakService';
 
 SplashScreen.preventAutoHideAsync();
 

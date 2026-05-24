@@ -1,6 +1,6 @@
-import content from '@/src/model/data/content';
-import { UserProfileService } from '@/src/model/services/UserProfileService';
-import { useUserProgress } from '@/src/viewmodel/useUserProgress';
+import content from '@/src/models/data/content';
+import { UserProfileService } from '@/src/models/services/UserProfileService';
+import { useUserProgress } from '@/src/viewmodels/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 

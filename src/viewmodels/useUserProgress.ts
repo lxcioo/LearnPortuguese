@@ -1,5 +1,5 @@
-import { StreakService } from '@/src/model/services/StreakService';
-import { StreakData } from '@/src/model/types';
+import { StreakService } from '@/src/models/services/StreakService';
+import { StreakData } from '@/src/models/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';

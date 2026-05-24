@@ -1,4 +1,4 @@
-import { Course } from '@/src/model/types';
+import { Course } from '@/src/models/types';
 import unit01 from './units/unit_01_erste_schritte.json';
 import unit02 from './units/unit_02_erste_konversationen.json';
 import unit03 from './units/unit_03_essen_trinken.json';

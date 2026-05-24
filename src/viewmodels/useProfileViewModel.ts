@@ -1,10 +1,10 @@
-import { AchievementService } from '@/src/model/services/AchievementService';
-import { LeitnerService } from '@/src/model/services/LeitnerService';
-import { ProgressService } from '@/src/model/services/ProgressService';
-import { UserProfileService } from '@/src/model/services/UserProfileService';
-import { Achievement, UserProfile } from '@/src/model/types';
-import { useTheme } from '@/src/view/context/ThemeContext';
-import { useUserProgress } from '@/src/viewmodel/useUserProgress';
+import { AchievementService } from '@/src/models/services/AchievementService';
+import { LeitnerService } from '@/src/models/services/LeitnerService';
+import { ProgressService } from '@/src/models/services/ProgressService';
+import { UserProfileService } from '@/src/models/services/UserProfileService';
+import { Achievement, UserProfile } from '@/src/models/types';
+import { useTheme } from '@/src/views/context/ThemeContext';
+import { useUserProgress } from '@/src/viewmodels/useUserProgress';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 

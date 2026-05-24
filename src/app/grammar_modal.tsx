@@ -1,6 +1,6 @@
-import content from '@/src/model/data/content'; // Passe den Pfad an, falls dein Content woanders liegt
-import { Colors } from '@/src/view/constants/theme';
-import { useTheme } from '@/src/view/context/ThemeContext';
+import content from '@/src/models/data/content'; // Passe den Pfad an, falls dein Content woanders liegt
+import { Colors } from '@/src/views/constants/theme';
+import { useTheme } from '@/src/views/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';

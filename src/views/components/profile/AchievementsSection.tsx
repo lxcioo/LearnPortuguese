@@ -1,4 +1,4 @@
-import { Achievement } from '@/src/model/types';
+import { Achievement } from '@/src/models/types';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { LayoutAnimation, Modal, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';

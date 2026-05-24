@@ -1,4 +1,4 @@
-import { useTheme } from '@/src/view/context/ThemeContext';
+import { useTheme } from '@/src/views/context/ThemeContext';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
