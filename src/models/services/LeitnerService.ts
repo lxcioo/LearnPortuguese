@@ -66,6 +66,7 @@ export const LeitnerService = {
     const todayStr = now.toISOString().split('T')[0];
 
     let entry = db[exercise.id];
+    const wasNewEntry = !entry;
     const wasDue = entry ? now >= new Date(entry.nextReviewDate) : true;
 
     if (!entry) {
@@ -125,7 +126,7 @@ export const LeitnerService = {
     db[exercise.id] = entry;
     await StorageService.setItem(KEYS.GLOBAL_VOCAB, db);
 
-    const isLearned = isCorrect && (entry.solvedToday >= 3 || (entry.box > 0 && !db[exercise.id]));
+    const isLearned = isCorrect && (entry.solvedToday >= 3 || (entry.box > 0 && wasNewEntry));
     await ProgressService.updateDailyStats(isCorrect, isLearned);
   },
 
